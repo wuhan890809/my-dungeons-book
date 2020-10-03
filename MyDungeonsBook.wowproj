@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Deploy" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Default</Configuration>
+    <Name>MyDungeonsBook</Name>
+    <ProjectGuid>d1ce9bf3-1d4b-4bff-a646-ecdcd3881b95</ProjectGuid>
+    <AssemblyName>MyDungeonsBook</AssemblyName>
+    <RootNamespace>MyDungeonsBook</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Default' ">
+    <OutputPath>.</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="addon.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Challenge.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Chat.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Core.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Events.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Mechanics\BfA\Common.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Mechanics\Common.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Mechanics\SL\Common.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="MyDungeonsBook.toc">
+      <SubType>TableOfContents</SubType>
+    </Content>
+    <Content Include="embeds.xml">
+      <SubType>Frame</SubType>
+    </Content>
+    <Content Include="Locales\enUS.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Locales\locales.xml">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Options.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\AvoidableDamage.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\AvoidableDebuffs.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Details.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\DEV.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Encounters.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Interrupts.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Roster.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\Challenges.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\Main.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Utils\JSON.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Utils\Table.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Utils\Utils.lua">
+      <SubType>Code</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Locales" />
+    <Folder Include="Mechanics" />
+    <Folder Include="Mechanics\BfA" />
+    <Folder Include="Mechanics\SL" />
+    <Folder Include="Utils" />
+    <Folder Include="UI" />
+    <Folder Include="UI\ChallengeDetails" />
+    <Folder Include="UI\ChallengeDetails\Tabs" />
+  </ItemGroup>
+  <Import Project="$(DevEnvDir)\Extensions\Tools\MSBuild\AddonStudio\Wow\3.0\WowAddonStudio.targets" />
+  <!--
+  To modify your build process, add your task inside one of the targets below and uncomment it.
+  <Target Name="BeforeClean"></Target>
+  <Target Name="AfterClean"></Target>
+  <Target Name="BeforeRebuild"></Target>
+  <Target Name="AfterRebuild"></Target>
+  <Target Name="BeforeDeploy"></Target>
+  <Target Name="AfterDeploy"></Target>
+  -->
+</Project>

@@ -1,0 +1,36 @@
+## Title: MyDungeonsBook
+## Notes: Summary info about myth+ dungeons
+## Version: 1.0.0
+## Author: GelioS
+## Interface: 80300
+## OptionalDeps: LibStub, CallbackHandler-1.0, Ace3
+## SavedVariables: MyDungeonsBookDB
+## SavedVariablesPerCharacter: MyDungeonsBookData
+## LoadManagers: AddonLoader
+## X-LoadOn-Always: delayed
+
+embeds.xml
+Locales\locales.xml
+
+Core.lua
+Chat.lua
+Options.lua
+UI/Main.lua
+UI/Challenges.lua
+UI/ChallengeDetails.lua
+UI/ChallengeDetails/Tabs.lua
+UI/ChallengeDetails/Tabs/AvoidableDamage.lua
+UI/ChallengeDetails/Tabs/AvoidableDebuffs.lua
+UI/ChallengeDetails/Tabs/Details.lua
+UI/ChallengeDetails/Tabs/DEV.lua
+UI/ChallengeDetails/Tabs/Encounters.lua
+UI/ChallengeDetails/Tabs/Interrupts.lua
+UI/ChallengeDetails/Tabs/Roster.lua
+Events.lua
+Challenge.lua
+Mechanics/Common.lua
+Mechanics/BfA/Common.lua
+Mechanics/SL/Common.lua
+Utils/Utils.lua
+Utils/Table.lua
+Utils/JSON.lua
