@@ -26,8 +26,18 @@ L["Show LOG messages"] = "Show LOG messages";
 -- Settings end
 
 -- BfA start
-L["%s kicked a ball"] = "%s kicked a ball";
+-- NPCs start
+L["Blood Tick"] = "Blood Tick";
+L["Inconspicuous Plant"] = "Inconspicuous Plant";
+L["Earthrager"] = "Earthrager";
+L["Animated Gold"] = "Animated Gold";
+L["Reban"] = "Reban";
+L["T'zala"] = "T'zala";
+L["Reanimated Raptor"] = "Reanimated Raptor";
+-- NPCs end
 -- BfA end
 
 -- SL start
+-- NPCs start
+-- NPCs end
 -- SL end

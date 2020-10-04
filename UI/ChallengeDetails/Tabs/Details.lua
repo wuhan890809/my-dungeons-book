@@ -111,6 +111,14 @@ function MyDungeonsBook:GetDataForDetailsTable(challengeId)
 	end
 	for _, unitId in pairs(self:GetPartyRoster()) do
 		local details = challenge.details[unitId];
+		if (not details) then
+			local unitName = challenge.players[unitId].name;
+			details = challenge.details[unitName];
+			if (not details) then
+				local unitRealm = challenge.players[unitId].realm;
+				details = challenge.details[unitName .. "-" .. unitRealm];
+			end
+		end
 		tinsert(tableData, {
 			cols = {
 				{

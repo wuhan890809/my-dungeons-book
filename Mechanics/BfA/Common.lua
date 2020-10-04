@@ -1,3 +1,5 @@
+local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
+
 --[[
 Original idea for avoidable damage is taken from addon ElitismHelper (thanks to amkoio, talizea) https://www.curseforge.com/wow/addons/elitismhelper
 ]]
@@ -376,15 +378,37 @@ local BfASpecificCastsDoneByPartyMembers = {
 };
 
 local BfADamageDoneToSpecificUnits = {
+	-- AD
+	[129517] = {
+		name = L["Reanimated Raptor"]
+	},
 	-- KR
-	[136976] = true, -- T'zala
-	[136984] = true, -- Reban
-	[135406] = true, -- Animated Gold
+	[136976] = {
+		name = L["T'zala"]
+	},
+	[136984] = {
+		name = L["Reban"]
+	},
+	[135406] = {
+		name = L["Animated Gold"]
+	},
 	-- ML
-	[129802] = true, -- Earthrager
+	[129802] = {
+		name = L["Earthrager"]
+	},
 	-- MW
-	[152033] = true, -- Inconspicuous Plant
+	[152033] = {
+		name = L["Inconspicuous Plant"]
+	},
+	-- UNDR
+	[132051] = {
+		name = L["Blood Tick"]
+	},
 };
+
+function MyDungeonsBook:GetBfADamageDoneToSpecificUnits()
+	return BfADamageDoneToSpecificUnits;
+end
 
 function MyDungeonsBook:TrackBfAAvoidableSpells(damagedUnit, spellId, amount)
 	self:TrackAvoidableSpells("BFA-AVOIDABLE-SPELLS", BfASpells, BfASpellsNoTank, damagedUnit, spellId, amount);

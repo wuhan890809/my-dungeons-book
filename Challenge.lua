@@ -137,7 +137,7 @@ end
 ]]
 function MyDungeonsBook:InitMechanics2Lvl(first, second, asCounter)
 	local id = self.db.char.activeChallengeId;
-	self:InitMechanics1Lvl(first);
+	self:InitMechanics1Lvl(first, false);
 	if (not self.db.char.challenges[id].mechanics[first][second]) then
 		self.db.char.challenges[id].mechanics[first][second] = (asCounter and 0) or {};
 	end
@@ -153,8 +153,8 @@ end
 function MyDungeonsBook:InitMechanics3Lvl(first, second, third, asCounter)
 	local id = self.db.char.activeChallengeId;
 	self:InitMechanics2Lvl(first, second, false);
-	if (not self.db.char.challenges[id].mechanicss[first][second][third]) then
-		self.db.char.challenges[id].mechanicss[first][second][third] = (asCounter and 0) or {};
+	if (not self.db.char.challenges[id].mechanics[first][second][third]) then
+		self.db.char.challenges[id].mechanics[first][second][third] = (asCounter and 0) or {};
 	end
 end
 
@@ -199,7 +199,7 @@ function MyDungeonsBook:ParseInfoFromDetailsAddon()
 		if (realm) then
 			detailsUnitName = detailsUnitName .. "-"..realm;
 		end
-		details[unit] = self:ParseUnitInfoFromDetailsAddon(detailsUnitName or "NOT FOUND");
+		details[detailsUnitName] = self:ParseUnitInfoFromDetailsAddon(detailsUnitName or "NOT FOUND");
 		self:DebugPrint(string.format("Details info for %s is saved", unit));
 	end
 	return details;

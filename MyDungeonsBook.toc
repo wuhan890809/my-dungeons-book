@@ -26,6 +26,10 @@ UI/ChallengeDetails/Tabs/DEV.lua
 UI/ChallengeDetails/Tabs/Encounters.lua
 UI/ChallengeDetails/Tabs/Interrupts.lua
 UI/ChallengeDetails/Tabs/Roster.lua
+UI/ChallengeDetails/Tabs/Mechanics.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/CastsByPartyMembers.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/DamageDoneToUnits.lua
 Events.lua
 Challenge.lua
 Mechanics/Common.lua

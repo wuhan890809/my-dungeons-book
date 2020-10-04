@@ -20,7 +20,7 @@ function MyDungeonsBook:FormatNumber(n)
     elseif (n >= 10 ^ 3) then
         return string.format("%.1fK", n / 10^3);
     else
-        return tostring(n);
+        return string.format("%.0f", n);
     end
 end
 
@@ -294,7 +294,7 @@ function MyDungeonsBook:GetCountDownDelay(challengeId)
 	end
 	local startTime = challenge.challengeInfo.startTime;
 	local endTime = challenge.challengeInfo.endTime;
-	local duration = challenge.challengeInfo.duration / 1000;
+	local duration = (challenge.challengeInfo.duration or 0) / 1000;
 	if (not endTime) then
 		return 9;
 	end

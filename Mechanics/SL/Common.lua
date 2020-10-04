@@ -18,6 +18,10 @@ local SLSpecificCastsDoneByPartyMembers = {};
 
 local SLDamageDoneToSpecificUnits = {};
 
+function MyDungeonsBook:GetSLDamageDoneToSpecificUnits()
+	return SLDamageDoneToSpecificUnits;
+end
+
 function MyDungeonsBook:TrackSLAvoidableSpells(damagedUnit, spellId, amount)
 	self:TrackAvoidableSpells("SL-AVOIDABLE-SPELLS", SLSpells, SLSpellsNoTank, damagedUnit, spellId, amount);
 end
@@ -27,7 +31,7 @@ function MyDungeonsBook:TrackSLAvoidableAuras(damagedUnit, spellId)
 end
 
 function MyDungeonsBook:TrackSLPassedCasts(caster, spellId)
-	self:TrackPassedCasts("SL-SPELLS-TO-INTERRUPT", SLASpellsToInterrupt, caster, spellId);
+	self:TrackPassedCasts("SL-SPELLS-TO-INTERRUPT", SLSpellsToInterrupt, caster, spellId);
 end
 
 function MyDungeonsBook:TrackSLUnitsAppearsInCombat(sourceUnitGUID, targetUnitGUID)

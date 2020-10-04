@@ -69,9 +69,18 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 	end);
 	PanelTemplates_TabResize(interruptsTabButton, 0);
 
+	-- Mechanics
+	local mechanicsTabButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
+	mechanicsTabButton:SetPoint("TOPLEFT", interruptsTabButton, "TOPRIGHT", 0, 0);
+	mechanicsTabButton:SetText("Mechaincs");
+	mechanicsTabButton:SetScript("OnClick", function()
+		self:ChallengeDetailsFrame_ShowTab("mechanics");
+	end);
+	PanelTemplates_TabResize(mechanicsTabButton, 0);
+
 	-- DEV
 	local devTabButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
-	devTabButton:SetPoint("TOPLEFT", interruptsTabButton, "TOPRIGHT", 0, 0);
+	devTabButton:SetPoint("TOPLEFT", mechanicsTabButton, "TOPRIGHT", 0, 0);
 	devTabButton:SetText("DEV");
 	devTabButton:SetScript("OnClick", function()
 		self:ChallengeDetailsFrame_ShowTab("dev");
@@ -85,6 +94,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 		details = detailsTabButton,
 		interrupts = interruptsTabButton,
 		encounters = encountersTabButton,
+		mechanics = mechanicsTabButton,
 		dev = devTabButton
 	};
 	return tabsButtonsFrame;

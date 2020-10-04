@@ -22,12 +22,6 @@ MyDungeonsBook.OptionsDefaults = {
 		performance = {
 			collectgarbage = true
 		}
-	},
-	global = {
-		mechanics = {
-			BFA = {},
-			SL = {},
-		}
 	}
 };
 

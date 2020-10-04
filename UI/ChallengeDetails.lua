@@ -35,6 +35,7 @@ function MyDungeonsBook:CreateChallengeDetailsFrame(parentFrame)
 	challengeDetailsFrame.detailsFrame = self:CreateDetailsFrame(challengeDetailsFrame);
 	challengeDetailsFrame.encountersFrame = self:CreateEncountersFrame(challengeDetailsFrame);
 	challengeDetailsFrame.interruptsFrame = self:CreateInterruptsFrame(challengeDetailsFrame);
+	challengeDetailsFrame.mechanicsFrame = self:CreateMechanicsFrame(challengeDetailsFrame);
 	challengeDetailsFrame.devFrame = self:CreateDevFrame(challengeDetailsFrame);
 	challengeDetailsFrame.tabs = {
 		roster = challengeDetailsFrame.challengeRosterFrame,
@@ -43,7 +44,8 @@ function MyDungeonsBook:CreateChallengeDetailsFrame(parentFrame)
 		details = challengeDetailsFrame.detailsFrame,
 		dev = challengeDetailsFrame.devFrame,
 		encounters = challengeDetailsFrame.encountersFrame,
-		interrupts = challengeDetailsFrame.interruptsFrame
+		interrupts = challengeDetailsFrame.interruptsFrame,
+		mechanics = challengeDetailsFrame.mechanicsFrame
 	};
 	challengeDetailsFrame:Hide();
 	return challengeDetailsFrame;
@@ -96,6 +98,7 @@ function MyDungeonsBook:UpdateChallengeDetailsFrame(challengeId)
 		self:UpdateDevFrame(challengeId);
 		self:UpdateRosterFrame(challengeId);
 		self:UpdateEncountersFrame(challengeId);
+		self:UpdateMechanicsFrame(challengeId);
 	else
 		self:DebugPrint(string.format("Challenge #%s not found", challengeId));
 	end

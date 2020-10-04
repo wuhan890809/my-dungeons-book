@@ -82,17 +82,10 @@ function MyDungeonsBook:TrackInterrupt(unit, srcGUID, spellId, interruptedSpellI
 		self:DebugPrint(string.format("%s is not player", unit));
 	end
 	local KEY = "COMMON-INTERRUPTS";
-    spellId = mergeInterruptSpellId(spellId);
+	spellId = mergeInterruptSpellId(spellId);
 	self:LogPrint(string.format(L["%s interrupted %s using %s"], self:ClassColorText(unit, unit), GetSpellLink(interruptedSpellId), GetSpellLink(spellId)));
-	self:InitMechanics2Lvl(KEY, unit);
-	if (not self.db.char.challenges[id].mechanics[KEY][unit][spellId]) then
-		self.db.char.challenges[id].mechanics[KEY][unit][spellId] = {};
-	end
-	if (not self.db.char.challenges[id].mechanics[KEY][unit][spellId][interruptedSpellId]) then
-		self.db.char.challenges[id].mechanics[KEY][unit][spellId][interruptedSpellId] = 1;
-	else
-		self.db.char.challenges[id].mechanics[KEY][unit][spellId][interruptedSpellId] = self.db.char.challenges[id].mechanics[KEY][unit][spellId][interruptedSpellId] + 1;
-	end
+	self:InitMechanics4Lvl(KEY, unit, spellId, interruptedSpellId, true);
+	self.db.char.challenges[id].mechanics[KEY][unit][spellId][interruptedSpellId] = self.db.char.challenges[id].mechanics[KEY][unit][spellId][interruptedSpellId] + 1;
 end
 
 --[[
@@ -123,7 +116,8 @@ function MyDungeonsBook:TrackTryInterrupt(spellId, sourceGUID, sourceName)
 		[132409] = true, --Spell Lock Command Demon Sacrifice
 		[15487] = true,  --Silence
 		[31935] = true,  --Avenger's Shield
-		[15487] = true,  -- Silence
+		[15487] = true,  --Silence
+		[93985] = true,  --Skull Bash 
 	};
 	if (not interrupts[spellId]) then
 		return;
@@ -139,12 +133,8 @@ function MyDungeonsBook:TrackTryInterrupt(spellId, sourceGUID, sourceName)
 		end
     end
     spellId = mergeInterruptSpellId(spellId);
-	self:InitMechanics2Lvl(KEY, sourceName);
-	if (not self.db.char.challenges[id].mechanics[KEY][sourceName][spellId]) then
-		self.db.char.challenges[id].mechanics[KEY][sourceName][spellId] = 1;
-	else
-		self.db.char.challenges[id].mechanics[KEY][sourceName][spellId] = self.db.char.challenges[id].mechanics[KEY][sourceName][spellId] + 1;
-	end
+	self:InitMechanics3Lvl(KEY, sourceName, spellId, true);
+	self.db.char.challenges[id].mechanics[KEY][sourceName][spellId] = self.db.char.challenges[id].mechanics[KEY][sourceName][spellId] + 1;
 end
 
 --[[
@@ -199,10 +189,7 @@ Check events `SPELL_AURA_APPLIED` and `SPELL_AURA_APPLIED_DOSE`
 function MyDungeonsBook:TrackAvoidableAuras(key, auras, aurasNoTank, unit, spellId)
 	if (auras[spellId] or (aurasNoTank[spellId] and UnitGroupRolesAssigned(unit) ~= "TANK")) and UnitIsPlayer(unit) then
 		local id = self.db.char.activeChallengeId;
-		self:InitMechanics2Lvl(key, unit);
-		if (not self.db.char.challenges[id].mechanics[key][unit][spellId]) then
-			self.db.char.challenges[id].mechanics[key][unit][spellId] = 0
-		end
+		self:InitMechanics3Lvl(key, unit, spellId, true);
 		self.db.char.challenges[id].mechanics[key][unit][spellId] = self.db.char.challenges[id].mechanics[key][unit][spellId] + 1;
 		self:LogPrint(string.format(L["%s got debuff by %s"], unit, GetSpellLink(spellId)));
 	end
@@ -223,10 +210,7 @@ function MyDungeonsBook:TrackPassedCasts(key, spells, unitName, spellId)
 	if (spells[spellId]) then
 		self:LogPrint(string.format(L["%s's cast %s is passed"], unitName, GetSpellLink(spellId)));
 		local id = self.db.char.activeChallengeId;
-		self:InitMechanics1Lvl(key);
-		if (not self.db.char.challenges[id].mechanics[key][spellId]) then
-			self.db.char.challenges[id].mechanics[key][spellId] = 0;
-		end
+		self:InitMechanics2Lvl(key, spellId, true);
 		self.db.char.challenges[id].mechanics[key][spellId] = self.db.char.challenges[id].mechanics[key][spellId] + 1;
 	end
 end
@@ -247,10 +231,7 @@ function MyDungeonsBook:TrackAllEnemiesPassedCasts(unitName, unitGUID, spellId)
 	end
 	local KEY = "ALL-ENEMY-PASSED-CASTS";
 	local id = self.db.char.activeChallengeId;
-	self:InitMechanics1Lvl(KEY);
-	if (not self.db.char.challenges[id].mechanics[KEY][spellId]) then
-		self.db.char.challenges[id].mechanics[KEY][spellId] = 0;
-	end
+	self:InitMechanics2Lvl(KEY, spellId, true);
 	self.db.char.challenges[id].mechanics[KEY][spellId] = self.db.char.challenges[id].mechanics[KEY][spellId] + 1;
 end
 
@@ -293,9 +274,13 @@ function MyDungeonsBook:TrackDamageDoneToSpecificUnits(key, npcs, sourceName, so
 		};
 	end
 	self.db.char.challenges[id].mechanics[key][npcId][sourceName][spellId].hits = self.db.char.challenges[id].mechanics[key][npcId][sourceName][spellId].hits + 1;
-	self.db.char.challenges[id].mechanics[key][npcId][sourceName][spellId].amount = self.db.char.challenges[id].mechanics[key][npcId][sourceName][spellId].amount + 1;
-	if (overkill > 0) then
-		self.db.char.challenges[id].mechanics[key][npcId][sourceName][spellId].overkill = self.db.char.challenges[id].mechanics[key][npcId][sourceName][spellId].overkill + 1;
+	if (amount) then
+		self.db.char.challenges[id].mechanics[key][npcId][sourceName][spellId].amount = self.db.char.challenges[id].mechanics[key][npcId][sourceName][spellId].amount + amount;
+	else
+		self:DebugPrint(string.format("Cast of %s did `nil` amount of damage", GetSpellLink(spellId)));
+	end
+	if (overkill and overkill > 0) then
+		self.db.char.challenges[id].mechanics[key][npcId][sourceName][spellId].overkill = self.db.char.challenges[id].mechanics[key][npcId][sourceName][spellId].overkill + overkill;
 	end
 end
 
@@ -348,7 +333,7 @@ function MyDungeonsBook:TrackSpecificBuffOrDebuffOnUnit(key, spells, unitGUID, s
 		local id = self.db.char.activeChallengeId;
 		local npcId = self:GetNpcIdFromGuid(unitGUID);
 		if (npcId) then
-			self:InitMechanics1Lvl(key, spellId, npcId, true);
+			self:InitMechanics3Lvl(key, spellId, npcId, true);
 			self.db.char.challenges[id].mechanics[key][spellId][npcId] = self.db.char.challenges[id].mechanics[key][spellId][npcId] + 1;
 		end
 	end
