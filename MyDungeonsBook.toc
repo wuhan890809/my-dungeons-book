@@ -28,6 +28,8 @@ UI/ChallengeDetails/Tabs/Interrupts.lua
 UI/ChallengeDetails/Tabs/Roster.lua
 UI/ChallengeDetails/Tabs/Mechanics.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/BuffsOrDebuffsOnPartyMembers.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/BuffsOrDebuffsOnUnits.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/CastsByPartyMembers.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/DamageDoneToUnits.lua
 Events.lua

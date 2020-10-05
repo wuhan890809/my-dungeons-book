@@ -29,9 +29,29 @@ function MyDungeonsBook:ChallengeDetailsFrame_Mechanics_CreateTabButtonsFrame(pa
 	end);
 	PanelTemplates_TabResize(damageDoneToUnitsButton, 0);
 
+	-- Buffs Or Debuffs On Units
+	local buffsOrDebuffsOnUnitsButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
+	buffsOrDebuffsOnUnitsButton:SetPoint("TOPLEFT", damageDoneToUnitsButton, "TOPRIGHT", 0, 0);
+	buffsOrDebuffsOnUnitsButton:SetText(L["Buffs Or Debuffs On Units"]);
+	buffsOrDebuffsOnUnitsButton:SetScript("OnClick", function()
+		self:ChallengeDetailsFrame_Mechanics_ShowTab("buffsOrDebuffsOnUnits");
+	end);
+	PanelTemplates_TabResize(buffsOrDebuffsOnUnitsButton, 0);
+	
+	-- Buffs Or Debuffs On Party Members
+	local buffsOrDebuffsOnPartyMembersButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
+	buffsOrDebuffsOnPartyMembersButton:SetPoint("TOPLEFT", buffsOrDebuffsOnUnitsButton, "TOPRIGHT", 0, 0);
+	buffsOrDebuffsOnPartyMembersButton:SetText(L["Buffs Or Debuffs On Party Members"]);
+	buffsOrDebuffsOnPartyMembersButton:SetScript("OnClick", function()
+		self:ChallengeDetailsFrame_Mechanics_ShowTab("buffsOrDebuffsOnPartyMembers");
+	end);
+	PanelTemplates_TabResize(buffsOrDebuffsOnPartyMembersButton, 0);
+
 	tabsButtonsFrame.tabButtons = {
 		specialCasts = specialCastsButton,
-		damageDoneToUnits = damageDoneToUnitsButton
+		damageDoneToUnits = damageDoneToUnitsButton,
+		buffsOrDebuffsOnUnits = buffsOrDebuffsOnUnitsButton,
+		buffsOrDebuffsOnPartyMembers = buffsOrDebuffsOnPartyMembersButton
 	};
 	return tabsButtonsFrame;
 end

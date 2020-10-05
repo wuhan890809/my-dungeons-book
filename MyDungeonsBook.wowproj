@@ -80,6 +80,12 @@
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\BuffsOrDebuffsOnPartyMembers.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\BuffsOrDebuffsOnUnits.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\DamageDoneToUnits.lua">
       <SubType>Code</SubType>
     </Content>

@@ -1,18 +1,18 @@
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
 --[[
-Create a frame for Special Casts tab (data is taken from `mechanics[**-CASTS-DONE-BY-PARTY-MEMBERS]`)
+Create a frame for Buff Or Debuffs On Units tab (data is taken from `mechanics[**-BUFFS-OR-DEBUFFS-ON-PARTY-MEMBERS]`)
 Mouse hover/out handler are included
 
-@method MyDungeonsBook:CreateSpecialCastsFrame
+@method MyDungeonsBook:CreateBuffsOrDebuffsOnPartyMembersFrame
 @param {table} frame
 @return {table} tableWrapper
 ]]
-function MyDungeonsBook:CreateSpecialCastsFrame(frame)
+function MyDungeonsBook:CreateBuffsOrDebuffsOnPartyMembersFrame(frame)
 	local ScrollingTable = LibStub("ScrollingTable");
-	local cols = self:GetHeadersForSpecialCastsTable();
+	local cols = self:GetHeadersForBuffsOrDebuffsOnPartyMembersTable();
 	local tableWrapper = CreateFrame("Frame", nil, frame);
-	tableWrapper:SetWidth(600);
+	tableWrapper:SetWidth(550);
 	tableWrapper:SetHeight(450);
 	tableWrapper:SetPoint("TOPLEFT", 10, -120);
 	local table = ScrollingTable:CreateST(cols, 11, 40, nil, tableWrapper);
@@ -20,14 +20,14 @@ function MyDungeonsBook:CreateSpecialCastsFrame(frame)
 		OnEnter = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
 			if (realrow) then
 				if (column == 2 or column == 3) then
-					self:SpecialCastsTable_SpellHover(cellFrame, data[realrow].cols[1].value);
+					self:BuffsOrDebuffsOnPartyMembersTable_SpellHover(cellFrame, data[realrow].cols[1].value);
 				end
 			end
 	    end,
 		OnLeave = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
 			if (realrow) then
 				if (column == 2 or column == 3) then
-					self:SpecialCastsTable_SpellOut(cellFrame);
+					self:BuffsOrDebuffsOnPartyMembersTable_SpellOut(cellFrame);
 				end
 			end
 	    end
@@ -41,11 +41,11 @@ Generate columns for special casts table
 
 Depending on `challengeId` real player names will be used or simple placeholders like `player` or `party1..4`
 
-@method MyDungeonsBook:GetHeadersForSpecialCastsTable
-@param {number} challengeId
+@method MyDungeonsBook:GetHeadersForBuffsOrDebuffsOnPartyMembersTable
+@param {number|nil} challengeId
 @return {table}
 ]]
-function MyDungeonsBook:GetHeadersForSpecialCastsTable(challengeId)
+function MyDungeonsBook:GetHeadersForBuffsOrDebuffsOnPartyMembersTable(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	local player = "Player";
 	local party1 = "Party1";
@@ -76,7 +76,7 @@ function MyDungeonsBook:GetHeadersForSpecialCastsTable(challengeId)
 		},
 		{
 			name = "",
-			width = 135,
+			width = 105,
 			align = "LEFT",
 			DoCellUpdate = function(...)
 				self:FormatCellValueAsSpellLink(...);
@@ -84,41 +84,40 @@ function MyDungeonsBook:GetHeadersForSpecialCastsTable(challengeId)
 		},
 		{
 			name = player,
-			width = 70,
-			align = "RIGHT"
+			width = 65,
+			align = "CENTER"
 		},
 		{
 			name = party1,
-			width = 70,
-			align = "RIGHT"
+			width = 65,
+			align = "CENTER"
 		},
 		{
 			name = party2,
-			width = 70,
-			align = "RIGHT"
+			width = 65,
+			align = "CENTER"
 		},
 		{
 			name = party3,
-			width = 70,
-			align = "RIGHT"
+			width = 65,
+			align = "CENTER"
 		},
 		{
 			name = party4,
-			width = 70,
-			align = "RIGHT"
+			width = 65,
+			align = "CENTER"
 		},
 		{
 			name = L["Sum"],
-			width = 50,
-			align = "RIGHT",
-			sort = "dsc",
+			width = 45,
+			align = "CENTER",
 			bgcolor = {
 				r = 0,
 				g = 0,
 				b = 0,
 				a = 0.4
 			}
-		}
+		},
 	};
 end
 
@@ -126,11 +125,11 @@ end
 Mouse-hover handler for special casts table
 Shows a tooltip with spell name and description (from `GetSpellLink`)
 
-@method MyDungeonsBook:SpecialCastsTable_SpellHover
+@method MyDungeonsBook:BuffsOrDebuffsOnPartyMembersTable_SpellHover
 @param {table} frame
 @param {number} spellId
 ]]
-function MyDungeonsBook:SpecialCastsTable_SpellHover(frame, spellId)
+function MyDungeonsBook:BuffsOrDebuffsOnPartyMembersTable_SpellHover(frame, spellId)
 	if (spellId and spellId > 0) then
 		GameTooltip:SetOwner(frame, "ANCHOR_NONE");
 		GameTooltip:SetPoint("BOTTOMLEFT", frame, "BOTTOMRIGHT");
@@ -142,57 +141,52 @@ end
 --[[
 Mouse-out handler for avoidable damage table
 
-@method MyDungeonsBook:SpecialCastsTable_SpellOut
+@method MyDungeonsBook:BuffsOrDebuffsOnPartyMembersTable_SpellOut
 ]]
-function MyDungeonsBook:SpecialCastsTable_SpellOut()
+function MyDungeonsBook:BuffsOrDebuffsOnPartyMembersTable_SpellOut()
 	GameTooltip:Hide();
 end
 
 --[[
-Map data about Special Casts for challenge with id `challengeId`
-
-@method MyDungeonsBook:GetSpecialCastsTableData
+@method MyDungeonsBook:GetBuffsOrDebuffsOnPartyMembersTableData
 @param {number} challengeId
 @param {key} string key for mechanics table (it's different for BFA and SL)
 @return {table}
 ]]
-function MyDungeonsBook:GetSpecialCastsTableData(challengeId, key)
+function MyDungeonsBook:GetBuffsOrDebuffsOnPartyMembersTableData(challengeId, key)
 	local tableData = {};
 	if (not challengeId) then
 		return nil;
 	end
 	if (not self.db.char.challenges[challengeId].mechanics[key]) then
-		self:DebugPrint(string.format("No Special Casts data for challenge #%s", challengeId));
+		self:DebugPrint(string.format("No Buff Or Debuffs On Party Members data for challenge #%s", challengeId));
 		return tableData;
 	end
-	for spellId, castsByPartyMember in pairs(self.db.char.challenges[challengeId].mechanics[key]) do
-		local row = {};
+	for spellId, buffsOrDebuffsOnPartyMembers in pairs(self.db.char.challenges[challengeId].mechanics[key]) do
 		local sum = 0;
-		for unitName, numberOfCasts in pairs(castsByPartyMember) do
+		local row = {};
+		for unitName, numberOfBuffsOrDebuffs in pairs(buffsOrDebuffsOnPartyMembers) do
 			local partyUnitId = self:GetPartyUnitByName(challengeId, unitName);
 			if (partyUnitId) then
-				row[partyUnitId] = numberOfCasts or 0;
-				sum = sum + numberOfCasts;
+				row[partyUnitId] = numberOfBuffsOrDebuffs or 0;
+				sum = sum + numberOfBuffsOrDebuffs;
 			else
 				self:DebugPrint(string.format("%s not found in the challenge party roster", unitName));
 			end
 		end
-		local remappedRow = {
+		tinsert(tableData, {
 			cols = {
 				{value = spellId},
 				{value = spellId},
-				{value = spellId}
+				{value = spellId},
+				{value = row.player or 0},
+				{value = row.party1 or 0},
+				{value = row.party2 or 0},
+				{value = row.party3 or 0},
+				{value = row.party4 or 0},
+				{value = sum}
 			}
-		};
-		for _, unitId in pairs(self:GetPartyRoster()) do
-			tinsert(remappedRow.cols, {
-				value = row[unitId] or 0
-			});
-		end
-		tinsert(remappedRow.cols, {
-			value = sum
 		});
-		tinsert(tableData, remappedRow);
 	end
 	return tableData;
 end
@@ -200,15 +194,15 @@ end
 --[[
 Update Special Casts-tab for challenge with id `challengeId`
 
-@method MyDungeonsBook:UpdateSpecialCastsFrame
+@method MyDungeonsBook:UpdateBuffsOrDebuffsOnPartyMembersFrame
 @param {number} challengeId
 ]]
-function MyDungeonsBook:UpdateSpecialCastsFrame(challengeId)
+function MyDungeonsBook:UpdateBuffsOrDebuffsOnPartyMembersFrame(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
-		local specialCastsTableData = self:GetSpecialCastsTableData(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-CASTS-DONE-BY-PARTY-MEMBERS");
-		self.challengeDetailsFrame.mechanicsFrame.specialCastsFrame.table:SetData(specialCastsTableData);
-		self.challengeDetailsFrame.mechanicsFrame.specialCastsFrame.table:SetDisplayCols(self:GetHeadersForSpecialCastsTable(challengeId));
-		self.challengeDetailsFrame.mechanicsFrame.specialCastsFrame.table:SortData();
+		local buffsOrDebuffsOnPartyMembersTableData = self:GetBuffsOrDebuffsOnPartyMembersTableData(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-BUFFS-OR-DEBUFFS-ON-PARTY-MEMBERS");
+		self.challengeDetailsFrame.mechanicsFrame.buffsOrDebuffsOnPartyMembersFrame.table:SetDisplayCols(self:GetHeadersForBuffsOrDebuffsOnPartyMembersTable(challengeId));
+		self.challengeDetailsFrame.mechanicsFrame.buffsOrDebuffsOnPartyMembersFrame.table:SetData(buffsOrDebuffsOnPartyMembersTableData);
+		self.challengeDetailsFrame.mechanicsFrame.buffsOrDebuffsOnPartyMembersFrame.table:SortData();
 	end
 end

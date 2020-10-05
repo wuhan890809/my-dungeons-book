@@ -46,7 +46,7 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 	end
 	return {
 		{
-			name = "",
+			name = L["NPC"],
 			width = 120,
 			align = "LEFT"
 		},
