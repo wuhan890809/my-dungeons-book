@@ -65,6 +65,7 @@ Save info about started challenge to the db:
 @event CHALLENGE_MODE_START
 ]]
 function MyDungeonsBook:CHALLENGE_MODE_START()
+	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 	self:DebugPrint("CHALLENGE_MODE_START");
 	if (self.db.char.activeChallengeId) then
 		self:DebugPrint(string.format("Challenge already exists with id %s", self.db.char.activeChallengeId));
@@ -139,6 +140,7 @@ Mark active challenge as completed
 @event CHALLENGE_MODE_RESET
 ]]
 function MyDungeonsBook:CHALLENGE_MODE_RESET()
+	self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 	local id = self.db.char.activeChallengeId;
 	if (self.db.char.challenges[id]) then
 		self.db.char.challenges[id].endTime = time();
@@ -158,6 +160,7 @@ Mark active challenge as completed and store additional info about it:
 @event CHALLENGE_MODE_COMPLETED
 ]]
 function MyDungeonsBook:CHALLENGE_MODE_COMPLETED()
+	self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 	local id = self.db.char.activeChallengeId;
 	if (self.db.char.challenges[id]) then
 		self.db.char.challenges[id].challengeInfo.endTime = time();

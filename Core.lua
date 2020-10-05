@@ -21,7 +21,6 @@ Setup event handlers
 @method MyDungeonsBook:OnEnable
 ]]
 function MyDungeonsBook:OnEnable()
-	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 	self:RegisterEvent("CHALLENGE_MODE_START");
 	self:RegisterEvent("CHALLENGE_MODE_COMPLETED");
 	self:RegisterEvent("CHALLENGE_MODE_RESET");
