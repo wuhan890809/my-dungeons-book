@@ -51,7 +51,7 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 			align = "LEFT"
 		},
 		{
-			name = player .. "\nAmount",
+			name = player .. "\n" .. L["Amount"],
 			width = 70,
 			align = "RIGHT",
 			bgcolor = {
@@ -65,7 +65,7 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 			end
 		},
 		{
-			name = "\nOver",
+			name = "\n" .. L["Over"],
 			width = 50,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
@@ -73,12 +73,12 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 			end
 		},
 		{
-			name = "\nHits",
+			name = "\n" .. L["Hits"],
 			width = 30,
 			align = "RIGHT"
 		},
 		{
-			name = party1 .. "\nAmount",
+			name = party1 .. "\n" .. L["Amount"],
 			width = 70,
 			align = "RIGHT",
 			bgcolor = {
@@ -92,7 +92,7 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 			end
 		},
 		{
-			name = "\nOver",
+			name = "\n" .. L["Over"],
 			width = 50,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
@@ -100,12 +100,12 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 			end
 		},
 		{
-			name = "\nHits",
+			name = "\n" .. L["Hits"],
 			width = 30,
 			align = "RIGHT"
 		},
 		{
-			name = party2 .. "\nAmount",
+			name = party2 .. "\n" .. L["Amount"],
 			width = 70,
 			align = "RIGHT",
 			bgcolor = {
@@ -119,7 +119,7 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 			end
 		},
 		{
-			name = "\nOver",
+			name = "\n" .. L["Over"],
 			width = 50,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
@@ -127,12 +127,12 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 			end
 		},
 		{
-			name = "\nHits",
+			name = "\n" .. L["Hits"],
 			width = 30,
 			align = "RIGHT"
 		},
 		{
-			name = party3 .. "\nAmount",
+			name = party3 .. "\n" .. L["Amount"],
 			width = 70,
 			align = "RIGHT",
 			bgcolor = {
@@ -146,7 +146,7 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 			end
 		},
 		{
-			name = "\nOver",
+			name = "\n" .. L["Over"],
 			width = 50,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
@@ -154,12 +154,12 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 			end
 		},
 		{
-			name = "\nHits",
+			name = "\n" .. L["Hits"],
 			width = 30,
 			align = "RIGHT"
 		},
 		{
-			name = party4 .. "\nAmount",
+			name = party4 .. "\n" .. L["Amount"],
 			width = 70,
 			align = "RIGHT",
 			bgcolor = {
@@ -173,7 +173,7 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 			end
 		},
 		{
-			name = "\nOver",
+			name = "\n" .. L["Over"],
 			width = 50,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
@@ -181,7 +181,7 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 			end
 		},
 		{
-			name = "\nHits",
+			name = "\n" .. L["Hits"],
 			width = 30,
 			align = "RIGHT"
 		}

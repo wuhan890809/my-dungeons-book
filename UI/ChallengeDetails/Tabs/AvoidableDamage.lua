@@ -67,7 +67,7 @@ function MyDungeonsBook:GetHeadersForAvoidableDamageTable(challengeId)
 			align = "LEFT"
 		},
 		{
-			name = "Spell",
+			name = L["Spell"],
 			width = 40,
 			align = "LEFT",
 			DoCellUpdate = function(...)
@@ -83,12 +83,12 @@ function MyDungeonsBook:GetHeadersForAvoidableDamageTable(challengeId)
 			end
 		},
 		{
-			name = "\nHits",
+			name = "\n" .. L["Hits"],
 			width = 50,
 			align = "RIGHT"
 		},
 		{
-			name = player .. "\nSum",
+			name = player .. "\n" .. L["Sum"],
 			width = 70,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
@@ -96,7 +96,7 @@ function MyDungeonsBook:GetHeadersForAvoidableDamageTable(challengeId)
 			end
 		},
 		{
-			name = "\nHits",
+			name = "\n" .. L["Hits"],
 			width = 50,
 			align = "RIGHT"
 		},
@@ -109,7 +109,7 @@ function MyDungeonsBook:GetHeadersForAvoidableDamageTable(challengeId)
 			end
 		},
 		{
-			name = "\nHits",
+			name = "\n" .. L["Hits"],
 			width = 50,
 			align = "RIGHT"
 		},
@@ -122,7 +122,7 @@ function MyDungeonsBook:GetHeadersForAvoidableDamageTable(challengeId)
 			end
 		},
 		{
-			name = "\nHits",
+			name = "\n" .. L["Hits"],
 			width = 50,
 			align = "RIGHT"
 		},
@@ -135,7 +135,7 @@ function MyDungeonsBook:GetHeadersForAvoidableDamageTable(challengeId)
 			end
 		},
 		{
-			name = "\nHits",
+			name = "\n" .. L["Hits"],
 			width = 50,
 			align = "RIGHT"
 		},
@@ -148,7 +148,7 @@ function MyDungeonsBook:GetHeadersForAvoidableDamageTable(challengeId)
 			end
 		},
 		{
-			name = "Nums",
+			name = L["Nums"],
 			width = 50,
 			align = "RIGHT",
 			bgcolor = {
@@ -159,7 +159,7 @@ function MyDungeonsBook:GetHeadersForAvoidableDamageTable(challengeId)
 			}
 		},
 		{
-			name = "Sums",
+			name = L["Sums"],
 			width = 50,
 			align = "RIGHT",
 			sort = "dsc",

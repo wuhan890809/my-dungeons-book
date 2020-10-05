@@ -18,7 +18,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 	-- Roster
 	local rosterTabButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
 	rosterTabButton:SetPoint("TOPLEFT", 0, 0);
-	rosterTabButton:SetText("Roster");
+	rosterTabButton:SetText(L["Roster"]);
 	rosterTabButton:SetScript("OnClick", function()
 		self:ChallengeDetailsFrame_ShowTab("roster");
 	end);
@@ -27,7 +27,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 	-- Avoidable Damage
 	local avoidableDamageTabButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
 	avoidableDamageTabButton:SetPoint("TOPLEFT", rosterTabButton, "TOPRIGHT", 0, 0);
-	avoidableDamageTabButton:SetText("Avoidable Damage");
+	avoidableDamageTabButton:SetText(L["Avoidable Damage"]);
 	avoidableDamageTabButton:SetScript("OnClick", function()
 		self:ChallengeDetailsFrame_ShowTab("avoidableDamage");
 	end);
@@ -36,7 +36,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 	--  Avoidable Debuffs
 	local avoidableDebuffsTabButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
 	avoidableDebuffsTabButton:SetPoint("TOPLEFT", avoidableDamageTabButton, "TOPRIGHT", 0, 0);
-	avoidableDebuffsTabButton:SetText("Avoidable Debuffs");
+	avoidableDebuffsTabButton:SetText(L["Avoidable Debuffs"]);
 	avoidableDebuffsTabButton:SetScript("OnClick", function()
 		self:ChallengeDetailsFrame_ShowTab("avoidableDebuffs");
 	end);
@@ -45,7 +45,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 	-- Details
 	local detailsTabButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
 	detailsTabButton:SetPoint("TOPLEFT", avoidableDebuffsTabButton, "TOPRIGHT", 0, 0);
-	detailsTabButton:SetText("Details");
+	detailsTabButton:SetText(L["Details"]);
 	detailsTabButton:SetScript("OnClick", function()
 		self:ChallengeDetailsFrame_ShowTab("details");
 	end);
@@ -54,7 +54,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 	-- Encouters
 	local encountersTabButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
 	encountersTabButton:SetPoint("TOPLEFT", detailsTabButton, "TOPRIGHT", 0, 0);
-	encountersTabButton:SetText("Encounters");
+	encountersTabButton:SetText(L["Encounters"]);
 	encountersTabButton:SetScript("OnClick", function()
 		self:ChallengeDetailsFrame_ShowTab("encounters");
 	end);
@@ -63,7 +63,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 	-- Interrupts
 	local interruptsTabButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
 	interruptsTabButton:SetPoint("TOPLEFT", encountersTabButton, "TOPRIGHT", 0, 0);
-	interruptsTabButton:SetText("Interrupts");
+	interruptsTabButton:SetText(L["Interrupts"]);
 	interruptsTabButton:SetScript("OnClick", function()
 		self:ChallengeDetailsFrame_ShowTab("interrupts");
 	end);
@@ -72,7 +72,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 	-- Mechanics
 	local mechanicsTabButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
 	mechanicsTabButton:SetPoint("TOPLEFT", interruptsTabButton, "TOPRIGHT", 0, 0);
-	mechanicsTabButton:SetText("Mechaincs");
+	mechanicsTabButton:SetText(L["Mechaincs"]);
 	mechanicsTabButton:SetScript("OnClick", function()
 		self:ChallengeDetailsFrame_ShowTab("mechanics");
 	end);
@@ -81,7 +81,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 	-- DEV
 	local devTabButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
 	devTabButton:SetPoint("TOPLEFT", mechanicsTabButton, "TOPRIGHT", 0, 0);
-	devTabButton:SetText("DEV");
+	devTabButton:SetText(L["DEV"]);
 	devTabButton:SetScript("OnClick", function()
 		self:ChallengeDetailsFrame_ShowTab("dev");
 	end);

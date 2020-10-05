@@ -14,7 +14,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_Mechanics_CreateTabButtonsFrame(pa
 	-- Special Casts
 	local specialCastsButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
 	specialCastsButton:SetPoint("TOPLEFT", 0, 0);
-	specialCastsButton:SetText("Special Casts");
+	specialCastsButton:SetText(L["Special Casts"]);
 	specialCastsButton:SetScript("OnClick", function()
 		self:ChallengeDetailsFrame_Mechanics_ShowTab("specialCasts");
 	end);
@@ -23,7 +23,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_Mechanics_CreateTabButtonsFrame(pa
 	-- Damage Done To Units
 	local damageDoneToUnitsButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
 	damageDoneToUnitsButton:SetPoint("TOPLEFT", specialCastsButton, "TOPRIGHT", 0, 0);
-	damageDoneToUnitsButton:SetText("Damage Done To Units");
+	damageDoneToUnitsButton:SetText(L["Damage Done To Units"]);
 	damageDoneToUnitsButton:SetScript("OnClick", function()
 		self:ChallengeDetailsFrame_Mechanics_ShowTab("damageDoneToUnits");
 	end);

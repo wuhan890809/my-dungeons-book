@@ -41,12 +41,12 @@ Generate columns for avoidable damage table
 function MyDungeonsBook:GetHeadersForDetailsTable()
 	return {
 		{
-			name = "Player",
+			name = L["Player"],
 			width = 275,
 			align = "LEFT"
 		},
 		{
-			name = "Damage",
+			name = L["Damage"],
 			width = 100,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
@@ -54,7 +54,7 @@ function MyDungeonsBook:GetHeadersForDetailsTable()
 			end
 		},
 		{
-			name = "DPS",
+			name = L["DPS"],
 			width = 100,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
@@ -62,7 +62,7 @@ function MyDungeonsBook:GetHeadersForDetailsTable()
 			end
 		},
 		{
-			name = "Heal",
+			name = L["Heal"],
 			width = 100,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
@@ -70,7 +70,7 @@ function MyDungeonsBook:GetHeadersForDetailsTable()
 			end
 		},
 		{
-			name = "HPS",
+			name = L["HPS"],
 			width = 100,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
@@ -78,12 +78,12 @@ function MyDungeonsBook:GetHeadersForDetailsTable()
 			end
 		},
 		{
-			name = "Interrupts",
+			name = L["Interrupts"],
 			width = 100,
 			align = "RIGHT"
 		},
 		{
-			name = "Dispells",
+			name = L["Dispells"],
 			width = 100,
 			align = "RIGHT"
 		}

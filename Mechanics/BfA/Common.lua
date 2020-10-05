@@ -378,6 +378,9 @@ local BfASpecificCastsDoneByPartyMembers = {
 };
 
 local BfADamageDoneToSpecificUnits = {
+	[120651] = {
+		name = L["Explosives"]
+	},
 	-- AD
 	[129517] = {
 		name = L["Reanimated Raptor"]

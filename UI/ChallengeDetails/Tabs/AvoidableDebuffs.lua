@@ -71,7 +71,7 @@ function MyDungeonsBook:GetHeadersForAvoidableDebuffsTable(challengeId)
 			align = "LEFT"
 		},
 		{
-			name = "Spell",
+			name = L["Spell"],
 			width = 40,
 			align = "LEFT",
 			DoCellUpdate = function(...)
@@ -112,7 +112,7 @@ function MyDungeonsBook:GetHeadersForAvoidableDebuffsTable(challengeId)
 			align = "RIGHT"
 		},
 		{
-			name = "Sum",
+			name = L["Sum"],
 			width = 50,
 			align = "RIGHT",
 			sort = "dsc",

@@ -89,7 +89,7 @@ Update all frames related to challenge details
 function MyDungeonsBook:UpdateChallengeDetailsFrame(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
-		self.challengeDetailsFrame.titleFrame.titleText:SetText(string.format("%s (+%s) %s", challenge.challengeInfo.zoneName, challenge.challengeInfo.cmLevel, self:GetKeyUpgradeStr(challenge)));
+		self.challengeDetailsFrame.titleFrame.titleText:SetText(string.format(L["%s (+%s) %s"], challenge.challengeInfo.zoneName, challenge.challengeInfo.cmLevel, self:GetKeyUpgradeStr(challenge)));
 		self.challengeDetailsFrame.titleFrame.titleAffixes:SetText(self:GetChallengeAffixesIconsStr(challengeId, 30));
 		self:UpdateAvoidableDamageFrame(challengeId);
 		self:UpdateAvoidableDebuffsFrame(challengeId);

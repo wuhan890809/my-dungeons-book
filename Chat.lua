@@ -17,10 +17,10 @@ function MyDungeonsBook:ParseChatCommand(msg)
 	end
 	if (type == "help" or type == "h") then
 		local tpl = "|c0070DE00%s|r - %s";
-		self:Print(string.format(tpl, "[..]", "alias for previous word"));
-		self:Print(string.format(tpl, "/mdb challenge[c] active[a] details[d] parse[p]", "save info from Details addon. It's done automatically when challenge is completed (in time or not), however it's not done if challenge is abandonned. Use this command right before leave the party."));
-		self:Print(string.format(tpl, "/mdb challenge[c] active[a] roster[r] {{unitId}} update[u]", "update info about party member for current challenge. unitId must be 'player' or 'party1..4'."));
-		self:Print(string.format(tpl, "/mdb help[h]", "print this text."));
+		self:Print(string.format(tpl, "[..]", L["alias for previous word"]));
+		self:Print(string.format(tpl, "/mdb challenge[c] active[a] details[d] parse[p]", L["save info from Details addon. It's done automatically when challenge is completed (in time or not), however it's not done if challenge is abandonned. Use this command right before leave the party."]));
+		self:Print(string.format(tpl, "/mdb challenge[c] active[a] roster[r] {{unitId}} update[u]", L["update info about party member for current challenge. unitId must be 'player' or 'party1..4'."]));
+		self:Print(string.format(tpl, "/mdb help[h]", L["print this text."]));
 		return;
 	end
 	self:Show();

@@ -87,7 +87,7 @@ function MyDungeonsBook:GetHeadersForInterruptsTable(challengeId)
 			align = "LEFT"
 		},
 		{
-			name = "Spell",
+			name = L["Spell"],
 			width = 40,
 			align = "LEFT",
 			DoCellUpdate = function(...)
@@ -128,7 +128,7 @@ function MyDungeonsBook:GetHeadersForInterruptsTable(challengeId)
 			align = "CENTER"
 		},
 		{
-			name = "Kicked",
+			name = L["Kicked"],
 			width = 45,
 			align = "CENTER",
 			bgcolor = {
@@ -139,7 +139,7 @@ function MyDungeonsBook:GetHeadersForInterruptsTable(challengeId)
 			}
 		},
 		{
-			name = "Passed",
+			name = L["Passed"],
 			width = 45,
 			align = "CENTER"
 		}
@@ -285,12 +285,12 @@ function MyDungeonsBook:GetHeadersForInterruptsSummaryTable()
 			align = "LEFT"
 		},
 		{
-			name = "Player",
+			name = L["Player"],
 			width = 80,
 			align = "LEFT"
 		},
 		{
-			name = "Spell",
+			name = L["Spell"],
 			width = 40,
 			align = "LEFT",
 			DoCellUpdate = function(...)
@@ -306,12 +306,12 @@ function MyDungeonsBook:GetHeadersForInterruptsSummaryTable()
 			end
 		},
 		{
-			name = "Kicks",
+			name = L["Kicks"],
 			width = 30,
 			align = "CENTER"
 		},
 		{
-			name = "Casts",
+			name = L["Casts"],
 			width = 35,
 			align = "CENTER"
 		}

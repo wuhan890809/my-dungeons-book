@@ -108,7 +108,7 @@ function MyDungeonsBook:GetHeadersForSpecialCastsTable(challengeId)
 			align = "RIGHT"
 		},
 		{
-			name = "Sum",
+			name = L["Sum"],
 			width = 50,
 			align = "RIGHT",
 			sort = "dsc",

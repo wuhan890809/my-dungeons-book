@@ -33,17 +33,17 @@ end
 function MyDungeonsBook:GetHeadersForEncountersTable()
 	return {
 		{
-			name = "ID",
+			name = L["ID"],
 			width = 50,
 			align = "LEFT"
 		},
 		{
-			name = "Name",
+			name = L["Name"],
 			width = 150,
 			align = "LEFT"
 		},
 		{
-			name = "Start Time",
+			name = L["Start Time"],
 			width = 75,
 			align = "LEFT",
 			sort = "dsc",
@@ -52,7 +52,7 @@ function MyDungeonsBook:GetHeadersForEncountersTable()
 			end
 		},
 		{
-			name = "End Time",
+			name = L["End Time"],
 			width = 75,
 			align = "LEFT",
 			DoCellUpdate = function(...)
@@ -60,7 +60,7 @@ function MyDungeonsBook:GetHeadersForEncountersTable()
 			end
 		},
 		{
-			name = "Duration",
+			name = L["Duration"],
 			width = 75,
 			align = "LEFT",
 			DoCellUpdate = function(...)
@@ -68,17 +68,17 @@ function MyDungeonsBook:GetHeadersForEncountersTable()
 			end
 		},
 		{
-			name = "|Tinterface\\targetingframe\\ui-raidtargetingicon_8:12|t Before",
+			name = "|Tinterface\\targetingframe\\ui-raidtargetingicon_8:12|t" .. L["Before"],
 			width = 75,
 			align = "RIGHT"
 		},
 		{
-			name = "|Tinterface\\targetingframe\\ui-raidtargetingicon_8:12|t While",
+			name = "|Tinterface\\targetingframe\\ui-raidtargetingicon_8:12|t" .. L["While"],
 			width = 75,
 			align = "RIGHT"
 		},
 		{
-			name = "|Tinterface\\targetingframe\\ui-raidtargetingicon_8:12|t After",
+			name = "|Tinterface\\targetingframe\\ui-raidtargetingicon_8:12|t" .. L["After"],
 			width = 75,
 			align = "RIGHT"
 		}

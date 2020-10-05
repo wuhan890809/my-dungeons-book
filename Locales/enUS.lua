@@ -17,6 +17,51 @@ L["Key"] = "Key";
 L["Affixes"] = "Affixes";
 L["Not Found"] = "Not Found";
 
+-- UI start
+L["Hits"] = "Hits";
+L["Spell"] = "Spell";
+L["DEV"] = "DEV";
+L["Mechaincs"] = "Mechaincs";
+L["Interrupts"] = "Interrupts";
+L["Encounters"] = "Encounters";
+L["Details"] = "Details";
+L["Avoidable Debuffs"] = "Avoidable Debuffs";
+L["Avoidable Damage"] = "Avoidable Damage";
+L["Roster"] = "Roster";
+L["ID"] = "ID";
+L["Dispells"] = "Dispells";
+L["HPS"] = "HPS";
+L["Heal"] = "Heal";
+L["DPS"] = "DPS";
+L["Damage"] = "Damage";
+L["Player"] = "Player";
+L["Sums"] = "Sums";
+L["Nums"] = "Nums";
+L["Sum"] = "Sum";
+L["Num"] = "Num";
+L["Kicks"] = "Kicks";
+L["Passed"] = "Passed";
+L["Kicked"] = "Kicked";
+L["After"] = "After";
+L["While"] = "While";
+L["Before"] = "Before";
+L["Duration"] = "Duration";
+L["End Time"]= "End Time";
+L["Start Time"]= "Start Time";
+L["Name"] = "Name";
+L["Over"] = "Over";
+L["Amount"] = "Amount";
+L["Damage Done To Units"] = "Damage Done To Units";
+L["Special Casts"] = "Special Casts"
+L["Casts"] = "Casts"
+L["%s (+%s) %s"] = "%s (+%s) %s";
+L["Time lost: %ss"] = "Time lost: %ss";
+L["Time: %s / %s (%s%s) %.1f%%"] = "Time: %s / %s (%s%s) %.1f%%";
+L["Key HP bonus: %s%%"] = "Key HP bonus: %s%%";
+L["Key damage bonus: %s%%"] = "Key damage bonus: %s%%";
+L["Dungeon: %s (+%s)"] = "Dungeon: %s (+%s)";
+-- UI end
+
 -- Settings start
 L["Performance"] = "Performance";
 L["Run garbage collector on close"] = "Run garbage collector on close";
@@ -27,6 +72,7 @@ L["Show LOG messages"] = "Show LOG messages";
 
 -- BfA start
 -- NPCs start
+L["Explosives"] = "Explosives";
 L["Blood Tick"] = "Blood Tick";
 L["Inconspicuous Plant"] = "Inconspicuous Plant";
 L["Earthrager"] = "Earthrager";

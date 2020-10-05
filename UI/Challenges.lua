@@ -118,18 +118,18 @@ function MyDungeonsBook:ChallengesTable_RowHover(frame, challengeId)
 		if (duration) then
 			duration = duration / 1000;
 		end
-		GameTooltip:AddLine(string.format("Dungeon: %s (+%s)", zoneName, cmLevel));
+		GameTooltip:AddLine(string.format(L["Dungeon: %s (+%s)"], zoneName, cmLevel));
 		if (damageMod and healthMod) then
-			GameTooltip:AddLine(string.format("Key damage bonus: %s%%", damageMod));
-			GameTooltip:AddLine(string.format("Key HP bonus: %s%%", healthMod));
+			GameTooltip:AddLine(string.format(L["Key damage bonus: %s%%"], damageMod));
+			GameTooltip:AddLine(string.format(L["Key HP bonus: %s%%"], healthMod));
 		end
 		if (maxTime and duration) then
 			local saved = maxTime - duration;
 			local sign = (saved < 0 and "+") or "-";
 			local percents = math.abs(saved / maxTime * 100);
-			GameTooltip:AddLine(string.format("Time: %s / %s (%s%s) %.1f%%", date("%M:%S", duration), date("%M:%S", maxTime), sign, date("%M:%S", math.abs(saved)), percents));
+			GameTooltip:AddLine(string.format(L["Time: %s / %s (%s%s) %.1f%%"], date("%M:%S", duration), date("%M:%S", maxTime), sign, date("%M:%S", math.abs(saved)), percents));
 		end
-		GameTooltip:AddLine(string.format("Time lost: %ss", timeLost));
+		GameTooltip:AddLine(string.format(L["Time lost: %ss"], timeLost));
 		GameTooltip:Show();
 	end
 end
