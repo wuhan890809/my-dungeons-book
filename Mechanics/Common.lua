@@ -351,6 +351,7 @@ Track if specific npc appears in combat (and how many times this happens)
 function MyDungeonsBook:TrackUnitsAppearsInCombat(key, units, sourceUnitGUID, targetUnitGUID)
 	local sourceNpcId = self:GetNpcIdFromGuid(sourceUnitGUID);
 	local targetNpcId = self:GetNpcIdFromGuid(targetUnitGUID);
+	local id = self.db.char.activeChallengeId;
 	local neededNpcGUID, neededNpcId;
 	if (units[sourceNpcId]) then
 		neededNpcGUID = sourceUnitGUID;
