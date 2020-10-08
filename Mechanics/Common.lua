@@ -1,3 +1,12 @@
+--[[--
+@module MyDungeonsBook
+]]
+
+--[[--
+Mechanics
+@section Mechanics
+]]
+
 -- Some stuff for interrupts is taken from https://wago.io/SkjHi61Bz/18
 
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
@@ -23,12 +32,81 @@ local function getPetOwner(unitGUID, partyRoster)
 	return nil;
 end
 
---[[
-Track each player's death
 
-@method MyDungeonsBook:TrackDeath
-@param {GUID} deadUnitGUID - 8th result of `CombatLogGetCurrentEventInfo` call
-@param {string} unit - 9th result of `CombatLogGetCurrentEventInfo` call
+--[[--
+Add a table or counter (depends on `asCounter`) to the active challenge inside a `mechanics` (nested in 1 level).
+
+It doesn't do anything if value `mechanics[first]` already exists.
+
+@param[type=string|number] first key for the new value inside `mechanics`
+@param[type=bool] asCounter truly for new value `0`, falsy for `{}`
+]]
+function MyDungeonsBook:InitMechanics1Lvl(first, asCounter)
+	local id = self.db.char.activeChallengeId;
+	if (not self.db.char.challenges[id].mechanics[first]) then
+		self.db.char.challenges[id].mechanics[first] = (asCounter and 0) or {};
+	end
+end
+
+--[[--
+Add a table or counter (depends on `asCounter`) to the active challenge inside a `mechanics` (nested in 2 levels).
+
+It doesn't do anything if value `mechanics[first][second]` already exists.
+
+@param[type=string|number] first key for the new table inside `mechanics`
+@param[type=string|number] second key for the new value inside mechanics&lbrack;first&rbrack;
+@param[type=bool] asCounter truly for new value `0`, falsy for `{}`
+]]
+function MyDungeonsBook:InitMechanics2Lvl(first, second, asCounter)
+	local id = self.db.char.activeChallengeId;
+	self:InitMechanics1Lvl(first, false);
+	if (not self.db.char.challenges[id].mechanics[first][second]) then
+		self.db.char.challenges[id].mechanics[first][second] = (asCounter and 0) or {};
+	end
+end
+
+--[[--
+Add a table or counter (depends on `asCounter`) to the active challenge inside a `mechanics` (nested in 3 levels).
+
+It doesn't do anything if value `mechanics[first][second][third]` already exists.
+
+@param[type=string|number] first key for the new table inside `mechanics`
+@param[type=string|number] second key for the new table inside mechanics&lbrack;first&rbrack;
+@param[type=string|number] third key for the new value inside mechanics&lbrack;first&rbrack;&lbrack;second&rbrack;
+@param[type=bool] asCounter truly for new value `0`, falsy for `{}`
+]]
+function MyDungeonsBook:InitMechanics3Lvl(first, second, third, asCounter)
+	local id = self.db.char.activeChallengeId;
+	self:InitMechanics2Lvl(first, second, false);
+	if (not self.db.char.challenges[id].mechanics[first][second][third]) then
+		self.db.char.challenges[id].mechanics[first][second][third] = (asCounter and 0) or {};
+	end
+end
+
+--[[--
+Add a table or counter (depends on `asCounter`) to the active challenge inside a `mechanics` (nested in 4 levels).
+
+It doesn't do anything if value `mechanics[first][second][third][fourth]` already exists.
+
+@param[type=string|number] first key for the new table inside `mechanics`
+@param[type=string|number] second key for the new table inside mechanics&lbrack;first&rbrack;
+@param[type=string|number] third key for the new table inside mechanics&lbrack;first&rbrack;&lbrack;second&rbrack;
+@param[type=string|number] fourth key for the new value inside mechanics&lbrack;first&rbrack;&lbrack;second&rbrack&lbrack;third&rbrack;
+@param[type=bool] asCounter truly for new value `0`, falsy for `{}`
+]]
+function MyDungeonsBook:InitMechanics4Lvl(first, second, third, fourth, asCounter)
+	local id = self.db.char.activeChallengeId;
+	self:InitMechanics3Lvl(first, second, third, false);
+	if (not self.db.char.challenges[id].mechanics[first][second][third][fourth]) then
+		self.db.char.challenges[id].mechanics[first][second][third][fourth] = (asCounter and 0) or {};
+	end
+end
+
+--[[--
+Track each player's death.
+
+@param[type=GUID] deadUnitGUID 8th result of `CombatLogGetCurrentEventInfo` call
+@param[type=string] unit 9th result of `CombatLogGetCurrentEventInfo` call
 ]]
 function MyDungeonsBook:TrackDeath(deadUnitGUID, unit)
 	local id = self.db.char.activeChallengeId;
@@ -59,14 +137,13 @@ function MyDungeonsBook:TrackDeath(deadUnitGUID, unit)
 	self:LogPrint(string.format(L["%s died"], self:ClassColorText(unit, unit)));
 end
 
---[[
-Track interrupts by players
+--[[--
+Track interrupts by players.
 
-@method MyDungeonsBook:TrackInterrupt
-@param {string} unit - 5th result of `CombatLogGetCurrentEventInfo` call
-@param {string} srcGUID - 4th result of `CombatLogGetCurrentEventInfo` call
-@param {number} spellId - 12th result of `CombatLogGetCurrentEventInfo` call
-@param {number} interruptedSpellId - 15th result of `CombatLogGetCurrentEventInfo` call
+@param[type=string] unit 5th result of `CombatLogGetCurrentEventInfo` call
+@param[type=string] srcGUID 4th result of `CombatLogGetCurrentEventInfo` call
+@param[type=number] spellId 12th result of `CombatLogGetCurrentEventInfo` call
+@param[type=number] interruptedSpellId 15th result of `CombatLogGetCurrentEventInfo` call
 ]]
 function MyDungeonsBook:TrackInterrupt(unit, srcGUID, spellId, interruptedSpellId)
 	local id = self.db.char.activeChallengeId;
@@ -88,14 +165,14 @@ function MyDungeonsBook:TrackInterrupt(unit, srcGUID, spellId, interruptedSpellI
 	self.db.char.challenges[id].mechanics[KEY][unit][spellId][interruptedSpellId] = self.db.char.challenges[id].mechanics[KEY][unit][spellId][interruptedSpellId] + 1;
 end
 
---[[
-Track casts that should interrupt enemies
-This mechanic is used together with `COMMON-INTERRUPTS` to get number of failed "interrrupt"-casts (e.g. when 2+ party member tried to interrupt the same cast together)
+--[[--
+Track casts that should interrupt enemies.
 
-@method MyDungeonsBook:TrackTryInterrupt
-@param {number} spellId 12th param for SPELL_CAST_SUCCESS
-@param {string} sourceGUID 4th param for SPELL_CAST_SUCCESS
-@param {string} sourceName 5th param for SPELL_CAST_SUCCESS
+This mechanic is used together with `COMMON-INTERRUPTS` to get number of failed "interrrupt"-casts (e.g. when 2+ party member tried to interrupt the same cast together).
+
+@param[type=number] spellId 12th param for `SPELL_CAST_SUCCESS`
+@param[type=string] sourceGUID 4th param for `SPELL_CAST_SUCCESS`
+@param[type=string] sourceName 5th param for `SPELL_CAST_SUCCESS`
 ]]
 function MyDungeonsBook:TrackTryInterrupt(spellId, sourceGUID, sourceName)
 	local interrupts = {
@@ -118,6 +195,8 @@ function MyDungeonsBook:TrackTryInterrupt(spellId, sourceGUID, sourceName)
 		[31935] = true,  --Avenger's Shield
 		[15487] = true,  --Silence
 		[93985] = true,  --Skull Bash 
+		[97547] = true,  --Solar Beam
+		[91807] = true,  --Shambling Rush
 	};
 	if (not interrupts[spellId]) then
 		return;
@@ -137,17 +216,17 @@ function MyDungeonsBook:TrackTryInterrupt(spellId, sourceGUID, sourceName)
 	self.db.char.challenges[id].mechanics[KEY][sourceName][spellId] = self.db.char.challenges[id].mechanics[KEY][sourceName][spellId] + 1;
 end
 
---[[
-Track gotten by players damage that could be avoided
-Check events not related to `SPELL_AURA_APPLIED` and `SPELL_AURA_APPLIED_DOSE` (they are tracked in the method `MyDungeonsBook:TrackAvoidableAuras`)
+--[[--
+Track gotten by players damage that could be avoided.
 
-@method MyDungeonsBook:TrackAvoidableSpells
-@param {string} key - db key to save damage done by `spells` or `spellsNoTank`
-@param {table} spells - table with keys equal to tracked spell ids
-@param {table} spellsNoTank - table with keys equal to tracked spell ids allowed to hit tanks
-@param {string} unit - unit name that got damage (usualy it's a destUnit from `CombatLogGetCurrentEventInfo`)
-@param {number} spellId - spell that did damage to `damagedUnit`
-@param {number} amount - amount of damage done to `damagedUnit` by `spellId`
+Check events not related to `SPELL_AURA_APPLIED` and `SPELL_AURA_APPLIED_DOSE` (they are tracked in the method `MyDungeonsBook:TrackAvoidableAuras`).
+
+@param[type=string] key db key to save damage done by `spells` or `spellsNoTank`
+@param[type=table] spells table with keys equal to tracked spell ids
+@param[type=table] spellsNoTank table with keys equal to tracked spell ids allowed to hit tanks
+@param[type=string] unit unit name that got damage (usualy it's a destUnit from `CombatLogGetCurrentEventInfo`)
+@param[type=number] spellId spell that did damage to `damagedUnit`
+@param[type=number] amount amount of damage done to `damagedUnit` by `spellId`
 ]]
 function MyDungeonsBook:TrackAvoidableSpells(key, spells, spellsNoTank, unit, spellId, amount)
 	if ((spells[spellId] or (spellsNoTank[spellId] and UnitGroupRolesAssigned(unit) ~= "TANK")) and UnitIsPlayer(unit)) then
@@ -175,16 +254,16 @@ function MyDungeonsBook:TrackAvoidableSpells(key, spells, spellsNoTank, unit, sp
 	end
 end
 
---[[
-Track gotten by players debuffs that could be avoided
-Check events `SPELL_AURA_APPLIED` and `SPELL_AURA_APPLIED_DOSE`
+--[[--
+Track gotten by players debuffs that could be avoided.
 
-@method MyDungeonsBook:TrackAvoidableAuras
-@param {string} key - db key to save debuffs done by `spells` or `spellsNoTank`
-@param {table} spells - table with keys equal to tracked spell ids
-@param {table} spellsNoTank - table with keys equal to tracked spell ids allowed to hit tanks
-@param {unitId} damagedUnit - unit name that got damage (usualy it's a destUnit from `CombatLogGetCurrentEventInfo`)
-@param {number} spellId - spell that apply debuff to `damagedUnit`
+Check events `SPELL_AURA_APPLIED` and `SPELL_AURA_APPLIED_DOSE`.
+
+@param[type=string] key db key to save debuffs done by `spells` or `spellsNoTank`
+@param[type=table] auras table with keys equal to tracked spell ids
+@param[type=table] aurasNoTank table with keys equal to tracked spell ids allowed to hit tanks
+@param[type=unitId] unit unit name that got damage (usualy it's a destUnit from `CombatLogGetCurrentEventInfo`)
+@param[type=number] spellId spell that apply debuff to `damagedUnit`
 ]]
 function MyDungeonsBook:TrackAvoidableAuras(key, auras, aurasNoTank, unit, spellId)
 	if (auras[spellId] or (aurasNoTank[spellId] and UnitGroupRolesAssigned(unit) ~= "TANK")) and UnitIsPlayer(unit) then
@@ -195,16 +274,15 @@ function MyDungeonsBook:TrackAvoidableAuras(key, auras, aurasNoTank, unit, spell
 	end
 end
 
---[[
-Track passed casts that should be interrupted by players
+--[[--
+Track passed casts that should be interrupted by players.
 
-This mechanic is a subset of one from `TrackAllEnemyPassedCasts`
+This mechanic is a subset of one from `TrackAllEnemyPassedCasts`.
 
-@method MyDungeonsBook:TrackPassedCasts
-@param {string} key - db key
-@param {table} spells - table with keys equal to tracked spell ids
-@param {string} unitName - caster
-@param {number} spellId - casted spell id
+@param[type=string] key db key
+@param[type=table] spells table with keys equal to tracked spell ids
+@param[type=string] unitName caster
+@param[type=number] spellId casted spell id
 ]]
 function MyDungeonsBook:TrackPassedCasts(key, spells, unitName, spellId)
 	if (spells[spellId]) then
@@ -215,13 +293,12 @@ function MyDungeonsBook:TrackPassedCasts(key, spells, unitName, spellId)
 	end
 end
 
---[[
-Track all passed casts done by enemies
+--[[--
+Track all passed casts done by enemies.
 
-@method MyDungeonsBook:TrackAllEnemiesPassedCasts
-@param {string} unitName - caster's name
-@param {GUID} unitGUID - caster's GUID
-@param {number} spellId - casted spell ID
+@param[type=string] unitName caster's name
+@param[type=GUID] unitGUID caster's GUID
+@param[type=number] spellId casted spell ID
 ]]
 function MyDungeonsBook:TrackAllEnemiesPassedCasts(unitName, unitGUID, spellId)
 	local isPlayer = strfind(unitGUID, "Player");
@@ -235,23 +312,22 @@ function MyDungeonsBook:TrackAllEnemiesPassedCasts(unitName, unitGUID, spellId)
 	self.db.char.challenges[id].mechanics[KEY][spellId] = self.db.char.challenges[id].mechanics[KEY][spellId] + 1;
 end
 
---[[
-Track damage done by party members (and pets) for specific unit
+--[[--
+Track damage done by party members (and pets) for specific unit.
 
-@method MyDungeonsBook:TrackDamageDoneToSpecificUnits
-@param {string} key - mechanic unique identifier
-@param {table} npcs - table with npcs needed to track (each key is a npc id)
-@param {string} sourceUnitName - name of unit that did damage
-@param {GUID} sourceUnitGUID - GUID of unit that did damage
-@param {number} spellId - spell id 
-@param {number} amount - amount of done damage
-@param {number} overkill - amount of extra damage
-@param {string} targetUnitName - name of unit that got damage
-@param {GUID} targetUnitGUID - GUID of unit that got damage
+@param[type=string] key mechanic unique identifier
+@param[type=table] npcs table with npcs needed to track (each key is a npc id)
+@param[type=string] sourceUnitName name of unit that did damage
+@param[type=GUID] sourceUnitGUID GUID of unit that did damage
+@param[type=number] spellId spell id 
+@param[type=number] amount amount of done damage
+@param[type=number] overkill amount of extra damage
+@param[type=string] targetUnitName name of unit that got damage
+@param[type=GUID] targetUnitGUID GUID of unit that got damage
 ]]
-function MyDungeonsBook:TrackDamageDoneToSpecificUnits(key, npcs, sourceName, sourceGUID, spellId, amount, overkill, targetUnitName, targetUnitGUID)
+function MyDungeonsBook:TrackDamageDoneToSpecificUnits(key, npcs, sourceUnitName, sourceUnitGUID, spellId, amount, overkill, targetUnitName, targetUnitGUID)
 	local id = self.db.char.activeChallengeId;
-	local type = strsplit("-", sourceGUID);
+	local type = strsplit("-", sourceUnitGUID);
 	if ((type ~= "Pet") and (type ~= "Player")) then
 		return;
 	end
@@ -260,39 +336,39 @@ function MyDungeonsBook:TrackDamageDoneToSpecificUnits(key, npcs, sourceName, so
 		return;
 	end
     if (type == "Pet") then
-		local petOwnerId = getPetOwner(sourceGUID, self:GetPartyRoster());
+		local petOwnerId = getPetOwner(sourceUnitGUID, self:GetPartyRoster());
 		if (petOwnerId) then
-			sourceName = string.format("%s (%s)", UnitName(petOwnerId), sourceName);
+			sourceUnitName = string.format("%s (%s)", UnitName(petOwnerId), sourceUnitName);
 		end
     end
-	self:InitMechanics4Lvl(key, npcId, sourceName, spellId);
-	if (not self.db.char.challenges[id].mechanics[key][npcId][sourceName][spellId].hits) then
-		self.db.char.challenges[id].mechanics[key][npcId][sourceName][spellId] = {
+	self:InitMechanics4Lvl(key, npcId, sourceUnitName, spellId);
+	if (not self.db.char.challenges[id].mechanics[key][npcId][sourceUnitName][spellId].hits) then
+		self.db.char.challenges[id].mechanics[key][npcId][sourceUnitName][spellId] = {
 			hits = 0,
 			amount = 0,
 			overkill = 0
 		};
 	end
-	self.db.char.challenges[id].mechanics[key][npcId][sourceName][spellId].hits = self.db.char.challenges[id].mechanics[key][npcId][sourceName][spellId].hits + 1;
+	self.db.char.challenges[id].mechanics[key][npcId][sourceUnitName][spellId].hits = self.db.char.challenges[id].mechanics[key][npcId][sourceUnitName][spellId].hits + 1;
 	if (amount) then
-		self.db.char.challenges[id].mechanics[key][npcId][sourceName][spellId].amount = self.db.char.challenges[id].mechanics[key][npcId][sourceName][spellId].amount + amount;
+		self.db.char.challenges[id].mechanics[key][npcId][sourceUnitName][spellId].amount = self.db.char.challenges[id].mechanics[key][npcId][sourceUnitName][spellId].amount + amount;
 	else
 		self:DebugPrint(string.format("Cast of %s did `nil` amount of damage", GetSpellLink(spellId)));
 	end
 	if (overkill and overkill > 0) then
-		self.db.char.challenges[id].mechanics[key][npcId][sourceName][spellId].overkill = self.db.char.challenges[id].mechanics[key][npcId][sourceName][spellId].overkill + overkill;
+		self.db.char.challenges[id].mechanics[key][npcId][sourceUnitName][spellId].overkill = self.db.char.challenges[id].mechanics[key][npcId][sourceUnitName][spellId].overkill + overkill;
 	end
 end
 
---[[
+--[[--
 Track specific cast done by any party member.
-It should not be used for player's own spells. It should be used for some specific for dungeon spells (e.g. kicking balls in the ML)
 
-@method MyDungeonsBook:TrackSpecificCastDoneByPartyMembers
-@param {string} key - mechanic unique identifier
-@param {table} spells - table with spells needed to track (each key is a spell id)
-@param {string} unit - name of unit that casted a spell
-@param {number} spellId - casted spell id
+It should not be used for player's own spells. It should be used for some specific for dungeon spells (e.g. kicking balls in the ML).
+
+@param[type=string] key mechanic unique identifier
+@param[type=table] spells table with spells needed to track (each key is a spell id)
+@param[type=string] unit name of unit that casted a spell
+@param[type=number] spellId casted spell id
 ]]
 function MyDungeonsBook:TrackSpecificCastDoneByPartyMembers(key, spells, unit, spellId)
 	if (spells[spellId] and UnitIsPlayer(unit)) then
@@ -302,14 +378,13 @@ function MyDungeonsBook:TrackSpecificCastDoneByPartyMembers(key, spells, unit, s
 	end
 end
 
---[[
-Track specific buffs or debuffs got by any party member
+--[[--
+Track specific buffs or debuffs got by any party member.
 
-@method MyDungeonsBook:TrackSpecificBuffOrDebuffOnPartyMembers
-@param {string} key - mechanic unique identifier
-@param {table} spells - table with buffs (or debuffs) needed to track (each key is a spell id)
-@param {string} unit - name of unit that casted a spell
-@param {number} spellId - buff (or debuff) id
+@param[type=string] key mechanic unique identifier
+@param[type=table] spells table with buffs (or debuffs) needed to track (each key is a spell id)
+@param[type=string] unit name of unit that casted a spell
+@param[type=number] spellId buff (or debuff) id
 ]]
 function MyDungeonsBook:TrackSpecificBuffOrDebuffOnPartyMembers(key, spells, unit, spellId)
 	if (spells[spellId] and UnitIsPlayer(unit)) then
@@ -319,14 +394,13 @@ function MyDungeonsBook:TrackSpecificBuffOrDebuffOnPartyMembers(key, spells, uni
 	end
 end
 
---[[
-Track specific buffs or debuffs got by any unit
+--[[--
+Track specific buffs or debuffs got by any unit.
 
-@method MyDungeonsBook:TrackSpecificBuffOrDebuffOnUnit
-@param {string} key - mechanic unique identifier
-@param {table} spells - table with needed to track buffs and debuffs (each key is npc id)
-@param {GUID} unitGUID - GUID for unit with buff/debuff
-@param {number} spellId - buff (or debuff) id
+@param[type=string] key mechanic unique identifier
+@param[type=table] spells table with needed to track buffs and debuffs (each key is npc id)
+@param[type=GUID] unitGUID GUID for unit with buff/debuff
+@param[type=number] spellId buff (or debuff) id
 ]]
 function MyDungeonsBook:TrackSpecificBuffOrDebuffOnUnit(key, spells, unitGUID, spellId)
 	if (spells[spellId]) then
@@ -339,14 +413,13 @@ function MyDungeonsBook:TrackSpecificBuffOrDebuffOnUnit(key, spells, unitGUID, s
 	end
 end
 
---[[
-Track if specific npc appears in combat (and how many times this happens)
+--[[--
+Track if specific npc appears in combat (and how many times this happens).
 
-@method MyDungeonsBook:TrackUnitsAppearsInCombat
-@param {string} key - mechanic unique identifier
-@param {table} units - table with needed to track npcs (each key is npc id)
-@param {GUID} sourceUnitGUID - GUID of source unit
-@param {GUID} targetUnitGUID - GUID of target unit
+@param[type=string] key - mechanic unique identifier
+@param[type=table] units - table with needed to track npcs (each key is npc id)
+@param[type=GUID] sourceUnitGUID - GUID of source unit
+@param[type=GUID] targetUnitGUID - GUID of target unit
 ]]
 function MyDungeonsBook:TrackUnitsAppearsInCombat(key, units, sourceUnitGUID, targetUnitGUID)
 	local sourceNpcId = self:GetNpcIdFromGuid(sourceUnitGUID);

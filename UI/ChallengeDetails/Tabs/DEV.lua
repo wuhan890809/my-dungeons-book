@@ -1,14 +1,21 @@
+--[[--
+@module MyDungeonsBook
+]]
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
---[[
-Create a frame for DEV tab
-
-@method MyDungeonsBook:CreateDevFrame
-@param {table} frame
-@return {table} devWrapper
+--[[--
+UI
+@section UI
 ]]
-function MyDungeonsBook:CreateDevFrame(frame)
-	local devWrapper = CreateFrame("Frame", nil, frame);
+
+--[[--
+Creates a frame for DEV tab.
+
+@param[type=Frame] parentFrame
+@return[type=Frame] devWrapper
+]]
+function MyDungeonsBook:DevFrame_Create(parentFrame)
+	local devWrapper = CreateFrame("Frame", nil, parentFrame);
 	devWrapper:SetWidth(900);
 	devWrapper:SetHeight(490);
 	devWrapper:SetPoint("TOPRIGHT", -5, -110);
@@ -21,7 +28,12 @@ function MyDungeonsBook:CreateDevFrame(frame)
 	return devWrapper; 
 end
 
-function MyDungeonsBook:UpdateDevFrame(challengeId)
+--[[--
+Update DEV-tab for challenge with id `challengeId`.
+
+@param[type=number] challengeId
+]]
+function MyDungeonsBook:DevFrame_Update(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
 		self.challengeDetailsFrame.devFrame.textarea:SetText(self:Table2Json(challenge));

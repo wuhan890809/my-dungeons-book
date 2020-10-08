@@ -1,9 +1,18 @@
+--[[--
+@module MyDungeonsBook
+]]
+
+--[[--
+Event Handlers
+@section EventHandlers
+]]
+
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
---[[
-Check combat events while player is in challenge
+--[[--
+Check combat events while player is in challenge.
 
-@event COMBAT_LOG_EVENT_UNFILTERED
+It's triggered only when challenge is active.
 ]]
 function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 	if (self.db.char.activeChallengeId) then
@@ -53,16 +62,17 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 end
 
---[[
-Save info about started challenge to the db:
- * key level
- * affixes
- * time
- * zone name and its id
- * map id
- * team roster - name, race, class, spec, realm, items
+--[[--
+Save info about started challenge to the db.
 
-@event CHALLENGE_MODE_START
+Next fields are saved:
+
+* key level
+* affixes
+* time
+* zone name and its id
+* map id
+* team roster - name, race, class, spec, realm, items
 ]]
 function MyDungeonsBook:CHALLENGE_MODE_START()
 	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
@@ -98,7 +108,7 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 
 	self:DebugPrint(string.format("affixesKey is %s", affixesKey));
 
-	self.db.char.challenges[id].players.player = self:ParseUnitInfo("player");
+	self.db.char.challenges[id].players.player = self:ParseUnitInfoWithWowApi("player");
 	for i = 1, 4 do
 		self:ScheduleTimer(function()
 			NotifyInspect("party" .. i);
@@ -129,15 +139,13 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 		healthMod = healthMod
 	};
 	if (self.challengesTable) then
-		self.challengesTable:SetData(self:GetChallengesTableData());
+		self.challengesTable:SetData(self:ChallengesFrame_GetDataForTable());
 	end
 	self:LogPrint(string.format(L["%s +%s is started"], zoneName, cmLevel));
 end
 
---[[
-Mark active challenge as completed
-
-@event CHALLENGE_MODE_RESET
+--[[--
+Mark active challenge as completed.
 ]]
 function MyDungeonsBook:CHALLENGE_MODE_RESET()
 	self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
@@ -149,15 +157,15 @@ function MyDungeonsBook:CHALLENGE_MODE_RESET()
 	self.db.char.activeChallengeId = nil;
 end
 
---[[
-Mark active challenge as completed and store additional info about it:
+--[[--
+Mark active challenge as completed and store additional info about it.
+
+Next information is saved:
 
 * Info from Details addon
 * time lost by deaths
 * key level upgrade
 * challenge duration
-
-@event CHALLENGE_MODE_COMPLETED
 ]]
 function MyDungeonsBook:CHALLENGE_MODE_COMPLETED()
 	self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
@@ -174,16 +182,14 @@ function MyDungeonsBook:CHALLENGE_MODE_COMPLETED()
 		self.db.char.challenges[id].details = self:ParseInfoFromDetailsAddon();
 		self:LogPrint(string.format(L["%s +%s is completed"], self.db.char.challenges[id].challengeInfo.zoneName, self.db.char.challenges[id].challengeInfo.cmLevel));
 		if (self.challengesTable) then
-			self.challengesTable:SetData(self:GetChallengesTableData());
+			self.challengesTable:SetData(self:ChallengesFrame_GetDataForTable());
 		end
 	end
 	self.db.char.activeChallengeId = nil;
 end
 
---[[
-Reset `activeChallengeId` on load if player is not in challenge
-
-@event PLAYER_ENTERING_WORLD
+--[[--
+Reset `activeChallengeId` if player is not in challenge.
 ]]
 function MyDungeonsBook:PLAYER_ENTERING_WORLD()
 	if (not self:IsInChallengeMode()) then
@@ -191,13 +197,13 @@ function MyDungeonsBook:PLAYER_ENTERING_WORLD()
 	end
 end
 
---[[
-Parse info about party member if it'ready
+--[[--
+Parse info about party member if it'ready.
+
 Its request is sent in the `MyDungeonsBook:CHALLENGE_MODE_START`
 
-@event INSPECT_READY
-@param {string} _ - "INSPECT_READY"
-@param {GUID} guid of needed unit
+@param[type=string] _ "INSPECT_READY"
+@param[type=GUID] guid
 ]]
 function MyDungeonsBook:INSPECT_READY(_, guid)
 	local id = self.db.char.activeChallengeId;
@@ -209,32 +215,31 @@ function MyDungeonsBook:INSPECT_READY(_, guid)
 		self:DebugPrint(string.format("Unit with guid %s not found", guid));
 		return;
 	end
-	local unitInfo = self:ParseUnitInfo(unit);
+	local unitInfo = self:ParseUnitInfoWithWowApi(unit);
 	self.db.char.challenges[id].players[unit] = unitInfo;
 	self:DebugPrint(string.format("Info about %s is stored", unit));
 	ClearInspectPlayer(guid);
 end
 
---[[
-Get info for each encounter when it's started
+--[[--
+Get info for each encounter when it's started.
 
 Encounters have unique IDs, however encounters can be ended not successfully (e.g. boss is not killed and team is dead) and can be restarted.
 So, only last try will be saved (typically it should be successful try).
 
 Each encounter has next fields:
 
-* id - encounter id
-* name - encounter name (usually, name of the boss)
-* startTime - timestamp, when encounter is started
-* deathCountOnStart - number of deaths when encounter starts
-* endTime - timestamp, when encounter is ended (it's set in the `MyDungeonsBook:ENCOUNTER_END`)
-* deathCountOnEnd - number of deaths when encounter ends (it's set in the `MyDungeonsBook:ENCOUNTER_END`)
-* success - was encounter passed or not (it's set in the `MyDungeonsBook:ENCOUNTER_END`)
+* `id` - encounter id
+* `name` - encounter name (usually, name of the boss)
+* `startTime` - timestamp, when encounter is started
+* `deathCountOnStart` - number of deaths when encounter starts
+* `endTime` - timestamp, when encounter is ended (it's set in the `MyDungeonsBook:ENCOUNTER_END`)
+* `deathCountOnEnd` - number of deaths when encounter ends (it's set in the `MyDungeonsBook:ENCOUNTER_END`)
+* `success` - was encounter passed or not (it's set in the `MyDungeonsBook:ENCOUNTER_END`)
 
-@method MyDungeonsBook:ENCOUNTER_START
-@param {string} _ - "ENCOUNTER_START"
-@param {number} encounterId
-@param {string} encounterName
+@param[type=string] _ 
+@param[type=number] encounterId
+@param[type=string] encounterName
 ]]
 function MyDungeonsBook:ENCOUNTER_START(_, encounterId, encounterName, ...)
 	local id = self.db.char.activeChallengeId;
@@ -253,16 +258,15 @@ function MyDungeonsBook:ENCOUNTER_START(_, encounterId, encounterName, ...)
 	self:DebugPrint("ENCOUNTER_START", encounterId, encounterName);
 end
 
---[[
-Get additional info (endTime, deathCountOnEnd, success) about each encounter when it's ended
+--[[--
+Get additional info (`endTime`, `deathCountOnEnd`, `success`) about each encounter when it's ended.
 
-@method MyDungeonsBook:ENCOUNTER_END
-@param {string} _ - "ENCOUNTER_END"
-@param {number} encounterId
-@param {string} encounterName
-@param {number} difficultyId
-@param {number} groupSize
-@param {bool?} success
+@param[type=string] _ "ENCOUNTER_END"
+@param[type=number] encounterId
+@param[type=string] encounterName
+@param[type=number] difficultyId
+@param[type=number] groupSize
+@param[type=?bool] success
 ]]
 function MyDungeonsBook:ENCOUNTER_END(_, encounterId, encounterName, difficultyId, groupSize, success)
 	local id = self.db.char.activeChallengeId;

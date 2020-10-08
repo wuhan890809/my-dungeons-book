@@ -1,3 +1,12 @@
+--[[--
+@module MyDungeonsBook
+]]
+
+--[[--
+Utils
+@section Utils
+]]
+
 --[[
 From https://gist.github.com/tylerneylon/59f4bcf316be525b30ab
 ]]
@@ -146,23 +155,21 @@ function json.parse(str, pos, end_delim)
   end
 end
 
---[[
+--[[--
 Convert a table to the stringified JSON
 
-@method MyDungeonsBook:Table2Json
-@param {table} val
-@return {string}
+@param[type=table] val
+@return[type=string]
 ]]
 function MyDungeonsBook:Table2Json(val)
 	return json.stringify(val);
 end
 
---[[
+--[[--
 Convert a stringified JSON to table
 
-@method MyDungeonsBook:Table2Json
-@param {string} val
-@return {table}
+@param[type=string] val
+@return[type=table]
 ]]
 function MyDungeonsBook:Json2Table(val)
 	return json.parse(val);

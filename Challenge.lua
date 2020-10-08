@@ -1,44 +1,18 @@
+--[[--
+@module MyDungeonsBook
+]]
+
+--[[--
+Challenge
+@section Challenge
+]]
+
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
-local affixesMap = {
-	[1] = 463570, -- Overflowing
-	[2] = 135994, -- Skittish
-	[3] = 451169, -- Volcanic
-	[4] = 1029009, -- Necrotic
-	[5] = 136054, -- Teeming
-	[6] = 132345, -- Raging
-	[7] = 132333, -- Bolstering
-	[8] = 136124, -- Sanguine
-	[9] = 236401, -- Tyrannical
-	[10] = 463829, -- Fortified
-	[11] = 1035055, -- Bursting
-	[12] = 132090, -- Grievous
-	[13] = 2175503, -- Explosive
-	[14] = 136025, -- Quaking
-	[15] = 132739, -- Relentless
-	[16] = 2032223, -- Infested
-	[117] = 2446016, -- Reaping
-	[119] = 237565, -- Beguiling
-	[120] = 442737, -- Awakened
-};
+--[[--
+Check if player is in challenge mode.
 
---[[
-Get texture for affix's icon.
-It can be used in the strings like `"|T%%%:20:20:0:0:64:64:5:59:5:59|t"`, where %%% is a result if `MyDungeonsBook:GetAffixTextureById(affixId)`
-
-@method MyDungeonsBook:GetAffixTextureById
-@param {number} affixId - myth+ affix identifier
-@return {number} texture id for affix's icon
-]]
-function MyDungeonsBook:GetAffixTextureById(affixId)
-	return affixesMap[affixId];
-end
-
---[[
-Check if player is in challenge mode
-
-@method MyDungeonsBook:IsInChallengeMode
-@return {bool}
+@return[type=bool]
 ]]
 function MyDungeonsBook:IsInChallengeMode()
 	local _, _, difficulty, _, _, _, _, _ = GetInstanceInfo();
@@ -46,11 +20,10 @@ function MyDungeonsBook:IsInChallengeMode()
 	return C_ChallengeMode.IsChallengeModeActive() and difficulty == 8 and elapsedTime >= 0;
 end
 
---[[
+--[[--
 Create a skeleton for a new dungeon challenge
 
-@method MyDungeonsBook:InitNewDungeonChallenge
-@param {number} id - identifier for new dungeon challenge
+@param[type=number] id identifier for new dungeon challenge
 ]]
 function MyDungeonsBook:InitNewDungeonChallenge(id)
 	self.db.char.challenges[id] = {
@@ -80,13 +53,12 @@ function MyDungeonsBook:InitNewDungeonChallenge(id)
 	self:DebugPrint(string.format("New challenge is init with id %s", id));
 end
 
---[[
-Parse info about player or any other party member (`unit`)
+--[[--
+Parse info about player or any other party member (`unit`).
 
-@method MyDungeonsBook:ParseUnitInfo
-@param {unitId} unit
+@param[type=unitId] unit
 ]]
-function MyDungeonsBook:ParseUnitInfo(unit)
+function MyDungeonsBook:ParseUnitInfoWithWowApi(unit)
 	if (not UnitExists(unit)) then
 		return {};
 	end
@@ -117,68 +89,12 @@ function MyDungeonsBook:ParseUnitInfo(unit)
 	};
 end
 
---[[
-@method MyDungeonsBook:InitMechanics4Lvl
-@param {string|number} first
-@param {bool} asCounter
-]]
-function MyDungeonsBook:InitMechanics1Lvl(first, asCounter)
-	local id = self.db.char.activeChallengeId;
-	if (not self.db.char.challenges[id].mechanics[first]) then
-		self.db.char.challenges[id].mechanics[first] = (asCounter and 0) or {};
-	end
-end
+--[[--
+Parse info from Details addon about all party members DPS, HPS etc.
 
---[[
-@method MyDungeonsBook:InitMechanics4Lvl
-@param {string|number} first
-@param {string|number} second
-@param {bool} asCounter
-]]
-function MyDungeonsBook:InitMechanics2Lvl(first, second, asCounter)
-	local id = self.db.char.activeChallengeId;
-	self:InitMechanics1Lvl(first, false);
-	if (not self.db.char.challenges[id].mechanics[first][second]) then
-		self.db.char.challenges[id].mechanics[first][second] = (asCounter and 0) or {};
-	end
-end
+**It must be called only when whole party is together (and anyone didn't leave it).**
 
---[[
-@method MyDungeonsBook:InitMechanics4Lvl
-@param {string|number} first
-@param {string|number} second
-@param {string|number} third
-@param {bool} asCounter
-]]
-function MyDungeonsBook:InitMechanics3Lvl(first, second, third, asCounter)
-	local id = self.db.char.activeChallengeId;
-	self:InitMechanics2Lvl(first, second, false);
-	if (not self.db.char.challenges[id].mechanics[first][second][third]) then
-		self.db.char.challenges[id].mechanics[first][second][third] = (asCounter and 0) or {};
-	end
-end
-
---[[
-@method MyDungeonsBook:InitMechanics4Lvl
-@param {string|number} first
-@param {string|number} second
-@param {string|number} third
-@param {string|number} fourth
-@param {bool} asCounter
-]]
-function MyDungeonsBook:InitMechanics4Lvl(first, second, third, fourth, asCounter)
-	local id = self.db.char.activeChallengeId;
-	self:InitMechanics3Lvl(first, second, third, false);
-	if (not self.db.char.challenges[id].mechanics[first][second][third][fourth]) then
-		self.db.char.challenges[id].mechanics[first][second][third][fourth] = (asCounter and 0) or {};
-	end
-end
-
---[[
-Parse info from Details addon about party members DPS, HPS etc
-
-@method MyDungeonsBook:ParseInfoFromDetailsAddon
-@return {table} details
+@return[type=table] details for all party members
 ]]
 function MyDungeonsBook:ParseInfoFromDetailsAddon()
 	if(not IsAddOnLoaded("Details")) then
@@ -205,12 +121,13 @@ function MyDungeonsBook:ParseInfoFromDetailsAddon()
 	return details;
 end
 
---[[
-Get info from Details addon for a single player
+--[[--
+Get info from Details addon for a single party member.
 
-@method MyDungeonsBook:ParseUnitInfoFromDetailsAddon
-@param {string} detailsUnitName
-@return {table}
+It can be called in any time while you didn't reset Details.
+
+@param[type=string] detailsUnitName
+@return[type=table] details for single a party member
 ]]
 function MyDungeonsBook:ParseUnitInfoFromDetailsAddon(detailsUnitName)
 	details = {};

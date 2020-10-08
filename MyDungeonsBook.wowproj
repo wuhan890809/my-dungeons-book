@@ -11,6 +11,9 @@
     <OutputPath>.</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include=".gitignore">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="addon.lua">
       <SubType>Code</SubType>
     </Content>
@@ -20,11 +23,20 @@
     <Content Include="Chat.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="config.ld">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Core.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="db.t.lua">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Events.lua">
       <SubType>Code</SubType>
+    </Content>
+    <Content Include="ldoc\ldoc.css">
+      <SubType>Content</SubType>
     </Content>
     <Content Include="Mechanics\BfA\Common.lua">
       <SubType>Code</SubType>
@@ -49,6 +61,9 @@
     </Content>
     <Content Include="Options.lua">
       <SubType>Code</SubType>
+    </Content>
+    <Content Include="README.md">
+      <SubType>Content</SubType>
     </Content>
     <Content Include="UI\ChallengeDetails.lua">
       <SubType>Code</SubType>
@@ -116,6 +131,7 @@
     <Folder Include="Mechanics" />
     <Folder Include="Mechanics\BfA" />
     <Folder Include="Mechanics\SL" />
+    <Folder Include="ldoc" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs" />
     <Folder Include="Utils" />

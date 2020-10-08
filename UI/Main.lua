@@ -1,3 +1,12 @@
+--[[--
+@module MyDungeonsBook
+]]
+
+--[[--
+UI
+@section UI
+]]
+
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
 local WindowBackdrop = {
@@ -28,13 +37,12 @@ local CustomWindowBackdrop = {
 	}
 };
 
---[[
-Creates a main frame for addon
+--[[--
+Creates a main frame for addon.
 
-@method MyDungeonsBook:CreateMainFrame
-@return {table} frame
+@return[type=Frame] frame
 ]]
-function MyDungeonsBook:CreateMainFrame()
+function MyDungeonsBook:MainFrame_Create()
 	local frame = CreateFrame("Frame", "MyDungeonsBookFrame", UIParent);
 	frame:SetWidth(1500);
 	frame:SetHeight(650);
@@ -50,20 +58,20 @@ function MyDungeonsBook:CreateMainFrame()
 	return frame;
 end
 
---[[
-Creates a frame with title and block that allows to move main frame
-Needed event listeners are defined too
+--[[--
+Creates a frame with title and block that allows to move main frame.
 
-@method MyDungeonsBook:CreateCloseButton
-@param {table} frame - main window frame
-@return {table} closeButton
+Needed event listeners are defined too.
+
+@param[type=Frame] parentFrame main window frame
+@return[type=Button] closeButton
 ]]
-function MyDungeonsBook:CreateCloseButton(frame)
-	local closeButton = CreateFrame("Button", nil, frame, "UIPanelCloseButton");
+function MyDungeonsBook:MainFrame_CloseButton_Create(parentFrame)
+	local closeButton = CreateFrame("Button", nil, parentFrame, "UIPanelCloseButton");
 	closeButton:SetPoint("TOPRIGHT", 0, 0);
 	closeButton:SetFrameLevel(3);
 	closeButton:SetScript("OnClick", function()
-		frame:Hide();
+		parentFrame:Hide();
 		if (self.db.profile.performance.collectgarbage) then
 			collectgarbage("collect");
 		end
@@ -71,22 +79,22 @@ function MyDungeonsBook:CreateCloseButton(frame)
 	return closeButton;
 end
 
---[[
-Creates a frame with title and block that allows to move main frame
-Needed event listeners are defined too
+--[[--
+Creates a frame with title and block that allows to move main frame.
 
-@method MyDungeonsBook:CreateTitleBar
-@param {table} frame - main window frame
-@return {table} titleBar
+Needed event listeners are defined too.
+
+@param[type=Frame] parentFrame main window frame
+@return[type=Frame] titleBar
 ]]
-function MyDungeonsBook:CreateTitleBar(frame)
-	local titleBar = frame:CreateTexture(nil, "BACKGROUND");
+function MyDungeonsBook:MainFrame_TitleBar_Create(parentFrame)
+	local titleBar = parentFrame:CreateTexture(nil, "BACKGROUND");
 	titleBar:SetColorTexture(0.5, 0.5, 0.5);
 	titleBar:SetGradient("HORIZONTAL", 0.6, 0.6, 0.6, 0.3, 0.3, 0.3);
 	titleBar:SetPoint("TOPLEFT", 4, -4);
-	titleBar:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -4, -28);
+	titleBar:SetPoint("BOTTOMRIGHT", parentFrame, "TOPRIGHT", -4, -28);
 
-	local titleText = frame:CreateFontString(nil, "ARTWORK");
+	local titleText = parentFrame:CreateFontString(nil, "ARTWORK");
 	titleText:SetFontObject(GameFontNormal);
 	titleText:SetTextColor(0.6, 0.6, 0.6);
 	titleText:SetPoint("TOPLEFT", titleBar, "TOPLEFT", 5, 0);
@@ -97,44 +105,43 @@ function MyDungeonsBook:CreateTitleBar(frame)
 	titleText:SetJustifyH("LEFT");
 	titleText:SetJustifyV("MIDDLE");
 
-	local titleBarFrame = CreateFrame("Frame", nil, frame);
+	local titleBarFrame = CreateFrame("Frame", nil, parentFrame);
 	titleBarFrame:SetAllPoints(titleBar);
 	titleBarFrame:EnableMouse();
 	titleBarFrame:SetScript("OnMouseDown", function()
-		frame:StartMoving();
+		parentFrame:StartMoving();
 	end);
 	titleBarFrame:SetScript("OnMouseUp", function()
-		frame:StopMovingOrSizing();
-		self:SaveFrameRect(frame);
+		parentFrame:StopMovingOrSizing();
+		self:SaveFrameRect(parentFrame);
 	end);
 	return titleBar;
 end
 
---[[
+--[[--
 Create (if not exists) a main frame and show it for player
-
-@method MyDungeonsBook:Show
 ]]
-function MyDungeonsBook:Show()
+function MyDungeonsBook:MainFrame_Show()
 	if (not self.frame) then
-		local frame = self:CreateMainFrame();
-		local titleBar = self:CreateTitleBar(frame);
-		local close = self:CreateCloseButton(frame);
-		self.challengesTable = self:CreateChallengesTable(frame);
-		self.challengeDetailsFrame = self:CreateChallengeDetailsFrame(frame);
+		local frame = self:MainFrame_Create();
+		local titleBar = self:MainFrame_TitleBar_Create(frame);
+		local close = self:MainFrame_CloseButton_Create(frame);
+		self.challengesTable = self:ChallengesFrame_Create(frame);
+		self.challengeDetailsFrame = self:ChallengeDetailsFrame_Create(frame);
 		self.frame = frame;
 	end
 	self.frame:Show();
 end
 
---[[
-Save dimension and position of main frame after resizing or moving
+--[[--
+Save dimension and position of main frame after moving
 
-@method MyDungeonsBook:SaveFrameRect
+@local
+@param[type=Frame] mainFrame
 ]]
-function MyDungeonsBook:SaveFrameRect(frame)
+function MyDungeonsBook:SaveFrameRect(mainFrame)
 	local _, _, sw, sh = UIParent:GetRect();
-	local x, y, w, h = frame:GetRect();
+	local x, y, w, h = mainFrame:GetRect();
 	self.db.profile.display.x = x + w/2 - sw/2;
 	self.db.profile.display.y = y + h/2 - sh/2;
 	self.db.profile.display.w = w;

@@ -1,13 +1,21 @@
+--[[--
+@module MyDungeonsBook
+]]
+
+--[[--
+UI
+@section UI
+]]
+
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
---[[
-Create a frame with table containing challenges with current player
+--[[--
+Create a frame with table containing challenges with current char.
 
-@method MyDungeonsBook:CreateChallengesTable
-@param {table} frame - main window frame
-@return {table} table with challenges
+@param[type=Frame] parentFrame main window frame
+@return[type=Frame] table with challenges
 ]]
-function MyDungeonsBook:CreateChallengesTable(frame)
+function MyDungeonsBook:ChallengesFrame_Create(parentFrame)
 	local ScrollingTable = LibStub("ScrollingTable");
 	local cols = {
 		{
@@ -22,7 +30,7 @@ function MyDungeonsBook:CreateChallengesTable(frame)
 			align = "LEFT",
 			sort = "asc",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsDate(...);
+				self:Table_Cell_FormatAsDate(...);
 			end
 		},
 		{
@@ -35,7 +43,7 @@ function MyDungeonsBook:CreateChallengesTable(frame)
 			width = 50,
 			align = "LEFT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsTime(...);
+				self:Table_Cell_FormatAsTime(...);
 			end
 		},
 		{
@@ -68,46 +76,45 @@ function MyDungeonsBook:CreateChallengesTable(frame)
 			align = "LEFT"
 		}
 	};
-	local tableWrapper = CreateFrame("Frame", nil, frame);
+	local tableWrapper = CreateFrame("Frame", nil, parentFrame);
 	tableWrapper:SetWidth(500);
 	tableWrapper:SetHeight(650);
 	tableWrapper:SetPoint("TOPLEFT", 40, -25);
 	local table = ScrollingTable:CreateST(cols, 11, 50, nil, tableWrapper);
-	table:SetData(self:GetChallengesTableData());
+	table:SetData(self:ChallengesFrame_GetDataForTable());
 	table:SortData();
 	table:RegisterEvents({
 		OnClick = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, button, ...)
 			if (button == "LeftButton" and realrow) then
 				local challengeId = data[realrow].cols[1].value;
-				self:ShowChallengeDetails(challengeId);
+				self:ChallengeDetailsFrame_Show(challengeId);
 			end
 	    end,
 		OnEnter = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
 			if (realrow) then
-				self:ChallengesTable_RowHover(cellFrame, data[realrow].cols[1].value);
+				self:ChallengesFrame_RowHover(cellFrame, data[realrow].cols[1].value);
 			end
 	    end,
 		OnLeave = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
 			if (realrow) then
-				self:ChallengesTable_RowOut(cellFrame);
+				self:ChallengesFrame_RowOut(cellFrame);
 			end
 	    end
 	});
 	return table;
 end
 
---[[
-Mouse-hover handler for rows in the challenges table
+--[[--
+Mouse-hover handler for rows in the challenges table.
 
-@method MyDungeonsBook:ChallengesTable_RowHover
-@param {table} frame
-@param {number} challengeId
+@param[type=Frame] tableCellFrame
+@param[type=number] challengeId
 ]]
-function MyDungeonsBook:ChallengesTable_RowHover(frame, challengeId)
+function MyDungeonsBook:ChallengesFrame_RowHover(tableCellFrame, challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
-		GameTooltip:SetOwner(frame, "ANCHOR_NONE");
-		GameTooltip:SetPoint("BOTTOMLEFT", frame, "BOTTOMRIGHT");
+		GameTooltip:SetOwner(tableCellFrame, "ANCHOR_NONE");
+		GameTooltip:SetPoint("BOTTOMLEFT", tableCellFrame, "BOTTOMRIGHT");
 		local zoneName = challenge.challengeInfo.zoneName;
 		local cmLevel = challenge.challengeInfo.cmLevel;
 		local timeLost = challenge.challengeInfo.timeLost or 0;
@@ -134,22 +141,19 @@ function MyDungeonsBook:ChallengesTable_RowHover(frame, challengeId)
 	end
 end
 
---[[
-Mouse-out handler for rows in the challenges table
-
-@method MyDungeonsBook:ChallengesTable_RowOut
+--[[--
+Mouse-out handler for rows in the challenges table.
 ]]
-function MyDungeonsBook:ChallengesTable_RowOut()
+function MyDungeonsBook:ChallengesFrame_RowOut()
 	GameTooltip:Hide();
 end
 
---[[
-Map challenges info into the table rows
+--[[--
+Map challenges info into the table rows.
 
-@method MyDungeonsBook:GetTableData
-@return {table}
+@return[type=table]
 ]]
-function MyDungeonsBook:GetChallengesTableData()
+function MyDungeonsBook:ChallengesFrame_GetDataForTable()
 	local tableData = {};
 	for id, challenge in pairs(self.db.char.challenges) do
 		if (challenge and next(challenge) ~= nil) then

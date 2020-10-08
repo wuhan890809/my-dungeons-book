@@ -1,17 +1,26 @@
+--[[--
+@module MyDungeonsBook
+]]
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
---[[
-@method MyDungeonsBook:CreateEncountersFrame
-@param {table} frame
-@return {table}
+--[[--
+UI
+@section UI
 ]]
-function MyDungeonsBook:CreateEncountersFrame(frame)
+
+--[[--
+Creates a frame for Encounters tab
+
+@param[type=Frame] parentFrame
+@return[type=Frame]
+]]
+function MyDungeonsBook:EncountersFrame_Create(parentFrame)
 	local ScrollingTable = LibStub("ScrollingTable");
-	local encountersFrame = CreateFrame("Frame", nil, frame);
+	local encountersFrame = CreateFrame("Frame", nil, parentFrame);
 	encountersFrame:SetWidth(900);
 	encountersFrame:SetHeight(490);
 	encountersFrame:SetPoint("TOPRIGHT", -5, -110);
-	local cols = self:GetHeadersForEncountersTable();
+	local cols = self:EncountersFrame_GetHeadersForTable();
 	local tableWrapper = CreateFrame("Frame", nil, encountersFrame);
 	tableWrapper:SetWidth(660);
 	tableWrapper:SetHeight(270);
@@ -26,11 +35,12 @@ function MyDungeonsBook:CreateEncountersFrame(frame)
 	return encountersFrame;
 end
 
---[[
-@method MyDungeonsBook:GetHeadersForEncountersTable
-@return {table}
+--[[--
+Generate columns for Encounters table.
+
+@return[type=table]
 ]]
-function MyDungeonsBook:GetHeadersForEncountersTable()
+function MyDungeonsBook:EncountersFrame_GetHeadersForTable()
 	return {
 		{
 			name = L["ID"],
@@ -48,7 +58,7 @@ function MyDungeonsBook:GetHeadersForEncountersTable()
 			align = "LEFT",
 			sort = "dsc",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsTime(...);
+				self:Table_Cell_FormatAsTime(...);
 			end
 		},
 		{
@@ -56,7 +66,7 @@ function MyDungeonsBook:GetHeadersForEncountersTable()
 			width = 75,
 			align = "LEFT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsTime(...);
+				self:Table_Cell_FormatAsTime(...);
 			end
 		},
 		{
@@ -64,7 +74,7 @@ function MyDungeonsBook:GetHeadersForEncountersTable()
 			width = 75,
 			align = "LEFT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsTime(...);
+				self:Table_Cell_FormatAsTime(...);
 			end
 		},
 		{
@@ -85,14 +95,13 @@ function MyDungeonsBook:GetHeadersForEncountersTable()
 	}
 end
 
---[[
-Map data about Encounters for challenge with id `challengeId`
+--[[--
+Map data about Encounters for challenge with id `challengeId`.
 
-@method MyDungeonsBook:GetDataForEncountersTable
-@param {number} challengeId
-@return {table}
+@param[type=number] challengeId
+@return[type=table]
 ]]
-function MyDungeonsBook:GetDataForEncountersTable(challengeId)
+function MyDungeonsBook:EncountersFrame_GetDataForTable(challengeId)
 	local tableData = {};
 	if (not challengeId) then
 		return nil;
@@ -123,16 +132,15 @@ function MyDungeonsBook:GetDataForEncountersTable(challengeId)
 	return tableData;
 end
 
---[[
-Update Encounters-tab for challenge with id `challengeId`
+--[[--
+Update Encounters-tab for challenge with id `challengeId`.
 
-@method MyDungeonsBook:UpdateEncountersFrame
-@param {number} challengeId
+@param[type=number] challengeId
 ]]
-function MyDungeonsBook:UpdateEncountersFrame(challengeId)
+function MyDungeonsBook:EncountersFrame_Update(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
-		local encountersTableData = self:GetDataForEncountersTable(challengeId);
+		local encountersTableData = self:EncountersFrame_GetDataForTable(challengeId);
 		self.challengeDetailsFrame.encountersFrame.table:SetData(encountersTableData or {});
 	end
 end

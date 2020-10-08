@@ -1,3 +1,12 @@
+--[[--
+@module MyDungeonsBook
+]]
+
+--[[--
+Mechanics
+@section Mechanics
+]]
+
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
 --[[

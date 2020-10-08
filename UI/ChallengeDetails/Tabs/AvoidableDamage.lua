@@ -1,17 +1,25 @@
+--[[--
+@module MyDungeonsBook
+]]
+
+--[[--
+UI
+@section UI
+]]
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
---[[
-Create a frame for Avoidable Damage tab (data is taken from `mechanics[**-AVOIDABLE-SPELLS]`)
-Mouse hover/out handler are included
+--[[--
+Create a frame for Avoidable Damage tab (data is taken from `mechanics[**-AVOIDABLE-SPELLS]`).
 
-@method MyDungeonsBook:CreateAvoidableDamageFrame
-@param {table} frame
-@return {table} tableWrapper
+Mouse hover/out handler are included.
+
+@param[type=Frame] parentFrame
+@return[type=Frame] tableWrapper
 ]]
-function MyDungeonsBook:CreateAvoidableDamageFrame(frame)
+function MyDungeonsBook:AvoidableDamageFrame_Create(parentFrame)
 	local ScrollingTable = LibStub("ScrollingTable");
-	local cols = self:GetHeadersForAvoidableDamageTable();
-	local tableWrapper = CreateFrame("Frame", nil, frame);
+	local cols = self:AvoidableDamageFrame_GetHeadersForTable();
+	local tableWrapper = CreateFrame("Frame", nil, parentFrame);
 	tableWrapper:SetWidth(900);
 	tableWrapper:SetHeight(490);
 	tableWrapper:SetPoint("TOPRIGHT", -5, -110);
@@ -20,14 +28,14 @@ function MyDungeonsBook:CreateAvoidableDamageFrame(frame)
 		OnEnter = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
 			if (realrow) then
 				if (column == 2 or column == 3) then
-					self:AvoidableDamageTable_AvoidableSpellHover(cellFrame, data[realrow].cols[1].value);
+					self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[1].value);
 				end
 			end
 	    end,
 		OnLeave = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
 			if (realrow) then
 				if (column == 2 or column == 3) then
-					self:AvoidableDamageTable_AvoidableSpellOut(cellFrame);
+					self:Table_Cell_MouseOut();
 				end
 			end
 	    end
@@ -36,16 +44,15 @@ function MyDungeonsBook:CreateAvoidableDamageFrame(frame)
 	return tableWrapper;
 end
 
---[[
-Generate columns for avoidable damage table
+--[[--
+Generate columns for avoidable damage table.
 
-Depending on `challengeId` real player names will be used or simple placeholders like `player` or `party1..4`
+Depending on `challengeId` real player names will be used or simple placeholders like `player` or `party1..4`.
 
-@method MyDungeonsBook:GetHeadersForAvoidableDamageTable
-@param {number} challengeId
-@return {table}
+@param[type=number] challengeId
+@return[type=table]
 ]]
-function MyDungeonsBook:GetHeadersForAvoidableDamageTable(challengeId)
+function MyDungeonsBook:AvoidableDamageFrame_GetHeadersForTable(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	local player = "Player";
 	local party1 = "Party1";
@@ -71,7 +78,7 @@ function MyDungeonsBook:GetHeadersForAvoidableDamageTable(challengeId)
 			width = 40,
 			align = "LEFT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsSpellIcon(...);
+				self:Table_Cell_FormatAsSpellIcon(...);
 			end
 		},
 		{
@@ -79,7 +86,7 @@ function MyDungeonsBook:GetHeadersForAvoidableDamageTable(challengeId)
 			width = 135,
 			align = "LEFT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsSpellLink(...);
+				self:Table_Cell_FormatAsSpellLink(...);
 			end
 		},
 		{
@@ -92,7 +99,7 @@ function MyDungeonsBook:GetHeadersForAvoidableDamageTable(challengeId)
 			width = 70,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsNumber(...);
+				self:Table_Cell_FormatAsNumber(...);
 			end
 		},
 		{
@@ -105,7 +112,7 @@ function MyDungeonsBook:GetHeadersForAvoidableDamageTable(challengeId)
 			width = 70,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsNumber(...);
+				self:Table_Cell_FormatAsNumber(...);
 			end
 		},
 		{
@@ -118,7 +125,7 @@ function MyDungeonsBook:GetHeadersForAvoidableDamageTable(challengeId)
 			width = 70,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsNumber(...);
+				self:Table_Cell_FormatAsNumber(...);
 			end
 		},
 		{
@@ -131,7 +138,7 @@ function MyDungeonsBook:GetHeadersForAvoidableDamageTable(challengeId)
 			width = 70,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsNumber(...);
+				self:Table_Cell_FormatAsNumber(...);
 			end
 		},
 		{
@@ -144,7 +151,7 @@ function MyDungeonsBook:GetHeadersForAvoidableDamageTable(challengeId)
 			width = 70,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsNumber(...);
+				self:Table_Cell_FormatAsNumber(...);
 			end
 		},
 		{
@@ -170,47 +177,20 @@ function MyDungeonsBook:GetHeadersForAvoidableDamageTable(challengeId)
 				a = 0.4
 			},
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsNumber(...);
+				self:Table_Cell_FormatAsNumber(...);
 			end
 		}
 	};
 end
 
---[[
-Mouse-hover handler for avoidable damage table
-Shows a tooltip with spell name and description (from `GetSpellLink`)
+--[[--
+Map data about Avoidable Damage for challenge with id `challengeId`.
 
-@method MyDungeonsBook:AvoidableDamageTable_AvoidableSpellHover
-@param {table} frame
-@param {number} spellId
+@param[type=number] challengeId
+@param[type=string] key for mechanics table (it's different for `BFA` and `SL`)
+@return[type=table]
 ]]
-function MyDungeonsBook:AvoidableDamageTable_AvoidableSpellHover(frame, spellId)
-	if (spellId and spellId > 0) then
-		GameTooltip:SetOwner(frame, "ANCHOR_NONE");
-		GameTooltip:SetPoint("BOTTOMLEFT", frame, "BOTTOMRIGHT");
-		GameTooltip:SetSpellByID(spellId);
-		GameTooltip:Show();
-	end
-end
-
---[[
-Mouse-out handler for avoidable damage table
-
-@method MyDungeonsBook:AvoidableDamageTable_AvoidableSpellOut
-]]
-function MyDungeonsBook:AvoidableDamageTable_AvoidableSpellOut()
-	GameTooltip:Hide();
-end
-
---[[
-Map data about Avoidable Damage for challenge with id `challengeId`
-
-@method MyDungeonsBook:GetAvoidableDamageTableData
-@param {number} challengeId
-@param {key} string key for mechanics table (it's different for BFA and SL)
-@return {table}
-]]
-function MyDungeonsBook:GetAvoidableDamageTableData(challengeId, key)
+function MyDungeonsBook:AvoidableDamageFrame_GetDataForTable(challengeId, key)
 	local tableData = {};
 	if (not challengeId) then
 		return nil;
@@ -249,7 +229,7 @@ function MyDungeonsBook:GetAvoidableDamageTableData(challengeId, key)
 			self:DebugPrint(string.format("%s not found", name));
 		end
 	end
-	tinsert(tableData, self:GetSummaryRow(challengeId, key));
+	tinsert(tableData, self:AvoidableDamageFrame_GetSummaryRow(challengeId, key));
 	local remappedTableData = {};
 	for _, row in pairs(tableData) do
 		local r = {
@@ -287,15 +267,15 @@ function MyDungeonsBook:GetAvoidableDamageTableData(challengeId, key)
 	return remappedTableData;
 end
 
---[[
-Map sum of avoidable damage for each player
+--[[--
+Map sum of avoidable damage for each player.
 
-@method MyDungeonsBook:GetSummaryRow
-@param {number} challengeId
-@param {key} string key for mechanics table (it's different for BFA and SL)
-@return {table}
+@local
+@param[type=number] challengeId
+@param[type=string] key for mechanics table (it's different for `BFA` and `SL`)
+@return[type=table]
 ]]
-function MyDungeonsBook:GetSummaryRow(challengeId, key)
+function MyDungeonsBook:AvoidableDamageFrame_GetSummaryRow(challengeId, key)
 	local tableData = {
 		spellId = -1
 	};
@@ -325,18 +305,17 @@ function MyDungeonsBook:GetSummaryRow(challengeId, key)
 	return tableData;
 end
 
---[[
-Update Avoidable Damage-tab for challenge with id `challengeId`
+--[[--
+Update Avoidable Damage-tab for challenge with id `challengeId`.
 
-@method MyDungeonsBook:UpdateAvoidableDamageFrame
-@param {number} challengeId
+@param[type=number] challengeId
 ]]
-function MyDungeonsBook:UpdateAvoidableDamageFrame(challengeId)
+function MyDungeonsBook:AvoidableDamageFrame_Update(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
-		local avoidableDamageTableData = self:GetAvoidableDamageTableData(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-AVOIDABLE-SPELLS");
+		local avoidableDamageTableData = self:AvoidableDamageFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-AVOIDABLE-SPELLS");
 		self.challengeDetailsFrame.avoidableDamageFrame.table:SetData(avoidableDamageTableData);
-		self.challengeDetailsFrame.avoidableDamageFrame.table:SetDisplayCols(self:GetHeadersForAvoidableDamageTable(challengeId));
+		self.challengeDetailsFrame.avoidableDamageFrame.table:SetDisplayCols(self:AvoidableDamageFrame_GetHeadersForTable(challengeId));
 		self.challengeDetailsFrame.avoidableDamageFrame.table:SortData();
 	end
 end

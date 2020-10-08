@@ -1,17 +1,26 @@
+--[[--
+@module MyDungeonsBook
+]]
+
+--[[--
+UI
+@section UI
+]]
+
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
---[[
-Create a frame for Special Casts tab (data is taken from `mechanics[**-CASTS-DONE-BY-PARTY-MEMBERS]`)
-Mouse hover/out handler are included
+--[[--
+Create a frame for Special Casts tab (data is taken from `mechanics[**-CASTS-DONE-BY-PARTY-MEMBERS]`).
 
-@method MyDungeonsBook:CreateSpecialCastsFrame
-@param {table} frame
-@return {table} tableWrapper
+Mouse hover/out handler are included.
+
+@param[type=Frame] parentFrame
+@return[type=Frame] tableWrapper
 ]]
-function MyDungeonsBook:CreateSpecialCastsFrame(frame)
+function MyDungeonsBook:SpecialCastsFrame_Create(parentFrame)
 	local ScrollingTable = LibStub("ScrollingTable");
-	local cols = self:GetHeadersForSpecialCastsTable();
-	local tableWrapper = CreateFrame("Frame", nil, frame);
+	local cols = self:SpecialCastsFrame_GetHeadersForTable();
+	local tableWrapper = CreateFrame("Frame", nil, parentFrame);
 	tableWrapper:SetWidth(600);
 	tableWrapper:SetHeight(450);
 	tableWrapper:SetPoint("TOPLEFT", 10, -120);
@@ -20,14 +29,14 @@ function MyDungeonsBook:CreateSpecialCastsFrame(frame)
 		OnEnter = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
 			if (realrow) then
 				if (column == 2 or column == 3) then
-					self:SpecialCastsTable_SpellHover(cellFrame, data[realrow].cols[1].value);
+					self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[1].value);
 				end
 			end
 	    end,
 		OnLeave = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
 			if (realrow) then
 				if (column == 2 or column == 3) then
-					self:SpecialCastsTable_SpellOut(cellFrame);
+					self:Table_Cell_MouseOut();
 				end
 			end
 	    end
@@ -36,16 +45,15 @@ function MyDungeonsBook:CreateSpecialCastsFrame(frame)
 	return tableWrapper;
 end
 
---[[
-Generate columns for special casts table
+--[[--
+Generate columns for special casts table.
 
-Depending on `challengeId` real player names will be used or simple placeholders like `player` or `party1..4`
+Depending on `challengeId` real player names will be used or simple placeholders like `player` or `party1..4`.
 
-@method MyDungeonsBook:GetHeadersForSpecialCastsTable
-@param {number} challengeId
-@return {table}
+@param[type=number] challengeId
+@return[type=table]
 ]]
-function MyDungeonsBook:GetHeadersForSpecialCastsTable(challengeId)
+function MyDungeonsBook:SpecialCastsFrame_GetHeadersForTable(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	local player = "Player";
 	local party1 = "Party1";
@@ -71,7 +79,7 @@ function MyDungeonsBook:GetHeadersForSpecialCastsTable(challengeId)
 			width = 40,
 			align = "LEFT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsSpellIcon(...);
+				self:Table_Cell_FormatAsSpellIcon(...);
 			end
 		},
 		{
@@ -79,7 +87,7 @@ function MyDungeonsBook:GetHeadersForSpecialCastsTable(challengeId)
 			width = 135,
 			align = "LEFT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsSpellLink(...);
+				self:Table_Cell_FormatAsSpellLink(...);
 			end
 		},
 		{
@@ -122,41 +130,14 @@ function MyDungeonsBook:GetHeadersForSpecialCastsTable(challengeId)
 	};
 end
 
---[[
-Mouse-hover handler for special casts table
-Shows a tooltip with spell name and description (from `GetSpellLink`)
+--[[--
+Map data about Special Casts for challenge with id `challengeId`.
 
-@method MyDungeonsBook:SpecialCastsTable_SpellHover
-@param {table} frame
-@param {number} spellId
+@param[type=number] challengeId
+@param[type=string] key for mechanics table (it's different for `BFA` and `SL`)
+@return[type=table]
 ]]
-function MyDungeonsBook:SpecialCastsTable_SpellHover(frame, spellId)
-	if (spellId and spellId > 0) then
-		GameTooltip:SetOwner(frame, "ANCHOR_NONE");
-		GameTooltip:SetPoint("BOTTOMLEFT", frame, "BOTTOMRIGHT");
-		GameTooltip:SetSpellByID(spellId);
-		GameTooltip:Show();
-	end
-end
-
---[[
-Mouse-out handler for avoidable damage table
-
-@method MyDungeonsBook:SpecialCastsTable_SpellOut
-]]
-function MyDungeonsBook:SpecialCastsTable_SpellOut()
-	GameTooltip:Hide();
-end
-
---[[
-Map data about Special Casts for challenge with id `challengeId`
-
-@method MyDungeonsBook:GetSpecialCastsTableData
-@param {number} challengeId
-@param {key} string key for mechanics table (it's different for BFA and SL)
-@return {table}
-]]
-function MyDungeonsBook:GetSpecialCastsTableData(challengeId, key)
+function MyDungeonsBook:SpecialCastsFrame_GetDataForTable(challengeId, key)
 	local tableData = {};
 	if (not challengeId) then
 		return nil;
@@ -197,18 +178,17 @@ function MyDungeonsBook:GetSpecialCastsTableData(challengeId, key)
 	return tableData;
 end
 
---[[
-Update Special Casts-tab for challenge with id `challengeId`
+--[[--
+Update Special Casts-tab for challenge with id `challengeId`.
 
-@method MyDungeonsBook:UpdateSpecialCastsFrame
-@param {number} challengeId
+@param[type=number] challengeId
 ]]
-function MyDungeonsBook:UpdateSpecialCastsFrame(challengeId)
+function MyDungeonsBook:SpecialCastsFrame_Update(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
-		local specialCastsTableData = self:GetSpecialCastsTableData(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-CASTS-DONE-BY-PARTY-MEMBERS");
+		local specialCastsTableData = self:SpecialCastsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-CASTS-DONE-BY-PARTY-MEMBERS");
 		self.challengeDetailsFrame.mechanicsFrame.specialCastsFrame.table:SetData(specialCastsTableData);
-		self.challengeDetailsFrame.mechanicsFrame.specialCastsFrame.table:SetDisplayCols(self:GetHeadersForSpecialCastsTable(challengeId));
+		self.challengeDetailsFrame.mechanicsFrame.specialCastsFrame.table:SetDisplayCols(self:SpecialCastsFrame_GetHeadersForTable(challengeId));
 		self.challengeDetailsFrame.mechanicsFrame.specialCastsFrame.table:SortData();
 	end
 end

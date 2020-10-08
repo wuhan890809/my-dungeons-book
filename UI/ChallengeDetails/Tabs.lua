@@ -1,13 +1,21 @@
+--[[--
+@module MyDungeonsBook
+]]
+
+--[[--
+UI
+@section UI
+]]
+
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
---[[
-Create tabs (with click-handlers) for challenge details frame
+--[[--
+Creates tabs (with click-handlers) for ChallengeDetails frame.
 
-Created frame has a field `tabButtons` with tab-buttons. Keys in the `tabButtons` are equal to keys in the `challengeDetailsFrame.tabs`
+Created frame has a field `tabButtons` with tab-buttons. Keys in the `tabButtons` are equal to keys in the `challengeDetailsFrame.tabs`.
 
-@method MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame
-@param {table} parentFrame
-@return {table} tabsButtonsFrame
+@param[type=Frame] parentFrame
+@return[type=Frame] tabsButtonsFrame
 ]]
 function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 	local tabsButtonsFrame = CreateFrame("Frame", nil, parentFrame);
@@ -100,11 +108,12 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 	return tabsButtonsFrame;
 end
 
---[[
-Click-handler for tab-button in the challenge details frame
+--[[--
+Click-handler for tab-button in the ChallengeDetails frame.
 
-@method MyDungeonsBook:ChallengeDetailsFrame_ShowTab
-@param {string} tabId
+Show selected tab, mark it as active, mark other as inactive and hide them.
+
+@param[type=string] tabId
 ]]
 function MyDungeonsBook:ChallengeDetailsFrame_ShowTab(tabId)
 	for id, tabFrame in pairs(self.challengeDetailsFrame.tabs) do

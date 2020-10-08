@@ -1,3 +1,7 @@
+--[[--
+@module MyDungeonsBook
+]]
+
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
 MyDungeonsBook.OptionsDefaults = {
@@ -35,7 +39,7 @@ MyDungeonsBook.Options = {
 			args = {
 				debug = {
 					order = 1,
-					name = L["Show DEBUG messages"],
+					name = L["MainFrame_Show DEBUG messages"],
 					type = "toggle",
 					width = "full",
 					get = function()
@@ -47,7 +51,7 @@ MyDungeonsBook.Options = {
 				},
 				log = {
 					order = 2,
-					name = L["Show LOG messages"],
+					name = L["MainFrame_Show LOG messages"],
 					type = "toggle",
 					width = "full",
 					get = function()

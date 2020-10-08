@@ -1,42 +1,48 @@
+--[[--
+@module MyDungeonsBook
+]]
+
+--[[--
+UI
+@section UI
+]]
+
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
---[[
-Click-handler for challenges table
-Used on row click
+--[[--
+Click-handler for challenges table. Used on row click.
 
-@method MyDungeonsBook:ShowChallengeDetails
-@param {number} challengeId
+@param[type=number] challengeId
 ]]
-function MyDungeonsBook:ShowChallengeDetails(challengeId)
+function MyDungeonsBook:ChallengeDetailsFrame_Show(challengeId)
 	self:DebugPrint("Show details for challenge #" .. challengeId);
 	self.activeChallengeId = challengeId;
-	self:UpdateChallengeDetailsFrame(challengeId);
+	self:ChallengeDetailsFrame_Update(challengeId);
 	self.challengeDetailsFrame:Show();
 	self:ChallengeDetailsFrame_ShowTab("roster");
 end
 
---[[
-Create all frames related to the challenge details frames (with itself)
+--[[--
+Creates all frames related to the challenge details frames (with itself).
 
-@method MyDungeonsBook:CreateChallengeDetailsFrame
-@param {table} parentFrame
-@return {table} challengeDetailsFrame
+@param[type=Frame] parentFrame
+@return[type=Frame] challengeDetailsFrame
 ]]
-function MyDungeonsBook:CreateChallengeDetailsFrame(parentFrame)
+function MyDungeonsBook:ChallengeDetailsFrame_Create(parentFrame)
 	local challengeDetailsFrame = CreateFrame("Frame", nil, parentFrame);
 	challengeDetailsFrame:SetPoint("TOPRIGHT", -10, -30);
 	challengeDetailsFrame:SetWidth(900);
 	challengeDetailsFrame:SetHeight(650);
-	challengeDetailsFrame.titleFrame = self:ChallengeDetailsFrame_CreateTitleFrame(challengeDetailsFrame);
+	challengeDetailsFrame.titleFrame = self:ChallengeDetailsFrame_TitleFrame_Create(challengeDetailsFrame);
 	challengeDetailsFrame.tabButtonsFrame = self:ChallengeDetailsFrame_CreateTabButtonsFrame(challengeDetailsFrame);
-	challengeDetailsFrame.challengeRosterFrame = self:CreateChallengeRosterFrame(challengeDetailsFrame);
-	challengeDetailsFrame.avoidableDamageFrame = self:CreateAvoidableDamageFrame(challengeDetailsFrame);
-	challengeDetailsFrame.avoidableDebuffsFrame = self:CreateAvoidableDebuffsFrame(challengeDetailsFrame);
-	challengeDetailsFrame.detailsFrame = self:CreateDetailsFrame(challengeDetailsFrame);
-	challengeDetailsFrame.encountersFrame = self:CreateEncountersFrame(challengeDetailsFrame);
-	challengeDetailsFrame.interruptsFrame = self:CreateInterruptsFrame(challengeDetailsFrame);
-	challengeDetailsFrame.mechanicsFrame = self:CreateMechanicsFrame(challengeDetailsFrame);
-	challengeDetailsFrame.devFrame = self:CreateDevFrame(challengeDetailsFrame);
+	challengeDetailsFrame.challengeRosterFrame = self:RosterFrame_Create(challengeDetailsFrame);
+	challengeDetailsFrame.avoidableDamageFrame = self:AvoidableDamageFrame_Create(challengeDetailsFrame);
+	challengeDetailsFrame.avoidableDebuffsFrame = self:AvoidableDebuffsFrame_Create(challengeDetailsFrame);
+	challengeDetailsFrame.detailsFrame = self:DetailsFrame_Create(challengeDetailsFrame);
+	challengeDetailsFrame.encountersFrame = self:EncountersFrame_Create(challengeDetailsFrame);
+	challengeDetailsFrame.interruptsFrame = self:InterruptsFrame_Create(challengeDetailsFrame);
+	challengeDetailsFrame.mechanicsFrame = self:MechanicsFrame_Create(challengeDetailsFrame);
+	challengeDetailsFrame.devFrame = self:DevFrame_Create(challengeDetailsFrame);
 	challengeDetailsFrame.tabs = {
 		roster = challengeDetailsFrame.challengeRosterFrame,
 		avoidableDamage = challengeDetailsFrame.avoidableDamageFrame,
@@ -51,12 +57,13 @@ function MyDungeonsBook:CreateChallengeDetailsFrame(parentFrame)
 	return challengeDetailsFrame;
 end
 
---[[
-@method MyDungeonsBook:ChallengeDetailsFrame_CreateTitleFrame
-@param {table} parentFrame
-@return {table} titleFrame
+--[[--
+Creates a frame with challenge name and affixes.
+
+@param[type=Frame] parentFrame
+@return[type=Frame] titleFrame
 ]]
-function MyDungeonsBook:ChallengeDetailsFrame_CreateTitleFrame(parentFrame)
+function MyDungeonsBook:ChallengeDetailsFrame_TitleFrame_Create(parentFrame)
 	local titleFrame = CreateFrame("Frame", nil, parentFrame);
 	titleFrame:SetPoint("TOPRIGHT", 0, 0);
 	titleFrame:SetWidth(900);
@@ -80,25 +87,24 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTitleFrame(parentFrame)
 	return titleFrame;
 end
 
---[[
-Update all frames related to challenge details
+--[[--
+Update all frames related to challenge details.
 
-@method MyDungeonsBook:UpdateChallengeDetailsFrame
-@param {number} challengeId
+@param[type=number] challengeId
 ]]
-function MyDungeonsBook:UpdateChallengeDetailsFrame(challengeId)
+function MyDungeonsBook:ChallengeDetailsFrame_Update(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
 		self.challengeDetailsFrame.titleFrame.titleText:SetText(string.format(L["%s (+%s) %s"], challenge.challengeInfo.zoneName, challenge.challengeInfo.cmLevel, self:GetKeyUpgradeStr(challenge)));
 		self.challengeDetailsFrame.titleFrame.titleAffixes:SetText(self:GetChallengeAffixesIconsStr(challengeId, 30));
-		self:UpdateAvoidableDamageFrame(challengeId);
-		self:UpdateAvoidableDebuffsFrame(challengeId);
-		self:UpdateInterruptsFrame(challengeId);
-		self:UpdateDetailsFrame(challengeId);
-		self:UpdateDevFrame(challengeId);
-		self:UpdateRosterFrame(challengeId);
-		self:UpdateEncountersFrame(challengeId);
-		self:UpdateMechanicsFrame(challengeId);
+		self:AvoidableDamageFrame_Update(challengeId);
+		self:AvoidableDebuffsFrame_Update(challengeId);
+		self:InterruptsFrame_Update(challengeId);
+		self:DetailsFrame_Update(challengeId);
+		self:DevFrame_Update(challengeId);
+		self:RosterFrame_Update(challengeId);
+		self:EncountersFrame_Update(challengeId);
+		self:MechanicsFrame_Update(challengeId);
 	else
 		self:DebugPrint(string.format("Challenge #%s not found", challengeId));
 	end

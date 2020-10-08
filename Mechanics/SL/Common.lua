@@ -1,3 +1,12 @@
+--[[--
+@module MyDungeonsBook
+]]
+
+--[[--
+Mechanics
+@section Mechanics
+]]
+
 local SLSpells = {};
 
 local SLSpellsNoTank = {};

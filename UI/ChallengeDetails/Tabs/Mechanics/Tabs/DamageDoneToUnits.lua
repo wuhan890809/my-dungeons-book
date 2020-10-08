@@ -1,17 +1,25 @@
+--[[--
+@module MyDungeonsBook
+]]
+
+--[[--
+UI
+@section UI
+]]
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
---[[
-Create a frame for Special Casts tab (data is taken from `mechanics[**-DAMAGE-DONE-TO-UNITS]`)
-Mouse hover/out handler are included
+--[[--
+Create a frame for Damage Done To Units tab (data is taken from `mechanics[**-DAMAGE-DONE-TO-UNITS]`).
 
-@method MyDungeonsBook:CreateDamageDoneToUnitsFrame
-@param {table} frame
-@return {table} tableWrapper
+Mouse hover/out handler are included.
+
+@param[type=Frame] parentFrame
+@return[type=Frame] tableWrapper
 ]]
-function MyDungeonsBook:CreateDamageDoneToUnitsFrame(frame)
+function MyDungeonsBook:DamageDoneToUnitsFrame_Create(parentFrame)
 	local ScrollingTable = LibStub("ScrollingTable");
-	local cols = self:GetHeadersForDamageDoneToUnitsTable();
-	local tableWrapper = CreateFrame("Frame", nil, frame);
+	local cols = self:DamageDoneToUnitsFrame_GetHeadersForTable();
+	local tableWrapper = CreateFrame("Frame", nil, parentFrame);
 	tableWrapper:SetWidth(900);
 	tableWrapper:SetHeight(450);
 	tableWrapper:SetPoint("TOPLEFT", 0, -120);
@@ -20,16 +28,15 @@ function MyDungeonsBook:CreateDamageDoneToUnitsFrame(frame)
 	return tableWrapper;
 end
 
---[[
-Generate columns for special casts table
+--[[--
+Generate columns for Damage Done To Units table.
 
-Depending on `challengeId` real player names will be used or simple placeholders like `player` or `party1..4`
+Depending on `challengeId` real player names will be used or simple placeholders like `player` or `party1..4`.
 
-@method MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable
-@param {number} challengeId
-@return {table}
+@param[type=number] challengeId
+@return[type=table]
 ]]
-function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
+function MyDungeonsBook:DamageDoneToUnitsFrame_GetHeadersForTable(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	local player = "Player";
 	local party1 = "Party1";
@@ -61,7 +68,7 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 				a = 0.4
 			},
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsNumber(...);
+				self:Table_Cell_FormatAsNumber(...);
 			end
 		},
 		{
@@ -69,7 +76,7 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 			width = 50,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsNumber(...);
+				self:Table_Cell_FormatAsNumber(...);
 			end
 		},
 		{
@@ -88,7 +95,7 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 				a = 0.4
 			},
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsNumber(...);
+				self:Table_Cell_FormatAsNumber(...);
 			end
 		},
 		{
@@ -96,7 +103,7 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 			width = 50,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsNumber(...);
+				self:Table_Cell_FormatAsNumber(...);
 			end
 		},
 		{
@@ -115,7 +122,7 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 				a = 0.4
 			},
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsNumber(...);
+				self:Table_Cell_FormatAsNumber(...);
 			end
 		},
 		{
@@ -123,7 +130,7 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 			width = 50,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsNumber(...);
+				self:Table_Cell_FormatAsNumber(...);
 			end
 		},
 		{
@@ -142,7 +149,7 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 				a = 0.4
 			},
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsNumber(...);
+				self:Table_Cell_FormatAsNumber(...);
 			end
 		},
 		{
@@ -150,7 +157,7 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 			width = 50,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsNumber(...);
+				self:Table_Cell_FormatAsNumber(...);
 			end
 		},
 		{
@@ -169,7 +176,7 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 				a = 0.4
 			},
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsNumber(...);
+				self:Table_Cell_FormatAsNumber(...);
 			end
 		},
 		{
@@ -177,7 +184,7 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 			width = 50,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsNumber(...);
+				self:Table_Cell_FormatAsNumber(...);
 			end
 		},
 		{
@@ -188,41 +195,14 @@ function MyDungeonsBook:GetHeadersForDamageDoneToUnitsTable(challengeId)
 	};
 end
 
---[[
-Mouse-hover handler for special casts table
-Shows a tooltip with spell name and description (from `GetSpellLink`)
+--[[--
+Map data about Damage Done To Units for challenge with id `challengeId`.
 
-@method MyDungeonsBook:DamageDoneToUnitsTable_UnitHover
-@param {table} frame
-@param {number} spellId
+@param[type=number] challengeId
+@param[type=string] key for mechanics table (it's different for BFA and SL)
+@return[type=table]
 ]]
-function MyDungeonsBook:DamageDoneToUnitsTable_UnitHover(frame, spellId)
-	if (spellId and spellId > 0) then
-		GameTooltip:SetOwner(frame, "ANCHOR_NONE");
-		GameTooltip:SetPoint("BOTTOMLEFT", frame, "BOTTOMRIGHT");
-		GameTooltip:SetSpellByID(spellId);
-		GameTooltip:Show();
-	end
-end
-
---[[
-Mouse-out handler for avoidable damage table
-
-@method MyDungeonsBook:DamageDoneToUnitsTable_UnitOut
-]]
-function MyDungeonsBook:DamageDoneToUnitsTable_UnitOut()
-	GameTooltip:Hide();
-end
-
---[[
-Map data about Special Casts for challenge with id `challengeId`
-
-@method MyDungeonsBook:GetDamageDoneToUnitsTableData
-@param {number} challengeId
-@param {key} string key for mechanics table (it's different for BFA and SL)
-@return {table}
-]]
-function MyDungeonsBook:GetDamageDoneToUnitsTableData(challengeId, key)
+function MyDungeonsBook:DamageDoneToUnitsFrame_GetDataForTable(challengeId, key)
 	local tableData = {};
 	if (not challengeId) then
 		return nil;
@@ -278,18 +258,17 @@ function MyDungeonsBook:GetDamageDoneToUnitsTableData(challengeId, key)
 	return tableData;
 end
 
---[[
-Update Special Casts-tab for challenge with id `challengeId`
+--[[--
+Update Damage Done To Units tab for challenge with id `challengeId`.
 
-@method MyDungeonsBook:UpdateDamageDoneToUnitsFrame
-@param {number} challengeId
+@param[type=number] challengeId
 ]]
-function MyDungeonsBook:UpdateDamageDoneToUnitsFrame(challengeId)
+function MyDungeonsBook:DamageDoneToUnitsFrame_Update(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
-		local specialCastsTableData = self:GetDamageDoneToUnitsTableData(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-DAMAGE-DONE-TO-UNITS");
+		local specialCastsTableData = self:DamageDoneToUnitsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-DAMAGE-DONE-TO-UNITS");
 		self.challengeDetailsFrame.mechanicsFrame.damageDoneToUnitsFrame.table:SetData(specialCastsTableData);
-		self.challengeDetailsFrame.mechanicsFrame.damageDoneToUnitsFrame.table:SetDisplayCols(self:GetHeadersForDamageDoneToUnitsTable(challengeId));
+		self.challengeDetailsFrame.mechanicsFrame.damageDoneToUnitsFrame.table:SetDisplayCols(self:DamageDoneToUnitsFrame_GetHeadersForTable(challengeId));
 		self.challengeDetailsFrame.mechanicsFrame.damageDoneToUnitsFrame.table:SortData();
 	end
 end

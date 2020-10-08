@@ -1,14 +1,18 @@
+--[[--
+@module MyDungeonsBook
+]]
+
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
 local function isActiveChallengeId(challengeId)
 	return challengeId == "active" or challengeId == "a";
 end
 
---[[
-Parse chat slash command "/mdb ..." or "/mydungeonsbook ..."
+--[[--
+Parse chat slash command `/mdb ...` or `/mydungeonsbook ...`.
 
-@method MyDungeonsBook:ParseChatCommand
-@param {string} msg
+@local
+@param[type=string] msg some chat message
 ]]
 function MyDungeonsBook:ParseChatCommand(msg)
 	local type, challengeId, resource, subResourceOrAction, actionOrNothing = self:GetArgs(msg, 10);
@@ -23,9 +27,18 @@ function MyDungeonsBook:ParseChatCommand(msg)
 		self:Print(string.format(tpl, "/mdb help[h]", L["print this text."]));
 		return;
 	end
-	self:Show();
+	self:MainFrame_Show();
 end
 
+--[[--
+Parse chat command related to Challenges (e.g. `/mdb c ...`).
+
+@local
+@param[type=string|number] challengeId
+@param[type=string] resource
+@param[type=string] subResourceOrAction
+@param[type=string] actionOrNothing
+]]
 function MyDungeonsBook:ParseChallengeChatCommand(challengeId, resource, subResourceOrAction, actionOrNothing, ...)
 	if (resource == "roster" or resource == "r") then
 		return self:ParseRosterChatCommand(challengeId, resource, subResourceOrAction, actionOrNothing, ...);
@@ -35,6 +48,15 @@ function MyDungeonsBook:ParseChallengeChatCommand(challengeId, resource, subReso
 	end
 end
 
+--[[--
+Parse chat command related to Challenge's Roster (e.g. `/mdb c a r ...`).
+
+@local
+@param[type=string|number] challengeId
+@param[type=string] resource
+@param[type=string] subResource player or party1..4
+@param[type=string] action
+]]
 function MyDungeonsBook:ParseRosterChatCommand(challengeId, resource, subResource, action, ...)
 	if (isActiveChallengeId(challengeId) and self.db.char.activeChallengeId) then
 		for _, unitId in pairs(self:GetPartyRoster()) do
@@ -47,18 +69,18 @@ function MyDungeonsBook:ParseRosterChatCommand(challengeId, resource, subResourc
 	end
 end
 
---[[
-Proceed chat command about Details addon integration
+--[[--
+Parse chat command about Details addon integration (e.g. `/mdb c a d ...`).
 
-@method MyDungeonsBook:ParseDetailsChatCommand
-@param {number|string} challengeId "active"
-@param {string} resource "details"
-@param {string} action "parse"
+@local
+@param[type=string|number] challengeId
+@param[type=string] resource
+@param[type=string] action
 ]]
 function MyDungeonsBook:ParseDetailsChatCommand(challengeId, resource, action, ...)
 	if (isActiveChallengeId(challengeId) and self.db.char.activeChallengeId) then
 		local challenge = self.db.char.challenges[self.db.char.activeChallengeId];
-		if (challenge) then
+		if (challenge and (action == "parse" or action == "p")) then
 			if (not challenge.details.exists) then
 				self.db.char.challenges[self.db.char.activeChallengeId].details = self:ParseInfoFromDetailsAddon();
 				self:LogPrint(string.format("Info from Details addon is stored for challenge #%s", self.db.char.activeChallengeId));

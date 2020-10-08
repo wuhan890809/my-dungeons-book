@@ -1,3 +1,12 @@
+--[[--
+@module MyDungeonsBook
+]]
+
+--[[--
+Utils
+@section Utils
+]]
+
 local function updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local defaultColor = {
 		r = 1,
@@ -23,57 +32,53 @@ local function updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow
 	cellFrame.text:SetTextColor(color.r, color.g, color.b, color.a);
 end
 
---[[
+--[[--
 Wrapper for cells with formatted numbers. Uses `MyDungeonsBook:FormatNumber` to format cell value.
-Original value is left "as is" for sorting purposes
 
-Params are similar to https://www.wowace.com/projects/lib-st/pages/docell-update
+Original value (number) is left "as is" for sorting purposes.
 
-@method MyDungeonsBook:FormatCellValueAsNumber
+Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
 ]]
-function MyDungeonsBook:FormatCellValueAsNumber(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
+function MyDungeonsBook:Table_Cell_FormatAsNumber(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local val = data[realrow].cols[column].value;
 	cellFrame.text:SetText((val and self:FormatNumber(val)) or "-");
 	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
 end
 
---[[
-Wrapper for cells with formatted date
-Original value is left "as is" for sorting purposes
+--[[--
+Wrapper for cells with formatted date.
 
-Params are similar to https://www.wowace.com/projects/lib-st/pages/docell-update
+Original value (timestamp) is left "as is" for sorting purposes.
 
-@method MyDungeonsBook:FormatCellValueAsDate
+Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
 ]]
-function MyDungeonsBook:FormatCellValueAsDate(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
+function MyDungeonsBook:Table_Cell_FormatAsDate(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local val = data[realrow].cols[column].value;
 	cellFrame.text:SetText((val and date("%Y-%m-%d %H:%M", val)) or "-");
 	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
 end
 
---[[
-Wrapper for cells with formatted time (time should be in milliseconds!)
-Original value is left "as is" for sorting purposes
+--[[--
+Wrapper for cells with formatted time (time should be in milliseconds!).
 
-Params are similar to https://www.wowace.com/projects/lib-st/pages/docell-update
+Original value (number) is left "as is" for sorting purposes.
 
-@method MyDungeonsBook:FormatCellValueAsTime
+Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
 ]]
-function MyDungeonsBook:FormatCellValueAsTime(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
+function MyDungeonsBook:Table_Cell_FormatAsTime(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local val = data[realrow].cols[column].value;
 	cellFrame.text:SetText((val > 0 and date("%M:%S", val / 1000)) or "-");
 	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
 end
 
---[[
-Wrapper for cells with spell icon
-Original value is left "as is" for sorting purposes
+--[[--
+Wrapper for cells with spell icon.
 
-Params are similar to https://www.wowace.com/projects/lib-st/pages/docell-update
+Original value (spell ID) is left "as is" for sorting purposes.
 
-@method MyDungeonsBook:FormatCellValueAsSpellIcon
+Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
 ]]
-function MyDungeonsBook:FormatCellValueAsSpellIcon(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
+function MyDungeonsBook:Table_Cell_FormatAsSpellIcon(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local spellId = data[realrow].cols[column].value;
 	if (spellId and spellId > 0) then
 		local _, _, icon = GetSpellInfo(spellId);
@@ -85,15 +90,14 @@ function MyDungeonsBook:FormatCellValueAsSpellIcon(rowFrame, cellFrame, data, co
 	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
 end
 
---[[
-Wrapper for cells with spell link
-Original value is left "as is" for sorting purposes
+--[[--
+Wrapper for cells with spell link.
 
-Params are similar to https://www.wowace.com/projects/lib-st/pages/docell-update
+Original value (spell ID) is left "as is" for sorting purposes.
 
-@method MyDungeonsBook:FormatCellValueAsSpellLink
+Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
 ]]
-function MyDungeonsBook:FormatCellValueAsSpellLink(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
+function MyDungeonsBook:Table_Cell_FormatAsSpellLink(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local spellId = data[realrow].cols[column].value;
 	if (spellId and spellId > 0) then
 		local spellLink = GetSpellLink(spellId);
@@ -102,4 +106,32 @@ function MyDungeonsBook:FormatCellValueAsSpellLink(rowFrame, cellFrame, data, co
 		cellFrame.text:SetText("");
 	end
 	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
+end
+
+--[[--
+Default handler for mouse out event for table cells.
+
+Just hide tooltip.
+
+It can be used for any `OnLeave` if some tooltip should be hidden.
+]]
+function MyDungeonsBook:Table_Cell_MouseOut()
+	if (GameTooltip) then
+		GameTooltip:Hide();
+	end
+end
+
+--[[--
+Show "default" tooltip for spell with ID `spellId`. Tooltip is placed on the right of the frame `cellFrame`.
+
+@param[type=Frame] cellFrame
+@param[type=number] spellId
+]]
+function MyDungeonsBook:Table_Cell_SpellMouseHover(cellFrame, spellId)
+	if (spellId and spellId > 0) then
+		GameTooltip:SetOwner(cellFrame, "ANCHOR_NONE");
+		GameTooltip:SetPoint("BOTTOMLEFT", cellFrame, "BOTTOMRIGHT");
+		GameTooltip:SetSpellByID(spellId);
+		GameTooltip:Show();
+	end
 end

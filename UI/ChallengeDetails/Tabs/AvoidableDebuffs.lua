@@ -1,16 +1,25 @@
+--[[--
+@module MyDungeonsBook
+]]
+
+--[[--
+UI
+@section UI
+]]
+
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
---[[
-Create a frame for Avoidable Debuffs tab (data is taken from `mechanics[**-AVOIDABLE-AURAS]`)
-Mouse hover/out handler are included
+--[[--
+Create a frame for Avoidable Debuffs tab (data is taken from `mechanics[**-AVOIDABLE-AURAS]`).
 
-@method MyDungeonsBook:CreateAvoidableDebuffsFrame
-@param {table} frame
-@return {table} tableWrapper
+Mouse hover/out handler are included.
+
+@param[type=Frame] parentFrame
+@return[type=Frame] tableWrapper
 ]]
-function MyDungeonsBook:CreateAvoidableDebuffsFrame(frame)
+function MyDungeonsBook:AvoidableDebuffsFrame_Create(parentFrame)
 	local ScrollingTable = LibStub("ScrollingTable");
-	local interruptsFrame = CreateFrame("Frame", nil, frame);
+	local interruptsFrame = CreateFrame("Frame", nil, parentFrame);
 	interruptsFrame:SetWidth(900);
 	interruptsFrame:SetHeight(490);
 	interruptsFrame:SetPoint("TOPRIGHT", -5, -110);
@@ -18,20 +27,20 @@ function MyDungeonsBook:CreateAvoidableDebuffsFrame(frame)
 	tableWrapper:SetWidth(580);
 	tableWrapper:SetHeight(490);
 	tableWrapper:SetPoint("TOPLEFT", 10, 0);
-	local cols = self:GetHeadersForAvoidableDebuffsTable();
+	local cols = self:AvoidableDebuffsFrame_GetHeadersForTable();
 	local table = ScrollingTable:CreateST(cols, 12, 40, nil, tableWrapper);
 	table:RegisterEvents({
 		OnEnter = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
 			if (realrow) then
 				if (column == 2 or column == 3) then
-					self:AvoidableDebuffsTable_AvoidableSpellHover(cellFrame, data[realrow].cols[1].value);
+					self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[1].value);
 				end
 			end
 	    end,
 		OnLeave = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
 			if (realrow) then
 				if (column == 2 or column == 3) then
-					self:AvoidableDebuffTable_AvoidableSpellOut(cellFrame);
+					self:Table_Cell_MouseOut();
 				end
 			end
 	    end
@@ -40,16 +49,15 @@ function MyDungeonsBook:CreateAvoidableDebuffsFrame(frame)
 	return tableWrapper;
 end
 
---[[
-Generate columns for avoidable damage table
+--[[--
+Generate columns for avoidable damage table.
 
-Depending on `challengeId` real player names will be used or simple placeholders like `player` or `party1..4`
+Depending on `challengeId` real player names will be used or simple placeholders like `player` or `party1..4`.
 
-@method MyDungeonsBook:GetHeadersForAvoidableDamageTable
-@param {number} challengeId
-@return {table}
+@param[type=number] challengeId
+@return[type=table]
 ]]
-function MyDungeonsBook:GetHeadersForAvoidableDebuffsTable(challengeId)
+function MyDungeonsBook:AvoidableDebuffsFrame_GetHeadersForTable(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	local player = "Player";
 	local party1 = "Party1";
@@ -75,7 +83,7 @@ function MyDungeonsBook:GetHeadersForAvoidableDebuffsTable(challengeId)
 			width = 40,
 			align = "LEFT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsSpellIcon(...);
+				self:Table_Cell_FormatAsSpellIcon(...);
 			end
 		},
 		{
@@ -83,7 +91,7 @@ function MyDungeonsBook:GetHeadersForAvoidableDebuffsTable(challengeId)
 			width = 135,
 			align = "LEFT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsSpellLink(...);
+				self:Table_Cell_FormatAsSpellLink(...);
 			end
 		},
 		{
@@ -126,41 +134,14 @@ function MyDungeonsBook:GetHeadersForAvoidableDebuffsTable(challengeId)
 	};
 end
 
---[[
-Mouse-hover handler for avoidable damage table
-Shows a tooltip with spell name and description (from `GetSpellLink`)
+--[[--
+Map data about Avoidable Debuffs for challenge with id `challengeId`.
 
-@method MyDungeonsBook:AvoidableDebuffsTable_AvoidableSpellHover
-@param {table} frame
-@param {number} spellId
+@param[type=number] challengeId
+@param[type=string] key for mechanics table (it's different for BFA and SL)
+@return[type=table]
 ]]
-function MyDungeonsBook:AvoidableDebuffsTable_AvoidableSpellHover(frame, spellId)
-	if (spellId and spellId > 0) then
-		GameTooltip:SetOwner(frame, "ANCHOR_NONE");
-		GameTooltip:SetPoint("BOTTOMLEFT", frame, "BOTTOMRIGHT");
-		GameTooltip:SetSpellByID(spellId);
-		GameTooltip:Show();
-	end
-end
-
---[[
-Mouse-out handler for avoidable damage table
-
-@method MyDungeonsBook:AvoidableDebuffTable_AvoidableSpellOut
-]]
-function MyDungeonsBook:AvoidableDebuffTable_AvoidableSpellOut()
-	GameTooltip:Hide();
-end
-
---[[
-Map data about Avoidable Debuffs for challenge with id `challengeId`
-
-@method MyDungeonsBook:GetAvoidableDebuffsTableData
-@param {number} challengeId
-@param {key} string key for mechanics table (it's different for BFA and SL)
-@return {table}
-]]
-function MyDungeonsBook:GetAvoidableDebuffsTableData(challengeId, key)
+function MyDungeonsBook:AvoidableDebuffsFrame_GetDataForTable(challengeId, key)
 	local tableData = {};
 	if (not challengeId) then
 		return nil;
@@ -214,18 +195,17 @@ function MyDungeonsBook:GetAvoidableDebuffsTableData(challengeId, key)
 	return remappedTableData;
 end
 
---[[
-Update Avoidable Damage-tab for challenge with id `challengeId`
+--[[--
+Update Avoidable Damage-tab for challenge with id `challengeId`.
 
-@method MyDungeonsBook:UpdateAvoidableDebuffsFrame
-@param {number} challengeId
+@param[type=number] challengeId
 ]]
-function MyDungeonsBook:UpdateAvoidableDebuffsFrame(challengeId)
+function MyDungeonsBook:AvoidableDebuffsFrame_Update(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
-		local avoidableDebuffsTableData = self:GetAvoidableDebuffsTableData(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-AVOIDABLE-AURAS");
+		local avoidableDebuffsTableData = self:AvoidableDebuffsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-AVOIDABLE-AURAS");
 		self.challengeDetailsFrame.avoidableDebuffsFrame.table:SetData(avoidableDebuffsTableData);
-		self.challengeDetailsFrame.avoidableDebuffsFrame.table:SetDisplayCols(self:GetHeadersForAvoidableDebuffsTable(challengeId));
+		self.challengeDetailsFrame.avoidableDebuffsFrame.table:SetDisplayCols(self:AvoidableDebuffsFrame_GetHeadersForTable(challengeId));
 		self.challengeDetailsFrame.avoidableDebuffsFrame.table:SortData();
 	end
 end

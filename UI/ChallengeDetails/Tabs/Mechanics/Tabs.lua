@@ -1,11 +1,23 @@
+--[[--
+@module MyDungeonsBook
+]]
+
+--[[--
+UI
+@section UI
+]]
+
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
---[[
-@method MyDungeonsBook:ChallengeDetailsFrame_Mechanics_CreateTabButtonsFrame
-@param {table} parentFrame
-@return {table} tabsButtonsFrame
+--[[--
+Creates tabs (with click-handlers) for Mechanics frame.
+
+Created frame has a field `tabButtons` with tab-buttons. Keys in the `tabButtons` are equal to keys in the `mechanicsFrame.tabs`.
+
+@param[type=Frame] parentFrame
+@return[type=Frame] tabsButtonsFrame
 ]]
-function MyDungeonsBook:ChallengeDetailsFrame_Mechanics_CreateTabButtonsFrame(parentFrame)
+function MyDungeonsBook:MechanicsFrame_CreateTabButtonsFrame(parentFrame)
 	local tabsButtonsFrame = CreateFrame("Frame", nil, parentFrame);
 	tabsButtonsFrame:SetPoint("TOPLEFT", 10, -40);
 	tabsButtonsFrame:SetWidth(900);
@@ -16,7 +28,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_Mechanics_CreateTabButtonsFrame(pa
 	specialCastsButton:SetPoint("TOPLEFT", 0, 0);
 	specialCastsButton:SetText(L["Special Casts"]);
 	specialCastsButton:SetScript("OnClick", function()
-		self:ChallengeDetailsFrame_Mechanics_ShowTab("specialCasts");
+		self:MechanicsFrame_ShowTab("specialCasts");
 	end);
 	PanelTemplates_TabResize(specialCastsButton, 0);
 
@@ -25,7 +37,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_Mechanics_CreateTabButtonsFrame(pa
 	damageDoneToUnitsButton:SetPoint("TOPLEFT", specialCastsButton, "TOPRIGHT", 0, 0);
 	damageDoneToUnitsButton:SetText(L["Damage Done To Units"]);
 	damageDoneToUnitsButton:SetScript("OnClick", function()
-		self:ChallengeDetailsFrame_Mechanics_ShowTab("damageDoneToUnits");
+		self:MechanicsFrame_ShowTab("damageDoneToUnits");
 	end);
 	PanelTemplates_TabResize(damageDoneToUnitsButton, 0);
 
@@ -34,7 +46,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_Mechanics_CreateTabButtonsFrame(pa
 	buffsOrDebuffsOnUnitsButton:SetPoint("TOPLEFT", damageDoneToUnitsButton, "TOPRIGHT", 0, 0);
 	buffsOrDebuffsOnUnitsButton:SetText(L["Buffs Or Debuffs On Units"]);
 	buffsOrDebuffsOnUnitsButton:SetScript("OnClick", function()
-		self:ChallengeDetailsFrame_Mechanics_ShowTab("buffsOrDebuffsOnUnits");
+		self:MechanicsFrame_ShowTab("buffsOrDebuffsOnUnits");
 	end);
 	PanelTemplates_TabResize(buffsOrDebuffsOnUnitsButton, 0);
 	
@@ -43,7 +55,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_Mechanics_CreateTabButtonsFrame(pa
 	buffsOrDebuffsOnPartyMembersButton:SetPoint("TOPLEFT", buffsOrDebuffsOnUnitsButton, "TOPRIGHT", 0, 0);
 	buffsOrDebuffsOnPartyMembersButton:SetText(L["Buffs Or Debuffs On Party Members"]);
 	buffsOrDebuffsOnPartyMembersButton:SetScript("OnClick", function()
-		self:ChallengeDetailsFrame_Mechanics_ShowTab("buffsOrDebuffsOnPartyMembers");
+		self:MechanicsFrame_ShowTab("buffsOrDebuffsOnPartyMembers");
 	end);
 	PanelTemplates_TabResize(buffsOrDebuffsOnPartyMembersButton, 0);
 
@@ -56,11 +68,14 @@ function MyDungeonsBook:ChallengeDetailsFrame_Mechanics_CreateTabButtonsFrame(pa
 	return tabsButtonsFrame;
 end
 
---[[
-@method MyDungeonsBook:ChallengeDetailsFrame_Mechanics_ShowTab
-@param {string} tabId
+--[[--
+Click-handler for tab-button in the Mechanics frame.
+
+Show selected tab, mark it as active, mark other as inactive and hide them.
+
+@param[type=string] tabId
 ]]
-function MyDungeonsBook:ChallengeDetailsFrame_Mechanics_ShowTab(tabId)
+function MyDungeonsBook:MechanicsFrame_ShowTab(tabId)
 	for id, tabFrame in pairs(self.challengeDetailsFrame.mechanicsFrame.tabs) do
 		local tabButtonFrame = self.challengeDetailsFrame.mechanicsFrame.tabButtonsFrame.tabButtons[id];
 		if (id == tabId) then

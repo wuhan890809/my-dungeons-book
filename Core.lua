@@ -1,10 +1,17 @@
+--[[--
+@module MyDungeonsBook
+]]
+
+--[[--
+Core
+@section Core
+]]
+
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 MyDungeonsBook = LibStub("AceAddon-3.0"):NewAddon("MyDungeonsBook", "AceEvent-3.0", "AceTimer-3.0", "AceHook-3.0", "AceConsole-3.0");
 
---[[
-Initial addon setup
-
-@method MyDungeonsBook:OnInitialize
+--[[--
+Initial ACE-addon setup.
 ]]
 function MyDungeonsBook:OnInitialize()
 	self.db = LibStub("AceDB-3.0"):New("MyDungeonsBookDB", self.OptionsDefaults);
@@ -15,10 +22,22 @@ function MyDungeonsBook:OnInitialize()
 	self:DebugPrint("Loaded");
 end
 
---[[
-Setup event handlers
+--[[--
+Setup event handlers.
 
-@method MyDungeonsBook:OnEnable
+Next events are handled:
+
+* `CHALLENGE_MODE_START`
+* `CHALLENGE_MODE_COMPLETED`
+* `CHALLENGE_MODE_RESET`
+* `PLAYER_ENTERING_WORLD`
+* `INSPECT_READY`
+* `ENCOUNTER_END`
+* `ENCOUNTER_START`
+
+Event `COMBAT_LOG_EVENT_UNFILTERED` is handled while challenge is active. E.g. from `CHALLENGE_MODE_START` to `CHALLENGE_MODE_COMPLETED` or `CHALLENGE_MODE_RESET`.
+
+Check methods with the same names to get more info about handlers.
 ]]
 function MyDungeonsBook:OnEnable()
 	self:RegisterEvent("CHALLENGE_MODE_START");
@@ -29,11 +48,4 @@ function MyDungeonsBook:OnEnable()
 	self:RegisterEvent("ENCOUNTER_END");
 	self:RegisterEvent("ENCOUNTER_START");
 	self:DebugPrint("Enabled");
-end
-
---[[
-@method MyDungeonsBook:OnDisable
-]]
-function MyDungeonsBook:OnDisable()
-    self:DebugPrint("Disabled");
 end

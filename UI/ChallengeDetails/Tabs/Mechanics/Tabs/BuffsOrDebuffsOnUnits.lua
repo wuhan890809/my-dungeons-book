@@ -1,17 +1,26 @@
+--[[--
+@module MyDungeonsBook
+]]
+
+--[[--
+UI
+@section UI
+]]
+
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
---[[
-Create a frame for Buff Or Debuffs On Units tab (data is taken from `mechanics[**-BUFFS-OR-DEBUFFS-ON-UNIT]`)
-Mouse hover/out handler are included
+--[[--
+Create a frame for Buff Or Debuffs On Units tab (data is taken from `mechanics[**-BUFFS-OR-DEBUFFS-ON-UNIT]`).
 
-@method MyDungeonsBook:CreateBuffsOrDebuffsOnUnitsFrame
-@param {table} frame
-@return {table} tableWrapper
+Mouse hover/out handler are included.
+
+@param[type=Frame] parentFrame
+@return[type=Frame] tableWrapper
 ]]
-function MyDungeonsBook:CreateBuffsOrDebuffsOnUnitsFrame(frame)
+function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_Create(parentFrame)
 	local ScrollingTable = LibStub("ScrollingTable");
-	local cols = self:GetHeadersForBuffsOrDebuffsOnUnitsTable();
-	local tableWrapper = CreateFrame("Frame", nil, frame);
+	local cols = self:BuffsOrDebuffsOnUnitsFrame_GetHeadersForTable();
+	local tableWrapper = CreateFrame("Frame", nil, parentFrame);
 	tableWrapper:SetWidth(300);
 	tableWrapper:SetHeight(450);
 	tableWrapper:SetPoint("TOPLEFT", 10, -120);
@@ -20,14 +29,14 @@ function MyDungeonsBook:CreateBuffsOrDebuffsOnUnitsFrame(frame)
 		OnEnter = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
 			if (realrow) then
 				if (column == 3 or column == 4) then
-					self:BuffsOrDebuffsOnUnitsTable_SpellHover(cellFrame, data[realrow].cols[1].value);
+					self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[1].value);
 				end
 			end
 	    end,
 		OnLeave = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
 			if (realrow) then
 				if (column == 3 or column == 4) then
-					self:BuffsOrDebuffsOnUnitsTable_SpellOut(cellFrame);
+					self:Table_Cell_MouseOut();
 				end
 			end
 	    end
@@ -36,15 +45,14 @@ function MyDungeonsBook:CreateBuffsOrDebuffsOnUnitsFrame(frame)
 	return tableWrapper;
 end
 
---[[
-Generate columns for special casts table
+--[[--
+Generate columns for Buff Or Debuffs On Units table.
 
-Depending on `challengeId` real player names will be used or simple placeholders like `player` or `party1..4`
+Depending on `challengeId` real player names will be used or simple placeholders like `player` or `party1..4`.
 
-@method MyDungeonsBook:GetHeadersForBuffsOrDebuffsOnUnitsTable
-@return {table}
+@return[type=table]
 ]]
-function MyDungeonsBook:GetHeadersForBuffsOrDebuffsOnUnitsTable()
+function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_GetHeadersForTable()
 	return {
 		{
 			name = " ",
@@ -56,7 +64,7 @@ function MyDungeonsBook:GetHeadersForBuffsOrDebuffsOnUnitsTable()
 			width = 40,
 			align = "LEFT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsSpellIcon(...);
+				self:Table_Cell_FormatAsSpellIcon(...);
 			end
 		},
 		{
@@ -64,7 +72,7 @@ function MyDungeonsBook:GetHeadersForBuffsOrDebuffsOnUnitsTable()
 			width = 160,
 			align = "LEFT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsSpellLink(...);
+				self:Table_Cell_FormatAsSpellLink(...);
 			end
 		},
 		{
@@ -82,39 +90,14 @@ function MyDungeonsBook:GetHeadersForBuffsOrDebuffsOnUnitsTable()
 	};
 end
 
---[[
-Mouse-hover handler for special casts table
-Shows a tooltip with spell name and description (from `GetSpellLink`)
+--[[--
+Map data about Buff Or Debuffs On Units for challenge with id `challengeId`.
 
-@method MyDungeonsBook:BuffsOrDebuffsOnUnitsTable_SpellHover
-@param {table} frame
-@param {number} spellId
+@param[type=number] challengeId
+@param[type=string] key for mechanics table (it's different for `BFA` and `SL`)
+@return[type=table]
 ]]
-function MyDungeonsBook:BuffsOrDebuffsOnUnitsTable_SpellHover(frame, spellId)
-	if (spellId and spellId > 0) then
-		GameTooltip:SetOwner(frame, "ANCHOR_NONE");
-		GameTooltip:SetPoint("BOTTOMLEFT", frame, "BOTTOMRIGHT");
-		GameTooltip:SetSpellByID(spellId);
-		GameTooltip:Show();
-	end
-end
-
---[[
-Mouse-out handler for avoidable damage table
-
-@method MyDungeonsBook:BuffsOrDebuffsOnUnitsTable_SpellOut
-]]
-function MyDungeonsBook:BuffsOrDebuffsOnUnitsTable_SpellOut()
-	GameTooltip:Hide();
-end
-
---[[
-@method MyDungeonsBook:GetBuffsOrDebuffsOnUnitsTableData
-@param {number} challengeId
-@param {key} string key for mechanics table (it's different for BFA and SL)
-@return {table}
-]]
-function MyDungeonsBook:GetBuffsOrDebuffsOnUnitsTableData(challengeId, key)
+function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_GetDataForTable(challengeId, key)
 	local tableData = {};
 	if (not challengeId) then
 		return nil;
@@ -141,16 +124,15 @@ function MyDungeonsBook:GetBuffsOrDebuffsOnUnitsTableData(challengeId, key)
 	return tableData;
 end
 
---[[
-Update Special Casts-tab for challenge with id `challengeId`
+--[[--
+Update Buff Or Debuffs On Units tab for challenge with id `challengeId`
 
-@method MyDungeonsBook:UpdateBuffsOrDebuffsOnUnitsFrame
-@param {number} challengeId
+@param[type=number] challengeId
 ]]
-function MyDungeonsBook:UpdateBuffsOrDebuffsOnUnitsFrame(challengeId)
+function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_Update(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
-		local buffsOrDebuffsOnUnitsTableData = self:GetBuffsOrDebuffsOnUnitsTableData(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-BUFFS-OR-DEBUFFS-ON-UNIT");
+		local buffsOrDebuffsOnUnitsTableData = self:BuffsOrDebuffsOnUnitsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-BUFFS-OR-DEBUFFS-ON-UNIT");
 		self.challengeDetailsFrame.mechanicsFrame.buffsOrDebuffsOnUnitsFrame.table:SetData(buffsOrDebuffsOnUnitsTableData);
 		self.challengeDetailsFrame.mechanicsFrame.buffsOrDebuffsOnUnitsFrame.table:SortData();
 	end

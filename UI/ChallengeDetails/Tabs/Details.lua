@@ -1,44 +1,39 @@
+--[[--
+@module MyDungeonsBook
+]]
+
+--[[--
+UI
+@section UI
+]]
+
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
---[[
-Create a frame for Details tab (data should be ken from `details` section for challenge)
 
-@method MyDungeonsBook:CreateDetailsFrame
-@param {table} frame
-@return {table} detailsWrapper
+--[[--
+Creates a frame for Details tab (data should be from `details` section for challenge).
+
+@param[type=Frame] parentFrame
+@return[type=Frame]
 ]]
-function MyDungeonsBook:CreateDetailsFrame(frame)
-	local detailsTableFrame = CreateFrame("Frame", nil, frame);
-	detailsTableFrame:SetWidth(900);
-	detailsTableFrame:SetHeight(490);
-	detailsTableFrame:SetPoint("TOPRIGHT", -5, -100);
-	detailsTableFrame.table = self:CreateDetailsTable(detailsTableFrame);
-	return detailsTableFrame;
-end
-
---[[
-Create a table with data from Detauls addon
-
-@method MyDungeonsBook:CreateDetailsTableFrame
-@return {table}
-]]
-function MyDungeonsBook:CreateDetailsTable(frame)
+function MyDungeonsBook:DetailsFrame_Create(parentFrame)
 	local ScrollingTable = LibStub("ScrollingTable");
-	local cols = self:GetHeadersForDetailsTable();
-	local tableWrapper = CreateFrame("Frame", nil, frame);
-	tableWrapper:SetWidth(900);
-	tableWrapper:SetHeight(250);
-	tableWrapper:SetPoint("TOPRIGHT", 0, 0);
-	return ScrollingTable:CreateST(cols, 5, 40, nil, tableWrapper);
+	local cols = self:DetailsFrame_GetHeadersForTable();
+	local detailsFrame = CreateFrame("Frame", nil, parentFrame);
+	detailsFrame:SetWidth(900);
+	detailsFrame:SetHeight(250);
+	detailsFrame:SetPoint("TOPLEFT", 0, -110);
+	local table = ScrollingTable:CreateST(cols, 5, 40, nil, detailsFrame);
+	detailsFrame.table = table;
+	return detailsFrame;
 end
 
---[[
-Generate columns for avoidable damage table
+--[[--
+Generate columns for avoidable damage table.
 
-@method MyDungeonsBook:GetHeadersForDetailsTable
-@return {table}
+@return[type=Frame]
 ]]
-function MyDungeonsBook:GetHeadersForDetailsTable()
+function MyDungeonsBook:DetailsFrame_GetHeadersForTable()
 	return {
 		{
 			name = L["Player"],
@@ -50,7 +45,7 @@ function MyDungeonsBook:GetHeadersForDetailsTable()
 			width = 100,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsNumber(...);
+				self:Table_Cell_FormatAsNumber(...);
 			end
 		},
 		{
@@ -58,7 +53,7 @@ function MyDungeonsBook:GetHeadersForDetailsTable()
 			width = 100,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsNumber(...);
+				self:Table_Cell_FormatAsNumber(...);
 			end
 		},
 		{
@@ -66,7 +61,7 @@ function MyDungeonsBook:GetHeadersForDetailsTable()
 			width = 100,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsNumber(...);
+				self:Table_Cell_FormatAsNumber(...);
 			end
 		},
 		{
@@ -74,7 +69,7 @@ function MyDungeonsBook:GetHeadersForDetailsTable()
 			width = 100,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsNumber(...);
+				self:Table_Cell_FormatAsNumber(...);
 			end
 		},
 		{
@@ -90,14 +85,13 @@ function MyDungeonsBook:GetHeadersForDetailsTable()
 	};
 end
 
---[[
-Map data from Details addon for challenge with id `challengeId`
+--[[--
+Map data from Details addon for challenge with id `challengeId`.
 
-@method MyDungeonsBook:GetDataForDetailsTable
-@param {number} challengeId
-@return {table}
+@param[type=number] challengeId
+@return[type=table]
 ]]
-function MyDungeonsBook:GetDataForDetailsTable(challengeId)
+function MyDungeonsBook:DetailsFrame_GetDataForTable(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	local tableData = {};
 	if (not challenge) then
@@ -148,9 +142,14 @@ function MyDungeonsBook:GetDataForDetailsTable(challengeId)
 	return tableData;
 end
 
-function MyDungeonsBook:UpdateDetailsFrame(challengeId)
+--[[--
+Updates a Details frame with data for challenge with id `challengeId`.
+
+@param[type=number] challengeId
+]]
+function MyDungeonsBook:DetailsFrame_Update(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
-		self.challengeDetailsFrame.detailsFrame.table:SetData(self:GetDataForDetailsTable(challengeId));
+		self.challengeDetailsFrame.detailsFrame.table:SetData(self:DetailsFrame_GetDataForTable(challengeId));
 	end
 end

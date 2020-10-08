@@ -1,17 +1,26 @@
+--[[--
+@module MyDungeonsBook
+]]
+
+--[[--
+UI
+@section UI
+]]
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
---[[
-@method MyDungeonsBook:CreateInterruptsFrame
-@param {table} frame
-@return {table}
+--[[--
+Creates a frame for Interrupts tab.
+
+@param[type=Frame] parentFrame
+@return[type=Frame]
 ]]
-function MyDungeonsBook:CreateInterruptsFrame(frame)
+function MyDungeonsBook:InterruptsFrame_Create(parentFrame)
 	local ScrollingTable = LibStub("ScrollingTable");
-	local interruptsFrame = CreateFrame("Frame", nil, frame);
+	local interruptsFrame = CreateFrame("Frame", nil, parentFrame);
 	interruptsFrame:SetWidth(900);
 	interruptsFrame:SetHeight(490);
 	interruptsFrame:SetPoint("TOPRIGHT", -5, -110);
-	local cols = self:GetHeadersForInterruptsTable();
+	local cols = self:InterruptsFrame_GetHeadersForTable();
 	local tableWrapper = CreateFrame("Frame", nil, interruptsFrame);
 	tableWrapper:SetWidth(580);
 	tableWrapper:SetHeight(490);
@@ -21,14 +30,14 @@ function MyDungeonsBook:CreateInterruptsFrame(frame)
 		OnEnter = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
 			if (realrow) then
 				if (column == 2 or column == 3) then
-					self:InterruptsTable_SpellHover(cellFrame, data[realrow].cols[1].value);
+					self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[1].value);
 				end
 			end
 	    end,
 		OnLeave = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
 			if (realrow) then
 				if (column == 2 or column == 3) then
-					self:InterruptsTable_SpellOut(cellFrame);
+					self:Table_Cell_MouseOut();
 				end
 			end
 	    end
@@ -38,20 +47,20 @@ function MyDungeonsBook:CreateInterruptsFrame(frame)
 	summaryWrapper:SetWidth(290);
 	summaryWrapper:SetHeight(250);
 	summaryWrapper:SetPoint("TOPRIGHT", -10, 0);
-	local cols = self:GetHeadersForInterruptsSummaryTable();
+	local cols = self:InterruptsFrame_GetHeadersForSummaryTable();
 	local summaryTable = ScrollingTable:CreateST(cols, 5, 40, nil, summaryWrapper);
 	summaryTable:RegisterEvents({
 		OnEnter = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
 			if (realrow) then
 				if (column == 3 or column == 4) then
-					self:InterruptsTable_SpellHover(cellFrame, data[realrow].cols[1].value);
+					self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[1].value);
 				end
 			end
 	    end,
 		OnLeave = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
 			if (realrow) then
 				if (column == 3 or column == 4) then
-					self:InterruptsTable_SpellOut(cellFrame);
+					self:Table_Cell_MouseOut();
 				end
 			end
 	    end
@@ -60,12 +69,13 @@ function MyDungeonsBook:CreateInterruptsFrame(frame)
 	return interruptsFrame;
 end
 
---[[
-@method MyDungeonsBook:GetHeadersForInterruptsTable
-@param {number|nil} challengeId
-@return {table}
+--[[--
+Generate columns for Interrupts table.
+
+@param[type=?number] challengeId
+@return[type=table]
 ]]
-function MyDungeonsBook:GetHeadersForInterruptsTable(challengeId)
+function MyDungeonsBook:InterruptsFrame_GetHeadersForTable(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	local player = "Player";
 	local party1 = "Party1";
@@ -91,7 +101,7 @@ function MyDungeonsBook:GetHeadersForInterruptsTable(challengeId)
 			width = 40,
 			align = "LEFT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsSpellIcon(...);
+				self:Table_Cell_FormatAsSpellIcon(...);
 			end
 		},
 		{
@@ -99,7 +109,7 @@ function MyDungeonsBook:GetHeadersForInterruptsTable(challengeId)
 			width = 105,
 			align = "LEFT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsSpellLink(...);
+				self:Table_Cell_FormatAsSpellLink(...);
 			end
 		},
 		{
@@ -146,41 +156,17 @@ function MyDungeonsBook:GetHeadersForInterruptsTable(challengeId)
 	};
 end
 
---[[
-Mouse-hover handler for avoidable damage table
-Shows a tooltip with spell name and description (from `GetSpellLink`)
-
-@method MyDungeonsBook:InterruptsTable_SpellHover
-@param {table} frame
-@param {number} spellId
-]]
-function MyDungeonsBook:InterruptsTable_SpellHover(frame, spellId)
-	GameTooltip:SetOwner(frame, "ANCHOR_NONE");
-	GameTooltip:SetPoint("BOTTOMLEFT", frame, "BOTTOMRIGHT");
-	GameTooltip:SetSpellByID(spellId);
-	GameTooltip:Show();
-end
-
---[[
-Mouse-out handler for avoidable damage table
-
-@method MyDungeonsBook:InterruptsTable_SpellOut
-]]
-function MyDungeonsBook:InterruptsTable_SpellOut()
-	GameTooltip:Hide();
-end
-
---[[
-Map data about Interrupts for challenge with id `challengeId`
+--[[--
+Map data about Interrupts for challenge with id `challengeId`.
 
 Data from `COMMON-INTERRUPTS` is taken as basis. Amount of passed casts is stored in the `ALL-ENEMY-PASSED-CASTS`.
+
 If some important spells (are in the `BFA|SL-SPELLS-TO-INTERRUPT`) were not interrupted, they are also added.
 
-@method MyDungeonsBook:GetDataForInterruptsTable
-@param {number} challengeId
-@return {table}
+@param[type=number] challengeId
+@return[type=table]
 ]]
-function MyDungeonsBook:GetDataForInterruptsTable(challengeId)
+function MyDungeonsBook:InterruptsFrame_GetDataForTable(challengeId)
 	local tableData = {};
 	if (not challengeId) then
 		return nil;
@@ -273,11 +259,12 @@ function MyDungeonsBook:GetDataForInterruptsTable(challengeId)
 	return remappedTableData;
 end
 
---[[
-@method MyDungeonsBook:GetHeadersForInterruptsSummaryTable
-@return {table}
+--[[--
+Generate columns for Interrupts Summary table.
+
+@return[type=table]
 ]]
-function MyDungeonsBook:GetHeadersForInterruptsSummaryTable()
+function MyDungeonsBook:InterruptsFrame_GetHeadersForSummaryTable()
 	return {
 		{
 			name = " ",
@@ -294,7 +281,7 @@ function MyDungeonsBook:GetHeadersForInterruptsSummaryTable()
 			width = 40,
 			align = "LEFT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsSpellIcon(...);
+				self:Table_Cell_FormatAsSpellIcon(...);
 			end
 		},
 		{
@@ -302,7 +289,7 @@ function MyDungeonsBook:GetHeadersForInterruptsSummaryTable()
 			width = 100,
 			align = "LEFT",
 			DoCellUpdate = function(...)
-				self:FormatCellValueAsSpellLink(...);
+				self:Table_Cell_FormatAsSpellLink(...);
 			end
 		},
 		{
@@ -318,14 +305,13 @@ function MyDungeonsBook:GetHeadersForInterruptsSummaryTable()
 	};
 end
 
---[[
-Map summary data about Interrupts for challenge with id `challengeId`
+--[[--
+Map summary data about Interrupts for challenge with id `challengeId`.
 
-@method MyDungeonsBook:GetDataForInterruptsSummaryTable
-@param {number} challengeId
-@return {table}
+@param[type=number] challengeId
+@return[type=table]
 ]]
-function MyDungeonsBook:GetDataForInterruptsSummaryTable(challengeId)
+function MyDungeonsBook:InterruptsFrame_GetDataForSummaryTable(challengeId)
 	local tableData = {};
 	if (not challengeId) then
 		return nil;
@@ -373,19 +359,18 @@ function MyDungeonsBook:GetDataForInterruptsSummaryTable(challengeId)
 	return tableData;
 end
 
---[[
-Update Interrupts-tab for challenge with id `challengeId`
+--[[--
+Update Interrupts-tab for challenge with id `challengeId`.
 
-@method MyDungeonsBook:UpdateInterruptsFrame
-@param {number} challengeId
+@param[type=number] challengeId
 ]]
-function MyDungeonsBook:UpdateInterruptsFrame(challengeId)
+function MyDungeonsBook:InterruptsFrame_Update(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
-		local interruptsTableData = self:GetDataForInterruptsTable(challengeId);
+		local interruptsTableData = self:InterruptsFrame_GetDataForTable(challengeId);
 		self.challengeDetailsFrame.interruptsFrame.table:SetData(interruptsTableData or {});
-		self.challengeDetailsFrame.interruptsFrame.table:SetDisplayCols(self:GetHeadersForInterruptsTable(challengeId));
-		local interruptsSummaryTableData = self:GetDataForInterruptsSummaryTable(challengeId);
+		self.challengeDetailsFrame.interruptsFrame.table:SetDisplayCols(self:InterruptsFrame_GetHeadersForTable(challengeId));
+		local interruptsSummaryTableData = self:InterruptsFrame_GetDataForSummaryTable(challengeId);
 		if (interruptsSummaryTableData) then
 			self.challengeDetailsFrame.interruptsFrame.summaryTable:SetData(interruptsSummaryTableData);
 		end

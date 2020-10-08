@@ -70,8 +70,8 @@ L["Dungeon: %s (+%s)"] = "Dungeon: %s (+%s)";
 L["Performance"] = "Performance";
 L["Run garbage collector on close"] = "Run garbage collector on close";
 L["Verbose"] = "Verbose";
-L["Show DEBUG messages"] = "Show DEBUG messages";
-L["Show LOG messages"] = "Show LOG messages";
+L["MainFrame_Show DEBUG messages"] = "MainFrame_Show DEBUG messages";
+L["MainFrame_Show LOG messages"] = "MainFrame_Show LOG messages";
 -- Settings end
 
 -- BfA start
