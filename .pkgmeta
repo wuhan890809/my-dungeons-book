@@ -1,0 +1,10 @@
+package-as: MyDungeonsBook
+
+ignore:
+    - MyDungeonsBook.wowproj
+	- .gitignore
+	- config.ld
+	- db.t.lua
+	- README.md
+	- doc
+	- ldoc
