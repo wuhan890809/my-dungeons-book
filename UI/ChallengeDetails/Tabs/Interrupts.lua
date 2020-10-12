@@ -184,7 +184,7 @@ function MyDungeonsBook:InterruptsFrame_GetDataForTable(challengeId)
 	local allEnemiesPassedCasts = challenge.mechanics["ALL-ENEMY-PASSED-CASTS"] or {};
 	for unitName, interruptsBySpells in pairs(challenge.mechanics["COMMON-INTERRUPTS"]) do
 		if (interruptsBySpells) then
-			for unitSpellId, interruptsByUnitSpell in pairs(interruptsBySpells) do
+			for _, interruptsByUnitSpell in pairs(interruptsBySpells) do
 				for interruptedSpellId, interruptsCount in pairs(interruptsByUnitSpell) do
 					passedSpellsToInterruptNotInterrupted[interruptedSpellId] = false;
 					if (not tableData[interruptedSpellId]) then
@@ -216,9 +216,6 @@ function MyDungeonsBook:InterruptsFrame_GetDataForTable(challengeId)
 		local r = {
 			cols = {}
 		};
-		local spellLink = GetSpellLink(row.spellId);
-		local _, _, icon = GetSpellInfo(row.spellId);
-		local spellIcon = "|T" .. icon .. ":30:30:0:0:64:64:5:59:5:59|t"
 		for i = 1, 3 do
 			tinsert(r.cols, {value = row.spellId});
 		end
@@ -238,7 +235,7 @@ function MyDungeonsBook:InterruptsFrame_GetDataForTable(challengeId)
 			for i = 1, 3 do
 				tinsert(r.cols, {value = spellId});
 			end
-			for _, unitId in pairs(self:GetPartyRoster()) do
+			for _, _ in pairs(self:GetPartyRoster()) do
 				tinsert(r.cols, {value = 0});
 			end
 			tinsert(r.cols, {value = 0});
@@ -328,7 +325,7 @@ function MyDungeonsBook:InterruptsFrame_GetDataForSummaryTable(challengeId)
 			if (interruptsBySpells) then
 				for unitSpellId, interruptsByUnitSpell in pairs(interruptsBySpells) do
 					local sum = 0;
-					for interruptedSpellId, interruptsCount in pairs(interruptsByUnitSpell) do
+					for _, interruptsCount in pairs(interruptsByUnitSpell) do
 						sum = sum + interruptsCount;
 					end
 					local triedToInterrupt;

@@ -20,6 +20,7 @@ Created frame has a field `tabButtons` with tab-buttons. Keys in the `tabButtons
 function MyDungeonsBook:MechanicsFrame_CreateTabButtonsFrame(parentFrame)
 	return self:Tabs_Create(parentFrame, {
 		{id = "specialCasts", title = L["Special Casts"]},
+		{id = "ownCasts", title = L["Own Casts"]},
 		{id = "usedItems", title = L["Used Items"]},
 		{id = "damage", title = L["Damage"]},
 		{id = "effectsAndAuras", title = L["Effects and Auras"]}

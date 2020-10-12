@@ -20,11 +20,13 @@ function MyDungeonsBook:MechanicsFrame_Create(parentFrame)
 	mechanicsFrame:SetHeight(650);
 	mechanicsFrame.tabButtonsFrame = self:MechanicsFrame_CreateTabButtonsFrame(mechanicsFrame);
 	mechanicsFrame.specialCastsFrame = self:SpecialCastsFrame_Create(mechanicsFrame);
+	mechanicsFrame.ownCastsFrame = self:OwnCastsByPartyMembersFrame_Create(mechanicsFrame);
 	mechanicsFrame.usedItemsFrame = self:UsedItemsFrame_Create(mechanicsFrame);
 	mechanicsFrame.damageFrame = self:DamageFrame_Create(mechanicsFrame);
 	mechanicsFrame.effectsAndAurasFrame = self:EffectsAndAurasFrame_Create(mechanicsFrame);
 	mechanicsFrame.tabs = {
 		specialCasts = mechanicsFrame.specialCastsFrame,
+		ownCasts = mechanicsFrame.ownCastsFrame,
 		usedItems = mechanicsFrame.usedItemsFrame,
 		effectsAndAuras = mechanicsFrame.effectsAndAurasFrame,
 		damage = mechanicsFrame.damageFrame,
@@ -43,5 +45,6 @@ function MyDungeonsBook:MechanicsFrame_Update(challengeId)
 	self:UsedItemsFrame_Update(challengeId);
 	self:DamageFrame_Update(challengeId);
 	self:EffectsAndAurasFrame_Update(challengeId);
+	self:OwnCastsByPartyMembersFrame_Update(challengeId);
 	self:Tab_Click(self.challengeDetailsFrame.mechanicsFrame, "specialCasts");
 end

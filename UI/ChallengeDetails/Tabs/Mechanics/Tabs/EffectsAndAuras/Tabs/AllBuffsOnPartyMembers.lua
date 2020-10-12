@@ -7,8 +7,6 @@ UI
 @section UI
 ]]
 
-local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
-
 --[[--
 Create a frame for All Buffs On Party Members tab (data is taken from `mechanics[ALL-AURAS]`).
 
@@ -47,18 +45,6 @@ function MyDungeonsBook:AllBuffsOnPartyMemberFrame_Create(parentFrame)
     });
     tableWrapper.table = table;
     return tableWrapper;
-end
-
---[[--
-Generate columns for all buffs table.
-
-Depending on `challengeId` real player names will be used or simple placeholders like `player` or `party1..4`.
-
-@param[type=number] challengeId
-@return[type=table]
-]]
-function MyDungeonsBook:AllBuffsOnPartyMemberFrame_GetHeadersForTable(challengeId)
-    return self:Table_Headers_GetForSpellsSummary(challengeId);
 end
 
 --[[--

@@ -53,6 +53,7 @@ L["Over"] = "Over";
 L["Amount"] = "Amount";
 L["Damage Done To Units"] = "Damage Done To Units";
 L["Special Casts"] = "Special Casts"
+L["Own Casts"] = "Own Casts";
 L["Buffs Or Debuffs On Units"] = "Buffs Or Debuffs On Units";
 L["Buffs Or Debuffs On Party Members"] = "Buffs Or Debuffs On Party Members";
 L["Casts"] = "Casts"
@@ -71,6 +72,8 @@ L["Damage Done To Party Members"] = "Damage Done To Party Members";
 L["Effects and Auras"] = "Effects and Auras";
 L["All Buffs On Party Members"] = "All Buffs On Party Members";
 L["All Debuffs On Party Members"] = "All Debuffs On Party Members";
+L["Time"] = "Time";
+L["Target?"] = "Target?";
 -- UI end
 
 -- Settings start

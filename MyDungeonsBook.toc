@@ -27,6 +27,9 @@ UI/ChallengeDetails/Tabs/Roster.lua
 UI/ChallengeDetails/Tabs/Mechanics.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/CastsByPartyMembers.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/OwnCastsByPartyMembers.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/OwnCastsByPartyMembers/Tabs.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/OwnCastsByPartyMembers/Tabs/OwnCastsByPartyMember.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/UsedItems.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs.lua

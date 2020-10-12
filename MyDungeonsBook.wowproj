@@ -129,6 +129,15 @@
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\BuffsOrDebuffsOnUnits.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\OwnCastsByPartyMembers.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\OwnCastsByPartyMembers\Tabs.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\OwnCastsByPartyMembers\Tabs\OwnCastsByPartyMember.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\UsedItems.lua">
       <SubType>Code</SubType>
     </Content>
@@ -166,6 +175,8 @@
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs" />
+    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\OwnCastsByPartyMembers" />
+    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\OwnCastsByPartyMembers\Tabs" />
     <Folder Include="Utils" />
     <Folder Include="UI" />
     <Folder Include="UI\ChallengeDetails" />

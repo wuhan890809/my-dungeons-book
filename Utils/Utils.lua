@@ -183,6 +183,24 @@ function MyDungeonsBook:GetPartyUnitByName(challengeId, name)
 end
 
 --[[--
+Get a unit's name (with and without realm) for unit `unitId` in the challenge with id `challengeId`
+
+@param[type=number] challengeId
+@param[unitId] unitId
+@return[type=string] just a name
+@return[type=string] name with realm
+]]
+function MyDungeonsBook:GetNameByPartyUnit(challengeId, unitId)
+	local challenge = self.db.char.challenges[challengeId];
+	if (not challenge) then
+		return nil, nil;
+	end
+	local name = challenge.players[unitId].name;
+	local realm = challenge.players[unitId].realm;
+	return name, string.format("%s-%s", name, realm);
+end
+
+--[[--
 Create a colored string with key update level.
 
 It can be "-1" (red), "+1" (green), "+2" (green) or "+3" (green).
