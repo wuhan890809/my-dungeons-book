@@ -22,8 +22,8 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_Create(parentFrame)
 	local tableWrapper = CreateFrame("Frame", nil, parentFrame);
 	tableWrapper:SetWidth(900);
 	tableWrapper:SetHeight(450);
-	tableWrapper:SetPoint("TOPLEFT", 0, -120);
-	local table = ScrollingTable:CreateST(cols, 11, 40, nil, tableWrapper);
+	tableWrapper:SetPoint("TOPLEFT", 0, -100);
+	local table = ScrollingTable:CreateST(cols, 10, 40, nil, tableWrapper);
 	tableWrapper.table = table;
 	return tableWrapper;
 end
@@ -219,7 +219,7 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetDataForTable(challengeId, key)
 			local overkill = 0;
 			local partyUnitId = self:GetPartyUnitByName(challengeId, partyMemberName);
 			if (partyUnitId) then
-				for spellId, damageBySpell in pairs(partyMemberDamage) do
+				for _, damageBySpell in pairs(partyMemberDamage) do
 					amount = amount + damageBySpell.amount;
 					overkill = overkill + damageBySpell.overkill;
 					hits = hits + damageBySpell.hits;
@@ -266,9 +266,9 @@ Update Damage Done To Units tab for challenge with id `challengeId`.
 function MyDungeonsBook:DamageDoneToUnitsFrame_Update(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
-		local specialCastsTableData = self:DamageDoneToUnitsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-DAMAGE-DONE-TO-UNITS");
-		self.challengeDetailsFrame.mechanicsFrame.damageDoneToUnitsFrame.table:SetData(specialCastsTableData);
-		self.challengeDetailsFrame.mechanicsFrame.damageDoneToUnitsFrame.table:SetDisplayCols(self:DamageDoneToUnitsFrame_GetHeadersForTable(challengeId));
-		self.challengeDetailsFrame.mechanicsFrame.damageDoneToUnitsFrame.table:SortData();
+		local damageDoneToUnitsTableData = self:DamageDoneToUnitsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-DAMAGE-DONE-TO-UNITS");
+		self.challengeDetailsFrame.mechanicsFrame.damageFrame.damageDoneToUnitsFrame.table:SetData(damageDoneToUnitsTableData);
+		self.challengeDetailsFrame.mechanicsFrame.damageFrame.damageDoneToUnitsFrame.table:SetDisplayCols(self:DamageDoneToUnitsFrame_GetHeadersForTable(challengeId));
+		self.challengeDetailsFrame.mechanicsFrame.damageFrame.damageDoneToUnitsFrame.table:SortData();
 	end
 end

@@ -84,18 +84,18 @@ function MyDungeonsBook:ChallengesFrame_Create(parentFrame)
 	table:SetData(self:ChallengesFrame_GetDataForTable());
 	table:SortData();
 	table:RegisterEvents({
-		OnClick = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, button, ...)
+		OnClick = function (_, _, data, _, _, realrow, _, _, button)
 			if (button == "LeftButton" and realrow) then
 				local challengeId = data[realrow].cols[1].value;
 				self:ChallengeDetailsFrame_Show(challengeId);
 			end
 	    end,
-		OnEnter = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
+		OnEnter = function (_, cellFrame, data, _, _, realrow)
 			if (realrow) then
 				self:ChallengesFrame_RowHover(cellFrame, data[realrow].cols[1].value);
 			end
 	    end,
-		OnLeave = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
+		OnLeave = function (_, cellFrame, _, _, _, realrow)
 			if (realrow) then
 				self:ChallengesFrame_RowOut(cellFrame);
 			end
@@ -160,8 +160,8 @@ function MyDungeonsBook:ChallengesFrame_GetDataForTable()
 			local deaths = challenge.challengeInfo.numDeaths;
 			if (not deaths) then
 				deaths = 0;
-				for unitName, unitDeathsCount in pairs(challenge.deaths) do
-					deaths = deaths + unitDeathsCount;
+				for _, unitDeaths in pairs(challenge.mechanics["DEATHS"]) do
+					deaths = deaths + #unitDeaths;
 				end
 			end
 			local row = {
@@ -200,7 +200,7 @@ function MyDungeonsBook:ChallengesFrame_GetDataForTable()
 	return tableData;
 end
 
-function MyDungeonsBook:FormatCellAsChallengeKeyStatus(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
+function MyDungeonsBook:FormatCellAsChallengeKeyStatus(_, cellFrame, data, _, _, realrow, column)
 	local val = data[realrow].cols[column].value;
 	local text = (val > 0 and string.format("|cff1eff00+%s|r", val)) or "|cffcc3333-1|r";
 	cellFrame.text:SetText(text);

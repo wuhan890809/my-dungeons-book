@@ -29,6 +29,10 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 			local spellId, _, _, extraSpellId = select(12, CombatLogGetCurrentEventInfo());
 			self:TrackInterrupt(srcName, srcGUID, spellId, extraSpellId);
 		end
+		if (subEventSuffix == "DISPEL") then
+			local spellId, _, _, extraSpellId = select(12, CombatLogGetCurrentEventInfo());
+			self:TrackDispel(srcName, srcGUID, spellId, extraSpellId);
+		end
 		if (subEventName == "SPELL_CAST_SUCCESS") then
 			local spellId = select(12, CombatLogGetCurrentEventInfo());
 			self:TrackTryInterrupt(spellId, srcGUID, srcName);
@@ -37,9 +41,14 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 			self:TrackAllEnemiesPassedCasts(srcName, srcGUID, spellId);
 			self:TrackBfASpecificCastDoneByPartyMembers(srcName, spellId);
 			self:TrackSLSpecificCastDoneByPartyMembers(srcName, spellId);
+			self:TrackBfAOwnCastDoneByPartyMembers(srcName, spellId, dstName);
+			self:TrackSLOwnCastDoneByPartyMembers(srcName, spellId, dstName);
+			self:TrackBfASpecificItemUsedByPartyMembers(srcName, spellId);
+			self:TrackSLSpecificItemUsedByPartyMembers(srcName, spellId);
 		end
 		if ((subEventPrefix:match("^SPELL") or subEventPrefix:match("^RANGE")) and subEventSuffix == "DAMAGE") then
 			local spellId, _, _, amount, overkill = select(12, CombatLogGetCurrentEventInfo());
+			self:TrackAllDamageDoneToPartyMembers(dstName, spellId, amount);
 			self:TrackBfAAvoidableSpells(dstName, spellId, amount);
 			self:TrackSLAvoidableSpells(dstName, spellId, amount);
 			self:TrackBfADamageDoneToSpecificUnits(srcName, srcGUID, spellId, amount, overkill, dstName, dstGUID);
@@ -51,7 +60,8 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 			self:TrackSLAvoidableSpells(dstName, spellId, amount);
 		end
 		if (subEventName == "SPELL_AURA_APPLIED" or subEventName == "SPELL_AURA_APPLIED_DOSE") then
-			local spellId = select(12, CombatLogGetCurrentEventInfo());
+			local spellId, _, _, auraType = select(12, CombatLogGetCurrentEventInfo());
+			self:TrackAllAurasOnPartyMembers(dstName, spellId, auraType);
 			self:TrackBfAAvoidableAuras(dstName, spellId);
 			self:TrackSLAvoidableAuras(dstName, spellId);
 			self:TrackBfASpecificBuffOrDebuffOnPartyMembers(dstName, spellId);
@@ -103,7 +113,7 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 	
 	local affixesKey = "affixes";
 	for _, k in ipairs(affixIds) do
-		affixesKey = affixesKey .. "-" .. k;
+		affixesKey = string.format("%s-%s", affixesKey, k);
 	end
 
 	self:DebugPrint(string.format("affixesKey is %s", affixesKey));

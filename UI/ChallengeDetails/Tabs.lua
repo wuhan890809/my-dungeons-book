@@ -32,27 +32,9 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 	end);
 	PanelTemplates_TabResize(rosterTabButton, 0);
 
-	-- Avoidable Damage
-	local avoidableDamageTabButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
-	avoidableDamageTabButton:SetPoint("TOPLEFT", rosterTabButton, "TOPRIGHT", 0, 0);
-	avoidableDamageTabButton:SetText(L["Avoidable Damage"]);
-	avoidableDamageTabButton:SetScript("OnClick", function()
-		self:ChallengeDetailsFrame_ShowTab("avoidableDamage");
-	end);
-	PanelTemplates_TabResize(avoidableDamageTabButton, 0);
-
-	--  Avoidable Debuffs
-	local avoidableDebuffsTabButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
-	avoidableDebuffsTabButton:SetPoint("TOPLEFT", avoidableDamageTabButton, "TOPRIGHT", 0, 0);
-	avoidableDebuffsTabButton:SetText(L["Avoidable Debuffs"]);
-	avoidableDebuffsTabButton:SetScript("OnClick", function()
-		self:ChallengeDetailsFrame_ShowTab("avoidableDebuffs");
-	end);
-	PanelTemplates_TabResize(avoidableDebuffsTabButton, 0);
-
 	-- Details
 	local detailsTabButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
-	detailsTabButton:SetPoint("TOPLEFT", avoidableDebuffsTabButton, "TOPRIGHT", 0, 0);
+	detailsTabButton:SetPoint("TOPLEFT", rosterTabButton, "TOPRIGHT", 0, 0);
 	detailsTabButton:SetText(L["Details"]);
 	detailsTabButton:SetScript("OnClick", function()
 		self:ChallengeDetailsFrame_ShowTab("details");
@@ -80,7 +62,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 	-- Mechanics
 	local mechanicsTabButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
 	mechanicsTabButton:SetPoint("TOPLEFT", interruptsTabButton, "TOPRIGHT", 0, 0);
-	mechanicsTabButton:SetText(L["Mechaincs"]);
+	mechanicsTabButton:SetText(L["Mechanics"]);
 	mechanicsTabButton:SetScript("OnClick", function()
 		self:ChallengeDetailsFrame_ShowTab("mechanics");
 	end);
@@ -97,7 +79,6 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 	
 	tabsButtonsFrame.tabButtons = {
 		roster = rosterTabButton,
-		avoidableDamage = avoidableDamageTabButton,
 		avoidableDebuffs = avoidableDebuffsTabButton,
 		details = detailsTabButton,
 		interrupts = interruptsTabButton,

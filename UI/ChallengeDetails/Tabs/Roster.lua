@@ -81,7 +81,7 @@ function MyDungeonsBook:RosterFrame_PartyMemberFrame_ClassIcon_Create(parentFram
 	classFrame:SetScript("OnEnter", function(frame)
 		self:RosterFrame_TableClassHover(frame, unitId);
 	end);
-	classFrame:SetScript("OnLeave", function(frame)
+	classFrame:SetScript("OnLeave", function()
 		self:Table_Cell_MouseOut();
 	end);
 	local text = classFrame:CreateFontString(nil, "ARTWORK");
@@ -109,7 +109,7 @@ function MyDungeonsBook:RosterFrame_PartyMemberFrame_SpecIcon_Create(parentFrame
 	specFrame:SetScript("OnEnter", function(frame)
 		self:RosterFrame_TableSpecHover(frame, unitId);
 	end);
-	specFrame:SetScript("OnLeave", function(frame)
+	specFrame:SetScript("OnLeave", function()
 		self:Table_Cell_MouseOut();
 	end);
 	local text = specFrame:CreateFontString(nil, "ARTWORK");
@@ -176,7 +176,7 @@ function MyDungeonsBook:RosterFrame_PartyMemberFrame_Equipment_Create(parentFram
 		itemFrame:SetScript("OnEnter", function(frame)
 			self:RosterFrame_TableItemHover(frame, unitId, i);
 		end);
-		itemFrame:SetScript("OnLeave", function(frame)
+		itemFrame:SetScript("OnLeave", function()
 			self:Table_Cell_MouseOut();
 		end);
 		local text = itemFrame:CreateFontString(nil, "ARTWORK");
@@ -224,7 +224,7 @@ Shows a spec name.
 function MyDungeonsBook:RosterFrame_TableSpecHover(specIconFrame, unitId)
 	local spec = self.db.char.challenges[self.activeChallengeId].players[unitId].spec;
 	if (spec) then
-		local _, specName, description = GetSpecializationInfoByID(self.db.char.challenges[self.activeChallengeId].players[unitId].spec);
+		local _, specName = GetSpecializationInfoByID(self.db.char.challenges[self.activeChallengeId].players[unitId].spec);
 		GameTooltip:SetOwner(specIconFrame, "ANCHOR_NONE");
 		GameTooltip:SetPoint("BOTTOMLEFT", specIconFrame, "BOTTOMRIGHT");
 		GameTooltip:AddLine(specName, 1, 1, 1);

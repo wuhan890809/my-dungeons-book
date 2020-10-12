@@ -23,20 +23,6 @@ local WindowBackdrop = {
 	}
 };
 
-local CustomWindowBackdrop = {
-	bgFile = "Interface\\TutorialFrame\\TutorialFrameBackground",
-	edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
-	tile = true,
-	tileSize = 32,
-	edgeSize = 16,
-	insets = {
-		left = 5,
-		right = 5,
-		top = 5,
-		bottom = 5
-	}
-};
-
 --[[--
 Creates a main frame for addon.
 
@@ -124,8 +110,8 @@ Create (if not exists) a main frame and show it for player
 function MyDungeonsBook:MainFrame_Show()
 	if (not self.frame) then
 		local frame = self:MainFrame_Create();
-		local titleBar = self:MainFrame_TitleBar_Create(frame);
-		local close = self:MainFrame_CloseButton_Create(frame);
+		self.titleBar = self:MainFrame_TitleBar_Create(frame);
+		self.closeButton = self:MainFrame_CloseButton_Create(frame);
 		self.challengesTable = self:ChallengesFrame_Create(frame);
 		self.challengeDetailsFrame = self:ChallengeDetailsFrame_Create(frame);
 		self.frame = frame;

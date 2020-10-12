@@ -21,7 +21,7 @@ L["Not Found"] = "Not Found";
 L["Hits"] = "Hits";
 L["Spell"] = "Spell";
 L["DEV"] = "DEV";
-L["Mechaincs"] = "Mechaincs";
+L["Mechanics"] = "Mechanics";
 L["Interrupts"] = "Interrupts";
 L["Encounters"] = "Encounters";
 L["Details"] = "Details";
@@ -64,6 +64,13 @@ L["Time: %s / %s (%s%s) %.1f%%"] = "Time: %s / %s (%s%s) %.1f%%";
 L["Key HP bonus: %s%%"] = "Key HP bonus: %s%%";
 L["Key damage bonus: %s%%"] = "Key damage bonus: %s%%";
 L["Dungeon: %s (+%s)"] = "Dungeon: %s (+%s)";
+L["Used Items"] = "Used Items";
+L["Item"] = "Item";
+L["%s dispelled %s using %s"] = "%s dispelled %s using %s";
+L["Damage Done To Party Members"] = "Damage Done To Party Members";
+L["Effects and Auras"] = "Effects and Auras";
+L["All Buffs On Party Members"] = "All Buffs On Party Members";
+L["All Debuffs On Party Members"] = "All Debuffs On Party Members";
 -- UI end
 
 -- Settings start
@@ -84,6 +91,17 @@ L["Animated Gold"] = "Animated Gold";
 L["Reban"] = "Reban";
 L["T'zala"] = "T'zala";
 L["Reanimated Raptor"] = "Reanimated Raptor";
+L["Wasting Servant"] = "Wasting Servant";
+L["Soul Thorns"] = "Soul Thorns";
+L["Blood Visage"] = "Blood Visage";
+L["Blood Effigy"] = "Blood Effigy";
+L["A Knot of Snakes"] = "A Knot of Snakes";
+L["Buzzing Drone"] = "Buzzing Drone";
+L["Gripping Terror"] = "Gripping Terror";
+L["Hull Cracker"] = "Hull Cracker";
+L["Ashvane Cannoneer"] = "Ashvane Cannoneer";
+L["Venture Co. Skyscorcher"] = "Venture Co. Skyscorcher";
+L["Deathtouched Slaver"] = "Deathtouched Slaver";
 -- NPCs end
 -- BfA end
 

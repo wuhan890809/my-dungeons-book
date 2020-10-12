@@ -7,8 +7,6 @@ Utils
 @section Utils
 ]]
 
-local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
-
 local affixesMap = {
 	[1] = 463570, -- Overflowing
 	[2] = 135994, -- Skittish
@@ -220,7 +218,7 @@ function MyDungeonsBook:GetChallengeAffixesIconsStr(challengeId, iconSize)
 	local iconFormatter = string.format(":%s:%s:0:0:64:64:5:59:5:59|t", iconSize, iconSize);
 	if (challenge.challengeInfo.affixes) then
 		for _, affixId in pairs(challenge.challengeInfo.affixes) do
-			affixes = affixes .. " |T" .. self:GetAffixTextureById(affixId) .. iconFormatter;
+			affixes = string.format("%s |T%s%s", affixes, self:GetAffixTextureById(affixId), iconFormatter);
 		end
 	end
 	return affixes;

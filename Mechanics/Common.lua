@@ -32,6 +32,20 @@ local function getPetOwner(unitGUID, partyRoster)
 	return nil;
 end
 
+-- Tooltip to track pet's owner
+local scanTool = CreateFrame("GameTooltip", "ScanTooltip", nil, "GameTooltipTemplate");
+
+-- from https://www.wowinterface.com/forums/showthread.php?t=43082
+local function getPetOwnerWithTooltip(petName)
+	scanTool:ClearLines();
+	scanTool:SetUnit(petName);
+	local ownerText = scanText:GetText();
+	if (not ownerText) then
+		return nil;
+	end
+	local owner, _ = string.split("'", ownerText);
+	return owner; -- This is the pet's owner
+end
 
 --[[--
 Add a table or counter (depends on `asCounter`) to the active challenge inside a `mechanics` (nested in 1 level).
@@ -129,16 +143,14 @@ function MyDungeonsBook:TrackDeath(deadUnitGUID, unit)
 			return;
 		end
 	end
-	if (not self.db.char.challenges[id].deaths[unit]) then
-		self.db.char.challenges[id].deaths[unit] = 1;
-	else
-		self.db.char.challenges[id].deaths[unit] = self.db.char.challenges[id].deaths[unit] + 1;
-	end
+	local key = "DEATHS";
+	self:InitMechanics2Lvl(key, unit);
+	tinsert(self.db.char.challenges[id].mechanics[key][unit], time());
 	self:LogPrint(string.format(L["%s died"], self:ClassColorText(unit, unit)));
 end
 
 --[[--
-Track interrupts by players.
+Track interrupts done by party members.
 
 @param[type=string] unit 5th result of `CombatLogGetCurrentEventInfo` call
 @param[type=string] srcGUID 4th result of `CombatLogGetCurrentEventInfo` call
@@ -150,7 +162,7 @@ function MyDungeonsBook:TrackInterrupt(unit, srcGUID, spellId, interruptedSpellI
 	--Attribute Pet Spell's to its owner
     local type = strsplit("-", srcGUID);
     if (type == "Pet") then
-		local petOwnerId = getPetOwner(srcGUID, self:GetPartyRoster());
+		local petOwnerId = getPetOwnerWithTooltip(srcGUID);
 		if (petOwnerId) then
 			unit = UnitName(petOwnerId);
 		end
@@ -163,6 +175,34 @@ function MyDungeonsBook:TrackInterrupt(unit, srcGUID, spellId, interruptedSpellI
 	self:LogPrint(string.format(L["%s interrupted %s using %s"], self:ClassColorText(unit, unit), GetSpellLink(interruptedSpellId), GetSpellLink(spellId)));
 	self:InitMechanics4Lvl(KEY, unit, spellId, interruptedSpellId, true);
 	self.db.char.challenges[id].mechanics[KEY][unit][spellId][interruptedSpellId] = self.db.char.challenges[id].mechanics[KEY][unit][spellId][interruptedSpellId] + 1;
+end
+
+--[[--
+Track dispels done by party members.
+
+@param[type=string] unit 5th result of `CombatLogGetCurrentEventInfo` call
+@param[type=string] srcGUID 4th result of `CombatLogGetCurrentEventInfo` call
+@param[type=number] spellId 12th result of `CombatLogGetCurrentEventInfo` call
+@param[type=number] dispelledSpellId 15th result of `CombatLogGetCurrentEventInfo` call
+]]
+function MyDungeonsBook:TrackDispel(unit, srcGUID, spellId, dispelledSpellId)
+	local id = self.db.char.activeChallengeId;
+	--Attribute Pet Spell's to its owner
+    local type = strsplit("-", srcGUID);
+    if (type == "Pet") then
+		local petOwnerId = getPetOwnerWithTooltip(srcGUID);
+		if (petOwnerId) then
+			unit = UnitName(petOwnerId);
+		end
+    end
+	if (not UnitIsPlayer(unit)) then
+		self:DebugPrint(string.format("%s is not player", unit));
+		return;
+	end
+	local KEY = "COMMON-DISPEL";
+	self:LogPrint(string.format(L["%s dispelled %s using %s"], self:ClassColorText(unit, unit), GetSpellLink(dispelledSpellId), GetSpellLink(spellId)));
+	self:InitMechanics4Lvl(KEY, unit, spellId, dispelledSpellId, true);
+	self.db.char.challenges[id].mechanics[KEY][unit][spellId][dispelledSpellId] = self.db.char.challenges[id].mechanics[KEY][unit][spellId][dispelledSpellId] + 1;
 end
 
 --[[--
@@ -206,7 +246,7 @@ function MyDungeonsBook:TrackTryInterrupt(spellId, sourceGUID, sourceName)
     --Attribute Pet Spell's to its owner
     local type = strsplit("-", sourceGUID);
     if (type == "Pet") then
-		local petOwnerId = getPetOwner(sourceGUID, self:GetPartyRoster());
+		local petOwnerId = getPetOwnerWithTooltip(sourceGUID);
 		if (petOwnerId) then
 			sourceName = UnitName(unit);
 		end
@@ -225,33 +265,58 @@ Check events not related to `SPELL_AURA_APPLIED` and `SPELL_AURA_APPLIED_DOSE` (
 @param[type=table] spells table with keys equal to tracked spell ids
 @param[type=table] spellsNoTank table with keys equal to tracked spell ids allowed to hit tanks
 @param[type=string] unit unit name that got damage (usualy it's a destUnit from `CombatLogGetCurrentEventInfo`)
-@param[type=number] spellId spell that did damage to `damagedUnit`
-@param[type=number] amount amount of damage done to `damagedUnit` by `spellId`
+@param[type=number] spellId spell that did damage to `unit`
+@param[type=number] amount amount of damage done to `unit` by `spellId`
 ]]
 function MyDungeonsBook:TrackAvoidableSpells(key, spells, spellsNoTank, unit, spellId, amount)
 	if ((spells[spellId] or (spellsNoTank[spellId] and UnitGroupRolesAssigned(unit) ~= "TANK")) and UnitIsPlayer(unit)) then
-		local partyUnit = self:GetPartyUnitByName(unit);
-		if (partyUnit) then
-			local amountInPercents = amount / UnitHealthMax(unit) * 100;
-			if (amountInPercents > 40) then
-				self:LogPrint(string.format(L["%s got hit by %s for %s (%s)"], unit, GetSpellLink(spellId), self:FormatNumber(amount), string.format("%.1f\%", amountInPercents)));
-			end
-		end
-		local id = self.db.char.activeChallengeId;
-		self:InitMechanics2Lvl(key, unit);
-		if (not self.db.char.challenges[id].mechanics[key][unit][spellId]) then
-			self.db.char.challenges[id].mechanics[key][unit][spellId] = {
-				num = 0,
-				sum = 0
-			};
-		end
-		if (not amount) then
-			amount = 0;
-			self:DebugPrint(string.format("Cast of %s did `nil` amount of damage", GetSpellLink(spellId)));
-		end
-		self.db.char.challenges[id].mechanics[key][unit][spellId].num = self.db.char.challenges[id].mechanics[key][unit][spellId].num + 1;
-		self.db.char.challenges[id].mechanics[key][unit][spellId].sum = self.db.char.challenges[id].mechanics[key][unit][spellId].sum + amount;
+		self:SaveTrackedDamageToPartyMembers(key, unit, spellId, amount);
 	end
+end
+
+--[[--
+Track all damage done to party members
+
+@param[type=string] unit unit name that got damage (usualy it's a destUnit from `CombatLogGetCurrentEventInfo`)
+@param[type=number] spellId spell that did damage to `unit`
+@param[type=number] amount amount of damage done to `unit` by `spellId`
+]]
+function MyDungeonsBook:TrackAllDamageDoneToPartyMembers(unit, spellId, amount)
+	local key = "ALL-DAMAGE-DONE-TO-PARTY-MEMBERS";
+	if (UnitIsPlayer(unit)) then
+		self:SaveTrackedDamageToPartyMembers(key, unit, spellId, amount);
+	end
+end
+
+--[[--
+@local
+@param[type=string] key db key
+@param[type=string] unit unit name that got damage (usualy it's a destUnit from `CombatLogGetCurrentEventInfo`)
+@param[type=number] spellId spell that did damage to `unit`
+@param[type=number] amount amount of damage done to `unit` by `spellId`
+]]
+function MyDungeonsBook:SaveTrackedDamageToPartyMembers(key, unit, spellId, amount)
+	local partyUnit = self:GetPartyUnitByName(unit);
+	if (partyUnit) then
+		local amountInPercents = amount / UnitHealthMax(partyUnit) * 100;
+		if (amountInPercents > 40) then
+			self:LogPrint(string.format(L["%s got hit by %s for %s (%s)"], unit, GetSpellLink(spellId), self:FormatNumber(amount), string.format("%.1f\%", amountInPercents)));
+		end
+	end
+	local id = self.db.char.activeChallengeId;
+	self:InitMechanics2Lvl(key, unit);
+	if (not self.db.char.challenges[id].mechanics[key][unit][spellId]) then
+		self.db.char.challenges[id].mechanics[key][unit][spellId] = {
+			num = 0,
+			sum = 0
+		};
+	end
+	if (not amount) then
+		amount = 0;
+		self:DebugPrint(string.format("Cast of %s did `nil` amount of damage", GetSpellLink(spellId)));
+	end
+	self.db.char.challenges[id].mechanics[key][unit][spellId].num = self.db.char.challenges[id].mechanics[key][unit][spellId].num + 1;
+	self.db.char.challenges[id].mechanics[key][unit][spellId].sum = self.db.char.challenges[id].mechanics[key][unit][spellId].sum + amount;
 end
 
 --[[--
@@ -271,6 +336,26 @@ function MyDungeonsBook:TrackAvoidableAuras(key, auras, aurasNoTank, unit, spell
 		self:InitMechanics3Lvl(key, unit, spellId, true);
 		self.db.char.challenges[id].mechanics[key][unit][spellId] = self.db.char.challenges[id].mechanics[key][unit][spellId] + 1;
 		self:LogPrint(string.format(L["%s got debuff by %s"], unit, GetSpellLink(spellId)));
+	end
+end
+
+--[[--
+Track all buffs and debuffs on party members
+
+@param[type=unitId] unit unit name that got buff or debuff (usualy it's a destUnit from `CombatLogGetCurrentEventInfo`)
+@param[type=number] spellId spell that apply debuff to `damagedUnit`
+@param[type=string] auraType
+]]
+function MyDungeonsBook:TrackAllAurasOnPartyMembers(unit, spellId, auraType)
+	if (UnitIsPlayer(unit)) then
+		local id = self.db.char.activeChallengeId;
+		local key = "ALL-AURAS";
+		self:InitMechanics3Lvl(key, unit, spellId);
+		self.db.char.challenges[id].mechanics[key][unit][spellId].auraType = auraType;
+		if (not self.db.char.challenges[id].mechanics[key][unit][spellId].count) then
+			self.db.char.challenges[id].mechanics[key][unit][spellId].count = 0;
+		end
+		self.db.char.challenges[id].mechanics[key][unit][spellId].count = self.db.char.challenges[id].mechanics[key][unit][spellId].count + 1;
 	end
 end
 
@@ -319,7 +404,7 @@ Track damage done by party members (and pets) for specific unit.
 @param[type=table] npcs table with npcs needed to track (each key is a npc id)
 @param[type=string] sourceUnitName name of unit that did damage
 @param[type=GUID] sourceUnitGUID GUID of unit that did damage
-@param[type=number] spellId spell id 
+@param[type=number] spellId spell id
 @param[type=number] amount amount of done damage
 @param[type=number] overkill amount of extra damage
 @param[type=string] targetUnitName name of unit that got damage
@@ -336,9 +421,9 @@ function MyDungeonsBook:TrackDamageDoneToSpecificUnits(key, npcs, sourceUnitName
 		return;
 	end
     if (type == "Pet") then
-		local petOwnerId = getPetOwner(sourceUnitGUID, self:GetPartyRoster());
+		local petOwnerId = getPetOwnerWithTooltip(sourceUnitGUID);
 		if (petOwnerId) then
-			sourceUnitName = string.format("%s (%s)", UnitName(petOwnerId), sourceUnitName);
+			sourceUnitName = string.format("%s (%s)", sourceUnitName, UnitName(petOwnerId));
 		end
     end
 	self:InitMechanics4Lvl(key, npcId, sourceUnitName, spellId);
@@ -361,6 +446,29 @@ function MyDungeonsBook:TrackDamageDoneToSpecificUnits(key, npcs, sourceUnitName
 end
 
 --[[--
+Track cast done by any party member.
+
+It should be used for player's own spells.
+
+@param[type=string] key mechanic unique identifier
+@param[type=table] spells table with spells needed to track (each key is a spell id)
+@param[type=string] sourceUnitName name of unit that casted a spell
+@param[type=number] spellId casted spell id
+@param[type=?string] targetUnitName name of unit that is spell's target (only for single target spells)
+]]
+function MyDungeonsBook:TrackOwnCastDoneByPartyMembers(key, spells, sourceUnitName, spellId, targetUnitName)
+	if (spells[spellId] and UnitIsPlayer(sourceUnitName)) then
+		local id = self.db.char.activeChallengeId;
+		self:InitMechanics3Lvl(key, sourceUnitName, spellId);
+		local timestamp = time();
+		self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId][timestamp] = {
+			time = timestamp,
+			target = targetUnitName
+		};
+	end
+end
+
+--[[--
 Track specific cast done by any party member.
 
 It should not be used for player's own spells. It should be used for some specific for dungeon spells (e.g. kicking balls in the ML).
@@ -375,6 +483,25 @@ function MyDungeonsBook:TrackSpecificCastDoneByPartyMembers(key, spells, unit, s
 		local id = self.db.char.activeChallengeId;
 		self:InitMechanics3Lvl(key, spellId, unit, true);
 		self.db.char.challenges[id].mechanics[key][spellId][unit] = self.db.char.challenges[id].mechanics[key][spellId][unit] + 1;
+	end
+end
+
+--[[--
+Track specific items used by any party member.
+
+Technically using items is same as casting spells.
+
+@param[type=string] key mechanic unique identifier
+@param[type=table] spells table with spells needed to track (each key is a spell id and each value is item id)
+@param[type=string] unit name of unit that casted a spell
+@param[type=number] spellId casted spell id
+]]
+function MyDungeonsBook:TrackSpecificItemUsedByPartyMembers(key, spells, unit, spellId)
+	local itemId = spells[spellId];
+	if (itemId and UnitIsPlayer(unit)) then
+		local id = self.db.char.activeChallengeId;
+		self:InitMechanics3Lvl(key, itemId, unit, true);
+		self.db.char.challenges[id].mechanics[key][itemId][unit] = self.db.char.challenges[id].mechanics[key][itemId][unit] + 1;
 	end
 end
 

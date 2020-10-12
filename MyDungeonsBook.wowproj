@@ -14,6 +14,7 @@
     <Content Include=".gitignore">
       <SubType>Code</SubType>
     </Content>
+    <Content Include=".pkgmeta" />
     <Content Include="addon.lua">
       <SubType>Code</SubType>
     </Content>
@@ -71,12 +72,6 @@
     <Content Include="UI\ChallengeDetails\Tabs.lua">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="UI\ChallengeDetails\Tabs\AvoidableDamage.lua">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="UI\ChallengeDetails\Tabs\AvoidableDebuffs.lua">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Details.lua">
       <SubType>Code</SubType>
     </Content>
@@ -95,16 +90,46 @@
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs.lua">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\BuffsOrDebuffsOnPartyMembers.lua">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\BuffsOrDebuffsOnUnits.lua">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\DamageDoneToUnits.lua">
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage.lua">
       <SubType>Code</SubType>
     </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\CastsByPartyMembers.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\AvoidableDamage.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\DamageDoneToPartyMembers.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\DamageDoneToUnits.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\AllBuffsOnPartyMembers.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\AllDebuffsOnPartyMembers.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\AvoidableDebuffs.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\BuffsOrDebuffsOnPartyMembers.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\BuffsOrDebuffsOnUnits.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\UsedItems.lua">
       <SubType>Code</SubType>
     </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Roster.lua">
@@ -134,6 +159,10 @@
     <Folder Include="ldoc" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs" />
+    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage" />
+    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs" />
+    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras" />
+    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs" />
     <Folder Include="Utils" />
     <Folder Include="UI" />
     <Folder Include="UI\ChallengeDetails" />

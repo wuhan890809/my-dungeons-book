@@ -25,6 +25,10 @@ local SLSpecificBuffOrDebuffOnUnit = {};
 
 local SLSpecificCastsDoneByPartyMembers = {};
 
+local SLOwnCastsDoneByPartyMembers = {};
+
+local SLSpecificItemsUsedByPartyMembers = {};
+
 local SLDamageDoneToSpecificUnits = {};
 
 function MyDungeonsBook:GetSLDamageDoneToSpecificUnits()
@@ -57,6 +61,14 @@ end
 
 function MyDungeonsBook:TrackSLSpecificCastDoneByPartyMembers(unit, spellId)
 	self:TrackSpecificCastDoneByPartyMembers("SL-CASTS-DONE-BY-PARTY-MEMBERS", SLSpecificCastsDoneByPartyMembers, unit, spellId);
+end
+
+function MyDungeonsBook:TrackSLOwnCastDoneByPartyMembers(sourceUnitName, spellId, targetUnitName)
+	self:TrackOwnCastDoneByPartyMembers("SL-OWN-CASTS-DONE-BY-PARTY-MEMBERS", SLOwnCastsDoneByPartyMembers, sourceUnitName, spellId, targetUnitName);
+end
+
+function MyDungeonsBook:TrackSLSpecificItemUsedByPartyMembers(unit, spellId)
+	self:TrackSpecificItemUsedByPartyMembers("SL-ITEM-USED-BY-PARTY-MEMBERS", SLSpecificItemsUsedByPartyMembers, unit, spellId);
 end
 
 function MyDungeonsBook:TrackSLDamageDoneToSpecificUnits(sourceName, sourceGUID, spellId, amount, overkill, targetName, targetGUID)

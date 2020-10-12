@@ -27,7 +27,7 @@ function MyDungeonsBook:EncountersFrame_Create(parentFrame)
 	tableWrapper:SetPoint("TOPLEFT", 10, 0);
 	local table = ScrollingTable:CreateST(cols, 6, 40, nil, tableWrapper);
 	table:RegisterEvents({
-		OnClick = function(...)
+		OnClick = function()
 			return true;
 	    end
 	});

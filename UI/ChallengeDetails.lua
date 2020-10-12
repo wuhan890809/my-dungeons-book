@@ -30,14 +30,12 @@ Creates all frames related to the challenge details frames (with itself).
 ]]
 function MyDungeonsBook:ChallengeDetailsFrame_Create(parentFrame)
 	local challengeDetailsFrame = CreateFrame("Frame", nil, parentFrame);
-	challengeDetailsFrame:SetPoint("TOPRIGHT", -10, -30);
+	challengeDetailsFrame:SetPoint("TOPLEFT", 590, -30);
 	challengeDetailsFrame:SetWidth(900);
 	challengeDetailsFrame:SetHeight(650);
 	challengeDetailsFrame.titleFrame = self:ChallengeDetailsFrame_TitleFrame_Create(challengeDetailsFrame);
 	challengeDetailsFrame.tabButtonsFrame = self:ChallengeDetailsFrame_CreateTabButtonsFrame(challengeDetailsFrame);
 	challengeDetailsFrame.challengeRosterFrame = self:RosterFrame_Create(challengeDetailsFrame);
-	challengeDetailsFrame.avoidableDamageFrame = self:AvoidableDamageFrame_Create(challengeDetailsFrame);
-	challengeDetailsFrame.avoidableDebuffsFrame = self:AvoidableDebuffsFrame_Create(challengeDetailsFrame);
 	challengeDetailsFrame.detailsFrame = self:DetailsFrame_Create(challengeDetailsFrame);
 	challengeDetailsFrame.encountersFrame = self:EncountersFrame_Create(challengeDetailsFrame);
 	challengeDetailsFrame.interruptsFrame = self:InterruptsFrame_Create(challengeDetailsFrame);
@@ -45,8 +43,6 @@ function MyDungeonsBook:ChallengeDetailsFrame_Create(parentFrame)
 	challengeDetailsFrame.devFrame = self:DevFrame_Create(challengeDetailsFrame);
 	challengeDetailsFrame.tabs = {
 		roster = challengeDetailsFrame.challengeRosterFrame,
-		avoidableDamage = challengeDetailsFrame.avoidableDamageFrame,
-		avoidableDebuffs = challengeDetailsFrame.avoidableDebuffsFrame,
 		details = challengeDetailsFrame.detailsFrame,
 		dev = challengeDetailsFrame.devFrame,
 		encounters = challengeDetailsFrame.encountersFrame,
@@ -97,8 +93,6 @@ function MyDungeonsBook:ChallengeDetailsFrame_Update(challengeId)
 	if (challenge) then
 		self.challengeDetailsFrame.titleFrame.titleText:SetText(string.format(L["%s (+%s) %s"], challenge.challengeInfo.zoneName, challenge.challengeInfo.cmLevel, self:GetKeyUpgradeStr(challenge)));
 		self.challengeDetailsFrame.titleFrame.titleAffixes:SetText(self:GetChallengeAffixesIconsStr(challengeId, 30));
-		self:AvoidableDamageFrame_Update(challengeId);
-		self:AvoidableDebuffsFrame_Update(challengeId);
 		self:InterruptsFrame_Update(challengeId);
 		self:DetailsFrame_Update(challengeId);
 		self:DevFrame_Update(challengeId);

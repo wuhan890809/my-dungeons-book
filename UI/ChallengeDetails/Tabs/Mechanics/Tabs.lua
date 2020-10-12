@@ -32,38 +32,38 @@ function MyDungeonsBook:MechanicsFrame_CreateTabButtonsFrame(parentFrame)
 	end);
 	PanelTemplates_TabResize(specialCastsButton, 0);
 
-	-- Damage Done To Units
-	local damageDoneToUnitsButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
-	damageDoneToUnitsButton:SetPoint("TOPLEFT", specialCastsButton, "TOPRIGHT", 0, 0);
-	damageDoneToUnitsButton:SetText(L["Damage Done To Units"]);
-	damageDoneToUnitsButton:SetScript("OnClick", function()
-		self:MechanicsFrame_ShowTab("damageDoneToUnits");
+	-- Used Items
+	local usedItemsButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
+	usedItemsButton:SetPoint("TOPLEFT", specialCastsButton, "TOPRIGHT", 0, 0);
+	usedItemsButton:SetText(L["Used Items"]);
+	usedItemsButton:SetScript("OnClick", function()
+		self:MechanicsFrame_ShowTab("usedItems");
 	end);
-	PanelTemplates_TabResize(damageDoneToUnitsButton, 0);
+	PanelTemplates_TabResize(usedItemsButton, 0);
 
-	-- Buffs Or Debuffs On Units
-	local buffsOrDebuffsOnUnitsButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
-	buffsOrDebuffsOnUnitsButton:SetPoint("TOPLEFT", damageDoneToUnitsButton, "TOPRIGHT", 0, 0);
-	buffsOrDebuffsOnUnitsButton:SetText(L["Buffs Or Debuffs On Units"]);
-	buffsOrDebuffsOnUnitsButton:SetScript("OnClick", function()
-		self:MechanicsFrame_ShowTab("buffsOrDebuffsOnUnits");
+	-- Damage
+	local damageButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
+	damageButton:SetPoint("TOPLEFT", usedItemsButton, "TOPRIGHT", 0, 0);
+	damageButton:SetText(L["Damage"]);
+	damageButton:SetScript("OnClick", function()
+		self:MechanicsFrame_ShowTab("damage");
 	end);
-	PanelTemplates_TabResize(buffsOrDebuffsOnUnitsButton, 0);
-	
-	-- Buffs Or Debuffs On Party Members
-	local buffsOrDebuffsOnPartyMembersButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
-	buffsOrDebuffsOnPartyMembersButton:SetPoint("TOPLEFT", buffsOrDebuffsOnUnitsButton, "TOPRIGHT", 0, 0);
-	buffsOrDebuffsOnPartyMembersButton:SetText(L["Buffs Or Debuffs On Party Members"]);
-	buffsOrDebuffsOnPartyMembersButton:SetScript("OnClick", function()
-		self:MechanicsFrame_ShowTab("buffsOrDebuffsOnPartyMembers");
+	PanelTemplates_TabResize(damageButton, 0);
+
+	-- Effects and Auras
+	local effectsAndAurasButton = CreateFrame("Button", nil, tabsButtonsFrame, "TabButtonTemplate");
+	effectsAndAurasButton:SetPoint("TOPLEFT", damageButton, "TOPRIGHT", 0, 0);
+	effectsAndAurasButton:SetText(L["Effects and Auras"]);
+	effectsAndAurasButton:SetScript("OnClick", function()
+		self:MechanicsFrame_ShowTab("effectsAndAuras");
 	end);
-	PanelTemplates_TabResize(buffsOrDebuffsOnPartyMembersButton, 0);
+	PanelTemplates_TabResize(effectsAndAurasButton, 0);
 
 	tabsButtonsFrame.tabButtons = {
 		specialCasts = specialCastsButton,
-		damageDoneToUnits = damageDoneToUnitsButton,
-		buffsOrDebuffsOnUnits = buffsOrDebuffsOnUnitsButton,
-		buffsOrDebuffsOnPartyMembers = buffsOrDebuffsOnPartyMembersButton
+		usedItems = usedItemsButton,
+		damage = damageButton,
+		effectsAndAuras = effectsAndAurasButton
 	};
 	return tabsButtonsFrame;
 end

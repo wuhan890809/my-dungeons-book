@@ -57,7 +57,7 @@ Parse chat command related to Challenge's Roster (e.g. `/mdb c a r ...`).
 @param[type=string] subResource player or party1..4
 @param[type=string] action
 ]]
-function MyDungeonsBook:ParseRosterChatCommand(challengeId, resource, subResource, action, ...)
+function MyDungeonsBook:ParseRosterChatCommand(challengeId, _, subResource, action)
 	if (isActiveChallengeId(challengeId) and self.db.char.activeChallengeId) then
 		for _, unitId in pairs(self:GetPartyRoster()) do
 			if (unitId == subResource) then
@@ -77,7 +77,7 @@ Parse chat command about Details addon integration (e.g. `/mdb c a d ...`).
 @param[type=string] resource
 @param[type=string] action
 ]]
-function MyDungeonsBook:ParseDetailsChatCommand(challengeId, resource, action, ...)
+function MyDungeonsBook:ParseDetailsChatCommand(challengeId, _, action)
 	if (isActiveChallengeId(challengeId) and self.db.char.activeChallengeId) then
 		local challenge = self.db.char.challenges[self.db.char.activeChallengeId];
 		if (challenge and (action == "parse" or action == "p")) then

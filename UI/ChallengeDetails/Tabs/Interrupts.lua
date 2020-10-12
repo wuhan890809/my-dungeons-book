@@ -27,14 +27,14 @@ function MyDungeonsBook:InterruptsFrame_Create(parentFrame)
 	tableWrapper:SetPoint("TOPLEFT", 0, 0);
 	local table = ScrollingTable:CreateST(cols, 12, 40, nil, tableWrapper);
 	table:RegisterEvents({
-		OnEnter = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
+		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
 				if (column == 2 or column == 3) then
 					self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[1].value);
 				end
 			end
 	    end,
-		OnLeave = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
+		OnLeave = function (_, _, _, _, _, realrow, column)
 			if (realrow) then
 				if (column == 2 or column == 3) then
 					self:Table_Cell_MouseOut();
@@ -43,21 +43,21 @@ function MyDungeonsBook:InterruptsFrame_Create(parentFrame)
 	    end
 	});
 	interruptsFrame.table = table;
-	summaryWrapper = CreateFrame("Frame", nil, interruptsFrame);
+	local summaryWrapper = CreateFrame("Frame", nil, interruptsFrame);
 	summaryWrapper:SetWidth(290);
 	summaryWrapper:SetHeight(250);
 	summaryWrapper:SetPoint("TOPRIGHT", -10, 0);
 	local cols = self:InterruptsFrame_GetHeadersForSummaryTable();
 	local summaryTable = ScrollingTable:CreateST(cols, 5, 40, nil, summaryWrapper);
 	summaryTable:RegisterEvents({
-		OnEnter = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
+		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
 				if (column == 3 or column == 4) then
 					self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[1].value);
 				end
 			end
 	    end,
-		OnLeave = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
+		OnLeave = function (_, _, _, _, _, realrow, column)
 			if (realrow) then
 				if (column == 3 or column == 4) then
 					self:Table_Cell_MouseOut();
@@ -331,7 +331,7 @@ function MyDungeonsBook:InterruptsFrame_GetDataForSummaryTable(challengeId)
 					for interruptedSpellId, interruptsCount in pairs(interruptsByUnitSpell) do
 						sum = sum + interruptsCount;
 					end
-					local triedToInterrupt = nil;
+					local triedToInterrupt;
 					if (tryInterrupts[unitName] and tryInterrupts[unitName][unitSpellId]) then
 						triedToInterrupt = tryInterrupts[unitName][unitSpellId];
 					else

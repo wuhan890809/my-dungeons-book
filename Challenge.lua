@@ -7,8 +7,6 @@ Challenge
 @section Challenge
 ]]
 
-local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
-
 --[[--
 Check if player is in challenge mode.
 
@@ -46,7 +44,6 @@ function MyDungeonsBook:InitNewDungeonChallenge(id)
 			party3 = {},
 			party4 = {}
 		},
-		deaths = {},
 		mechanics = {},
 		misc = {}
 	};
@@ -113,7 +110,7 @@ function MyDungeonsBook:ParseInfoFromDetailsAddon()
 		local name, realm = UnitName(unit);
 		local detailsUnitName = name;
 		if (realm) then
-			detailsUnitName = detailsUnitName .. "-"..realm;
+			detailsUnitName = string.format("%s-%s", detailsUnitName, realm);
 		end
 		details[detailsUnitName] = self:ParseUnitInfoFromDetailsAddon(detailsUnitName or "NOT FOUND");
 		self:DebugPrint(string.format("Details info for %s is saved", unit));
@@ -130,7 +127,7 @@ It can be called in any time while you didn't reset Details.
 @return[type=table] details for single a party member
 ]]
 function MyDungeonsBook:ParseUnitInfoFromDetailsAddon(detailsUnitName)
-	details = {};
+	local details = {};
 	local combat = Details:GetCombat("overall");
 	local damageActor = combat:GetActor(DETAILS_ATTRIBUTE_DAMAGE, detailsUnitName);
 		if (damageActor) then

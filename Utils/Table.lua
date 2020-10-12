@@ -7,7 +7,7 @@ Utils
 @section Utils
 ]]
 
-local function updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
+local function updateCellTextColor(_, cellFrame, data, cols, _, realrow, column)
 	local defaultColor = {
 		r = 1,
 		g = 1,
@@ -15,7 +15,7 @@ local function updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow
 		a = 1
 	};
 	local celldata = data[realrow].cols[column];
-	local color = nil;
+	local color;
 	if (type(celldata) == "table") then
 		color = celldata.color;
 	end
@@ -82,7 +82,7 @@ function MyDungeonsBook:Table_Cell_FormatAsSpellIcon(rowFrame, cellFrame, data, 
 	local spellId = data[realrow].cols[column].value;
 	if (spellId and spellId > 0) then
 		local _, _, icon = GetSpellInfo(spellId);
-		local spellIcon = "|T" .. icon .. ":30:30:0:0:64:64:5:59:5:59|t";
+		local spellIcon = "|T" .. (icon or "") .. ":30:30:0:0:64:64:5:59:5:59|t";
 		cellFrame.text:SetText(spellIcon);
 	else
 		cellFrame.text:SetText("");
@@ -105,6 +105,43 @@ function MyDungeonsBook:Table_Cell_FormatAsSpellLink(rowFrame, cellFrame, data, 
 	else
 		cellFrame.text:SetText("");
 	end
+	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
+end
+
+--[[--
+Wrapper for cells with spell icon.
+
+Original value (spell ID) is left "as is" for sorting purposes.
+
+Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
+]]
+function MyDungeonsBook:Table_Cell_FormatAsItemIcon(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
+	local itemId = data[realrow].cols[column].value;
+	if (itemId and itemId > 0) then
+		local _, _, _, _, _, _, _, _, _, icon = GetItemInfo(itemId);
+		local itemIcon = "|T" .. (icon or "") .. ":30:30:0:0:64:64:5:59:5:59|t";
+		cellFrame.text:SetText(itemIcon);
+	else
+		cellFrame.text:SetText("");
+	end
+	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
+end
+
+--[[--
+Wrapper for cells with spell link.
+
+Original value (spell ID) is left "as is" for sorting purposes.
+
+Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
+]]
+function MyDungeonsBook:Table_Cell_FormatAsItemLink(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
+	local itemId = data[realrow].cols[column].value;
+	if (itemId and itemId > 0) then
+		local _, itemLink = GetItemInfo(itemId);
+		cellFrame.text:SetText(itemLink);
+	else
+		cellFrame.text:SetText("");
+	end	
 	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
 end
 
@@ -132,6 +169,22 @@ function MyDungeonsBook:Table_Cell_SpellMouseHover(cellFrame, spellId)
 		GameTooltip:SetOwner(cellFrame, "ANCHOR_NONE");
 		GameTooltip:SetPoint("BOTTOMLEFT", cellFrame, "BOTTOMRIGHT");
 		GameTooltip:SetSpellByID(spellId);
+		GameTooltip:Show();
+	end
+end
+
+--[[--
+Show "default" tooltip for item with ID `itemId`. Tooltip is placed on the right of the frame `cellFrame`.
+
+@param[type=Frame] cellFrame
+@param[type=number] itemId
+]]
+function MyDungeonsBook:Table_Cell_ItemMouseHover(cellFrame, itemId)
+	if (itemId and itemId > 0) then
+		GameTooltip:SetOwner(cellFrame, "ANCHOR_NONE");
+		GameTooltip:SetPoint("BOTTOMLEFT", cellFrame, "BOTTOMRIGHT");
+		local _, itemLink = GetItemInfo(itemId);
+		GameTooltip:SetHyperlink(itemLink);
 		GameTooltip:Show();
 	end
 end

@@ -53,6 +53,7 @@ local BfASpells = {
 	[267385] = true,		--- Tentacle Slam (Vol'zith the Whisperer)
 	
 	-- Siege of Boralus
+	[273718] = true,        --- Heavy Ordnance (Sergeant Bainbridge)
 	[256627] = true,		--- Slobber Knocker (Kul Tiran Halberd)
 	[256663] = true,		--- Burning Tar (Blacktar Bomber)
 	[275775] = true,		--- Savage Tempest (Irontide Raider)
@@ -261,7 +262,6 @@ local BfAAuras = {
 	
 	-- Atal'Dazar
 	[255371] = true,		-- Terrifying Visage (Rezan)
-	[257483] = true,        -- Pile of Bones (Rezan void zones with bones)
 
 	-- King's Rest
 	[276031] = true,		-- Pit of Despair (Minion of Zul)
@@ -294,6 +294,7 @@ local BfASpellsToInterrupt = {
 	[255041] = true, -- Terrifying Screech
 	[279118] = true, -- Unstable Hex
 	-- FH
+	[267433] = true, -- Activate Mech
 	[257397] = true, -- Healing Balm
 	[258777] = true, -- Sea Spout
 	[257732] = true, -- Shattering Bellow
@@ -361,15 +362,31 @@ local BfASpellsToInterrupt = {
 local BfAUnitsAppearsInCombat = {
 	-- AD
 	[129517] = true, -- Reanimated Raptor
+	-- SotS
+	[136314] = true, -- Blowback
 	-- UNDR
 	[132051] = true, -- Blood Tick
 };
 
 local BfASpecificBuffOrDebuffOnPartyMembers = {
+	[160029] = true, -- Resurrecting
 	-- AD
 	[255558] = true, -- Tainted Blood
+	[257483] = true, -- Pile of Bones (Rezan void zones with bones)
+	-- ML
+	[257582] = true, -- Raging Gaze
+	-- SoB
+	[261428] = true, -- Hangman's Noose
+	-- SotS
+	[268214] = true, -- Carve Flesh
+	[268212] = true, -- Minor Reinforcing Ward
+	[267818] = true, -- Slicing Blast
 	-- ToS
 	[266923] = true, -- Galvanize
+	[265315] = true, -- Orb
+	[274153] = true, -- Energy Fragment
+	[269686] = true, -- Plague
+	[268008] = true, -- Snake Charm
 	-- UNDR
 	[259714] = true, -- Decaying Spores
 };
@@ -377,6 +394,10 @@ local BfASpecificBuffOrDebuffOnPartyMembers = {
 local BfASpecificBuffOrDebuffOnUnit = {
 	-- ML
 	[271867] = true, -- Pay to Win
+	-- SoB
+	[257649] = true, -- Boiling Rage
+	-- ToS
+	[274149] = true, -- Life Force
 };
 
 local BfASpecificCastsDoneByPartyMembers = {
@@ -384,6 +405,288 @@ local BfASpecificCastsDoneByPartyMembers = {
 	[255996] = true, -- Punt
 	-- TD
 	[256578] = true, -- Put Down Gently
+	-- ToS
+	[265320] = true, -- Throw
+};
+
+-- Thanks to NNoggie https://wago.io/PartyCDs
+local BfAOwnCastsDoneByPartyMembers = {
+	--[[
+		DAMAGE
+	]]
+	-- DH
+	[258925] = true, -- Fel Barrage
+	[191427] = true, -- Metamorphosis
+	[206491] = true, -- Nemesis
+	-- DK
+	[275699] = true, -- Apocalypse
+	[42650] = true,  -- Army of the Dead
+	[152279] = true, -- Breath of Sindragosa
+	[47568] = true,  -- Empower Rune Weapoen
+	[279302] = true, -- Frostwyrm's Fury
+	[49206] = true,  -- Summon Gargoyle
+	[207289] = true, -- Unholy Frenzy
+	-- Druid
+	[106951] = true, -- Berserk
+	[194223] = true, -- Celestial Alignm
+	[202770] = true, -- Fury of Elune
+	[102560] = true, -- Incarnation: Chosen of Elune
+	[102543] = true, -- Incarnation: King of the Jungle
+	-- Hunter
+	[193530] = true, -- Aspect of the Wild
+	[19574] = true,  -- Bestial Wrath
+	[266779] = true, -- Coordinated Assault
+	[201430] = true, -- Stampede
+	[288613] = true, -- Trueshot
+	-- Mage
+	[12042] = true,  -- Arcane Power
+	[190319] = true, -- Combustion
+	[12472] = true,  -- Icy Veins
+	[55342] = true,  -- Mirror Image
+	[202719] = true, -- Arcane Torrent
+	[50613] = true,  -- Arcane Torrent
+	[80483] = true,  -- Arcane Torrent
+	[28730] = true,  -- Arcane Torrent
+	[129597] = true, -- Arcane Torrent
+	[155145] = true, -- Arcane Torrent
+	[232633] = true, -- Arcane Torrent
+	[25046] = true,  -- Arcane Torrent
+	[69179] = true,  -- Arcane Torrent
+	-- Monk
+	[123904] = true, -- Invoke Xuen, the White Tiger
+	[152173] = true, -- Serenity
+	[137639] = true, -- Storm, Earth, and Fire
+	[115080] = true, -- Touch of Death
+	-- Paladin
+	[31884] = true,  -- Avenging Wrath
+	[231895] = true, -- Crusade
+	[152262] = true, -- Seraphim
+	-- Priest
+	[280711] = true, -- Dark Ascension
+	[193223] = true, -- Surrender to Madness
+	[34433] = true,  -- Shadowfiend
+	[123040] = true, -- Mindbender
+	[200174] = true, -- Mindbender
+	-- Rogue
+	[13750] = true,  -- Adrenaline Rush
+	[51690] = true,  -- Killing Spree
+	[121471] = true, -- Shadow Blades
+	[79140] = true,  -- Vendetta
+	-- Shaman
+	[51533] = true,  -- Feral Spirit
+	[192249] = true, -- Storm Elemental
+	[191634] = true, -- Stormkeeper
+	[114050] = true, -- Ascendance (Elem)
+	[114051] = true, -- Ascendance (Enhancement)
+	-- Warlock
+	[113858] = true, -- Dark Soul: Instability
+	[113860] = true, -- Dark Soul: Misery
+	[267217] = true, -- Nether Portal
+	[205180] = true, -- Summon Darkglare
+	[265187] = true, -- Summon Demonic Tyrant
+	[1122] = true,   -- Summon Infernal
+	-- Warrior
+	[107574] = true, -- Avatar
+	[46924] = true,  -- Bladestorm
+	[227847] = true, -- Bladestorm
+	[1719] = true,   -- Recklessness
+	--[[
+		EXTERNAL
+	]]
+	--Druid
+	[102342] = true, -- Ironbark
+	-- Monk
+	[116849] = true, -- Life Cocoon
+	-- Paladin
+	[1022] = true,   -- Blessing of Protection
+	[6940] = true,   -- Blessing of Sacrifice
+	[204018] = true, -- Blessing of Spellwarding
+	-- Priest
+	[47788] = true,  -- Guardian Spirit
+	[33206] = true,  -- Pain Supression
+	--[[
+		HEALING
+	]]
+	-- Druid
+	[33891] = true,  -- Incarnation: Tree of Life
+	[740] = true,    -- Tranquility
+	-- Monk
+	[198664] = true, -- Invoke Chi-Ji, the Red Crane
+	[115310] = true, -- Revival
+	-- Paladin
+	[216331] = true, -- Avenging Crusade
+	[31884] = true,  -- Avenging Wrath
+	[105809] = true, -- Holy Avenger
+	[633] = true,    -- Lay on Hands
+	[210191] = true, -- Word of Glory
+	-- Priest
+	[200183] = true, -- Apotheosis
+	[64843] = true,  -- Divine Hymn
+	[246287] = true, -- Evangelism
+	[265202] = true, -- Holy Word: Salvation
+	[271466] = true, -- Luminous Barrier
+	[47536] = true,  -- Rapture
+	[15286] = true,  -- Vampiric Embrace
+	-- Shaman
+	[114052] = true, -- Ascendance (Restoration)
+	[198838] = true, -- Earthen Wall Totem
+	[108280] = true, -- Healing Tide Totem
+	--[[
+		IMMUNITY
+	]]
+	-- DH
+	[196555] = true, -- Netherwalk
+	-- Hunter
+	[186265] = true, -- Aspect of the Turtle
+	-- Mage
+	[45438] = true,  -- Ice Block
+	-- Paladin
+	[642] = true,    -- Divine Shield
+	-- Rogue
+	[31224] = true,  -- Cloak of Shadows
+	--[[
+		PERSONAL
+	]]
+	-- DH
+	[198589] = true, -- Blur
+	-- DK
+	[48707] = true,  -- Anti-Magic Shell
+	[48743] = true,  -- Death Pact
+	[48792] = true,  -- Icebound Fortitude
+	-- Druid
+	[22812] = true,  -- Barkskin
+	[108238] = true, -- Renewal
+	[61336] = true,  -- Survival Instinct
+	-- Hunter
+	[109304] = true, -- Exhilaration
+	[5384] = true,   -- Feign Death
+	-- Mage
+	[235219] = true, -- Cold Snap
+	-- Monk
+	[122278] = true, -- Dampen Harm
+	[122783] = true, -- Diffuse Magic
+	[243435] = true, -- Fortifying Brew
+	[122281] = true, -- Healing Elixir
+	[122470] = true, -- Touch of Karma
+	-- Paladin
+	[498] = true,    -- Divine Protection
+	[205191] = true, -- Eye for an Eye
+	[184662] = true, -- Shield of Vengeance
+	-- Priest
+	[19236] = true,  -- Desperate Prayer
+	[47585] = true,  -- Dispersion
+	-- Rogue
+	[5277] = true,   -- Evasion/Riposte
+	[199754] = true, -- Evasion/Riposte
+	-- Shaman
+	[108271] = true, -- Astral Shift
+	-- Warlock
+	[108416] = true, -- Dark Pact
+	[104773] = true, -- Unending Resolve
+	-- Warrior
+	[118038] = true, -- Die by the Sword
+	[184364] = true, -- Enraged Regeneration
+	--[[
+		RAID CD
+	]]
+	-- DH
+	[196718] = true, -- Darkness
+	-- Paladin
+	[204150] = true, -- Aegis of Light
+	[31821] = true,  -- Aura Mastery
+	-- Priest
+	[62618] = true,  -- Power Word: Barrier
+	[64901] = true,  -- Symbol of Hope
+	-- Shaman
+	[207399] = true, -- Ancestral Protection Totem
+	[98008] = true,  -- Spirit Link Totem
+	-- Warrior
+	[97462] = true,  -- Rallying Cry
+	--[[
+		TANK
+	]]
+	-- DH
+	[212084] = true, -- Fel Devastation
+	[204021] = true, -- Fiery Brand
+	[187827] = true, -- Metamorphosis
+	-- DK
+	[206931] = true, -- Blooddrinker
+	[194844] = true, -- Bonestorm
+	[274156] = true, -- Consumption
+	[49028] = true,  -- Dancing Rune Weapon
+	[194679] = true, -- Rune Tap
+	[55233] = true,  -- Vampiric Blood
+	-- Druid
+	[102558] = true, -- Incarnation: Guard
+	-- Monk
+	[115203] = true, -- Fortifying Brew
+	[132578] = true, -- Invoke Niuzao
+	[115176] = true, -- Zen Meditation
+	-- Paladin
+	[31850] = true,  -- Ardent Defender
+	[86659] = true,  -- Guardian of Ancient Kings
+	-- Warrior
+	[1160] = true,   -- Demoralizing Shout
+	[12975] = true,  -- Last Stand
+	[228920] = true, -- Ravager
+	[871] = true,    -- Shield Wall
+	[23920] = true,  -- Spell Reflection
+};
+
+local BfASpecificItemsUsedByPartyMembers = {
+	[318378] = 169223, -- Ashjra'kamas, Shroud of Resolve
+	-- Warlock Health Stone
+	[6262] = 5512,     -- Healthstone
+	-- Alchemy
+	[301308] = 169451, -- Abyssal Healing Potion
+	[293795] = 156634, -- Silas' Vial of Continuous Curing
+	[279154] = 163225, -- Battle Potion of Stamina
+	[279151] = 163222, -- Battle Potion of Intellect
+	[279152] = 163223, -- Battle Potion of Agility
+	[279153] = 163224, -- Battle Potion of Strength
+	[298153] = 168499, -- Superior Battle Potion of Stamina
+	[298152] = 168498, -- Superior Battle Potion of Intellect
+	[298146] = 168489, -- Superior Battle Potion of Agility
+	[298154] = 168500, -- Superior Battle Potion of Strength
+	[298317] = 168506, -- Potion of Focused Resolve
+	[251316] = 152560, -- Potion of Bursting Blood
+	[252753] = 152561, -- Potion of Replenishment
+	[300741] = 169300, -- Potion of Wild Mending
+	[269853] = 152559, -- Potion of Rising Death
+	[298157] = 168502, -- Potion of Reconstitution
+	[300714] = 169299, -- Potion of Unbridled Fury
+	[298225] = 168529, -- Potion of Empowered Proximity
+	[251231] = 152557, -- Steelskin Potion
+	[298155] = 168501, -- Superior Steelskin Potion
+	[250871] = 152495, -- Coastal Mana Potion
+	-- Inscription
+	[264760] = 158201, -- War-Scroll of Intellect
+	[264761] = 158202, -- War-Scroll of Battle Shout
+	[264764] = 158204, -- War-Scroll of Fortitude
+	-- Trinkets (Raids)
+	[313148] = 173944, -- Forbidden Obsidian Claw
+	[268999] = 159630, -- Balefire Branch
+	[313060] = 173940, -- Sigil of Warding
+	[313113] = 173946, -- Writhing Segment of Drest'agath
+	[314042] = 174103, -- Manifesto of Madness
+	[314585] = 174277, -- Lingering Psychic Shell
+	-- Trinkets (Dungeons)
+	[271117] = 159615, -- Ignition Mage's Fuse
+	[271054] = 158368, -- Fangs of Intertwined Essence
+	[266018] = 158320, -- Revitalizing Voodoo Totem
+	[271107] = 159617, -- Lustrous Golden Plumage
+	[265954] = 158319, -- My'das Talisman
+	[265946] = 159618, -- Mchimba's Ritual Bandages
+	[271374] = 159611, -- Razdunk's Big Red Button
+	[299869] = 168965, -- Modular Platinum Plating
+	[302307] = 169769, -- Remote Guidance Device
+	[271462] = 159624, -- Rotcrusted Voodoo Doll
+	[268828] = 159625, -- Vial of Animated Blood
+	[268314] = 159614, -- Galecaller's Boon
+	[266047] = 159627, -- Jes' Howler
+	[267402] = 158367, -- Merektha's Fang
+	-- Trinkets (PvP)
+	[277185] = 172669, -- Corrupted Gladiator's Badge
 };
 
 local BfADamageDoneToSpecificUnits = {
@@ -408,14 +711,51 @@ local BfADamageDoneToSpecificUnits = {
 	[129802] = {
 		name = L["Earthrager"]
 	},
+	[133436] = {
+		name = L["Venture Co. Skyscorcher"]
+	},
 	-- MW
 	[152033] = {
 		name = L["Inconspicuous Plant"]
 	},
+	-- SoB
+	[136549] = {
+		name = L["Ashvane Cannoneer"]
+	},
+	[270590] = {
+		name = L["Hull Cracker"]
+	},
+	[137405] = {
+		name = L["Gripping Terror"]
+	},
+	-- TD
+	[131785] = {
+		name = L["Buzzing Drone"]
+	},
+	--ToS
+	[134388] = {
+		name = L["A Knot of Snakes"]
+	},
 	-- UNDR
+	[134701] = {
+		name = L["Blood Effigy"]
+	},
 	[132051] = {
 		name = L["Blood Tick"]
 	},
+	[137103] = {
+		name = L["Blood Visage"]
+	},
+	-- WM
+	[136330] = {
+		name = L["Soul Thorns"]
+	},
+	[133361] = {
+		name = L["Wasting Servant"]
+	},
+	[135552] = {
+		name = L["Deathtouched Slaver"]
+	}
 };
 
 function MyDungeonsBook:GetBfADamageDoneToSpecificUnits()
@@ -448,6 +788,14 @@ end
 
 function MyDungeonsBook:TrackBfASpecificCastDoneByPartyMembers(unit, spellId)
 	self:TrackSpecificCastDoneByPartyMembers("BFA-CASTS-DONE-BY-PARTY-MEMBERS", BfASpecificCastsDoneByPartyMembers, unit, spellId);
+end
+
+function MyDungeonsBook:TrackBfAOwnCastDoneByPartyMembers(sourceUnitName, spellId, targetUnitName)
+	self:TrackOwnCastDoneByPartyMembers("BFA-OWN-CASTS-DONE-BY-PARTY-MEMBERS", BfAOwnCastsDoneByPartyMembers, sourceUnitName, spellId, targetUnitName);
+end
+
+function MyDungeonsBook:TrackBfASpecificItemUsedByPartyMembers(unit, spellId)
+	self:TrackSpecificItemUsedByPartyMembers("BFA-ITEM-USED-BY-PARTY-MEMBERS", BfASpecificItemsUsedByPartyMembers, unit, spellId);
 end
 
 function MyDungeonsBook:TrackBfADamageDoneToSpecificUnits(sourceName, sourceGUID, spellId, amount, overkill, targetName, targetGUID)

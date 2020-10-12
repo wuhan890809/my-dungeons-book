@@ -21,18 +21,18 @@ function MyDungeonsBook:AvoidableDamageFrame_Create(parentFrame)
 	local cols = self:AvoidableDamageFrame_GetHeadersForTable();
 	local tableWrapper = CreateFrame("Frame", nil, parentFrame);
 	tableWrapper:SetWidth(900);
-	tableWrapper:SetHeight(490);
-	tableWrapper:SetPoint("TOPRIGHT", -5, -110);
-	local table = ScrollingTable:CreateST(cols, 12, 40, nil, tableWrapper);
+	tableWrapper:SetHeight(450);
+	tableWrapper:SetPoint("TOPLEFT", 0, -100);
+	local table = ScrollingTable:CreateST(cols, 10, 40, nil, tableWrapper);
 	table:RegisterEvents({
-		OnEnter = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
+		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
 				if (column == 2 or column == 3) then
 					self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[1].value);
 				end
 			end
 	    end,
-		OnLeave = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
+		OnLeave = function (_, _, _, _, _, realrow, column)
 			if (realrow) then
 				if (column == 2 or column == 3) then
 					self:Table_Cell_MouseOut();
@@ -285,7 +285,7 @@ function MyDungeonsBook:AvoidableDamageFrame_GetSummaryRow(challengeId, key)
 			tableData[partyUnitId .. "Num"] = 0;
 			tableData[partyUnitId .. "Sum"] = 0;
 			if (damageBySpells) then
-				for spellId, numSumDetails in pairs(damageBySpells) do
+				for _, numSumDetails in pairs(damageBySpells) do
 					tableData[partyUnitId .. "Num"] = tableData[partyUnitId .. "Num"] + numSumDetails.num;
 					tableData[partyUnitId .. "Sum"] = tableData[partyUnitId .. "Sum"] + numSumDetails.sum;
 				end
@@ -314,8 +314,8 @@ function MyDungeonsBook:AvoidableDamageFrame_Update(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
 		local avoidableDamageTableData = self:AvoidableDamageFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-AVOIDABLE-SPELLS");
-		self.challengeDetailsFrame.avoidableDamageFrame.table:SetData(avoidableDamageTableData);
-		self.challengeDetailsFrame.avoidableDamageFrame.table:SetDisplayCols(self:AvoidableDamageFrame_GetHeadersForTable(challengeId));
-		self.challengeDetailsFrame.avoidableDamageFrame.table:SortData();
+		self.challengeDetailsFrame.mechanicsFrame.damageFrame.avoidableDamageFrame.table:SetData(avoidableDamageTableData);
+		self.challengeDetailsFrame.mechanicsFrame.damageFrame.avoidableDamageFrame.table:SetDisplayCols(self:AvoidableDamageFrame_GetHeadersForTable(challengeId));
+		self.challengeDetailsFrame.mechanicsFrame.damageFrame.avoidableDamageFrame.table:SortData();
 	end
 end

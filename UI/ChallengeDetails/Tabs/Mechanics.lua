@@ -7,8 +7,6 @@ UI
 @section UI
 ]]
 
-local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
-
 --[[--
 Creates a frame for Mechanics tab
 
@@ -22,14 +20,14 @@ function MyDungeonsBook:MechanicsFrame_Create(parentFrame)
 	mechanicsFrame:SetHeight(650);
 	mechanicsFrame.tabButtonsFrame = self:MechanicsFrame_CreateTabButtonsFrame(mechanicsFrame);
 	mechanicsFrame.specialCastsFrame = self:SpecialCastsFrame_Create(mechanicsFrame);
-	mechanicsFrame.damageDoneToUnitsFrame = self:DamageDoneToUnitsFrame_Create(mechanicsFrame);
-	mechanicsFrame.buffsOrDebuffsOnUnitsFrame = self:BuffsOrDebuffsOnUnitsFrame_Create(mechanicsFrame);
-	mechanicsFrame.buffsOrDebuffsOnPartyMembersFrame = self:BuffsOrDebuffsOnPartyMembersFrame_Create(mechanicsFrame);
+	mechanicsFrame.usedItemsFrame = self:UsedItemsFrame_Create(mechanicsFrame);
+	mechanicsFrame.damageFrame = self:DamageFrame_Create(mechanicsFrame);
+	mechanicsFrame.effectsAndAurasFrame = self:EffectsAndAurasFrame_Create(mechanicsFrame);
 	mechanicsFrame.tabs = {
 		specialCasts = mechanicsFrame.specialCastsFrame,
-		damageDoneToUnits = mechanicsFrame.damageDoneToUnitsFrame,
-		buffsOrDebuffsOnUnits = mechanicsFrame.buffsOrDebuffsOnUnitsFrame,
-		buffsOrDebuffsOnPartyMembers = mechanicsFrame.buffsOrDebuffsOnPartyMembersFrame
+		usedItems = mechanicsFrame.usedItemsFrame,
+		effectsAndAuras = mechanicsFrame.effectsAndAurasFrame,
+		damage = mechanicsFrame.damageFrame,
 	};
 	mechanicsFrame:Hide();
 	return mechanicsFrame;
@@ -42,8 +40,8 @@ Updates a Mechanics frame with data for challenge with id `challengeId`.
 ]]
 function MyDungeonsBook:MechanicsFrame_Update(challengeId)
 	self:SpecialCastsFrame_Update(challengeId);
-	self:DamageDoneToUnitsFrame_Update(challengeId);
-	self:BuffsOrDebuffsOnUnitsFrame_Update(challengeId);
-	self:BuffsOrDebuffsOnPartyMembersFrame_Update(challengeId);
+	self:UsedItemsFrame_Update(challengeId);
+	self:DamageFrame_Update(challengeId);
+	self:EffectsAndAurasFrame_Update(challengeId);
 	self:MechanicsFrame_ShowTab("specialCasts");
 end

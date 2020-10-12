@@ -22,22 +22,22 @@ function MyDungeonsBook:AvoidableDebuffsFrame_Create(parentFrame)
 	local interruptsFrame = CreateFrame("Frame", nil, parentFrame);
 	interruptsFrame:SetWidth(900);
 	interruptsFrame:SetHeight(490);
-	interruptsFrame:SetPoint("TOPRIGHT", -5, -110);
+	interruptsFrame:SetPoint("TOPLEFT", 0, -100);
 	local tableWrapper = CreateFrame("Frame", nil, interruptsFrame);
-	tableWrapper:SetWidth(580);
-	tableWrapper:SetHeight(490);
+	tableWrapper:SetWidth(600);
+	tableWrapper:SetHeight(450);
 	tableWrapper:SetPoint("TOPLEFT", 10, 0);
 	local cols = self:AvoidableDebuffsFrame_GetHeadersForTable();
-	local table = ScrollingTable:CreateST(cols, 12, 40, nil, tableWrapper);
+	local table = ScrollingTable:CreateST(cols, 10, 40, nil, tableWrapper);
 	table:RegisterEvents({
-		OnEnter = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
+		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
 				if (column == 2 or column == 3) then
 					self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[1].value);
 				end
 			end
 	    end,
-		OnLeave = function (rowFrame, cellFrame, data, cols, row, realrow, column, scrollingTable, ...)
+		OnLeave = function (_, _, _, _, _, realrow, column)
 			if (realrow) then
 				if (column == 2 or column == 3) then
 					self:Table_Cell_MouseOut();
@@ -204,8 +204,8 @@ function MyDungeonsBook:AvoidableDebuffsFrame_Update(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
 		local avoidableDebuffsTableData = self:AvoidableDebuffsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-AVOIDABLE-AURAS");
-		self.challengeDetailsFrame.avoidableDebuffsFrame.table:SetData(avoidableDebuffsTableData);
-		self.challengeDetailsFrame.avoidableDebuffsFrame.table:SetDisplayCols(self:AvoidableDebuffsFrame_GetHeadersForTable(challengeId));
-		self.challengeDetailsFrame.avoidableDebuffsFrame.table:SortData();
+		self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.avoidableDebuffsFrame.table:SetData(avoidableDebuffsTableData);
+		self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.avoidableDebuffsFrame.table:SetDisplayCols(self:AvoidableDebuffsFrame_GetHeadersForTable(challengeId));
+		self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.avoidableDebuffsFrame.table:SortData();
 	end
 end

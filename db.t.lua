@@ -31,7 +31,6 @@ Every challenge has next fields:
 @field[type=number] id challenge run identifier (timestamp when challenge was started)
 @field[type=ChallengePartyRoster] players information about all party members (class, role, name, items etc).
 @field[type=Mechanics] mechanics table with data collected my MyDungeonsBook about current challenge
-@field[type=Deaths] deaths table with counter of deaths for each party member
 @field[type=GameInfo] gameInfo short info about WoW
 @field[type=ChallengeInfo] challengeInfo detailed info about challenge
 @field[type=Encounters] encounters table with data about encounters (start, end, duration, deaths)
@@ -109,12 +108,6 @@ Almost all of them can be calculated and stored. After passing challenge party c
 Each mechanic is a unique counter (well, technically it's a table with deep nested structure). One of them track interrupts, another one check how many avoidable damage got party members (say "Hello" to addon EH) etc. Every mechanic is shown in the Challenge Details tab.
 
 @table Mechanic
-]]
-
---[[--
-Each key is a party member name (with realm for `party1..4`). Every value is a number of deaths.
-
-@table Deaths
 ]]
 
 --[[--
