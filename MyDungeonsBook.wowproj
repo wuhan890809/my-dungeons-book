@@ -147,6 +147,9 @@
     <Content Include="Utils\Table.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Utils\Tabs.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Utils\Utils.lua">
       <SubType>Code</SubType>
     </Content>

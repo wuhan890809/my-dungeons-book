@@ -19,7 +19,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_Show(challengeId)
 	self.activeChallengeId = challengeId;
 	self:ChallengeDetailsFrame_Update(challengeId);
 	self.challengeDetailsFrame:Show();
-	self:ChallengeDetailsFrame_ShowTab("roster");
+    self:Tab_Click(self.challengeDetailsFrame, "roster");
 end
 
 --[[--

@@ -46,5 +46,5 @@ function MyDungeonsBook:EffectsAndAurasFrame_Update(challengeId)
 	self:AvoidableDebuffsFrame_Update(challengeId);
 	self:AllBuffsOnPartyMemberFrame_Update(challengeId);
 	self:AllDebuffsOnPartyMemberFrame_Update(challengeId);
-	self:EffectsAndAurasFrame_ShowTab("avoidableDebuffs");
+	self:Tab_Click(self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame, "avoidableDebuffs");
 end

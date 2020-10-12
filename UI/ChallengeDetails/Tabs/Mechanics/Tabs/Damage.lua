@@ -40,5 +40,5 @@ function MyDungeonsBook:DamageFrame_Update(challengeId)
 	self:DamageDoneToUnitsFrame_Update(challengeId);
 	self:DamageDoneToPartyMembersFrame_Update(challengeId);
 	self:AvoidableDamageFrame_Update(challengeId);
-	self:DamageFrame_ShowTab("avoidableDamage");
+	self:Tab_Click(self.challengeDetailsFrame.mechanicsFrame.damageFrame, "avoidableDamage");
 end

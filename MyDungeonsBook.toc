@@ -47,4 +47,5 @@ Mechanics/BfA/Common.lua
 Mechanics/SL/Common.lua
 Utils/Utils.lua
 Utils/Table.lua
+Utils/Tabs.lua
 Utils/JSON.lua

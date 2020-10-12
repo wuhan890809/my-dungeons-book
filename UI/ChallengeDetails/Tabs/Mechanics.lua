@@ -43,5 +43,5 @@ function MyDungeonsBook:MechanicsFrame_Update(challengeId)
 	self:UsedItemsFrame_Update(challengeId);
 	self:DamageFrame_Update(challengeId);
 	self:EffectsAndAurasFrame_Update(challengeId);
-	self:MechanicsFrame_ShowTab("specialCasts");
+	self:Tab_Click(self.challengeDetailsFrame.mechanicsFrame, "specialCasts");
 end
