@@ -20,7 +20,11 @@ Mouse hover/out handler are included.
 function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_Create(parentFrame)
 	local ScrollingTable = LibStub("ScrollingTable");
 	local cols = self:BuffsOrDebuffsOnUnitsFrame_GetHeadersForTable();
-	local tableWrapper = CreateFrame("Frame", nil, parentFrame);
+	local buffsOrDebuffsOnUnitsFrame = CreateFrame("Frame", nil, parentFrame);
+	buffsOrDebuffsOnUnitsFrame:SetWidth(900);
+	buffsOrDebuffsOnUnitsFrame:SetHeight(490);
+	buffsOrDebuffsOnUnitsFrame:SetPoint("TOPLEFT", 10, 0);
+	local tableWrapper = CreateFrame("Frame", nil, buffsOrDebuffsOnUnitsFrame);
 	tableWrapper:SetWidth(320);
 	tableWrapper:SetHeight(450);
 	tableWrapper:SetPoint("TOPLEFT", 0, -100);

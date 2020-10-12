@@ -27,7 +27,7 @@ function MyDungeonsBook:AllDebuffsOnPartyMemberFrame_Create(parentFrame)
     tableWrapper:SetWidth(600);
     tableWrapper:SetHeight(450);
     tableWrapper:SetPoint("TOPLEFT", 10, 0);
-    local cols = self:AvoidableDebuffsFrame_GetHeadersForTable();
+    local cols = self:Table_Headers_GetForSpellsSummary();
     local table = ScrollingTable:CreateST(cols, 10, 40, nil, tableWrapper);
     table:RegisterEvents({
         OnEnter = function (_, cellFrame, data, _, _, realrow, column)
@@ -47,91 +47,6 @@ function MyDungeonsBook:AllDebuffsOnPartyMemberFrame_Create(parentFrame)
     });
     tableWrapper.table = table;
     return tableWrapper;
-end
-
---[[--
-Generate columns for all buffs table.
-
-Depending on `challengeId` real player names will be used or simple placeholders like `player` or `party1..4`.
-
-@param[type=number] challengeId
-@return[type=table]
-]]
-function MyDungeonsBook:AllDebuffsOnPartyMemberFrame_GetHeadersForTable(challengeId)
-    local challenge = self.db.char.challenges[challengeId];
-    local player = "Player";
-    local party1 = "Party1";
-    local party2 = "Party2";
-    local party3 = "Party3";
-    local party4 = "Party4";
-    if (challenge) then
-        local players = challenge.players;
-        player = (players.player.name and self:ClassColorTextByClassIndex(players.player.class, players.player.name)) or L["Not Found"];
-        party1 = (players.party1.name and self:ClassColorTextByClassIndex(players.party1.class, players.party1.name)) or L["Not Found"];
-        party2 = (players.party2.name and self:ClassColorTextByClassIndex(players.party2.class, players.party2.name)) or L["Not Found"];
-        party3 = (players.party3.name and self:ClassColorTextByClassIndex(players.party3.class, players.party3.name)) or L["Not Found"];
-        party4 = (players.party4.name and self:ClassColorTextByClassIndex(players.party4.class, players.party4.name)) or L["Not Found"];
-    end
-    return {
-        {
-            name = " ",
-            width = 1,
-            align = "LEFT"
-        },
-        {
-            name = L["Spell"],
-            width = 40,
-            align = "LEFT",
-            DoCellUpdate = function(...)
-                self:Table_Cell_FormatAsSpellIcon(...);
-            end
-        },
-        {
-            name = "",
-            width = 135,
-            align = "LEFT",
-            DoCellUpdate = function(...)
-                self:Table_Cell_FormatAsSpellLink(...);
-            end
-        },
-        {
-            name = player,
-            width = 70,
-            align = "RIGHT"
-        },
-        {
-            name = party1,
-            width = 70,
-            align = "RIGHT"
-        },
-        {
-            name = party2,
-            width = 70,
-            align = "RIGHT"
-        },
-        {
-            name = party3,
-            width = 70,
-            align = "RIGHT"
-        },
-        {
-            name = party4,
-            width = 70,
-            align = "RIGHT"
-        },
-        {
-            name = L["Sum"],
-            width = 50,
-            align = "RIGHT",
-            sort = "dsc",
-            bgcolor = {
-                r = 0,
-                g = 0,
-                b = 0,
-                a = 0.4
-            }
-        }
-    };
 end
 
 --[[--
@@ -201,7 +116,7 @@ function MyDungeonsBook:AllDebuffsOnPartyMemberFrame_Update(challengeId)
     if (challenge) then
         local allDebuffsOnPartyMembersTableData = self:AllDebuffsOnPartyMemberFrame_GetDataForTable(challengeId, "ALL-AURAS", "DEBUFF");
         self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.allDebuffsOnPartyMembersFrame.table:SetData(allDebuffsOnPartyMembersTableData);
-        self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.allDebuffsOnPartyMembersFrame.table:SetDisplayCols(self:AllDebuffsOnPartyMemberFrame_GetHeadersForTable(challengeId));
+        self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.allDebuffsOnPartyMembersFrame.table:SetDisplayCols(self:Table_Headers_GetForSpellsSummary(challengeId));
         self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.allDebuffsOnPartyMembersFrame.table:SortData();
     end
 end
