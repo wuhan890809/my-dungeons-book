@@ -115,7 +115,8 @@ function MyDungeonsBook:MainFrame_Show()
 		self.challengesTable = self:ChallengesFrame_Create(frame);
 		self.challengeDetailsFrame = self:ChallengeDetailsFrame_Create(frame);
 		self.frame = frame;
-	end
+    end
+    self:ChallengesFrame_Update();
 	self.frame:Show();
 end
 

@@ -160,9 +160,11 @@ function MyDungeonsBook:ChallengesFrame_GetDataForTable()
 			local deaths = challenge.challengeInfo.numDeaths;
 			if (not deaths) then
 				deaths = 0;
-				for _, unitDeaths in pairs(challenge.mechanics["DEATHS"]) do
-					deaths = deaths + #unitDeaths;
-				end
+                if (challenge.mechanics["DEATHS"]) then
+                    for _, unitDeaths in pairs(challenge.mechanics["DEATHS"]) do
+                        deaths = deaths + #unitDeaths;
+                    end
+                end
 			end
 			local row = {
 				cols = {
@@ -200,8 +202,18 @@ function MyDungeonsBook:ChallengesFrame_GetDataForTable()
 	return tableData;
 end
 
+--[[--
+@local
+]]
 function MyDungeonsBook:FormatCellAsChallengeKeyStatus(_, cellFrame, data, _, _, realrow, column)
 	local val = data[realrow].cols[column].value;
 	local text = (val > 0 and string.format("|cff1eff00+%s|r", val)) or "|cffcc3333-1|r";
 	cellFrame.text:SetText(text);
+end
+
+--[[--
+Update Challenges table with list of existing challenges
+]]
+function MyDungeonsBook:ChallengesFrame_Update()
+    self.challengesTable:SetData(self:ChallengesFrame_GetDataForTable());
 end
