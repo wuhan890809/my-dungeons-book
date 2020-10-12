@@ -110,7 +110,7 @@ function MyDungeonsBook:DetailsFrame_GetDataForTable(challengeId)
 			details = challenge.details[unitName];
 			if (not details) then
 				local unitRealm = challenge.players[unitId].realm;
-				details = challenge.details[unitName .. "-" .. unitRealm];
+				details = (unitRealm and challenge.details[unitName .. "-" .. unitRealm]) or {};
 			end
 		end
 		tinsert(tableData, {

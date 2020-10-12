@@ -74,6 +74,7 @@ L["All Buffs On Party Members"] = "All Buffs On Party Members";
 L["All Debuffs On Party Members"] = "All Debuffs On Party Members";
 L["Time"] = "Time";
 L["Target?"] = "Target?";
+L["Swing Damage"] = "Swing Damage";
 -- UI end
 
 -- Settings start
@@ -105,6 +106,7 @@ L["Hull Cracker"] = "Hull Cracker";
 L["Ashvane Cannoneer"] = "Ashvane Cannoneer";
 L["Venture Co. Skyscorcher"] = "Venture Co. Skyscorcher";
 L["Deathtouched Slaver"] = "Deathtouched Slaver";
+L["Mindrend Tentacle"] = "Mindrend Tentacle";
 -- NPCs end
 -- BfA end
 

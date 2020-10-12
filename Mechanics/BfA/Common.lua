@@ -693,6 +693,9 @@ local BfADamageDoneToSpecificUnits = {
 	[120651] = {
 		name = L["Explosives"]
 	},
+	[161510] = {
+		name = L["Mindrend Tentacle"]
+	},
 	-- AD
 	[129517] = {
 		name = L["Reanimated Raptor"]

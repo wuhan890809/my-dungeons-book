@@ -254,8 +254,8 @@ function MyDungeonsBook:DamageDoneToPartyMembersFrame_GetDataForTable(challengeI
 		local hits = 0;
 		local amount = 0;
 		for _, rosterUnitId in pairs(self:GetPartyRoster()) do
-			local hitsForPartyMember = tableData[spellId][rosterUnitId .. "Hits"];
-			local amountForPartyMember = tableData[spellId][rosterUnitId .. "Amount"];
+			local hitsForPartyMember = tableData[spellId][rosterUnitId .. "Hits"] or 0;
+			local amountForPartyMember = tableData[spellId][rosterUnitId .. "Amount"] or 0;
 			hits = hits + hitsForPartyMember;
 			amount = amount + amountForPartyMember;
 			tinsert(remappedRow.cols, {value = amountForPartyMember});

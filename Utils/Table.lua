@@ -83,10 +83,20 @@ Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/proje
 ]]
 function MyDungeonsBook:Table_Cell_FormatAsSpellIcon(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local spellId = data[realrow].cols[column].value;
-	if (spellId and spellId > 0) then
-		local _, _, icon = GetSpellInfo(spellId);
-		local spellIcon = "|T" .. (icon or "") .. ":30:30:0:0:64:64:5:59:5:59|t";
-		cellFrame.text:SetText(spellIcon);
+	if (spellId) then
+		if (spellId == -2) then
+			-- Hack to show "fist" icon for swing dmg
+			local itemIcon = "|T999951:30:30:0:0:64:64:5:59:5:59|t";
+			cellFrame.text:SetText(itemIcon);
+		else
+			if (spellId > 0) then
+				local _, _, icon = GetSpellInfo(spellId);
+				local spellIcon = "|T" .. (icon or "") .. ":30:30:0:0:64:64:5:59:5:59|t";
+				cellFrame.text:SetText(spellIcon);
+			else
+				cellFrame.text:SetText("");
+			end
+		end
 	else
 		cellFrame.text:SetText("");
 	end
@@ -102,9 +112,17 @@ Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/proje
 ]]
 function MyDungeonsBook:Table_Cell_FormatAsSpellLink(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local spellId = data[realrow].cols[column].value;
-	if (spellId and spellId > 0) then
-		local spellLink = GetSpellLink(spellId);
-		cellFrame.text:SetText(spellLink);
+	if (spellId) then
+		if (spellId == -2) then
+			cellFrame.text:SetText(L["Swing Damage"]);
+		else
+			if (spellId > 0) then
+				local spellLink = GetSpellLink(spellId);
+				cellFrame.text:SetText(spellLink);
+			else
+				cellFrame.text:SetText("");
+			end
+		end
 	else
 		cellFrame.text:SetText("");
 	end

@@ -188,16 +188,16 @@ Get a unit's name (with and without realm) for unit `unitId` in the challenge wi
 @param[type=number] challengeId
 @param[unitId] unitId
 @return[type=string] just a name
-@return[type=string] name with realm
+@return[type=string] name with realm (if realm available)
 ]]
 function MyDungeonsBook:GetNameByPartyUnit(challengeId, unitId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (not challenge) then
 		return nil, nil;
 	end
-	local name = challenge.players[unitId].name;
+	local name = challenge.players[unitId].name or "";
 	local realm = challenge.players[unitId].realm;
-	return name, string.format("%s-%s", name, realm);
+	return name, (realm and string.format("%s-%s", name, realm)) or name;
 end
 
 --[[--
