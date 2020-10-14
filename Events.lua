@@ -55,13 +55,16 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 			self:TrackSLDamageDoneToSpecificUnits(srcName, srcGUID, spellId, amount, overkill, dstName, dstGUID);
 		end
 		if (subEventName == "SWING_DAMAGE") then
-			local amount = select(12, CombatLogGetCurrentEventInfo());
+			local amount, overkill = select(12, CombatLogGetCurrentEventInfo());
 			self:TrackAllDamageDoneToPartyMembers(dstName, -2, amount);
+			self:TrackBfADamageDoneToSpecificUnits(srcName, srcGUID, -2, amount, overkill, dstName, dstGUID);
+			self:TrackSLDamageDoneToSpecificUnits(srcName, srcGUID, -2, amount, overkill, dstName, dstGUID);
 		end
 		if (subEventPrefix:match("^SPELL") and subEventSuffix == "MISSED") then
 			local spellId, _, _, _, _, amount = select(12, CombatLogGetCurrentEventInfo());
 			self:TrackBfAAvoidableSpells(dstName, spellId, amount);
 			self:TrackSLAvoidableSpells(dstName, spellId, amount);
+			self:TrackAllDamageDoneToPartyMembers(dstName, spellId, amount);
 		end
 		if (subEventName == "SPELL_AURA_APPLIED" or subEventName == "SPELL_AURA_APPLIED_DOSE") then
 			local spellId, _, _, auraType = select(12, CombatLogGetCurrentEventInfo());

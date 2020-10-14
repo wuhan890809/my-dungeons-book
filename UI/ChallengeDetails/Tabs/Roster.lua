@@ -30,7 +30,7 @@ Creates a frame for Roster tab
 @return[type=Frame] challengeRosterFrame
 ]]
 function MyDungeonsBook:RosterFrame_Create(parentFrame)
-	local challengeRosterFrame = CreateFrame("Frame", nil, parentFrame);
+	local challengeRosterFrame = CreateFrame("Frame", nil, parentFrame, BackdropTemplateMixin and "BackdropTemplate");
 	challengeRosterFrame:SetBackdrop(ScrollPaneBackdrop);
 	challengeRosterFrame:SetBackdropColor(0.1, 0.1, 0.1);
 	challengeRosterFrame:SetPoint("TOPRIGHT", -10, -90);
