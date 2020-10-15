@@ -237,9 +237,19 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetDataForTable(challengeId, key)
 			npcs = self:GetSLDamageDoneToSpecificUnits();
 			npc = npcs[npcId];
 		end
+		local npcName;
+		if (npc and npc.name) then
+			npcName = npc.name;
+		end
+		if (not npcName) then
+			npcName = self.db.global.meta.npcs[npcId] and self.db.global.meta.npcs[npcId].name;
+		end
+		if (not npcName) then
+			npcName = npcId;
+		end
 		local remappedRow = {
 			cols = {
-				{value = (npc and npc.name) or npcId}
+				{value = npcName}
 			}
 		};
 		for _, unitId in pairs(self:GetPartyRoster()) do

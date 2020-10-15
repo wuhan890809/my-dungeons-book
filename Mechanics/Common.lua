@@ -347,16 +347,20 @@ Track all buffs and debuffs on party members
 @param[type=string] auraType
 ]]
 function MyDungeonsBook:TrackAllAurasOnPartyMembers(unit, spellId, auraType)
-	if (UnitIsPlayer(unit)) then
-		local id = self.db.char.activeChallengeId;
-		local key = "ALL-AURAS";
-		self:InitMechanics3Lvl(key, unit, spellId);
-		self.db.char.challenges[id].mechanics[key][unit][spellId].auraType = auraType;
-		if (not self.db.char.challenges[id].mechanics[key][unit][spellId].count) then
-			self.db.char.challenges[id].mechanics[key][unit][spellId].count = 0;
-		end
-		self.db.char.challenges[id].mechanics[key][unit][spellId].count = self.db.char.challenges[id].mechanics[key][unit][spellId].count + 1;
+	if (not UnitIsPlayer(unit)) then
+		return;
 	end
+	local id = self.db.char.activeChallengeId;
+	local key = "ALL-AURAS";
+	self:InitMechanics3Lvl(key, unit, spellId);
+	if (not self.db.global.meta.spells[spellId]) then
+		self.db.global.meta.spells[spellId] = {};
+	end
+	self.db.global.meta.spells[spellId].auraType = auraType;
+	if (not self.db.char.challenges[id].mechanics[key][unit][spellId].count) then
+		self.db.char.challenges[id].mechanics[key][unit][spellId].count = 0;
+	end
+	self.db.char.challenges[id].mechanics[key][unit][spellId].count = self.db.char.challenges[id].mechanics[key][unit][spellId].count + 1;
 end
 
 --[[--
@@ -427,6 +431,10 @@ function MyDungeonsBook:TrackDamageDoneToSpecificUnits(key, npcs, sourceUnitName
 		end
     end
 	self:InitMechanics4Lvl(key, npcId, sourceUnitName, spellId);
+	if (not self.db.global.meta.npcs[npcId]) then
+		self.db.global.meta.npcs[npcId] = {};
+	end
+	self.db.global.meta.npcs[npcId].name = targetUnitName;
 	if (not self.db.char.challenges[id].mechanics[key][npcId][sourceUnitName][spellId].hits) then
 		self.db.char.challenges[id].mechanics[key][npcId][sourceUnitName][spellId] = {
 			hits = 0,

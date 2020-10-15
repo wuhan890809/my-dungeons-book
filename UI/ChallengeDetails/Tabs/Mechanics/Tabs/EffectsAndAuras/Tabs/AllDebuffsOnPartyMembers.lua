@@ -67,7 +67,7 @@ function MyDungeonsBook:AllDebuffsOnPartyMemberFrame_GetDataForTable(challengeId
     end
     for name, buffsAndDebuffsOnUnit in pairs(self.db.char.challenges[challengeId].mechanics[key]) do
         for buffOnDebuffId, buffOrDebuffSummary in pairs(buffsAndDebuffsOnUnit) do
-            if (buffOrDebuffSummary.auraType == neededType) then
+            if (buffOrDebuffSummary.auraType == neededType or (self.db.global.meta.spells[buffOnDebuffId] and self.db.global.meta.spells[buffOnDebuffId].auraType == neededType)) then
                 if (not tableData[buffOnDebuffId]) then
                     tableData[buffOnDebuffId] = {
                         spellId = buffOnDebuffId

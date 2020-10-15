@@ -26,6 +26,12 @@ MyDungeonsBook.OptionsDefaults = {
 		performance = {
 			collectgarbage = true
 		}
+	},
+	global = {
+		meta = {
+			spells = {},
+			npcs = {}
+		}
 	}
 };
 
