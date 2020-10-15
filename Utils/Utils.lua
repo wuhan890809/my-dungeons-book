@@ -366,3 +366,39 @@ function MyDungeonsBook:GetNpcIdFromGuid(unitGUID)
 	local _, _, _, _, _, npcId = strsplit("-", unitGUID);
 	return tonumber(npcId);
 end
+
+local function mergeInternal(t1, key, value)
+	if (type(value) == "table") then
+		if (type(t1[key]) ~= "table") then
+			t1[key] = {};
+		end
+		for k, v in pairs(value) do
+			t1[key][k] = mergeInternal(t1[key], k, v);
+		end
+	else
+		if (not t1[key]) then
+			t1[key] = value;
+		end
+	end
+	return t1[key];
+end
+
+--[[--
+Recursively merge values from `table2` to `table1`. Values in `table1` won't be overridden if they are already exists.
+
+@param[type=table] table1
+@param[type=table] table2
+@return[type=table] updated `table1`
+]]
+function MyDungeonsBook:MergeTables(table1, table2)
+	if (type(table2) ~= "table") then
+		return table1;
+	end
+	if (type(table1) ~= "table") then
+		return table2;
+	end
+	for k, v in pairs(table2) do
+		table1[k] = mergeInternal(table1, k, v);
+	end
+	return table1;
+end

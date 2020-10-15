@@ -53,7 +53,7 @@ Parse chat command related to Challenge's Roster (e.g. `/mdb c a r ...`).
 
 @local
 @param[type=string|number] challengeId
-@param[type=string] resource
+@param[type=string] _
 @param[type=string] subResource player or party1..4
 @param[type=string] action
 ]]
@@ -74,7 +74,7 @@ Parse chat command about Details addon integration (e.g. `/mdb c a d ...`).
 
 @local
 @param[type=string|number] challengeId
-@param[type=string] resource
+@param[type=string] _
 @param[type=string] action
 ]]
 function MyDungeonsBook:ParseDetailsChatCommand(challengeId, _, action)

@@ -54,6 +54,7 @@ Map data about all buffs for challenge with id `challengeId`.
 
 @param[type=number] challengeId
 @param[type=string] key for mechanics table
+@param[type=string] neededType "BUFF" or "DEBUFF"
 @return[type=table]
 ]]
 function MyDungeonsBook:AllDebuffsOnPartyMemberFrame_GetDataForTable(challengeId, key, neededType)

@@ -233,7 +233,7 @@ function MyDungeonsBook:INSPECT_READY(_, guid)
 		return;
 	end
 	local unitInfo = self:ParseUnitInfoWithWowApi(unit);
-	self.db.char.challenges[id].players[unit] = unitInfo;
+	self.db.char.challenges[id].players[unit] = self:MergeTables(self.db.char.challenges[id].players[unit], unitInfo);
 	self:DebugPrint(string.format("Info about %s is stored", unit));
 	ClearInspectPlayer(guid);
 end
