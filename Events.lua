@@ -266,7 +266,9 @@ function MyDungeonsBook:ENCOUNTER_START(_, encounterId, encounterName, ...)
 	if (not self.db.char.challenges[id]) then
 		return;
 	end
-	self.db.char.challenges[id].encounters[encounterId] = {
+	local lastEncounterId = time();
+	self.db.char.challenges[id].misc.lastEncounterId = lastEncounterId;
+	self.db.char.challenges[id].encounters[lastEncounterId] = {
 		id = encounterId,
 		name = encounterName,
 		startTime = time(),
@@ -293,8 +295,13 @@ function MyDungeonsBook:ENCOUNTER_END(_, encounterId, encounterName, difficultyI
 	if (not self.db.char.challenges[id]) then
 		return;
 	end
-	self.db.char.challenges[id].encounters[encounterId].endTime = time();
-	self.db.char.challenges[id].encounters[encounterId].success = success;
-	self.db.char.challenges[id].encounters[encounterId].deathCountOnEnd = C_ChallengeMode.GetDeathCount();
+	local lastEncounterId = self.db.char.challenges[id].misc.lastEncounterId;
+	if (not lastEncounterId) then
+		-- is it possible???
+		return;
+	end
+	self.db.char.challenges[id].encounters[lastEncounterId].endTime = time();
+	self.db.char.challenges[id].encounters[lastEncounterId].success = success;
+	self.db.char.challenges[id].encounters[lastEncounterId].deathCountOnEnd = C_ChallengeMode.GetDeathCount();
 	self:DebugPrint("ENCOUNTER_END", encounterId, encounterName, difficultyId, groupSize, success);
 end

@@ -75,6 +75,7 @@ L["All Debuffs On Party Members"] = "All Debuffs On Party Members";
 L["Time"] = "Time";
 L["Target?"] = "Target?";
 L["Swing Damage"] = "Swing Damage";
+L["Result"] = "Result";
 -- UI end
 
 -- Settings start

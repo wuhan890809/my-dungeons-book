@@ -22,7 +22,7 @@ function MyDungeonsBook:EncountersFrame_Create(parentFrame)
 	encountersFrame:SetPoint("TOPRIGHT", -5, -110);
 	local cols = self:EncountersFrame_GetHeadersForTable();
 	local tableWrapper = CreateFrame("Frame", nil, encountersFrame);
-	tableWrapper:SetWidth(660);
+	tableWrapper:SetWidth(700);
 	tableWrapper:SetHeight(270);
 	tableWrapper:SetPoint("TOPLEFT", 10, 0);
 	local table = ScrollingTable:CreateST(cols, 6, 40, nil, tableWrapper);
@@ -91,6 +91,21 @@ function MyDungeonsBook:EncountersFrame_GetHeadersForTable()
 			name = "|Tinterface\\targetingframe\\ui-raidtargetingicon_8:12|t" .. L["After"],
 			width = 75,
 			align = "RIGHT"
+		},
+		{
+			name = L["Result"],
+			width = 40,
+			align = "CENTER",
+			DoCellUpdate = function(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
+				local success = data[realrow].cols[column].value;
+				local icon;
+				if (success == 1) then
+					icon = "interface\\raidframe\\readycheck-ready.blp";
+				else
+					icon = "interface\\raidframe\\readycheck-notready.blp";
+				end
+				cellFrame.text:SetText("|T" .. (icon or "") .. ":16:16:0:0:64:64:5:59:5:59|t");
+			end
 		}
 	}
 end
@@ -112,20 +127,21 @@ function MyDungeonsBook:EncountersFrame_GetDataForTable(challengeId)
 		return nil;
 	end
 	local countDownDelay = self:GetCountDownDelay(challengeId);
-	for id, encounterData in pairs(challenge.encounters) do
+	for _, encounterData in pairs(challenge.encounters) do
 		local deathCountOnStart = encounterData.deathCountOnStart or 0;
 		local deathCountOnEnd = encounterData.deathCountOnEnd or 0;
 		local deathCountWhile = deathCountOnEnd - deathCountOnStart;
 		tinsert(tableData, {
 			cols = {
-				{value = id},
+				{value = encounterData.id},
 				{value = encounterData.name},
 				{value = (encounterData.startTime - challenge.challengeInfo.startTime - countDownDelay) * 1000},
 				{value = (encounterData.endTime - challenge.challengeInfo.startTime - countDownDelay  + deathCountWhile * 5) * 1000},  -- +5s for each death
 				{value = (encounterData.endTime - encounterData.startTime) * 1000},
 				{value = deathCountOnStart},
 				{value = deathCountOnEnd - deathCountOnStart},
-				{value = deathCountOnEnd}
+				{value = deathCountOnEnd},
+				{value = encounterData.success}
 			}
 		});
 	end
