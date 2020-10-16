@@ -20,7 +20,7 @@ Created frame has a field `tabButtons` with tab-buttons. Keys in the `tabButtons
 function MyDungeonsBook:DamageFrame_CreateTabButtonsFrame(parentFrame)
 	return self:Tabs_Create(parentFrame, {
 		{id = "avoidableDamage", title = L["Avoidable Damage"]},
+		{id = "damageDoneToPartyMembers", title = L["All damage taken"]},
 		{id = "damageDoneToUnits", title = L["Damage Done To Units"]},
-		{id = "damageDoneToPartyMembers", title = L["Damage Done To Party Members"]}
 	});
 end

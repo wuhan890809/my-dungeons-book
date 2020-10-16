@@ -30,14 +30,12 @@ Creates a frame for Roster tab
 @return[type=Frame] challengeRosterFrame
 ]]
 function MyDungeonsBook:RosterFrame_Create(parentFrame)
-	local challengeRosterFrame = CreateFrame("Frame", nil, parentFrame, BackdropTemplateMixin and "BackdropTemplate");
-	challengeRosterFrame:SetBackdrop(ScrollPaneBackdrop);
-	challengeRosterFrame:SetBackdropColor(0.1, 0.1, 0.1);
+	local challengeRosterFrame = CreateFrame("Frame", nil, parentFrame);
 	challengeRosterFrame:SetPoint("TOPLEFT", 0, -90);
-	challengeRosterFrame:SetWidth(900);
-	challengeRosterFrame:SetHeight(215);
+	challengeRosterFrame:SetWidth(690);
+	challengeRosterFrame:SetHeight(480);
 	for i, unit in pairs(self:GetPartyRoster()) do
-		challengeRosterFrame[unit .. "DetailsFrame"] = self:RosterFrame_PartyMemberFrame_Create(challengeRosterFrame, 0, -10 + (i - 1) * -40, unit);
+		challengeRosterFrame[unit .. "DetailsFrame"] = self:RosterFrame_PartyMemberFrame_Create(challengeRosterFrame, 0, -10 + (i - 1) * -90, unit);
 	end
 	return challengeRosterFrame;
 end
@@ -52,15 +50,17 @@ Creates a row for unit `unitId` with data about his name, role, class, realm and
 @return[type=Frame] partyMemberFrame
 ]]
 function MyDungeonsBook:RosterFrame_PartyMemberFrame_Create(challengeRosterFrame, x, y, unitId)
-	local partyMemberFrame = CreateFrame("Frame", nil, challengeRosterFrame);
+	local partyMemberFrame = CreateFrame("Frame", nil, challengeRosterFrame, BackdropTemplateMixin and "BackdropTemplate");
+	partyMemberFrame:SetBackdrop(ScrollPaneBackdrop);
+	partyMemberFrame:SetBackdropColor(0.1, 0.1, 0.1);
 	partyMemberFrame:SetPoint("TOPLEFT", x, y);
-	partyMemberFrame:SetHeight(40);
-	partyMemberFrame:SetWidth(900);
-	partyMemberFrame.class = self:RosterFrame_PartyMemberFrame_ClassIcon_Create(partyMemberFrame, 5, 0, unitId);
-	partyMemberFrame.spec = self:RosterFrame_PartyMemberFrame_SpecIcon_Create(partyMemberFrame, 45, 0, unitId);
-	partyMemberFrame.nameAndRealmText = self:RosterFrame_PartyMemberFrame_NameAndRealmText_Create(partyMemberFrame, 90, 0);
-	partyMemberFrame.ilvlText = self:RosterFrame_PartyMemberFrame_IlvlText_Create(partyMemberFrame, 195, 0);
-	partyMemberFrame.equipment = self:RosterFrame_PartyMemberFrame_Equipment_Create(partyMemberFrame, 210, 0, unitId);
+	partyMemberFrame:SetHeight(90);
+	partyMemberFrame:SetWidth(690);
+	partyMemberFrame.class = self:RosterFrame_PartyMemberFrame_ClassIcon_Create(partyMemberFrame, 5, -5, unitId);
+	partyMemberFrame.spec = self:RosterFrame_PartyMemberFrame_SpecIcon_Create(partyMemberFrame, 45, -5, unitId);
+	partyMemberFrame.nameAndRealmText = self:RosterFrame_PartyMemberFrame_NameAndRealmText_Create(partyMemberFrame, 90, -5);
+	partyMemberFrame.ilvlText = self:RosterFrame_PartyMemberFrame_IlvlText_Create(partyMemberFrame, 195, -5);
+	partyMemberFrame.equipment = self:RosterFrame_PartyMemberFrame_Equipment_Create(partyMemberFrame, 5, -45, unitId);
 	return partyMemberFrame;
 end
 
@@ -172,7 +172,7 @@ function MyDungeonsBook:RosterFrame_PartyMemberFrame_Equipment_Create(parentFram
 		local itemFrame = CreateFrame("Frame", 0, parentFrame);
 		itemFrame:SetWidth(40);
 		itemFrame:SetHeight(40);
-		itemFrame:SetPoint("TOPLEFT", x + 40 * i, y);
+		itemFrame:SetPoint("TOPLEFT", x + 40 * (i - 1), y);
 		itemFrame:SetScript("OnEnter", function(frame)
 			self:RosterFrame_TableItemHover(frame, unitId, i);
 		end);

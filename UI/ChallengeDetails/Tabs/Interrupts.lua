@@ -23,9 +23,9 @@ function MyDungeonsBook:InterruptsFrame_Create(parentFrame)
 	local cols = self:InterruptsFrame_GetHeadersForTable();
 	local tableWrapper = CreateFrame("Frame", nil, interruptsFrame);
 	tableWrapper:SetWidth(580);
-	tableWrapper:SetHeight(490);
+	tableWrapper:SetHeight(240);
 	tableWrapper:SetPoint("TOPLEFT", 0, 0);
-	local table = ScrollingTable:CreateST(cols, 12, 40, nil, tableWrapper);
+	local table = ScrollingTable:CreateST(cols, 6, 40, nil, tableWrapper);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
@@ -46,7 +46,7 @@ function MyDungeonsBook:InterruptsFrame_Create(parentFrame)
 	local summaryWrapper = CreateFrame("Frame", nil, interruptsFrame);
 	summaryWrapper:SetWidth(290);
 	summaryWrapper:SetHeight(250);
-	summaryWrapper:SetPoint("TOPRIGHT", -10, 0);
+	summaryWrapper:SetPoint("TOPLEFT", 0, -285);
 	local cols = self:InterruptsFrame_GetHeadersForSummaryTable();
 	local summaryTable = ScrollingTable:CreateST(cols, 5, 40, nil, summaryWrapper);
 	summaryTable:RegisterEvents({

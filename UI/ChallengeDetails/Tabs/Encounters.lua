@@ -71,7 +71,7 @@ function MyDungeonsBook:EncountersFrame_GetHeadersForTable()
 		},
 		{
 			name = L["Duration"],
-			width = 75,
+			width = 45,
 			align = "LEFT",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsTime(...);

@@ -42,7 +42,7 @@ function MyDungeonsBook:DetailsFrame_GetHeadersForTable()
 		},
 		{
 			name = L["Damage"],
-			width = 100,
+			width = 60,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsNumber(...);
@@ -50,7 +50,7 @@ function MyDungeonsBook:DetailsFrame_GetHeadersForTable()
 		},
 		{
 			name = L["DPS"],
-			width = 100,
+			width = 60,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsNumber(...);
@@ -58,7 +58,7 @@ function MyDungeonsBook:DetailsFrame_GetHeadersForTable()
 		},
 		{
 			name = L["Heal"],
-			width = 100,
+			width = 60,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsNumber(...);
@@ -66,7 +66,7 @@ function MyDungeonsBook:DetailsFrame_GetHeadersForTable()
 		},
 		{
 			name = L["HPS"],
-			width = 100,
+			width = 60,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsNumber(...);
@@ -74,12 +74,12 @@ function MyDungeonsBook:DetailsFrame_GetHeadersForTable()
 		},
 		{
 			name = L["Interrupts"],
-			width = 100,
+			width = 60,
 			align = "RIGHT"
 		},
 		{
 			name = L["Dispells"],
-			width = 100,
+			width = 60,
 			align = "RIGHT"
 		}
 	};

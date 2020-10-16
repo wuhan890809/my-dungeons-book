@@ -30,7 +30,7 @@ Creates a main frame for addon.
 ]]
 function MyDungeonsBook:MainFrame_Create()
 	local frame = CreateFrame("Frame", "MyDungeonsBookFrame", UIParent, BackdropTemplateMixin and "BackdropTemplate");
-	frame:SetWidth(1425);
+	frame:SetWidth(1200);
 	frame:SetHeight(650);
 	frame:SetPoint("CENTER", UIParent, "CENTER", self.db.profile.display.x, self.db.profile.display.y);
 	frame:SetBackdrop(WindowBackdrop);
@@ -41,6 +41,7 @@ function MyDungeonsBook:MainFrame_Create()
 	frame:SetMovable(true);
 	frame:SetClampedToScreen(true);
 	frame:SetFrameStrata("HIGH");
+	tinsert(UISpecialFrames, frame:GetName()); -- allows to close it via Esc-press
 	return frame;
 end
 
@@ -117,6 +118,7 @@ function MyDungeonsBook:MainFrame_Show()
 		self.frame = frame;
     end
     self:ChallengesFrame_Update();
+	self.frame:SetScale(self.db.profile.display.scale);
 	self.frame:Show();
 end
 

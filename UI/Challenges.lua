@@ -41,7 +41,7 @@ function MyDungeonsBook:ChallengesFrame_Create(parentFrame)
 		{
 			name = L["Time"],
 			width = 40,
-			align = "LEFT",
+			align = "CENTER",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsTime(...);
 			end,
@@ -101,9 +101,9 @@ function MyDungeonsBook:ChallengesFrame_Create(parentFrame)
 				self:ChallengesFrame_RowHover(cellFrame, data[realrow].cols[1].value);
 			end
 	    end,
-		OnLeave = function (_, cellFrame, _, _, _, realrow)
+		OnLeave = function (_, _, _, _, _, realrow)
 			if (realrow) then
-				self:ChallengesFrame_RowOut(cellFrame);
+				self:Table_Cell_MouseOut();
 			end
 	    end
 	});
@@ -145,13 +145,6 @@ function MyDungeonsBook:ChallengesFrame_RowHover(tableCellFrame, challengeId)
 		GameTooltip:AddLine(string.format(L["Time lost: %ss"], timeLost));
 		GameTooltip:Show();
 	end
-end
-
---[[--
-Mouse-out handler for rows in the challenges table.
-]]
-function MyDungeonsBook:ChallengesFrame_RowOut()
-	GameTooltip:Hide();
 end
 
 --[[--

@@ -17,7 +17,8 @@ MyDungeonsBook.OptionsDefaults = {
 	profile = {
 		display = {
 			x = 0,
-			y = 0
+			y = 0,
+			scale = 1
 		},
 		verbose = {
 			debug = true,
@@ -38,6 +39,28 @@ MyDungeonsBook.OptionsDefaults = {
 MyDungeonsBook.Options = {
 	type = "group",
 	args = {
+		ui = {
+			order = 1,
+			name = L["UI"],
+			type="group",
+			args = {
+				scale = {
+					order = 1,
+					name = L["Main Window Scale"],
+					type = "range",
+					min = 0.8,
+					max = 2.0,
+					step = 0.1,
+					width = "full",
+					get = function()
+						return MyDungeonsBook.db.profile.display.scale;
+					end,
+					set = function(_, v)
+						MyDungeonsBook.db.profile.display.scale = v;
+					end
+				}
+			}
+		},
 		verbose = {
 			order = 1,
 			name = L["Verbose"],

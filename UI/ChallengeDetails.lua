@@ -31,7 +31,7 @@ Creates all frames related to the challenge details frames (with itself).
 function MyDungeonsBook:ChallengeDetailsFrame_Create(parentFrame)
 	local challengeDetailsFrame = CreateFrame("Frame", nil, parentFrame);
 	challengeDetailsFrame:SetPoint("TOPLEFT", 500, -30);
-	challengeDetailsFrame:SetWidth(900);
+	challengeDetailsFrame:SetWidth(700);
 	challengeDetailsFrame:SetHeight(650);
 	challengeDetailsFrame.titleFrame = self:ChallengeDetailsFrame_TitleFrame_Create(challengeDetailsFrame);
 	challengeDetailsFrame.tabButtonsFrame = self:ChallengeDetailsFrame_CreateTabButtonsFrame(challengeDetailsFrame);
@@ -61,8 +61,8 @@ Creates a frame with challenge name and affixes.
 ]]
 function MyDungeonsBook:ChallengeDetailsFrame_TitleFrame_Create(parentFrame)
 	local titleFrame = CreateFrame("Frame", nil, parentFrame);
-	titleFrame:SetPoint("TOPRIGHT", 0, 0);
-	titleFrame:SetWidth(900);
+	titleFrame:SetPoint("TOPLEFT", 0, 0);
+	titleFrame:SetWidth(700);
 	titleFrame:SetHeight(50);
 
 	local titleText = titleFrame:CreateFontString(nil, "ARTWORK");
@@ -76,7 +76,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_TitleFrame_Create(parentFrame)
 	local titleAffixes = titleFrame:CreateFontString(nil, "ARTWORK");
 	titleAffixes:SetFontObject(GameFontNormal);
 	titleAffixes:SetTextColor(0.6, 0.6, 0.6);
-	titleAffixes:SetPoint("TOPLEFT", titleFrame, "TOPLEFT", 5, 0);
+	titleAffixes:SetPoint("TOPLEFT", titleFrame, "TOPLEFT", 0, 0);
 	titleAffixes:SetPoint("BOTTOMLEFT", titleFrame);
 	titleAffixes:SetHeight(50);
 	titleFrame.titleAffixes = titleAffixes;
@@ -91,7 +91,7 @@ Update all frames related to challenge details.
 function MyDungeonsBook:ChallengeDetailsFrame_Update(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
-		self.challengeDetailsFrame.titleFrame.titleText:SetText(string.format(L["%s (+%s) %s"], challenge.challengeInfo.zoneName, challenge.challengeInfo.cmLevel, self:GetKeyUpgradeStr(challenge)));
+		self.challengeDetailsFrame.titleFrame.titleText:SetText(string.format(L["%s (%s) %s"], challenge.challengeInfo.zoneName, challenge.challengeInfo.cmLevel, self:GetKeyUpgradeStr(challenge)));
 		self.challengeDetailsFrame.titleFrame.titleAffixes:SetText(self:GetChallengeAffixesIconsStr(challengeId, 30));
 		self:InterruptsFrame_Update(challengeId);
 		self:DetailsFrame_Update(challengeId);

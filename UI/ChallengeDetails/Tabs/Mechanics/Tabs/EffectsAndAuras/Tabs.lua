@@ -20,9 +20,9 @@ Created frame has a field `tabButtons` with tab-buttons. Keys in the `tabButtons
 function MyDungeonsBook:EffectsAndAurasFrame_CreateTabButtonsFrame(parentFrame)
 	return self:Tabs_Create(parentFrame, {
 		{id = "avoidableDebuffs", title = L["Avoidable Debuffs"]},
+		{id = "allDebuffsOnPartyMembers", title = L["All Debuffs"]},
+		{id = "allBuffsOnPartyMembers", title = L["All Buffs"]},
+		{id = "buffsOrDebuffsOnPartyMembers", title = L["Special Buffs Or Debuffs"]},
 		{id = "buffsOrDebuffsOnUnits", title = L["Buffs Or Debuffs On Units"]},
-		{id = "buffsOrDebuffsOnPartyMembers", title = L["Buffs Or Debuffs On Party Members"]},
-		{id = "allBuffsOnPartyMembers", title = L["All Buffs On Party Members"]},
-		{id = "allDebuffsOnPartyMembers", title = L["All Debuffs On Party Members"]}
 	});
 end

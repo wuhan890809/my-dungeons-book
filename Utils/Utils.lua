@@ -267,7 +267,7 @@ Get a string with unit role, name and realm colored with it's class.
 ]]
 function MyDungeonsBook:GetUnitNameRealmRoleStr(unitInfo)
 	if (unitInfo.name) then
-		return self:ClassColorTextByClassIndex(unitInfo.class, string.format("%s %s\n%s", self:GetSmallRoleIcon(unitInfo.role), unitInfo.name, unitInfo.realm));
+		return self:ClassColorTextByClassIndex(unitInfo.class, string.format("%s %s - %s", self:GetSmallRoleIcon(unitInfo.role), unitInfo.name, unitInfo.realm));
 	end
 	return nil;
 end

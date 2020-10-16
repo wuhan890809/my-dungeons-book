@@ -55,11 +55,11 @@ L["Damage Done To Units"] = "Damage Done To Units";
 L["Special Casts"] = "Special Casts"
 L["Own Casts"] = "Own Casts";
 L["Buffs Or Debuffs On Units"] = "Buffs Or Debuffs On Units";
-L["Buffs Or Debuffs On Party Members"] = "Buffs Or Debuffs On Party Members";
+L["Special Buffs Or Debuffs"] = "Special Buffs Or Debuffs";
 L["Casts"] = "Casts"
 L["NPC"] = "NPC";
 L["Count"] = "Count";
-L["%s (+%s) %s"] = "%s (+%s) %s";
+L["%s (%s) %s"] = "%s (%s) %s";
 L["Time lost: %ss"] = "Time lost: %ss";
 L["Time: %s / %s (%s%s) %.1f%%"] = "Time: %s / %s (%s%s) %.1f%%";
 L["Key HP bonus: %s%%"] = "Key HP bonus: %s%%";
@@ -68,14 +68,14 @@ L["Dungeon: %s (+%s)"] = "Dungeon: %s (+%s)";
 L["Used Items"] = "Used Items";
 L["Item"] = "Item";
 L["%s dispelled %s using %s"] = "%s dispelled %s using %s";
-L["Damage Done To Party Members"] = "Damage Done To Party Members";
 L["Effects and Auras"] = "Effects and Auras";
-L["All Buffs On Party Members"] = "All Buffs On Party Members";
-L["All Debuffs On Party Members"] = "All Debuffs On Party Members";
+L["All Buffs"] = "All Buffs";
+L["All Debuffs"] = "All Debuffs";
 L["Time"] = "Time";
 L["Target?"] = "Target?";
 L["Swing Damage"] = "Swing Damage";
 L["Result"] = "Result";
+L["All damage taken"] = "All damage taken";
 -- UI end
 
 -- Settings start
@@ -84,6 +84,8 @@ L["Run garbage collector on close"] = "Run garbage collector on close";
 L["Verbose"] = "Verbose";
 L["MainFrame_Show DEBUG messages"] = "MainFrame_Show DEBUG messages";
 L["MainFrame_Show LOG messages"] = "MainFrame_Show LOG messages";
+L["UI"] = "UI";
+L["Main Window Scale"] = "Main Window Scale";
 -- Settings end
 
 -- BfA start

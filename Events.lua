@@ -303,5 +303,6 @@ function MyDungeonsBook:ENCOUNTER_END(_, encounterId, encounterName, difficultyI
 	self.db.char.challenges[id].encounters[lastEncounterId].endTime = time();
 	self.db.char.challenges[id].encounters[lastEncounterId].success = success;
 	self.db.char.challenges[id].encounters[lastEncounterId].deathCountOnEnd = C_ChallengeMode.GetDeathCount();
+	self.db.char.challenges[id].misc.lastEncounterId = nil;
 	self:DebugPrint("ENCOUNTER_END", encounterId, encounterName, difficultyId, groupSize, success);
 end

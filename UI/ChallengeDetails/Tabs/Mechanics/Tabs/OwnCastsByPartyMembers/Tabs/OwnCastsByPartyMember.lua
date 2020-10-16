@@ -42,9 +42,9 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_Create(parentFrame)
     });
     ownCastsByPartyMemberFrame.table = table;
     local summaryWrapper = CreateFrame("Frame", nil, ownCastsByPartyMemberFrame);
-    summaryWrapper:SetWidth(290);
+    summaryWrapper:SetWidth(200);
     summaryWrapper:SetHeight(450);
-    summaryWrapper:SetPoint("TOPLEFT", 540, 0);
+    summaryWrapper:SetPoint("TOPLEFT", 410, 0);
     local cols = self:OwnCastsByPartyMemberFrame_GetHeadersForSummaryTable();
     local summaryTable = ScrollingTable:CreateST(cols, 10, 40, nil, summaryWrapper);
     summaryTable:RegisterEvents({
@@ -87,7 +87,7 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetHeadersForTable()
         },
         {
             name = "",
-            width = 200,
+            width = 130,
             align = "LEFT",
             DoCellUpdate = function(...)
                 self:Table_Cell_FormatAsSpellLink(...);
@@ -110,7 +110,7 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetHeadersForTable()
         },
         {
             name = L["Target?"],
-            width = 150,
+            width = 110,
             align = "LEFT"
         }
     };
@@ -136,7 +136,7 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetHeadersForSummaryTable()
         },
         {
             name = "",
-            width = 200,
+            width = 130,
             align = "LEFT",
             DoCellUpdate = function(...)
                 self:Table_Cell_FormatAsSpellLink(...);

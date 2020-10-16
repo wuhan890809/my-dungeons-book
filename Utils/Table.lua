@@ -210,10 +210,11 @@ function MyDungeonsBook:Table_Cell_ItemMouseHover(cellFrame, itemId)
 	end
 end
 
---[[
-Get a columns for table that looks like `| spell icon |spell link| player | party 1..4 | sum |`
+--[[--
+Get columns for table that looks like `| spell icon | spell link |  party member 1 .. 5 | sum |`
 
 @param[type=?number] challengeId
+@return[type=table]
 ]]
 function MyDungeonsBook:Table_Headers_GetForSpellsSummary(challengeId)
     local challenge = self.db.char.challenges[challengeId];
@@ -281,7 +282,7 @@ function MyDungeonsBook:Table_Headers_GetForSpellsSummary(challengeId)
             name = L["Sum"],
             width = 50,
             align = "RIGHT",
-            sort = "dsc",
+            sort = "asc",
             bgcolor = {
                 r = 0,
                 g = 0,
@@ -290,4 +291,135 @@ function MyDungeonsBook:Table_Headers_GetForSpellsSummary(challengeId)
             }
         }
     };
+end
+
+--[[--
+Get columns for table that looks like `| spell icon | spell link | party member 1 .. 5 hits/amount  | sum |`
+
+@param[type=?number] challengeId
+@return[type=table]
+]]
+function MyDungeonsBook:Table_Headers_GetForDamageToPartyMembers(challengeId)
+local challenge = self.db.char.challenges[challengeId];
+	local player = "Player";
+	local party1 = "Party1";
+	local party2 = "Party2";
+	local party3 = "Party3";
+	local party4 = "Party4";
+	if (challenge) then
+		local players = challenge.players;
+		player = (players.player.name and self:ClassColorTextByClassIndex(players.player.class, players.player.name)) or L["Not Found"];
+		party1 = (players.party1.name and self:ClassColorTextByClassIndex(players.party1.class, players.party1.name)) or L["Not Found"];
+		party2 = (players.party2.name and self:ClassColorTextByClassIndex(players.party2.class, players.party2.name)) or L["Not Found"];
+		party3 = (players.party3.name and self:ClassColorTextByClassIndex(players.party3.class, players.party3.name)) or L["Not Found"];
+		party4 = (players.party4.name and self:ClassColorTextByClassIndex(players.party4.class, players.party4.name)) or L["Not Found"];
+	end
+	return {
+		{
+			name = " ",
+			width = 1,
+			align = "LEFT"
+		},
+		{
+			name = L["Spell"],
+			width = 40,
+			align = "LEFT",
+			DoCellUpdate = function(...)
+				self:Table_Cell_FormatAsSpellIcon(...);
+			end
+		},
+		{
+			name = " ",
+			width = 120,
+			align = "LEFT",
+			DoCellUpdate = function(...)
+				self:Table_Cell_FormatAsSpellLink(...);
+			end
+		},
+		{
+			name = player,
+			width = 80,
+			align = "RIGHT",
+			DoCellUpdate = function(...)
+				self:Table_Cell_FormatAsNumber(...);
+			end
+		},
+		{
+			name = "",
+			width = 1,
+			align = "RIGHT"
+		},
+		{
+			name = party1,
+			width = 80,
+			align = "RIGHT",
+			DoCellUpdate = function(...)
+				self:Table_Cell_FormatAsNumber(...);
+			end
+		},
+		{
+			name = "",
+			width = 1,
+			align = "RIGHT"
+		},
+		{
+			name = party2,
+			width = 80,
+			align = "RIGHT",
+			DoCellUpdate = function(...)
+				self:Table_Cell_FormatAsNumber(...);
+			end
+		},
+		{
+			name = "",
+			width = 1,
+			align = "RIGHT"
+		},
+		{
+			name = party3,
+			width = 80,
+			align = "RIGHT",
+			DoCellUpdate = function(...)
+				self:Table_Cell_FormatAsNumber(...);
+			end
+		},
+		{
+			name = "",
+			width = 1,
+			align = "RIGHT"
+		},
+		{
+			name = party4,
+			width = 80,
+			align = "RIGHT",
+			DoCellUpdate = function(...)
+				self:Table_Cell_FormatAsNumber(...);
+			end
+		},
+		{
+			name = "",
+			width = 1,
+			align = "RIGHT"
+		},
+		{
+			name = L["Sum"],
+			width = 70,
+			align = "RIGHT",
+			sort = "asc",
+			bgcolor = {
+				r = 0,
+				g = 0,
+				b = 0,
+				a = 0.4
+			},
+			DoCellUpdate = function(...)
+				self:Table_Cell_FormatAsNumber(...);
+			end
+		},
+		{
+			name = "",
+			width = 1,
+			align = "RIGHT"
+		}
+	};
 end

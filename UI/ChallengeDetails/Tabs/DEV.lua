@@ -15,14 +15,14 @@ Creates a frame for DEV tab.
 ]]
 function MyDungeonsBook:DevFrame_Create(parentFrame)
 	local devWrapper = CreateFrame("Frame", nil, parentFrame);
-	devWrapper:SetWidth(900);
+	devWrapper:SetWidth(700);
 	devWrapper:SetHeight(490);
-	devWrapper:SetPoint("TOPLEFT", 0, -110);
+	devWrapper:SetPoint("TOPLEFT", 0, -80);
 	local textarea = CreateFrame("EditBox", nil, devWrapper, "InputBoxTemplate");
 	textarea:SetFontObject(GameFontNormal);
-	textarea:SetPoint("TOPLEFT", 0, -10);
-	textarea:SetWidth(800);
-	textarea:SetHeight(20);
+	textarea:SetPoint("TOPLEFT", 0, 0);
+	textarea:SetWidth(650);
+	textarea:SetHeight(30);
 	devWrapper.textarea = textarea;
 	return devWrapper; 
 end
