@@ -33,7 +33,7 @@ function MyDungeonsBook:RosterFrame_Create(parentFrame)
 	local challengeRosterFrame = CreateFrame("Frame", nil, parentFrame, BackdropTemplateMixin and "BackdropTemplate");
 	challengeRosterFrame:SetBackdrop(ScrollPaneBackdrop);
 	challengeRosterFrame:SetBackdropColor(0.1, 0.1, 0.1);
-	challengeRosterFrame:SetPoint("TOPRIGHT", -10, -90);
+	challengeRosterFrame:SetPoint("TOPLEFT", 0, -90);
 	challengeRosterFrame:SetWidth(900);
 	challengeRosterFrame:SetHeight(215);
 	for i, unit in pairs(self:GetPartyRoster()) do

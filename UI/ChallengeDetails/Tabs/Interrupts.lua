@@ -19,7 +19,7 @@ function MyDungeonsBook:InterruptsFrame_Create(parentFrame)
 	local interruptsFrame = CreateFrame("Frame", nil, parentFrame);
 	interruptsFrame:SetWidth(900);
 	interruptsFrame:SetHeight(490);
-	interruptsFrame:SetPoint("TOPRIGHT", -5, -110);
+	interruptsFrame:SetPoint("TOPLEFT", 0, -110);
 	local cols = self:InterruptsFrame_GetHeadersForTable();
 	local tableWrapper = CreateFrame("Frame", nil, interruptsFrame);
 	tableWrapper:SetWidth(580);

@@ -22,7 +22,7 @@ function MyDungeonsBook:AvoidableDamageFrame_Create(parentFrame)
 	local tableWrapper = CreateFrame("Frame", nil, parentFrame);
 	tableWrapper:SetWidth(900);
 	tableWrapper:SetHeight(450);
-	tableWrapper:SetPoint("TOPLEFT", 0, -100);
+	tableWrapper:SetPoint("TOPLEFT", 0, -120);
 	local table = ScrollingTable:CreateST(cols, 10, 40, nil, tableWrapper);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
@@ -83,7 +83,7 @@ function MyDungeonsBook:AvoidableDamageFrame_GetHeadersForTable(challengeId)
 		},
 		{
 			name = "",
-			width = 135,
+			width = 120,
 			align = "LEFT",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsSpellLink(...);

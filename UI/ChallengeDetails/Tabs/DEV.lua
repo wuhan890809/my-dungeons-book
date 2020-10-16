@@ -17,10 +17,10 @@ function MyDungeonsBook:DevFrame_Create(parentFrame)
 	local devWrapper = CreateFrame("Frame", nil, parentFrame);
 	devWrapper:SetWidth(900);
 	devWrapper:SetHeight(490);
-	devWrapper:SetPoint("TOPRIGHT", -5, -110);
+	devWrapper:SetPoint("TOPLEFT", 0, -110);
 	local textarea = CreateFrame("EditBox", nil, devWrapper, "InputBoxTemplate");
 	textarea:SetFontObject(GameFontNormal);
-	textarea:SetPoint("TOPLEFT", 10, -10);
+	textarea:SetPoint("TOPLEFT", 0, -10);
 	textarea:SetWidth(800);
 	textarea:SetHeight(20);
 	devWrapper.textarea = textarea;

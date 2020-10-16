@@ -17,11 +17,11 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_Create(parentFrame)
     local ownCastsByPartyMemberFrame = CreateFrame("Frame", nil, parentFrame);
     ownCastsByPartyMemberFrame:SetWidth(900);
     ownCastsByPartyMemberFrame:SetHeight(490);
-    ownCastsByPartyMemberFrame:SetPoint("TOPLEFT", 0, -100);
+    ownCastsByPartyMemberFrame:SetPoint("TOPLEFT", 0, -120);
     local tableWrapper = CreateFrame("Frame", nil, ownCastsByPartyMemberFrame);
     tableWrapper:SetWidth(500);
     tableWrapper:SetHeight(450);
-    tableWrapper:SetPoint("TOPLEFT", 10, 0);
+    tableWrapper:SetPoint("TOPLEFT", 0, 0);
     local cols = self:OwnCastsByPartyMemberFrame_GetHeadersForTable();
     local table = ScrollingTable:CreateST(cols, 10, 40, nil, tableWrapper);
     table:RegisterEvents({
@@ -44,7 +44,7 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_Create(parentFrame)
     local summaryWrapper = CreateFrame("Frame", nil, ownCastsByPartyMemberFrame);
     summaryWrapper:SetWidth(290);
     summaryWrapper:SetHeight(450);
-    summaryWrapper:SetPoint("TOPRIGHT", -10, 0);
+    summaryWrapper:SetPoint("TOPLEFT", 540, 0);
     local cols = self:OwnCastsByPartyMemberFrame_GetHeadersForSummaryTable();
     local summaryTable = ScrollingTable:CreateST(cols, 10, 40, nil, summaryWrapper);
     summaryTable:RegisterEvents({

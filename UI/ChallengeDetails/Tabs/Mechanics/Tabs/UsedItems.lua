@@ -23,7 +23,7 @@ function MyDungeonsBook:UsedItemsFrame_Create(parentFrame)
 	local tableWrapper = CreateFrame("Frame", nil, parentFrame);
 	tableWrapper:SetWidth(600);
 	tableWrapper:SetHeight(450);
-	tableWrapper:SetPoint("TOPLEFT", 10, -120);
+	tableWrapper:SetPoint("TOPLEFT", 0, -120);
 	local table = ScrollingTable:CreateST(cols, 11, 40, nil, tableWrapper);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)

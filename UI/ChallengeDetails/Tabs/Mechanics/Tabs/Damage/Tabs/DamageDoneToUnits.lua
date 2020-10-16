@@ -22,7 +22,7 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_Create(parentFrame)
 	local tableWrapper = CreateFrame("Frame", nil, parentFrame);
 	tableWrapper:SetWidth(900);
 	tableWrapper:SetHeight(450);
-	tableWrapper:SetPoint("TOPLEFT", 0, -100);
+	tableWrapper:SetPoint("TOPLEFT", 0, -120);
 	local table = ScrollingTable:CreateST(cols, 10, 40, nil, tableWrapper);
 	tableWrapper.table = table;
 	return tableWrapper;

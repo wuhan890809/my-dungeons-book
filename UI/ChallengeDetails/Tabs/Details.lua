@@ -20,7 +20,7 @@ function MyDungeonsBook:DetailsFrame_Create(parentFrame)
 	local ScrollingTable = LibStub("ScrollingTable");
 	local cols = self:DetailsFrame_GetHeadersForTable();
 	local detailsFrame = CreateFrame("Frame", nil, parentFrame);
-	detailsFrame:SetWidth(900);
+	detailsFrame:SetWidth(825);
 	detailsFrame:SetHeight(250);
 	detailsFrame:SetPoint("TOPLEFT", 0, -110);
 	local table = ScrollingTable:CreateST(cols, 5, 40, nil, detailsFrame);
@@ -37,7 +37,7 @@ function MyDungeonsBook:DetailsFrame_GetHeadersForTable()
 	return {
 		{
 			name = L["Player"],
-			width = 275,
+			width = 200,
 			align = "LEFT"
 		},
 		{

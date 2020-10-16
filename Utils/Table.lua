@@ -57,7 +57,7 @@ Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/proje
 ]]
 function MyDungeonsBook:Table_Cell_FormatAsDate(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local val = data[realrow].cols[column].value;
-	cellFrame.text:SetText((val and date("%Y-%m-%d %H:%M", val)) or "-");
+	cellFrame.text:SetText((val and date("%Y-%m-%d\n%H:%M", val)) or "-");
 	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
 end
 
@@ -246,7 +246,7 @@ function MyDungeonsBook:Table_Headers_GetForSpellsSummary(challengeId)
         },
         {
             name = "",
-            width = 135,
+            width = 120,
             align = "LEFT",
             DoCellUpdate = function(...)
                 self:Table_Cell_FormatAsSpellLink(...);

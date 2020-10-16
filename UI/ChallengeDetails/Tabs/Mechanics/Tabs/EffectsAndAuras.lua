@@ -15,7 +15,7 @@ Creates a frame for Effects And Auras tab
 ]]
 function MyDungeonsBook:EffectsAndAurasFrame_Create(parentFrame)
 	local effectsAndAurasFrame = CreateFrame("Frame", nil, parentFrame);
-	effectsAndAurasFrame:SetPoint("TOPRIGHT", 0, -30);
+	effectsAndAurasFrame:SetPoint("TOPLEFT", 0, -30);
 	effectsAndAurasFrame:SetWidth(900);
 	effectsAndAurasFrame:SetHeight(650);
 	effectsAndAurasFrame.tabButtonsFrame = self:EffectsAndAurasFrame_CreateTabButtonsFrame(effectsAndAurasFrame);

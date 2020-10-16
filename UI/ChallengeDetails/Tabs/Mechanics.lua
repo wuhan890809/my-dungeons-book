@@ -15,7 +15,7 @@ Creates a frame for Mechanics tab
 ]]
 function MyDungeonsBook:MechanicsFrame_Create(parentFrame)
 	local mechanicsFrame = CreateFrame("Frame", nil, parentFrame);
-	mechanicsFrame:SetPoint("TOPRIGHT", -10, -30);
+	mechanicsFrame:SetPoint("TOPLEFT", 0, -30);
 	mechanicsFrame:SetWidth(900);
 	mechanicsFrame:SetHeight(650);
 	mechanicsFrame.tabButtonsFrame = self:MechanicsFrame_CreateTabButtonsFrame(mechanicsFrame);

@@ -30,7 +30,7 @@ Creates all frames related to the challenge details frames (with itself).
 ]]
 function MyDungeonsBook:ChallengeDetailsFrame_Create(parentFrame)
 	local challengeDetailsFrame = CreateFrame("Frame", nil, parentFrame);
-	challengeDetailsFrame:SetPoint("TOPLEFT", 590, -30);
+	challengeDetailsFrame:SetPoint("TOPLEFT", 500, -30);
 	challengeDetailsFrame:SetWidth(900);
 	challengeDetailsFrame:SetHeight(650);
 	challengeDetailsFrame.titleFrame = self:ChallengeDetailsFrame_TitleFrame_Create(challengeDetailsFrame);

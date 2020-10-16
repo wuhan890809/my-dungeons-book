@@ -15,7 +15,7 @@ Creates a frame for Damage tab
 ]]
 function MyDungeonsBook:DamageFrame_Create(parentFrame)
 	local damageFrame = CreateFrame("Frame", nil, parentFrame);
-	damageFrame:SetPoint("TOPRIGHT", 0, -30);
+	damageFrame:SetPoint("TOPLEFT", 0, -30);
 	damageFrame:SetWidth(900);
 	damageFrame:SetHeight(650);
 	damageFrame.tabButtonsFrame = self:DamageFrame_CreateTabButtonsFrame(damageFrame);

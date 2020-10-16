@@ -22,11 +22,11 @@ function MyDungeonsBook:AllDebuffsOnPartyMemberFrame_Create(parentFrame)
     local interruptsFrame = CreateFrame("Frame", nil, parentFrame);
     interruptsFrame:SetWidth(900);
     interruptsFrame:SetHeight(490);
-    interruptsFrame:SetPoint("TOPLEFT", 0, -100);
+    interruptsFrame:SetPoint("TOPLEFT", 0, -120);
     local tableWrapper = CreateFrame("Frame", nil, interruptsFrame);
     tableWrapper:SetWidth(600);
     tableWrapper:SetHeight(450);
-    tableWrapper:SetPoint("TOPLEFT", 10, 0);
+    tableWrapper:SetPoint("TOPLEFT", 0, 0);
     local cols = self:Table_Headers_GetForSpellsSummary();
     local table = ScrollingTable:CreateST(cols, 10, 40, nil, tableWrapper);
     table:RegisterEvents({

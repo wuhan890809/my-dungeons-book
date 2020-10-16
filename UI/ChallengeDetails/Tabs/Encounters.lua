@@ -19,12 +19,12 @@ function MyDungeonsBook:EncountersFrame_Create(parentFrame)
 	local encountersFrame = CreateFrame("Frame", nil, parentFrame);
 	encountersFrame:SetWidth(900);
 	encountersFrame:SetHeight(490);
-	encountersFrame:SetPoint("TOPRIGHT", -5, -110);
+	encountersFrame:SetPoint("TOPLEFT", 0, -110);
 	local cols = self:EncountersFrame_GetHeadersForTable();
 	local tableWrapper = CreateFrame("Frame", nil, encountersFrame);
 	tableWrapper:SetWidth(700);
 	tableWrapper:SetHeight(270);
-	tableWrapper:SetPoint("TOPLEFT", 10, 0);
+	tableWrapper:SetPoint("TOPLEFT", 0, 0);
 	local table = ScrollingTable:CreateST(cols, 6, 40, nil, tableWrapper);
 	table:RegisterEvents({
 		OnClick = function()

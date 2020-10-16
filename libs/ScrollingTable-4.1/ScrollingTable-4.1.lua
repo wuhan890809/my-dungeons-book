@@ -733,7 +733,7 @@ do
 
 		f:SetBackdrop(ScrollPaneBackdrop);
 		f:SetBackdropColor(0.1,0.1,0.1);
-		f:SetPoint("CENTER",parent or UIParent,"CENTER",0,0);
+		f:SetPoint("TOPLEFT",parent or UIParent,"TOPLEFT",0,0);
 
 		-- build scroll frame
 		local scrollframe = CreateFrame("ScrollFrame", f:GetName().."ScrollFrame", f, "FauxScrollFrameTemplate");

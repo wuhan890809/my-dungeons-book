@@ -8,7 +8,7 @@ It must have two fields - `id` and `title`. `id` must be unique in the scope of 
 ]]
 function MyDungeonsBook:Tabs_Create(parentFrame, tabsDetails)
     local tabsButtonsFrame = CreateFrame("Frame", nil, parentFrame);
-    tabsButtonsFrame:SetPoint("TOPLEFT", 10, -40);
+    tabsButtonsFrame:SetPoint("TOPLEFT", 0, -40);
     tabsButtonsFrame:SetWidth(900);
     tabsButtonsFrame:SetHeight(50);
     tabsButtonsFrame.tabButtons = {};

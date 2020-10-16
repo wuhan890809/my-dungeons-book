@@ -26,7 +26,7 @@ function MyDungeonsBook:ChallengesFrame_Create(parentFrame)
 		},
 		{
 			name = L["Date"],
-			width = 130,
+			width = 75,
 			align = "LEFT",
 			sort = "asc",
 			DoCellUpdate = function(...)
@@ -40,15 +40,21 @@ function MyDungeonsBook:ChallengesFrame_Create(parentFrame)
 		},
 		{
 			name = L["Time"],
-			width = 50,
+			width = 40,
 			align = "LEFT",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsTime(...);
-			end
+			end,
+			bgcolor = {
+				r = 0,
+				g = 0,
+				b = 0,
+				a = 0.4
+			},
 		},
 		{
 			name = L["Key"],
-			width = 50,
+			width = 35,
 			align = "RIGHT"
 		},
 		{
@@ -77,9 +83,9 @@ function MyDungeonsBook:ChallengesFrame_Create(parentFrame)
 		}
 	};
 	local tableWrapper = CreateFrame("Frame", nil, parentFrame);
-	tableWrapper:SetWidth(500);
+	tableWrapper:SetWidth(450);
 	tableWrapper:SetHeight(650);
-	tableWrapper:SetPoint("TOPLEFT", 40, -25);
+	tableWrapper:SetPoint("TOPLEFT", 10, -70);
 	local table = ScrollingTable:CreateST(cols, 11, 50, nil, tableWrapper);
 	table:SetData(self:ChallengesFrame_GetDataForTable());
 	table:SortData();

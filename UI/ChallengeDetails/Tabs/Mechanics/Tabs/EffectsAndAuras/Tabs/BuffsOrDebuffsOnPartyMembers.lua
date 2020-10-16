@@ -23,11 +23,11 @@ function MyDungeonsBook:BuffsOrDebuffsOnPartyMembersFrame_Create(parentFrame)
 	local buffsOrDebuffsOnPartyMembersFrame = CreateFrame("Frame", nil, parentFrame);
 	buffsOrDebuffsOnPartyMembersFrame:SetWidth(900);
 	buffsOrDebuffsOnPartyMembersFrame:SetHeight(490);
-	buffsOrDebuffsOnPartyMembersFrame:SetPoint("TOPLEFT", 0, -100);
+	buffsOrDebuffsOnPartyMembersFrame:SetPoint("TOPLEFT", 0, -120);
 	local tableWrapper = CreateFrame("Frame", nil, buffsOrDebuffsOnPartyMembersFrame);
 	tableWrapper:SetWidth(600);
 	tableWrapper:SetHeight(450);
-	tableWrapper:SetPoint("TOPLEFT", 10, 0);
+	tableWrapper:SetPoint("TOPLEFT", 0, 0);
 	local table = ScrollingTable:CreateST(cols, 10, 40, nil, tableWrapper);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)

@@ -15,7 +15,7 @@ Creates a frame for Own Casts By Party Members tab
 ]]
 function MyDungeonsBook:OwnCastsByPartyMembersFrame_Create(parentFrame)
     local ownCastsByPartyMembersFrame = CreateFrame("Frame", nil, parentFrame);
-    ownCastsByPartyMembersFrame:SetPoint("TOPRIGHT", 0, -30);
+    ownCastsByPartyMembersFrame:SetPoint("TOPLEFT", 0, -30);
     ownCastsByPartyMembersFrame:SetWidth(900);
     ownCastsByPartyMembersFrame:SetHeight(650);
     ownCastsByPartyMembersFrame.tabButtonsFrame = self:OwnCastsByPartyMembersFrame_CreateTabButtonsFrame(ownCastsByPartyMembersFrame);
