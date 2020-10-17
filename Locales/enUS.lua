@@ -76,6 +76,8 @@ L["Target?"] = "Target?";
 L["Swing Damage"] = "Swing Damage";
 L["Result"] = "Result";
 L["All damage taken"] = "All damage taken";
+L["Dispels"] = "Dispels";
+L["Casts"] = "Casts";
 -- UI end
 
 -- Settings start

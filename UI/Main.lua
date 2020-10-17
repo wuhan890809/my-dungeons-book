@@ -31,7 +31,7 @@ Creates a main frame for addon.
 function MyDungeonsBook:MainFrame_Create()
 	local frame = CreateFrame("Frame", "MyDungeonsBookFrame", UIParent, BackdropTemplateMixin and "BackdropTemplate");
 	frame:SetWidth(1200);
-	frame:SetHeight(650);
+	frame:SetHeight(720);
 	frame:SetPoint("CENTER", UIParent, "CENTER", self.db.profile.display.x, self.db.profile.display.y);
 	frame:SetBackdrop(WindowBackdrop);
 	frame:SetBackdropColor(0, 0, 0, 1);

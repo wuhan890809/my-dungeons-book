@@ -22,7 +22,6 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 		{id = "roster", title = L["Roster"]},
 		{id = "details", title = L["Details"]},
 		{id = "encounters", title = L["Encounters"]},
-		{id = "interrupts", title = L["Interrupts"]},
 		{id = "mechanics", title = L["Mechanics"]},
 		{id = "dev", title = L["DEV"]}
 	});

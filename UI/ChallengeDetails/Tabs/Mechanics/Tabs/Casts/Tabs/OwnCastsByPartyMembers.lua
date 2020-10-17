@@ -36,7 +36,7 @@ Updates a Own Casts By Party Members frame with data for challenge with id `chal
 function MyDungeonsBook:OwnCastsByPartyMembersFrame_Update(challengeId)
     for _, unitId in pairs(self:GetPartyRoster()) do
         self:OwnCastsByPartyMemberFrame_Update(challengeId, unitId);
-        self.challengeDetailsFrame.mechanicsFrame.ownCastsFrame.tabButtonsFrame.tabButtons[unitId]:SetText(self:GetNameByPartyUnit(challengeId, unitId));
+        self.challengeDetailsFrame.mechanicsFrame.castsFrame.ownCastsFrame.tabButtonsFrame.tabButtons[unitId]:SetText(self:GetNameByPartyUnit(challengeId, unitId));
     end
-    self:Tab_Click(self.challengeDetailsFrame.mechanicsFrame.ownCastsFrame, "player");
+    self:Tab_Click(self.challengeDetailsFrame.mechanicsFrame.castsFrame.ownCastsFrame, "player");
 end

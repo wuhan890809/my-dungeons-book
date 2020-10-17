@@ -26,7 +26,7 @@ function MyDungeonsBook:AllBuffsOnPartyMemberFrame_Create(parentFrame)
     tableWrapper:SetHeight(450);
     tableWrapper:SetPoint("TOPLEFT", 0, 0);
     local cols = self:Table_Headers_GetForSpellsSummary();
-    local table = ScrollingTable:CreateST(cols, 10, 40, nil, tableWrapper);
+    local table = ScrollingTable:CreateST(cols, 11, 40, nil, tableWrapper);
     table:RegisterEvents({
         OnEnter = function (_, cellFrame, data, _, _, realrow, column)
             if (realrow) then

@@ -365,11 +365,11 @@ function MyDungeonsBook:InterruptsFrame_Update(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
 		local interruptsTableData = self:InterruptsFrame_GetDataForTable(challengeId);
-		self.challengeDetailsFrame.interruptsFrame.table:SetData(interruptsTableData or {});
-		self.challengeDetailsFrame.interruptsFrame.table:SetDisplayCols(self:InterruptsFrame_GetHeadersForTable(challengeId));
+		self.challengeDetailsFrame.mechanicsFrame.castsFrame.interruptsFrame.table:SetData(interruptsTableData or {});
+		self.challengeDetailsFrame.mechanicsFrame.castsFrame.interruptsFrame.table:SetDisplayCols(self:InterruptsFrame_GetHeadersForTable(challengeId));
 		local interruptsSummaryTableData = self:InterruptsFrame_GetDataForSummaryTable(challengeId);
 		if (interruptsSummaryTableData) then
-			self.challengeDetailsFrame.interruptsFrame.summaryTable:SetData(interruptsSummaryTableData);
+			self.challengeDetailsFrame.mechanicsFrame.castsFrame.interruptsFrame.summaryTable:SetData(interruptsSummaryTableData);
 		end
 	end
 end

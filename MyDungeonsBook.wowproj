@@ -81,19 +81,34 @@
     <Content Include="UI\ChallengeDetails\Tabs\Encounters.lua">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="UI\ChallengeDetails\Tabs\Interrupts.lua">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics.lua">
       <SubType>Code</SubType>
     </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs.lua">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage.lua">
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Casts.lua">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\CastsByPartyMembers.lua">
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Casts\Tabs.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Casts\Tabs\CastsByPartyMembers.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Casts\Tabs\Interrupts.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Casts\Tabs\OwnCastsByPartyMembers.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Casts\Tabs\OwnCastsByPartyMembers\Tabs.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Casts\Tabs\OwnCastsByPartyMembers\Tabs\OwnCastsByPartyMember.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage.lua">
       <SubType>Code</SubType>
     </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs.lua">
@@ -129,13 +144,7 @@
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\BuffsOrDebuffsOnUnits.lua">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\OwnCastsByPartyMembers.lua">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\OwnCastsByPartyMembers\Tabs.lua">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\OwnCastsByPartyMembers\Tabs\OwnCastsByPartyMember.lua">
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\Dispels.lua">
       <SubType>Code</SubType>
     </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\UsedItems.lua">
@@ -171,12 +180,14 @@
     <Folder Include="ldoc" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs" />
+    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Casts\Tabs" />
+    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Casts\Tabs\OwnCastsByPartyMembers\" />
+    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Casts\Tabs\OwnCastsByPartyMembers\Tabs\" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs" />
-    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\OwnCastsByPartyMembers" />
-    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\OwnCastsByPartyMembers\Tabs" />
+    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Casts" />
     <Folder Include="Utils" />
     <Folder Include="UI" />
     <Folder Include="UI\ChallengeDetails" />

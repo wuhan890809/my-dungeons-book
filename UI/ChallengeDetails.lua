@@ -38,7 +38,6 @@ function MyDungeonsBook:ChallengeDetailsFrame_Create(parentFrame)
 	challengeDetailsFrame.challengeRosterFrame = self:RosterFrame_Create(challengeDetailsFrame);
 	challengeDetailsFrame.detailsFrame = self:DetailsFrame_Create(challengeDetailsFrame);
 	challengeDetailsFrame.encountersFrame = self:EncountersFrame_Create(challengeDetailsFrame);
-	challengeDetailsFrame.interruptsFrame = self:InterruptsFrame_Create(challengeDetailsFrame);
 	challengeDetailsFrame.mechanicsFrame = self:MechanicsFrame_Create(challengeDetailsFrame);
 	challengeDetailsFrame.devFrame = self:DevFrame_Create(challengeDetailsFrame);
 	challengeDetailsFrame.tabs = {
@@ -46,7 +45,6 @@ function MyDungeonsBook:ChallengeDetailsFrame_Create(parentFrame)
 		details = challengeDetailsFrame.detailsFrame,
 		dev = challengeDetailsFrame.devFrame,
 		encounters = challengeDetailsFrame.encountersFrame,
-		interrupts = challengeDetailsFrame.interruptsFrame,
 		mechanics = challengeDetailsFrame.mechanicsFrame
 	};
 	challengeDetailsFrame:Hide();
@@ -93,7 +91,6 @@ function MyDungeonsBook:ChallengeDetailsFrame_Update(challengeId)
 	if (challenge) then
 		self.challengeDetailsFrame.titleFrame.titleText:SetText(string.format(L["%s (%s) %s"], challenge.challengeInfo.zoneName, challenge.challengeInfo.cmLevel, self:GetKeyUpgradeStr(challenge)));
 		self.challengeDetailsFrame.titleFrame.titleAffixes:SetText(self:GetChallengeAffixesIconsStr(challengeId, 30));
-		self:InterruptsFrame_Update(challengeId);
 		self:DetailsFrame_Update(challengeId);
 		self:DevFrame_Update(challengeId);
 		self:RosterFrame_Update(challengeId);

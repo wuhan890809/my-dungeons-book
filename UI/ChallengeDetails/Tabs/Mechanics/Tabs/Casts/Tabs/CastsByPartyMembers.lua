@@ -24,7 +24,7 @@ function MyDungeonsBook:SpecialCastsFrame_Create(parentFrame)
 	tableWrapper:SetWidth(600);
 	tableWrapper:SetHeight(450);
 	tableWrapper:SetPoint("TOPLEFT", 0, -120);
-	local table = ScrollingTable:CreateST(cols, 11, 40, nil, tableWrapper);
+	local table = ScrollingTable:CreateST(cols, 12, 40, nil, tableWrapper);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
@@ -102,8 +102,8 @@ function MyDungeonsBook:SpecialCastsFrame_Update(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
 		local specialCastsTableData = self:SpecialCastsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-CASTS-DONE-BY-PARTY-MEMBERS");
-		self.challengeDetailsFrame.mechanicsFrame.specialCastsFrame.table:SetData(specialCastsTableData);
-		self.challengeDetailsFrame.mechanicsFrame.specialCastsFrame.table:SetDisplayCols(self:Table_Headers_GetForSpellsSummary(challengeId));
-		self.challengeDetailsFrame.mechanicsFrame.specialCastsFrame.table:SortData();
+		self.challengeDetailsFrame.mechanicsFrame.castsFrame.specialCastsFrame.table:SetData(specialCastsTableData);
+		self.challengeDetailsFrame.mechanicsFrame.castsFrame.specialCastsFrame.table:SetDisplayCols(self:Table_Headers_GetForSpellsSummary(challengeId));
+		self.challengeDetailsFrame.mechanicsFrame.castsFrame.specialCastsFrame.table:SortData();
 	end
 end

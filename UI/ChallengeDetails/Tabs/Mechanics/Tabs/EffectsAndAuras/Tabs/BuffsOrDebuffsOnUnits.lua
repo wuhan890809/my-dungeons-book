@@ -28,7 +28,7 @@ function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_Create(parentFrame)
 	tableWrapper:SetWidth(320);
 	tableWrapper:SetHeight(450);
 	tableWrapper:SetPoint("TOPLEFT", 0, 0);
-	local table = ScrollingTable:CreateST(cols, 10, 40, nil, tableWrapper);
+	local table = ScrollingTable:CreateST(cols, 11, 40, nil, tableWrapper);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then

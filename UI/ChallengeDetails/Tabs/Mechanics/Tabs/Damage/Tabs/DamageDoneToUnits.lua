@@ -23,7 +23,7 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_Create(parentFrame)
 	tableWrapper:SetWidth(900);
 	tableWrapper:SetHeight(450);
 	tableWrapper:SetPoint("TOPLEFT", 0, -120);
-	local table = ScrollingTable:CreateST(cols, 10, 40, nil, tableWrapper);
+	local table = ScrollingTable:CreateST(cols, 11, 40, nil, tableWrapper);
 	table:RegisterEvents({
 		OnEnter = function (...)
 			self:DamageDoneToUnitsFrame_RowHover(...);

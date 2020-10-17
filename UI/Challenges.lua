@@ -86,7 +86,7 @@ function MyDungeonsBook:ChallengesFrame_Create(parentFrame)
 	tableWrapper:SetWidth(450);
 	tableWrapper:SetHeight(650);
 	tableWrapper:SetPoint("TOPLEFT", 10, -70);
-	local table = ScrollingTable:CreateST(cols, 11, 50, nil, tableWrapper);
+	local table = ScrollingTable:CreateST(cols, 12, 50, nil, tableWrapper);
 	table:SetData(self:ChallengesFrame_GetDataForTable());
 	table:SortData();
 	table:RegisterEvents({

@@ -23,7 +23,7 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_Create(parentFrame)
     tableWrapper:SetHeight(450);
     tableWrapper:SetPoint("TOPLEFT", 0, 0);
     local cols = self:OwnCastsByPartyMemberFrame_GetHeadersForTable();
-    local table = ScrollingTable:CreateST(cols, 10, 40, nil, tableWrapper);
+    local table = ScrollingTable:CreateST(cols, 11, 40, nil, tableWrapper);
     table:RegisterEvents({
         OnEnter = function (_, cellFrame, data, _, _, realrow, column)
             if (realrow) then
@@ -46,7 +46,7 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_Create(parentFrame)
     summaryWrapper:SetHeight(450);
     summaryWrapper:SetPoint("TOPLEFT", 410, 0);
     local cols = self:OwnCastsByPartyMemberFrame_GetHeadersForSummaryTable();
-    local summaryTable = ScrollingTable:CreateST(cols, 10, 40, nil, summaryWrapper);
+    local summaryTable = ScrollingTable:CreateST(cols, 11, 40, nil, summaryWrapper);
     summaryTable:RegisterEvents({
         OnEnter = function (_, cellFrame, data, _, _, realrow, column)
             if (realrow) then
@@ -246,10 +246,10 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_Update(challengeId, unitId)
     if (challenge) then
         local key = self:GetMechanicsPrefixForChallenge(challengeId) .. "-OWN-CASTS-DONE-BY-PARTY-MEMBERS";
         local ownCastsByPartyMemberTableData = self:OwnCastsByPartyMemberFrame_GetDataForTable(challengeId, key, unitId);
-        self.challengeDetailsFrame.mechanicsFrame.ownCastsFrame[unitId].table:SetData(ownCastsByPartyMemberTableData);
-        self.challengeDetailsFrame.mechanicsFrame.ownCastsFrame[unitId].table:SetDisplayCols(self:OwnCastsByPartyMemberFrame_GetHeadersForTable(challengeId, unitId));
-        self.challengeDetailsFrame.mechanicsFrame.ownCastsFrame[unitId].table:SortData();
+        self.challengeDetailsFrame.mechanicsFrame.castsFrame.ownCastsFrame[unitId].table:SetData(ownCastsByPartyMemberTableData);
+        self.challengeDetailsFrame.mechanicsFrame.castsFrame.ownCastsFrame[unitId].table:SetDisplayCols(self:OwnCastsByPartyMemberFrame_GetHeadersForTable(challengeId, unitId));
+        self.challengeDetailsFrame.mechanicsFrame.castsFrame.ownCastsFrame[unitId].table:SortData();
         local ownCastsByPartyMemberSummaryTableData = self:OwnCastsByPartyMemberFrame_GetDataForSummaryTable(challengeId, key, unitId);
-        self.challengeDetailsFrame.mechanicsFrame.ownCastsFrame[unitId].summaryTable:SetData(ownCastsByPartyMemberSummaryTableData);
+        self.challengeDetailsFrame.mechanicsFrame.castsFrame.ownCastsFrame[unitId].summaryTable:SetData(ownCastsByPartyMemberSummaryTableData);
     end
 end

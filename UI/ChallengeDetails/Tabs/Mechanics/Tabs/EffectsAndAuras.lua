@@ -24,12 +24,14 @@ function MyDungeonsBook:EffectsAndAurasFrame_Create(parentFrame)
 	effectsAndAurasFrame.avoidableDebuffsFrame = self:AvoidableDebuffsFrame_Create(effectsAndAurasFrame);
 	effectsAndAurasFrame.allBuffsOnPartyMembersFrame = self:AllBuffsOnPartyMemberFrame_Create(effectsAndAurasFrame);
 	effectsAndAurasFrame.allDebuffsOnPartyMembersFrame = self:AllDebuffsOnPartyMemberFrame_Create(effectsAndAurasFrame);
+	effectsAndAurasFrame.dispelsFrame = self:DispelsFrame_Create(effectsAndAurasFrame);
 	effectsAndAurasFrame.tabs = {
 		avoidableDebuffs = effectsAndAurasFrame.avoidableDebuffsFrame,
 		buffsOrDebuffsOnUnits = effectsAndAurasFrame.buffsOrDebuffsOnUnitsFrame,
 		buffsOrDebuffsOnPartyMembers = effectsAndAurasFrame.buffsOrDebuffsOnPartyMembersFrame,
 		allBuffsOnPartyMembers = effectsAndAurasFrame.allBuffsOnPartyMembersFrame,
-		allDebuffsOnPartyMembers = effectsAndAurasFrame.allDebuffsOnPartyMembersFrame
+		allDebuffsOnPartyMembers = effectsAndAurasFrame.allDebuffsOnPartyMembersFrame,
+		dispels = effectsAndAurasFrame.dispelsFrame
 	};
 	effectsAndAurasFrame:Hide();
 	return effectsAndAurasFrame;
@@ -46,5 +48,6 @@ function MyDungeonsBook:EffectsAndAurasFrame_Update(challengeId)
 	self:AvoidableDebuffsFrame_Update(challengeId);
 	self:AllBuffsOnPartyMemberFrame_Update(challengeId);
 	self:AllDebuffsOnPartyMemberFrame_Update(challengeId);
-	self:Tab_Click(self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame, "avoidableDebuffs");
+	self:DispelsFrame_Update(challengeId);
+	self:Tab_Click(self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame, "dispels");
 end

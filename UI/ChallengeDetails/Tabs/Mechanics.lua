@@ -19,17 +19,15 @@ function MyDungeonsBook:MechanicsFrame_Create(parentFrame)
 	mechanicsFrame:SetWidth(900);
 	mechanicsFrame:SetHeight(650);
 	mechanicsFrame.tabButtonsFrame = self:MechanicsFrame_CreateTabButtonsFrame(mechanicsFrame);
-	mechanicsFrame.specialCastsFrame = self:SpecialCastsFrame_Create(mechanicsFrame);
-	mechanicsFrame.ownCastsFrame = self:OwnCastsByPartyMembersFrame_Create(mechanicsFrame);
 	mechanicsFrame.usedItemsFrame = self:UsedItemsFrame_Create(mechanicsFrame);
 	mechanicsFrame.damageFrame = self:DamageFrame_Create(mechanicsFrame);
 	mechanicsFrame.effectsAndAurasFrame = self:EffectsAndAurasFrame_Create(mechanicsFrame);
+	mechanicsFrame.castsFrame = self:CastsFrame_Create(mechanicsFrame);
 	mechanicsFrame.tabs = {
-		specialCasts = mechanicsFrame.specialCastsFrame,
-		ownCasts = mechanicsFrame.ownCastsFrame,
 		usedItems = mechanicsFrame.usedItemsFrame,
 		effectsAndAuras = mechanicsFrame.effectsAndAurasFrame,
 		damage = mechanicsFrame.damageFrame,
+		casts = mechanicsFrame.castsFrame
 	};
 	mechanicsFrame:Hide();
 	return mechanicsFrame;
@@ -41,10 +39,9 @@ Updates a Mechanics frame with data for challenge with id `challengeId`.
 @param[type=number] challengeId
 ]]
 function MyDungeonsBook:MechanicsFrame_Update(challengeId)
-	self:SpecialCastsFrame_Update(challengeId);
 	self:UsedItemsFrame_Update(challengeId);
 	self:DamageFrame_Update(challengeId);
 	self:EffectsAndAurasFrame_Update(challengeId);
-	self:OwnCastsByPartyMembersFrame_Update(challengeId);
-	self:Tab_Click(self.challengeDetailsFrame.mechanicsFrame, "specialCasts");
+	self:CastsFrame_Update(challengeId);
+	self:Tab_Click(self.challengeDetailsFrame.mechanicsFrame, "usedItems");
 end

@@ -39,7 +39,7 @@ local scanTool = CreateFrame("GameTooltip", "ScanTooltip", nil, "GameTooltipTemp
 local function getPetOwnerWithTooltip(petName)
 	scanTool:ClearLines();
 	scanTool:SetUnit(petName);
-	local ownerText = scanText:GetText();
+	local ownerText = scanTool:GetText();
 	if (not ownerText) then
 		return nil;
 	end
@@ -171,6 +171,9 @@ function MyDungeonsBook:TrackInterrupt(unit, srcGUID, spellId, interruptedSpellI
 		self:DebugPrint(string.format("%s is not player", unit));
 	end
 	local KEY = "COMMON-INTERRUPTS";
+	if (spellId == 240448) then
+		KEY = "COMMON-AFFIX-QUAKING-INTERRUPTS";
+	end
 	spellId = mergeInterruptSpellId(spellId);
 	self:LogPrint(string.format(L["%s interrupted %s using %s"], self:ClassColorText(unit, unit), GetSpellLink(interruptedSpellId), GetSpellLink(spellId)));
 	self:InitMechanics4Lvl(KEY, unit, spellId, interruptedSpellId, true);

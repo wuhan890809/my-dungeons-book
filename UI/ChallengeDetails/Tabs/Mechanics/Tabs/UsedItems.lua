@@ -24,7 +24,7 @@ function MyDungeonsBook:UsedItemsFrame_Create(parentFrame)
 	tableWrapper:SetWidth(600);
 	tableWrapper:SetHeight(450);
 	tableWrapper:SetPoint("TOPLEFT", 0, -120);
-	local table = ScrollingTable:CreateST(cols, 11, 40, nil, tableWrapper);
+	local table = ScrollingTable:CreateST(cols, 12, 40, nil, tableWrapper);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
