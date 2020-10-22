@@ -165,10 +165,16 @@
     <Content Include="Utils\Table.lua">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Utils\Tabs.lua">
+    <Content Include="Utils\Utils.lua">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Utils\Utils.lua">
+    <Content Include="Widgets\TabContentWrapper.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Widgets\Table.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Widgets\Tabs.lua">
       <SubType>Code</SubType>
     </Content>
   </ItemGroup>
@@ -192,6 +198,7 @@
     <Folder Include="UI" />
     <Folder Include="UI\ChallengeDetails" />
     <Folder Include="UI\ChallengeDetails\Tabs" />
+    <Folder Include="Widgets" />
   </ItemGroup>
   <Import Project="$(DevEnvDir)\Extensions\Tools\MSBuild\AddonStudio\Wow\3.0\WowAddonStudio.targets" />
   <!--

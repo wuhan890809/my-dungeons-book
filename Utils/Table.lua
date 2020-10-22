@@ -9,7 +9,6 @@ UI
 
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
-
 local function updateCellTextColor(_, cellFrame, data, cols, _, realrow, column)
 	local defaultColor = {
 		r = 1,
@@ -31,8 +30,12 @@ local function updateCellTextColor(_, cellFrame, data, cols, _, realrow, column)
 	end
 	if (not color) then
 		color = defaultColor;
-	end
-	cellFrame.text:SetTextColor(color.r, color.g, color.b, color.a);
+    end
+    if (cellFrame.text) then
+        cellFrame.text:SetTextColor(color.r, color.g, color.b, color.a);
+    else
+        cellFrame:SetColor(color.r, color.g, color.b);
+    end
 end
 
 --[[--
@@ -44,7 +47,7 @@ Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/proje
 ]]
 function MyDungeonsBook:Table_Cell_FormatAsNumber(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local val = data[realrow].cols[column].value;
-	cellFrame.text:SetText((val and self:FormatNumber(val)) or "-");
+    (cellFrame.text or cellFrame):SetText((val and self:FormatNumber(val)) or "-");
 	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
 end
 
@@ -57,7 +60,7 @@ Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/proje
 ]]
 function MyDungeonsBook:Table_Cell_FormatAsDate(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local val = data[realrow].cols[column].value;
-	cellFrame.text:SetText((val and date("%Y-%m-%d\n%H:%M", val)) or "-");
+    (cellFrame.text or cellFrame):SetText((val and date("%Y-%m-%d\n%H:%M", val)) or "-");
 	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
 end
 
@@ -70,7 +73,7 @@ Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/proje
 ]]
 function MyDungeonsBook:Table_Cell_FormatAsTime(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local val = data[realrow].cols[column].value;
-	cellFrame.text:SetText((val > 0 and date("%M:%S", val / 1000)) or "-");
+    (cellFrame.text or cellFrame):SetText((val > 0 and date("%M:%S", val / 1000)) or "-");
 	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
 end
 
@@ -87,18 +90,18 @@ function MyDungeonsBook:Table_Cell_FormatAsSpellIcon(rowFrame, cellFrame, data, 
 		if (spellId == -2) then
 			-- Hack to show "fist" icon for swing dmg
 			local itemIcon = "|T999951:30:30:0:0:64:64:5:59:5:59|t";
-			cellFrame.text:SetText(itemIcon);
+			(cellFrame.text or cellFrame):SetText(itemIcon);
 		else
 			if (spellId > 0) then
 				local _, _, icon = GetSpellInfo(spellId);
 				local spellIcon = "|T" .. (icon or "") .. ":30:30:0:0:64:64:5:59:5:59|t";
-				cellFrame.text:SetText(spellIcon);
+				(cellFrame.text or cellFrame):SetText(spellIcon);
 			else
-				cellFrame.text:SetText("");
+				(cellFrame.text or cellFrame):SetText("");
 			end
 		end
 	else
-		cellFrame.text:SetText("");
+		(cellFrame.text or cellFrame):SetText("");
 	end
 	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
 end
@@ -114,17 +117,17 @@ function MyDungeonsBook:Table_Cell_FormatAsSpellLink(rowFrame, cellFrame, data, 
 	local spellId = data[realrow].cols[column].value;
 	if (spellId) then
 		if (spellId == -2) then
-			cellFrame.text:SetText(L["Swing Damage"]);
+			(cellFrame.text or cellFrame):SetText(L["Swing Damage"]);
 		else
 			if (spellId > 0) then
 				local spellLink = GetSpellLink(spellId);
-				cellFrame.text:SetText(spellLink);
+				(cellFrame.text or cellFrame):SetText(spellLink);
 			else
-				cellFrame.text:SetText("");
+				(cellFrame.text or cellFrame):SetText("");
 			end
 		end
 	else
-		cellFrame.text:SetText("");
+		(cellFrame.text or cellFrame):SetText("");
 	end
 	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
 end
@@ -141,9 +144,9 @@ function MyDungeonsBook:Table_Cell_FormatAsItemIcon(rowFrame, cellFrame, data, c
 	if (itemId and itemId > 0) then
 		local _, _, _, _, _, _, _, _, _, icon = GetItemInfo(itemId);
 		local itemIcon = "|T" .. (icon or "") .. ":30:30:0:0:64:64:5:59:5:59|t";
-		cellFrame.text:SetText(itemIcon);
+		(cellFrame.text or cellFrame):SetText(itemIcon);
 	else
-		cellFrame.text:SetText("");
+		(cellFrame.text or cellFrame):SetText("");
 	end
 	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
 end
@@ -159,9 +162,9 @@ function MyDungeonsBook:Table_Cell_FormatAsItemLink(rowFrame, cellFrame, data, c
 	local itemId = data[realrow].cols[column].value;
 	if (itemId and itemId > 0) then
 		local _, itemLink = GetItemInfo(itemId);
-		cellFrame.text:SetText(itemLink);
+		(cellFrame.text or cellFrame):SetText(itemLink);
 	else
-		cellFrame.text:SetText("");
+		(cellFrame.text or cellFrame):SetText("");
 	end	
 	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
 end
@@ -299,7 +302,7 @@ Get columns for table that looks like `| spell icon | spell link | party member 
 @param[type=?number] challengeId
 @return[type=table]
 ]]
-function MyDungeonsBook:Table_Headers_GetForDamageToPartyMembers(challengeId)
+function MyDungeonsBook:Table_Columns_GetForDamageToPartyMembers(challengeId)
 local challenge = self.db.char.challenges[challengeId];
 	local player = "Player";
 	local party1 = "Party1";
@@ -330,7 +333,7 @@ local challenge = self.db.char.challenges[challengeId];
 		},
 		{
 			name = " ",
-			width = 120,
+			width = 110,
 			align = "LEFT",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsSpellLink(...);
@@ -338,7 +341,7 @@ local challenge = self.db.char.challenges[challengeId];
 		},
 		{
 			name = player,
-			width = 80,
+			width = 75,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsNumber(...);
@@ -351,7 +354,7 @@ local challenge = self.db.char.challenges[challengeId];
 		},
 		{
 			name = party1,
-			width = 80,
+			width = 75,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsNumber(...);
@@ -364,7 +367,7 @@ local challenge = self.db.char.challenges[challengeId];
 		},
 		{
 			name = party2,
-			width = 80,
+			width = 75,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsNumber(...);
@@ -377,7 +380,7 @@ local challenge = self.db.char.challenges[challengeId];
 		},
 		{
 			name = party3,
-			width = 80,
+			width = 75,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsNumber(...);
@@ -390,7 +393,7 @@ local challenge = self.db.char.challenges[challengeId];
 		},
 		{
 			name = party4,
-			width = 80,
+			width = 75,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsNumber(...);
@@ -403,7 +406,7 @@ local challenge = self.db.char.challenges[challengeId];
 		},
 		{
 			name = L["Sum"],
-			width = 70,
+			width = 75,
 			align = "RIGHT",
 			sort = "asc",
 			bgcolor = {

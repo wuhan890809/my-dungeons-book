@@ -6,36 +6,28 @@
 UI
 @section UI
 ]]
-
+local AceGUI = LibStub("AceGUI-3.0");
 --[[--
 Creates a frame for DEV tab.
 
 @param[type=Frame] parentFrame
-@return[type=Frame] devWrapper
-]]
-function MyDungeonsBook:DevFrame_Create(parentFrame)
-	local devWrapper = CreateFrame("Frame", nil, parentFrame);
-	devWrapper:SetWidth(700);
-	devWrapper:SetHeight(490);
-	devWrapper:SetPoint("TOPLEFT", 0, -80);
-	local textarea = CreateFrame("EditBox", nil, devWrapper, "InputBoxTemplate");
-	textarea:SetFontObject(GameFontNormal);
-	textarea:SetPoint("TOPLEFT", 0, 0);
-	textarea:SetWidth(650);
-	textarea:SetHeight(30);
-	devWrapper.textarea = textarea;
-	return devWrapper; 
-end
-
---[[--
-Update DEV-tab for challenge with id `challengeId`.
-
 @param[type=number] challengeId
+@return[type=Frame] devFrame
 ]]
-function MyDungeonsBook:DevFrame_Update(challengeId)
+function MyDungeonsBook:DevFrame_Create(parentFrame, challengeId)
+	local devFrame = self:TabContentWrapperWidget_Create(parentFrame);
+	devFrame:SetFullHeight(true);
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
-		self.challengeDetailsFrame.devFrame.textarea:SetText(self:Table2Json(challenge));
-		self.challengeDetailsFrame.devFrame.textarea:HighlightText();
+		local editBox = AceGUI:Create("EditBox");
+		editBox:SetFullWidth(true);
+		editBox.button:SetText("Get JSON");
+		editBox.button:Show();
+		editBox:SetCallback("OnEnterPressed", function ()
+			editBox:SetText(self:Table2Json(challenge));
+			editBox:HighlightText();
+		end);
+		devFrame:AddChild(editBox);
 	end
+	return devFrame;
 end

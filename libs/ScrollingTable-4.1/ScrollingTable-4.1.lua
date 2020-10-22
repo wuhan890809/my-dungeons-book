@@ -13,7 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-local MAJOR, MINOR = "ScrollingTable", tonumber("@project-timestamp@") or 40300;
+local MAJOR, MINOR = "ScrollingTable", tonumber("1598736624") or 40300;
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR);
 if not lib then
 	return; -- Already loaded and no upgrade necessary.
@@ -541,17 +541,17 @@ do
 
 			local colorargs = nil;
 			if not color then
-			 	color = cols[column].color;
-			 	if not color then
-			 		color = rowdata.color;
-			 		if not color then
-			 			color = defaultcolor;
-			 		else
-			 			colorargs = rowdata.colorargs;
-			 		end
-			 	else
-			 		colorargs = cols[column].colorargs;
-			 	end
+				color = cols[column].color;
+				if not color then
+					color = rowdata.color;
+					if not color then
+						color = defaultcolor;
+					else
+						colorargs = rowdata.colorargs;
+					end
+				else
+					colorargs = cols[column].colorargs;
+				end
 			else
 				colorargs = celldata.colorargs;
 			end
@@ -644,7 +644,6 @@ do
 		st.Show = Show;
 		st.Hide = Hide;
 		st.SetDisplayRows = SetDisplayRows;
-		st.SetRowHeight = SetRowHeight;
 		st.SetHeight = SetHeight;
 		st.SetWidth = SetWidth;
 		st.SetDisplayCols = SetDisplayCols;

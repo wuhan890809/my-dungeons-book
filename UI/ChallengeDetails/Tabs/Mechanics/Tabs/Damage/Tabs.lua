@@ -18,9 +18,24 @@ Created frame has a field `tabButtons` with tab-buttons. Keys in the `tabButtons
 @return[type=Frame] tabsButtonsFrame
 ]]
 function MyDungeonsBook:DamageFrame_CreateTabButtonsFrame(parentFrame)
-	return self:Tabs_Create(parentFrame, {
-		{id = "avoidableDamage", title = L["Avoidable Damage"]},
-		{id = "damageDoneToPartyMembers", title = L["All damage taken"]},
-		{id = "damageDoneToUnits", title = L["Damage Done To Units"]},
+	local tabs = self:TabsWidget_Create(parentFrame);
+	tabs:SetTabs({
+		{value = "avoidableDamage", text = L["Avoidable Damage"]},
+		{value = "damageDoneToPartyMembers", text = L["All damage taken"]},
+		{value = "damageDoneToUnits", text = L["Damage Done To Units"]},
 	});
+	tabs:SetCallback("OnGroupSelected", function (container, _, tabId)
+		container:ReleaseChildren();
+		if (tabId == "avoidableDamage") then
+			self:AvoidableDamageFrame_Create(container, self.activeChallengeId);
+		end
+		if (tabId == "damageDoneToPartyMembers") then
+			self:DamageDoneToPartyMembersFrame_Create(container, self.activeChallengeId);
+		end
+		if (tabId == "damageDoneToUnits") then
+			self:DamageDoneToUnitsFrame_Create(container, self.activeChallengeId);
+		end
+	end);
+	tabs:SetHeight(546);
+	return tabs;
 end

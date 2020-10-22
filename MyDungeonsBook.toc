@@ -33,7 +33,6 @@ UI/ChallengeDetails/Tabs/Mechanics/Tabs/Casts/Tabs/CastsByPartyMembers.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Casts/Tabs/OwnCastsByPartyMembers.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Casts/Tabs/OwnCastsByPartyMembers/Tabs.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Casts/Tabs/OwnCastsByPartyMembers/Tabs/OwnCastsByPartyMember.lua
-
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/AvoidableDamage.lua
@@ -48,6 +47,10 @@ UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs/AllBuffsOnPartyMemb
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs/AllDebuffsOnPartyMembers.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs/Dispels.lua
 
+Widgets/Table.lua
+Widgets/Tabs.lua
+Widgets/TabContentWrapper.lua
+
 Events.lua
 Challenge.lua
 Mechanics/Common.lua
@@ -55,5 +58,4 @@ Mechanics/BfA/Common.lua
 Mechanics/SL/Common.lua
 Utils/Utils.lua
 Utils/Table.lua
-Utils/Tabs.lua
 Utils/JSON.lua

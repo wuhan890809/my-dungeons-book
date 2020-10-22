@@ -6,7 +6,6 @@
 UI
 @section UI
 ]]
-local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
 --[[--
 Create a frame for Avoidable Damage tab (data is taken from `mechanics[**-AVOIDABLE-SPELLS]`).
@@ -14,16 +13,15 @@ Create a frame for Avoidable Damage tab (data is taken from `mechanics[**-AVOIDA
 Mouse hover/out handler are included.
 
 @param[type=Frame] parentFrame
+@param[type=number] challengeId
 @return[type=Frame] tableWrapper
 ]]
-function MyDungeonsBook:AvoidableDamageFrame_Create(parentFrame)
-	local ScrollingTable = LibStub("ScrollingTable");
-	local cols = self:Table_Headers_GetForDamageToPartyMembers();
-	local tableWrapper = CreateFrame("Frame", nil, parentFrame);
-	tableWrapper:SetWidth(900);
-	tableWrapper:SetHeight(450);
-	tableWrapper:SetPoint("TOPLEFT", 0, -120);
-	local table = ScrollingTable:CreateST(cols, 11, 40, nil, tableWrapper);
+function MyDungeonsBook:AvoidableDamageFrame_Create(parentFrame, challengeId)
+	local avoidableDamageFrame = self:TabContentWrapperWidget_Create(parentFrame);
+	local data = self:AvoidableDamageFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-AVOIDABLE-SPELLS");
+	local columns = self:Table_Columns_GetForDamageToPartyMembers(challengeId);
+	local table = self:TableWidget_Create(columns, 11, 40, nil, avoidableDamageFrame, "avoidable-damage");
+	table:SetData(data);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
@@ -31,17 +29,16 @@ function MyDungeonsBook:AvoidableDamageFrame_Create(parentFrame)
 					self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[1].value);
 				end
 			end
-	    end,
+		end,
 		OnLeave = function (_, _, _, _, _, realrow, column)
 			if (realrow) then
 				if (column == 2 or column == 3) then
 					self:Table_Cell_MouseOut();
 				end
 			end
-	    end
+		end
 	});
-	tableWrapper.table = table;
-	return tableWrapper;
+	return avoidableDamageFrame;
 end
 
 --[[--
@@ -164,19 +161,4 @@ function MyDungeonsBook:AvoidableDamageFrame_GetSummaryRow(challengeId, key)
 		end
 	end
 	return tableData;
-end
-
---[[--
-Update Avoidable Damage-tab for challenge with id `challengeId`.
-
-@param[type=number] challengeId
-]]
-function MyDungeonsBook:AvoidableDamageFrame_Update(challengeId)
-	local challenge = self.db.char.challenges[challengeId];
-	if (challenge) then
-		local avoidableDamageTableData = self:AvoidableDamageFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-AVOIDABLE-SPELLS");
-		self.challengeDetailsFrame.mechanicsFrame.damageFrame.avoidableDamageFrame.table:SetData(avoidableDamageTableData);
-		self.challengeDetailsFrame.mechanicsFrame.damageFrame.avoidableDamageFrame.table:SetDisplayCols(self:Table_Headers_GetForDamageToPartyMembers(challengeId));
-		self.challengeDetailsFrame.mechanicsFrame.damageFrame.avoidableDamageFrame.table:SortData();
-	end
 end

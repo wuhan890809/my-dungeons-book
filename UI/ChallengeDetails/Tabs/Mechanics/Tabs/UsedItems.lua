@@ -17,14 +17,12 @@ Mouse hover/out handler are included.
 @param[type=Frame] parentFrame
 @return[type=Frame] tableWrapper
 ]]
-function MyDungeonsBook:UsedItemsFrame_Create(parentFrame)
-	local ScrollingTable = LibStub("ScrollingTable");
-	local cols = self:UsedItemsFrame_GetHeadersForTable();
-	local tableWrapper = CreateFrame("Frame", nil, parentFrame);
-	tableWrapper:SetWidth(600);
-	tableWrapper:SetHeight(450);
-	tableWrapper:SetPoint("TOPLEFT", 0, -120);
-	local table = ScrollingTable:CreateST(cols, 12, 40, nil, tableWrapper);
+function MyDungeonsBook:UsedItemsFrame_Create(parentFrame, challengeId)
+	local usedItemsFrame = self:TabContentWrapperWidget_Create(parentFrame);
+	local data = self:UsedItemsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-ITEM-USED-BY-PARTY-MEMBERS");
+	local columns = self:UsedItemsFrame_GetColumnsForTable(challengeId);
+	local table = self:TableWidget_Create(columns, 12, 40, nil, usedItemsFrame, "used-items");
+	table:SetData(data);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
@@ -32,17 +30,16 @@ function MyDungeonsBook:UsedItemsFrame_Create(parentFrame)
 					self:Table_Cell_ItemMouseHover(cellFrame, data[realrow].cols[1].value);
 				end
 			end
-	    end,
+		end,
 		OnLeave = function (_, _, _, _, _, realrow, column)
 			if (realrow) then
 				if (column == 2 or column == 3) then
 					self:Table_Cell_MouseOut();
 				end
 			end
-	    end
+		end
 	});
-	tableWrapper.table = table;
-	return tableWrapper;
+	return usedItemsFrame;
 end
 
 --[[--
@@ -53,7 +50,7 @@ Depending on `challengeId` real player names will be used or simple placeholders
 @param[type=number] challengeId
 @return[type=table]
 ]]
-function MyDungeonsBook:UsedItemsFrame_GetHeadersForTable(challengeId)
+function MyDungeonsBook:UsedItemsFrame_GetColumnsForTable(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	local player = "Player";
 	local party1 = "Party1";
@@ -176,19 +173,4 @@ function MyDungeonsBook:UsedItemsFrame_GetDataForTable(challengeId, key)
 		tinsert(tableData, remappedRow);
 	end
 	return tableData;
-end
-
---[[--
-Update Special Casts-tab for challenge with id `challengeId`.
-
-@param[type=number] challengeId
-]]
-function MyDungeonsBook:UsedItemsFrame_Update(challengeId)
-	local challenge = self.db.char.challenges[challengeId];
-	if (challenge) then
-		local usedItemsTableData = self:UsedItemsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-ITEM-USED-BY-PARTY-MEMBERS");
-		self.challengeDetailsFrame.mechanicsFrame.usedItemsFrame.table:SetData(usedItemsTableData);
-		self.challengeDetailsFrame.mechanicsFrame.usedItemsFrame.table:SetDisplayCols(self:UsedItemsFrame_GetHeadersForTable(challengeId));
-		self.challengeDetailsFrame.mechanicsFrame.usedItemsFrame.table:SortData();
-	end
 end

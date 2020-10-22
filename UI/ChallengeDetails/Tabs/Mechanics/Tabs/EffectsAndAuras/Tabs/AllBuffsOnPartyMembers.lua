@@ -13,20 +13,15 @@ Create a frame for All Buffs On Party Members tab (data is taken from `mechanics
 Mouse hover/out handler are included.
 
 @param[type=Frame] parentFrame
+@param[type=number] challengeId
 @return[type=Frame] tableWrapper
 ]]
-function MyDungeonsBook:AllBuffsOnPartyMemberFrame_Create(parentFrame)
-    local ScrollingTable = LibStub("ScrollingTable");
-    local interruptsFrame = CreateFrame("Frame", nil, parentFrame);
-    interruptsFrame:SetWidth(900);
-    interruptsFrame:SetHeight(490);
-    interruptsFrame:SetPoint("TOPLEFT", 0, -120);
-    local tableWrapper = CreateFrame("Frame", nil, interruptsFrame);
-    tableWrapper:SetWidth(600);
-    tableWrapper:SetHeight(450);
-    tableWrapper:SetPoint("TOPLEFT", 0, 0);
-    local cols = self:Table_Headers_GetForSpellsSummary();
-    local table = ScrollingTable:CreateST(cols, 11, 40, nil, tableWrapper);
+function MyDungeonsBook:AllBuffsOnPartyMemberFrame_Create(parentFrame, challengeId)
+    local allBuffsOnPartyMemberFrame = self:TabContentWrapperWidget_Create(parentFrame);
+    local data = self:AllBuffsOnPartyMemberFrame_GetDataForTable(challengeId, "ALL-AURAS", "BUFF");
+    local columns = self:Table_Headers_GetForSpellsSummary(challengeId);
+    local table = self:TableWidget_Create(columns, 11, 40, nil, allBuffsOnPartyMemberFrame, "all-buffs-on-party-members");
+    table:SetData(data);
     table:RegisterEvents({
         OnEnter = function (_, cellFrame, data, _, _, realrow, column)
             if (realrow) then
@@ -43,8 +38,7 @@ function MyDungeonsBook:AllBuffsOnPartyMemberFrame_Create(parentFrame)
             end
         end
     });
-    tableWrapper.table = table;
-    return tableWrapper;
+    return allBuffsOnPartyMemberFrame;
 end
 
 --[[--
@@ -103,19 +97,4 @@ function MyDungeonsBook:AllBuffsOnPartyMemberFrame_GetDataForTable(challengeId, 
         tinsert(remappedTableData, r);
     end
     return remappedTableData;
-end
-
---[[--
-Update All Buffs On Party Members tab for challenge with id `challengeId`.
-
-@param[type=number] challengeId
-]]
-function MyDungeonsBook:AllBuffsOnPartyMemberFrame_Update(challengeId)
-    local challenge = self.db.char.challenges[challengeId];
-    if (challenge) then
-        local allBuffsOnPartyMembersTableData = self:AllBuffsOnPartyMemberFrame_GetDataForTable(challengeId, "ALL-AURAS", "BUFF");
-        self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.allBuffsOnPartyMembersFrame.table:SetData(allBuffsOnPartyMembersTableData);
-        self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.allBuffsOnPartyMembersFrame.table:SetDisplayCols(self:Table_Headers_GetForSpellsSummary(challengeId));
-        self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.allBuffsOnPartyMembersFrame.table:SortData();
-    end
 end

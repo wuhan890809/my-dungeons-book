@@ -6,7 +6,6 @@
 UI
 @section UI
 ]]
-local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
 --[[--
 Create a frame for Damage Done To Party Members tab (data is taken from `mechanics[ALL-DAMAGE-DONE-TO-PARTY-MEMBERS]`).
@@ -14,16 +13,15 @@ Create a frame for Damage Done To Party Members tab (data is taken from `mechani
 Mouse hover/out handler are included.
 
 @param[type=Frame] parentFrame
+@param[type=number] challengeId
 @return[type=Frame] tableWrapper
 ]]
-function MyDungeonsBook:DamageDoneToPartyMembersFrame_Create(parentFrame)
-	local ScrollingTable = LibStub("ScrollingTable");
-	local cols = self:Table_Headers_GetForDamageToPartyMembers();
-	local tableWrapper = CreateFrame("Frame", nil, parentFrame);
-	tableWrapper:SetWidth(900);
-	tableWrapper:SetHeight(450);
-	tableWrapper:SetPoint("TOPLEFT", 0, -120);
-	local table = ScrollingTable:CreateST(cols, 11, 40, nil, tableWrapper);
+function MyDungeonsBook:DamageDoneToPartyMembersFrame_Create(parentFrame, challengeId)
+	local damageDoneToPartyMembersFrame = self:TabContentWrapperWidget_Create(parentFrame);
+	local data = self:DamageDoneToPartyMembersFrame_GetDataForTable(challengeId, "ALL-DAMAGE-DONE-TO-PARTY-MEMBERS");
+	local columns = self:Table_Columns_GetForDamageToPartyMembers(challengeId);
+	local table = self:TableWidget_Create(columns, 11, 40, nil, damageDoneToPartyMembersFrame, "damage-done-to-party-members");
+	table:SetData(data);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column, _)
 			if (realrow) then
@@ -31,17 +29,16 @@ function MyDungeonsBook:DamageDoneToPartyMembersFrame_Create(parentFrame)
 					self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[1].value);
 				end
 			end
-	    end,
+		end,
 		OnLeave = function (_, _, _, _, _, realrow, column, _)
 			if (realrow) then
 				if (column == 2 or column == 3) then
 					self:Table_Cell_MouseOut();
 				end
 			end
-	    end
+		end
 	});
-	tableWrapper.table = table;
-	return tableWrapper;
+	return damageDoneToPartyMembersFrame;
 end
 
 --[[--
@@ -149,19 +146,4 @@ function MyDungeonsBook:DamageDoneToPartyMembersFrame_GetSummaryRow(challengeId,
 		end
 	end
 	return tableData;
-end
-
---[[--
-Update Damage Done To Units tab for challenge with id `challengeId`.
-
-@param[type=number] challengeId
-]]
-function MyDungeonsBook:DamageDoneToPartyMembersFrame_Update(challengeId)
-	local challenge = self.db.char.challenges[challengeId];
-	if (challenge) then
-		local damageDoneToPartyMembersTableData = self:DamageDoneToPartyMembersFrame_GetDataForTable(challengeId, "ALL-DAMAGE-DONE-TO-PARTY-MEMBERS");
-		self.challengeDetailsFrame.mechanicsFrame.damageFrame.damageDoneToPartyMembersFrame.table:SetData(damageDoneToPartyMembersTableData);
-		self.challengeDetailsFrame.mechanicsFrame.damageFrame.damageDoneToPartyMembersFrame.table:SetDisplayCols(self:Table_Headers_GetForDamageToPartyMembers(challengeId));
-		self.challengeDetailsFrame.mechanicsFrame.damageFrame.damageDoneToPartyMembersFrame.table:SortData();
-	end
 end

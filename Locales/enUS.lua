@@ -83,6 +83,7 @@ L["Casts"] = "Casts";
 -- Settings start
 L["Performance"] = "Performance";
 L["Run garbage collector on close"] = "Run garbage collector on close";
+L["Show DEV Tab"] = "Show DEV Tab";
 L["Verbose"] = "Verbose";
 L["MainFrame_Show DEBUG messages"] = "MainFrame_Show DEBUG messages";
 L["MainFrame_Show LOG messages"] = "MainFrame_Show LOG messages";

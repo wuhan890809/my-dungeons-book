@@ -14,28 +14,26 @@ Create a frame for Damage Done To Units tab (data is taken from `mechanics[**-DA
 Mouse hover/out handler are included.
 
 @param[type=Frame] parentFrame
+@param[type=number] challengeId
 @return[type=Frame] tableWrapper
 ]]
-function MyDungeonsBook:DamageDoneToUnitsFrame_Create(parentFrame)
-	local ScrollingTable = LibStub("ScrollingTable");
-	local cols = self:DamageDoneToUnitsFrame_GetHeadersForTable();
-	local tableWrapper = CreateFrame("Frame", nil, parentFrame);
-	tableWrapper:SetWidth(900);
-	tableWrapper:SetHeight(450);
-	tableWrapper:SetPoint("TOPLEFT", 0, -120);
-	local table = ScrollingTable:CreateST(cols, 11, 40, nil, tableWrapper);
+function MyDungeonsBook:DamageDoneToUnitsFrame_Create(parentFrame, challengeId)
+	local damageDoneToUnitsFrame = self:TabContentWrapperWidget_Create(parentFrame);
+	local data = self:DamageDoneToUnitsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-DAMAGE-DONE-TO-UNITS");
+	local columns = self:DamageDoneToUnitsFrame_GetHeadersForTable(challengeId);
+	local table = self:TableWidget_Create(columns, 11, 40, nil, damageDoneToUnitsFrame, "damage-done-to-units");
+	table:SetData(data);
 	table:RegisterEvents({
 		OnEnter = function (...)
 			self:DamageDoneToUnitsFrame_RowHover(...);
-	    end,
+		end,
 		OnLeave = function (_, _, _, _, _, realrow)
 			if (realrow) then
 				self:Table_Cell_MouseOut();
 			end
-	    end
+		end
 	});
-	tableWrapper.table = table;
-	return tableWrapper;
+	return damageDoneToUnitsFrame;
 end
 
 --[[--
@@ -258,19 +256,4 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetDataForTable(challengeId, key)
 		tinsert(tableData, remappedRow);
 	end
 	return tableData;
-end
-
---[[--
-Update Damage Done To Units tab for challenge with id `challengeId`.
-
-@param[type=number] challengeId
-]]
-function MyDungeonsBook:DamageDoneToUnitsFrame_Update(challengeId)
-	local challenge = self.db.char.challenges[challengeId];
-	if (challenge) then
-		local damageDoneToUnitsTableData = self:DamageDoneToUnitsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-DAMAGE-DONE-TO-UNITS");
-		self.challengeDetailsFrame.mechanicsFrame.damageFrame.damageDoneToUnitsFrame.table:SetData(damageDoneToUnitsTableData);
-		self.challengeDetailsFrame.mechanicsFrame.damageFrame.damageDoneToUnitsFrame.table:SetDisplayCols(self:DamageDoneToUnitsFrame_GetHeadersForTable(challengeId));
-		self.challengeDetailsFrame.mechanicsFrame.damageFrame.damageDoneToUnitsFrame.table:SortData();
-	end
 end

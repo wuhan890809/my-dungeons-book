@@ -15,20 +15,15 @@ Create a frame for Buff Or Debuffs On Units tab (data is taken from `mechanics[*
 Mouse hover/out handler are included.
 
 @param[type=Frame] parentFrame
+@param[type=number] challengeId
 @return[type=Frame] tableWrapper
 ]]
-function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_Create(parentFrame)
-	local ScrollingTable = LibStub("ScrollingTable");
-	local cols = self:BuffsOrDebuffsOnUnitsFrame_GetHeadersForTable();
-	local buffsOrDebuffsOnUnitsFrame = CreateFrame("Frame", nil, parentFrame);
-	buffsOrDebuffsOnUnitsFrame:SetWidth(900);
-	buffsOrDebuffsOnUnitsFrame:SetHeight(490);
-	buffsOrDebuffsOnUnitsFrame:SetPoint("TOPLEFT", 0, -120);
-	local tableWrapper = CreateFrame("Frame", nil, buffsOrDebuffsOnUnitsFrame);
-	tableWrapper:SetWidth(320);
-	tableWrapper:SetHeight(450);
-	tableWrapper:SetPoint("TOPLEFT", 0, 0);
-	local table = ScrollingTable:CreateST(cols, 11, 40, nil, tableWrapper);
+function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_Create(parentFrame, challengeId)
+	local buffsOrDebuffsOnUnitsFrame = self:TabContentWrapperWidget_Create(parentFrame);
+	local data = self:BuffsOrDebuffsOnUnitsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-BUFFS-OR-DEBUFFS-ON-UNIT");
+	local columns = self:BuffsOrDebuffsOnUnitsFrame_GetHeadersForTable();
+	local table = self:TableWidget_Create(columns, 11, 40, nil, buffsOrDebuffsOnUnitsFrame, "buffs-or-debuffs-on-units");
+	table:SetData(data);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
@@ -36,17 +31,16 @@ function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_Create(parentFrame)
 					self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[1].value);
 				end
 			end
-	    end,
+		end,
 		OnLeave = function (_, _, _, _, _, realrow, column)
 			if (realrow) then
 				if (column == 3 or column == 4) then
 					self:Table_Cell_MouseOut();
 				end
 			end
-	    end
+		end
 	});
-	tableWrapper.table = table;
-	return tableWrapper;
+	return buffsOrDebuffsOnUnitsFrame;
 end
 
 --[[--
@@ -126,18 +120,4 @@ function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_GetDataForTable(challengeId, 
 		tinsert(tableData, row);
 	end
 	return tableData;
-end
-
---[[--
-Update Buff Or Debuffs On Units tab for challenge with id `challengeId`
-
-@param[type=number] challengeId
-]]
-function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_Update(challengeId)
-	local challenge = self.db.char.challenges[challengeId];
-	if (challenge) then
-		local buffsOrDebuffsOnUnitsTableData = self:BuffsOrDebuffsOnUnitsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-BUFFS-OR-DEBUFFS-ON-UNIT");
-		self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.buffsOrDebuffsOnUnitsFrame.table:SetData(buffsOrDebuffsOnUnitsTableData);
-		self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.buffsOrDebuffsOnUnitsFrame.table:SortData();
-	end
 end

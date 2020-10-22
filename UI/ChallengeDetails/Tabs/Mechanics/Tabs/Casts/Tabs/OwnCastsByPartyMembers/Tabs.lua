@@ -13,14 +13,20 @@ Creates tabs (with click-handlers) for Own Casts frame.
 Created frame has a field `tabButtons` with tab-buttons. Keys in the `tabButtons` are equal to keys in the `ownCastsFrame.tabs`.
 
 @param[type=Frame] parentFrame
+@param[type=number] challengeId
 @return[type=Frame] tabsButtonsFrame
 ]]
-function MyDungeonsBook:OwnCastsByPartyMembersFrame_CreateTabButtonsFrame(parentFrame)
-    return self:Tabs_Create(parentFrame, {
-        {id = "player", title = "Player"},
-        {id = "party1", title = "Party1"},
-        {id = "party2", title = "Party2"},
-        {id = "party3", title = "Party3"},
-        {id = "party4", title = "Party4"},
-    });
+function MyDungeonsBook:OwnCastsByPartyMembersFrame_CreateTabButtonsFrame(parentFrame, challengeId)
+	local tabs = self:TabsWidget_Create(parentFrame);
+	local tabsConfig = {};
+	for _, unitId in pairs(self:GetPartyRoster()) do
+		tinsert(tabsConfig, {value = unitId, text = self:GetNameByPartyUnit(challengeId, unitId)});
+	end
+	tabs:SetTabs(tabsConfig);
+	tabs:SetCallback("OnGroupSelected", function (container, _, tabId)
+		container:ReleaseChildren();
+		self:OwnCastsByPartyMemberFrame_Create(container, self.activeChallengeId, tabId);
+	end)
+	tabs:SetHeight(510);
+	return tabs;
 end

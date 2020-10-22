@@ -7,24 +7,21 @@ UI
 @section UI
 ]]
 
-local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
-
 --[[--
 Create a frame for Special Casts tab (data is taken from `mechanics[**-CASTS-DONE-BY-PARTY-MEMBERS]`).
 
 Mouse hover/out handler are included.
 
 @param[type=Frame] parentFrame
+@param[type=number] challengeId
 @return[type=Frame] tableWrapper
 ]]
-function MyDungeonsBook:SpecialCastsFrame_Create(parentFrame)
-	local ScrollingTable = LibStub("ScrollingTable");
-	local cols = self:Table_Headers_GetForSpellsSummary();
-	local tableWrapper = CreateFrame("Frame", nil, parentFrame);
-	tableWrapper:SetWidth(600);
-	tableWrapper:SetHeight(450);
-	tableWrapper:SetPoint("TOPLEFT", 0, -120);
-	local table = ScrollingTable:CreateST(cols, 12, 40, nil, tableWrapper);
+function MyDungeonsBook:SpecialCastsFrame_Create(parentFrame, challengeId)
+	local specialCastsFrame = self:TabContentWrapperWidget_Create(parentFrame);
+	local data = self:SpecialCastsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-CASTS-DONE-BY-PARTY-MEMBERS");
+	local columns = self:Table_Headers_GetForSpellsSummary(challengeId);
+	local table = self:TableWidget_Create(columns, 11, 40, nil, specialCastsFrame, "special-casts-by-party-members");
+	table:SetData(data);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
@@ -32,17 +29,16 @@ function MyDungeonsBook:SpecialCastsFrame_Create(parentFrame)
 					self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[1].value);
 				end
 			end
-	    end,
+		end,
 		OnLeave = function (_, _, _, _, _, realrow, column)
 			if (realrow) then
 				if (column == 2 or column == 3) then
 					self:Table_Cell_MouseOut();
 				end
 			end
-	    end
+		end
 	});
-	tableWrapper.table = table;
-	return tableWrapper;
+	return specialCastsFrame;
 end
 
 --[[--
@@ -91,19 +87,4 @@ function MyDungeonsBook:SpecialCastsFrame_GetDataForTable(challengeId, key)
 		tinsert(tableData, remappedRow);
 	end
 	return tableData;
-end
-
---[[--
-Update Special Casts-tab for challenge with id `challengeId`.
-
-@param[type=number] challengeId
-]]
-function MyDungeonsBook:SpecialCastsFrame_Update(challengeId)
-	local challenge = self.db.char.challenges[challengeId];
-	if (challenge) then
-		local specialCastsTableData = self:SpecialCastsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-CASTS-DONE-BY-PARTY-MEMBERS");
-		self.challengeDetailsFrame.mechanicsFrame.castsFrame.specialCastsFrame.table:SetData(specialCastsTableData);
-		self.challengeDetailsFrame.mechanicsFrame.castsFrame.specialCastsFrame.table:SetDisplayCols(self:Table_Headers_GetForSpellsSummary(challengeId));
-		self.challengeDetailsFrame.mechanicsFrame.castsFrame.specialCastsFrame.table:SortData();
-	end
 end

@@ -402,3 +402,9 @@ function MyDungeonsBook:MergeTables(table1, table2)
 	end
 	return table1;
 end
+
+function MyDungeonsBook:HighlightFrame(frame)
+	frame.highlight = frame:CreateTexture(nil, "OVERLAY");
+	frame.highlight:SetAllPoints(frame);
+	frame.highlight:SetColorTexture(0.5, 0.5, 0.5, 0.5);
+end

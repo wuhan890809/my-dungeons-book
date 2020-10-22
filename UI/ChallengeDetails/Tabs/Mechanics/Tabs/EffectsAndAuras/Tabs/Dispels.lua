@@ -12,20 +12,15 @@ local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 Creates a frame for Dispels tab.
 
 @param[type=Frame] parentFrame
+@param[type=number] challengeId
 @return[type=Frame]
 ]]
-function MyDungeonsBook:DispelsFrame_Create(parentFrame)
-	local ScrollingTable = LibStub("ScrollingTable");
-	local interruptsFrame = CreateFrame("Frame", nil, parentFrame);
-	interruptsFrame:SetWidth(900);
-	interruptsFrame:SetHeight(490);
-	interruptsFrame:SetPoint("TOPLEFT", 0, -110);
-	local cols = self:Table_Headers_GetForSpellsSummary();
-	local tableWrapper = CreateFrame("Frame", nil, interruptsFrame);
-	tableWrapper:SetWidth(580);
-	tableWrapper:SetHeight(240);
-	tableWrapper:SetPoint("TOPLEFT", 0, 0);
-	local table = ScrollingTable:CreateST(cols, 6, 40, nil, tableWrapper);
+function MyDungeonsBook:DispelsFrame_Create(parentFrame, challengeId)
+	local dispelsFrame = self:TabContentWrapperWidget_Create(parentFrame);
+	local data = self:DispelsFrame_GetDataForTable(challengeId);
+	local columns = self:Table_Headers_GetForSpellsSummary(challengeId);
+	local table = self:TableWidget_Create(columns, 5, 40, nil, dispelsFrame, "dispels");
+	table:SetData(data);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
@@ -33,22 +28,20 @@ function MyDungeonsBook:DispelsFrame_Create(parentFrame)
 					self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[1].value);
 				end
 			end
-	    end,
+		end,
 		OnLeave = function (_, _, _, _, _, realrow, column)
 			if (realrow) then
 				if (column == 2 or column == 3) then
 					self:Table_Cell_MouseOut();
 				end
 			end
-	    end
+		end
 	});
-	interruptsFrame.table = table;
-	local summaryWrapper = CreateFrame("Frame", nil, interruptsFrame);
-	summaryWrapper:SetWidth(290);
-	summaryWrapper:SetHeight(250);
-	summaryWrapper:SetPoint("TOPLEFT", 0, -285);
-	local cols = self:DispelsFrame_GetHeadersForSummaryTable();
-	local summaryTable = ScrollingTable:CreateST(cols, 5, 40, nil, summaryWrapper);
+	local summaryData = self:DispelsFrame_GetDataForSummaryTable(challengeId);
+	local summaryColumns = self:DispelsFrame_GetHeadersForSummaryTable(challengeId);
+	local summaryTable = self:TableWidget_Create(summaryColumns, 5, 40, nil, dispelsFrame, "dispels-summary");
+	summaryTable:SetData(summaryData);
+	summaryTable.frame:SetPoint("TOPLEFT", 0, -280);
 	summaryTable:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
@@ -56,17 +49,16 @@ function MyDungeonsBook:DispelsFrame_Create(parentFrame)
 					self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[1].value);
 				end
 			end
-	    end,
+		end,
 		OnLeave = function (_, _, _, _, _, realrow, column)
 			if (realrow) then
 				if (column == 3 or column == 4) then
 					self:Table_Cell_MouseOut();
 				end
 			end
-	    end
+		end
 	});
-	interruptsFrame.summaryTable = summaryTable;
-	return interruptsFrame;
+	return dispelsFrame;
 end
 
 --[[--
@@ -214,22 +206,4 @@ function MyDungeonsBook:DispelsFrame_GetDataForSummaryTable(challengeId)
 		end
 	end
 	return tableData;
-end
-
---[[--
-Update Dispels-tab for challenge with id `challengeId`.
-
-@param[type=number] challengeId
-]]
-function MyDungeonsBook:DispelsFrame_Update(challengeId)
-	local challenge = self.db.char.challenges[challengeId];
-	if (challenge) then
-		local dispelsTableData = self:DispelsFrame_GetDataForTable(challengeId);
-		self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.dispelsFrame.table:SetData(dispelsTableData or {});
-		self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.dispelsFrame.table:SetDisplayCols(self:Table_Headers_GetForSpellsSummary(challengeId));
-		local dispelsSummaryTableData = self:DispelsFrame_GetDataForSummaryTable(challengeId);
-		if (dispelsSummaryTableData) then
-			self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.dispelsFrame.summaryTable:SetData(dispelsSummaryTableData);
-		end
-	end
 end

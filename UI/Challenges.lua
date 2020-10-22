@@ -8,6 +8,8 @@ UI
 ]]
 
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
+local ScrollingTable = LibStub("ScrollingTable");
+local AceGUI = LibStub("AceGUI-3.0");
 
 --[[--
 Create a frame with table containing challenges with current char.
@@ -16,7 +18,6 @@ Create a frame with table containing challenges with current char.
 @return[type=Frame] table with challenges
 ]]
 function MyDungeonsBook:ChallengesFrame_Create(parentFrame)
-	local ScrollingTable = LibStub("ScrollingTable");
 	local cols = {
 		{
 			-- First column is for challenge ID used on row's click-handler to show details for selected challenge
@@ -82,11 +83,12 @@ function MyDungeonsBook:ChallengesFrame_Create(parentFrame)
 			align = "LEFT"
 		}
 	};
-	local tableWrapper = CreateFrame("Frame", nil, parentFrame);
-	tableWrapper:SetWidth(450);
-	tableWrapper:SetHeight(650);
-	tableWrapper:SetPoint("TOPLEFT", 10, -70);
-	local table = ScrollingTable:CreateST(cols, 12, 50, nil, tableWrapper);
+	local challengesFrame = AceGUI:Create("SimpleGroup");
+	challengesFrame:SetLayout("Fill");
+	challengesFrame:SetWidth(500);
+	challengesFrame:SetFullHeight(true);
+	parentFrame:AddChild(challengesFrame);
+	local table = ScrollingTable:CreateST(cols, 15, 40, nil, challengesFrame.frame);
 	table:SetData(self:ChallengesFrame_GetDataForTable());
 	table:SortData();
 	table:RegisterEvents({
@@ -107,6 +109,7 @@ function MyDungeonsBook:ChallengesFrame_Create(parentFrame)
 			end
 	    end
 	});
+	table.frame:SetPoint("TOPLEFT", 5, -40);
 	return table;
 end
 
@@ -207,12 +210,5 @@ end
 function MyDungeonsBook:FormatCellAsChallengeKeyStatus(_, cellFrame, data, _, _, realrow, column)
 	local val = data[realrow].cols[column].value;
 	local text = (val > 0 and string.format("|cff1eff00+%s|r", val)) or "|cffcc3333-1|r";
-	cellFrame.text:SetText(text);
-end
-
---[[--
-Update Challenges table with list of existing challenges
-]]
-function MyDungeonsBook:ChallengesFrame_Update()
-    self.challengesTable:SetData(self:ChallengesFrame_GetDataForTable());
+    cellFrame.text:SetText(text);
 end

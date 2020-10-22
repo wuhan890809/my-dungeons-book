@@ -12,20 +12,15 @@ local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 Creates a frame for Interrupts tab.
 
 @param[type=Frame] parentFrame
+@param[type=number] challengeId
 @return[type=Frame]
 ]]
-function MyDungeonsBook:InterruptsFrame_Create(parentFrame)
-	local ScrollingTable = LibStub("ScrollingTable");
-	local interruptsFrame = CreateFrame("Frame", nil, parentFrame);
-	interruptsFrame:SetWidth(900);
-	interruptsFrame:SetHeight(490);
-	interruptsFrame:SetPoint("TOPLEFT", 0, -110);
-	local cols = self:InterruptsFrame_GetHeadersForTable();
-	local tableWrapper = CreateFrame("Frame", nil, interruptsFrame);
-	tableWrapper:SetWidth(580);
-	tableWrapper:SetHeight(240);
-	tableWrapper:SetPoint("TOPLEFT", 0, 0);
-	local table = ScrollingTable:CreateST(cols, 6, 40, nil, tableWrapper);
+function MyDungeonsBook:InterruptsFrame_Create(parentFrame, challengeId)
+	local interruptsFrame = self:TabContentWrapperWidget_Create(parentFrame);
+	local data = self:InterruptsFrame_GetDataForTable(challengeId);
+	local columns = self:InterruptsFrame_GetHeadersForTable(challengeId);
+	local table = self:TableWidget_Create(columns, 5, 40, nil, interruptsFrame, "interrupts");
+	table:SetData(data);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
@@ -33,22 +28,20 @@ function MyDungeonsBook:InterruptsFrame_Create(parentFrame)
 					self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[1].value);
 				end
 			end
-	    end,
+		end,
 		OnLeave = function (_, _, _, _, _, realrow, column)
 			if (realrow) then
 				if (column == 2 or column == 3) then
 					self:Table_Cell_MouseOut();
 				end
 			end
-	    end
+		end
 	});
-	interruptsFrame.table = table;
-	local summaryWrapper = CreateFrame("Frame", nil, interruptsFrame);
-	summaryWrapper:SetWidth(290);
-	summaryWrapper:SetHeight(250);
-	summaryWrapper:SetPoint("TOPLEFT", 0, -285);
-	local cols = self:InterruptsFrame_GetHeadersForSummaryTable();
-	local summaryTable = ScrollingTable:CreateST(cols, 5, 40, nil, summaryWrapper);
+	local summaryData = self:InterruptsFrame_GetDataForSummaryTable(challengeId);
+	local summaryColumns = self:InterruptsFrame_GetHeadersForSummaryTable(challengeId);
+	local summaryTable = self:TableWidget_Create(summaryColumns, 5, 40, nil, interruptsFrame, "interrupts-summary");
+	summaryTable.frame:SetPoint("TOPLEFT", 0, -280);
+	summaryTable:SetData(summaryData);
 	summaryTable:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
@@ -56,16 +49,15 @@ function MyDungeonsBook:InterruptsFrame_Create(parentFrame)
 					self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[1].value);
 				end
 			end
-	    end,
+		end,
 		OnLeave = function (_, _, _, _, _, realrow, column)
 			if (realrow) then
 				if (column == 3 or column == 4) then
 					self:Table_Cell_MouseOut();
 				end
 			end
-	    end
+		end
 	});
-	interruptsFrame.summaryTable = summaryTable;
 	return interruptsFrame;
 end
 
@@ -354,22 +346,4 @@ function MyDungeonsBook:InterruptsFrame_GetDataForSummaryTable(challengeId)
 		end
 	end
 	return tableData;
-end
-
---[[--
-Update Interrupts-tab for challenge with id `challengeId`.
-
-@param[type=number] challengeId
-]]
-function MyDungeonsBook:InterruptsFrame_Update(challengeId)
-	local challenge = self.db.char.challenges[challengeId];
-	if (challenge) then
-		local interruptsTableData = self:InterruptsFrame_GetDataForTable(challengeId);
-		self.challengeDetailsFrame.mechanicsFrame.castsFrame.interruptsFrame.table:SetData(interruptsTableData or {});
-		self.challengeDetailsFrame.mechanicsFrame.castsFrame.interruptsFrame.table:SetDisplayCols(self:InterruptsFrame_GetHeadersForTable(challengeId));
-		local interruptsSummaryTableData = self:InterruptsFrame_GetDataForSummaryTable(challengeId);
-		if (interruptsSummaryTableData) then
-			self.challengeDetailsFrame.mechanicsFrame.castsFrame.interruptsFrame.summaryTable:SetData(interruptsSummaryTableData);
-		end
-	end
 end

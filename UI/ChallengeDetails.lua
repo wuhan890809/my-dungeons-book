@@ -8,6 +8,7 @@ UI
 ]]
 
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
+local AceGUI = LibStub("AceGUI-3.0");
 
 --[[--
 Click-handler for challenges table. Used on row click.
@@ -18,8 +19,8 @@ function MyDungeonsBook:ChallengeDetailsFrame_Show(challengeId)
 	self:DebugPrint("Show details for challenge #" .. challengeId);
 	self.activeChallengeId = challengeId;
 	self:ChallengeDetailsFrame_Update(challengeId);
-	self.challengeDetailsFrame:Show();
-    self:Tab_Click(self.challengeDetailsFrame, "roster");
+	self.challengeDetailsFrame.frame:Show();
+	self.challengeDetailsFrame.tabButtonsFrame:SelectTab("roster");
 end
 
 --[[--
@@ -29,25 +30,22 @@ Creates all frames related to the challenge details frames (with itself).
 @return[type=Frame] challengeDetailsFrame
 ]]
 function MyDungeonsBook:ChallengeDetailsFrame_Create(parentFrame)
-	local challengeDetailsFrame = CreateFrame("Frame", nil, parentFrame);
-	challengeDetailsFrame:SetPoint("TOPLEFT", 500, -30);
+	local parentFrameHeight = parentFrame.frame:GetHeight();
+	local challengeDetailsFrame = AceGUI:Create("SimpleGroup");
+	challengeDetailsFrame:SetLayout("List");
+	challengeDetailsFrame:SetFullHeight(true);
 	challengeDetailsFrame:SetWidth(700);
-	challengeDetailsFrame:SetHeight(650);
-	challengeDetailsFrame.titleFrame = self:ChallengeDetailsFrame_TitleFrame_Create(challengeDetailsFrame);
-	challengeDetailsFrame.tabButtonsFrame = self:ChallengeDetailsFrame_CreateTabButtonsFrame(challengeDetailsFrame);
-	challengeDetailsFrame.challengeRosterFrame = self:RosterFrame_Create(challengeDetailsFrame);
-	challengeDetailsFrame.detailsFrame = self:DetailsFrame_Create(challengeDetailsFrame);
-	challengeDetailsFrame.encountersFrame = self:EncountersFrame_Create(challengeDetailsFrame);
-	challengeDetailsFrame.mechanicsFrame = self:MechanicsFrame_Create(challengeDetailsFrame);
-	challengeDetailsFrame.devFrame = self:DevFrame_Create(challengeDetailsFrame);
-	challengeDetailsFrame.tabs = {
-		roster = challengeDetailsFrame.challengeRosterFrame,
-		details = challengeDetailsFrame.detailsFrame,
-		dev = challengeDetailsFrame.devFrame,
-		encounters = challengeDetailsFrame.encountersFrame,
-		mechanics = challengeDetailsFrame.mechanicsFrame
-	};
-	challengeDetailsFrame:Hide();
+	parentFrame:AddChild(challengeDetailsFrame);
+	local grid = AceGUI:Create("SimpleGroup");
+	grid:SetLayout("List");
+	grid:SetFullWidth(true);
+	challengeDetailsFrame:AddChild(grid);
+	local titleAffixes, titleText = self:ChallengeDetailsFrame_TitleFrame_Create(grid);
+	challengeDetailsFrame.titleAffixes = titleAffixes;
+	challengeDetailsFrame.titleText = titleText;
+	local tabButtonsFrame = self:ChallengeDetailsFrame_CreateTabButtonsFrame(grid);
+	challengeDetailsFrame.tabButtonsFrame = tabButtonsFrame;
+	challengeDetailsFrame.frame:Hide();
 	return challengeDetailsFrame;
 end
 
@@ -58,27 +56,21 @@ Creates a frame with challenge name and affixes.
 @return[type=Frame] titleFrame
 ]]
 function MyDungeonsBook:ChallengeDetailsFrame_TitleFrame_Create(parentFrame)
-	local titleFrame = CreateFrame("Frame", nil, parentFrame);
-	titleFrame:SetPoint("TOPLEFT", 0, 0);
-	titleFrame:SetWidth(700);
-	titleFrame:SetHeight(50);
-
-	local titleText = titleFrame:CreateFontString(nil, "ARTWORK");
-	titleText:SetFontObject(GameFontNormalLarge);
-	titleText:SetTextColor(0.6, 0.6, 0.6);
-	titleText:SetPoint("TOPRIGHT", titleFrame, "TOPRIGHT", -10, 0);
-	titleText:SetPoint("BOTTOMRIGHT", titleFrame);
-	titleText:SetHeight(50);
-	titleFrame.titleText = titleText;
-
-	local titleAffixes = titleFrame:CreateFontString(nil, "ARTWORK");
+	local grid = AceGUI:Create("SimpleGroup");
+	grid:SetLayout("Flow");
+	grid:SetFullWidth(true);
+	parentFrame:AddChild(grid);
+	grid:SetFullHeight(true);
+	local titleAffixes = AceGUI:Create("Label");
 	titleAffixes:SetFontObject(GameFontNormal);
-	titleAffixes:SetTextColor(0.6, 0.6, 0.6);
-	titleAffixes:SetPoint("TOPLEFT", titleFrame, "TOPLEFT", 0, 0);
-	titleAffixes:SetPoint("BOTTOMLEFT", titleFrame);
-	titleAffixes:SetHeight(50);
-	titleFrame.titleAffixes = titleAffixes;
-	return titleFrame;
+	titleAffixes:SetWidth(200);
+	grid:AddChild(titleAffixes);
+
+	local titleText = AceGUI:Create("Label");
+	titleText:SetFontObject(GameFontNormalLarge);
+	titleText:SetWidth(300);
+	grid:AddChild(titleText);
+	return titleAffixes, titleText;
 end
 
 --[[--
@@ -89,13 +81,8 @@ Update all frames related to challenge details.
 function MyDungeonsBook:ChallengeDetailsFrame_Update(challengeId)
 	local challenge = self.db.char.challenges[challengeId];
 	if (challenge) then
-		self.challengeDetailsFrame.titleFrame.titleText:SetText(string.format(L["%s (%s) %s"], challenge.challengeInfo.zoneName, challenge.challengeInfo.cmLevel, self:GetKeyUpgradeStr(challenge)));
-		self.challengeDetailsFrame.titleFrame.titleAffixes:SetText(self:GetChallengeAffixesIconsStr(challengeId, 30));
-		self:DetailsFrame_Update(challengeId);
-		self:DevFrame_Update(challengeId);
-		self:RosterFrame_Update(challengeId);
-		self:EncountersFrame_Update(challengeId);
-		self:MechanicsFrame_Update(challengeId);
+		self.challengeDetailsFrame.titleText:SetText(string.format(L["%s (%s) %s"], challenge.challengeInfo.zoneName, challenge.challengeInfo.cmLevel, self:GetKeyUpgradeStr(challenge)));
+		self.challengeDetailsFrame.titleAffixes:SetText(self:GetChallengeAffixesIconsStr(challengeId, 30));
 	else
 		self:DebugPrint(string.format("Challenge #%s not found", challengeId));
 	end

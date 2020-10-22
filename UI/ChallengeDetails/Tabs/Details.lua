@@ -9,31 +9,28 @@ UI
 
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
-
 --[[--
 Creates a frame for Details tab (data should be from `details` section for challenge).
 
 @param[type=Frame] parentFrame
+@param[type=number] challengeId
 @return[type=Frame]
 ]]
-function MyDungeonsBook:DetailsFrame_Create(parentFrame)
-	local ScrollingTable = LibStub("ScrollingTable");
-	local cols = self:DetailsFrame_GetHeadersForTable();
-	local detailsFrame = CreateFrame("Frame", nil, parentFrame);
-	detailsFrame:SetWidth(825);
-	detailsFrame:SetHeight(250);
-	detailsFrame:SetPoint("TOPLEFT", 0, -110);
-	local table = ScrollingTable:CreateST(cols, 5, 40, nil, detailsFrame);
-	detailsFrame.table = table;
+function MyDungeonsBook:DetailsFrame_Create(parentFrame, challengeId)
+	local detailsFrame = self:TabContentWrapperWidget_Create(parentFrame);
+	local cols = self:DetailsFrame_GetColumnsForTable();
+	local table = self:TableWidget_Create(cols, 5, 40, nil, detailsFrame, "details");
+	table:SetData(self:DetailsFrame_GetDataForTable(challengeId));
+	table:SortData();
 	return detailsFrame;
 end
 
 --[[--
-Generate columns for avoidable damage table.
+Generate columns for Details table.
 
 @return[type=Frame]
 ]]
-function MyDungeonsBook:DetailsFrame_GetHeadersForTable()
+function MyDungeonsBook:DetailsFrame_GetColumnsForTable()
 	return {
 		{
 			name = L["Player"],
@@ -140,16 +137,4 @@ function MyDungeonsBook:DetailsFrame_GetDataForTable(challengeId)
 		});
 	end
 	return tableData;
-end
-
---[[--
-Updates a Details frame with data for challenge with id `challengeId`.
-
-@param[type=number] challengeId
-]]
-function MyDungeonsBook:DetailsFrame_Update(challengeId)
-	local challenge = self.db.char.challenges[challengeId];
-	if (challenge) then
-		self.challengeDetailsFrame.detailsFrame.table:SetData(self:DetailsFrame_GetDataForTable(challengeId));
-	end
 end

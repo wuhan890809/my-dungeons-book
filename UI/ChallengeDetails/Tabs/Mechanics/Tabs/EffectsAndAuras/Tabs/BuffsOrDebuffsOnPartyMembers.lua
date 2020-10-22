@@ -7,46 +7,41 @@ UI
 @section UI
 ]]
 
-local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
-
 --[[--
 Create a frame for Buff Or Debuffs On Party Members tab (data is taken from `mechanics[**-BUFFS-OR-DEBUFFS-ON-PARTY-MEMBERS]`).
 
 Mouse hover/out handler are included.
 
 @param[type=Frame] parentFrame
+@oaram[type=number] challengeId
 @return[type=Frame] tableWrapper
 ]]
-function MyDungeonsBook:BuffsOrDebuffsOnPartyMembersFrame_Create(parentFrame)
-	local ScrollingTable = LibStub("ScrollingTable");
-	local cols = self:Table_Headers_GetForSpellsSummary();
-	local buffsOrDebuffsOnPartyMembersFrame = CreateFrame("Frame", nil, parentFrame);
-	buffsOrDebuffsOnPartyMembersFrame:SetWidth(900);
-	buffsOrDebuffsOnPartyMembersFrame:SetHeight(490);
-	buffsOrDebuffsOnPartyMembersFrame:SetPoint("TOPLEFT", 0, -120);
-	local tableWrapper = CreateFrame("Frame", nil, buffsOrDebuffsOnPartyMembersFrame);
-	tableWrapper:SetWidth(600);
-	tableWrapper:SetHeight(450);
-	tableWrapper:SetPoint("TOPLEFT", 0, 0);
-	local table = ScrollingTable:CreateST(cols, 11, 40, nil, tableWrapper);
-	table:RegisterEvents({
-		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
-			if (realrow) then
-				if (column == 2 or column == 3) then
-					self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[1].value);
+function MyDungeonsBook:BuffsOrDebuffsOnPartyMembersFrame_Create(parentFrame, challengeId)
+	local buffsOrDebuffsOnPartyMembersFrame = self:TabContentWrapperWidget_Create(parentFrame);
+	local challenge = self.db.char.challenges[challengeId];
+	if (challenge) then
+		local data = self:BuffsOrDebuffsOnPartyMembersFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-BUFFS-OR-DEBUFFS-ON-PARTY-MEMBERS");
+		local columns = self:Table_Headers_GetForSpellsSummary(challengeId);
+		local table = self:TableWidget_Create(columns, 11, 40, nil, buffsOrDebuffsOnPartyMembersFrame, "buffs-or-debuffs-on-party-members");
+		table:SetData(data);
+		table:RegisterEvents({
+			OnEnter = function (_, cellFrame, data, _, _, realrow, column)
+				if (realrow) then
+					if (column == 2 or column == 3) then
+						self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[1].value);
+					end
+				end
+			end,
+			OnLeave = function (_, _, _, _, _, realrow, column)
+				if (realrow) then
+					if (column == 2 or column == 3) then
+						self:Table_Cell_MouseOut();
+					end
 				end
 			end
-	    end,
-		OnLeave = function (_, _, _, _, _, realrow, column)
-			if (realrow) then
-				if (column == 2 or column == 3) then
-					self:Table_Cell_MouseOut();
-				end
-			end
-	    end
-	});
-	tableWrapper.table = table;
-	return tableWrapper;
+		});
+	end
+	return buffsOrDebuffsOnPartyMembersFrame;
 end
 
 --[[--
@@ -92,19 +87,4 @@ function MyDungeonsBook:BuffsOrDebuffsOnPartyMembersFrame_GetDataForTable(challe
 		});
 	end
 	return tableData;
-end
-
---[[--
-Update Buff Or Debuffs On Party Members tab for challenge with id `challengeId`.
-
-@param[type=number] challengeId
-]]
-function MyDungeonsBook:BuffsOrDebuffsOnPartyMembersFrame_Update(challengeId)
-	local challenge = self.db.char.challenges[challengeId];
-	if (challenge) then
-		local buffsOrDebuffsOnPartyMembersTableData = self:BuffsOrDebuffsOnPartyMembersFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-BUFFS-OR-DEBUFFS-ON-PARTY-MEMBERS");
-		self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.buffsOrDebuffsOnPartyMembersFrame.table:SetDisplayCols(self:Table_Headers_GetForSpellsSummary(challengeId));
-		self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.buffsOrDebuffsOnPartyMembersFrame.table:SetData(buffsOrDebuffsOnPartyMembersTableData);
-		self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.buffsOrDebuffsOnPartyMembersFrame.table:SortData();
-	end
 end

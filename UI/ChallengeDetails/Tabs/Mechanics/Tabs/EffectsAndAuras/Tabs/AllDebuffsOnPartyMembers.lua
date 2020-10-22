@@ -7,8 +7,6 @@ UI
 @section UI
 ]]
 
-local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
-
 --[[--
 Create a frame for All Buffs On Party Members tab (data is taken from `mechanics[ALL-AURAS]`).
 
@@ -17,18 +15,12 @@ Mouse hover/out handler are included.
 @param[type=Frame] parentFrame
 @return[type=Frame] tableWrapper
 ]]
-function MyDungeonsBook:AllDebuffsOnPartyMemberFrame_Create(parentFrame)
-    local ScrollingTable = LibStub("ScrollingTable");
-    local interruptsFrame = CreateFrame("Frame", nil, parentFrame);
-    interruptsFrame:SetWidth(900);
-    interruptsFrame:SetHeight(490);
-    interruptsFrame:SetPoint("TOPLEFT", 0, -120);
-    local tableWrapper = CreateFrame("Frame", nil, interruptsFrame);
-    tableWrapper:SetWidth(600);
-    tableWrapper:SetHeight(450);
-    tableWrapper:SetPoint("TOPLEFT", 0, 0);
-    local cols = self:Table_Headers_GetForSpellsSummary();
-    local table = ScrollingTable:CreateST(cols, 11, 40, nil, tableWrapper);
+function MyDungeonsBook:AllDebuffsOnPartyMemberFrame_Create(parentFrame, challengeId)
+    local allDebuffsOnPartyMemberFrame = self:TabContentWrapperWidget_Create(parentFrame);
+    local data = self:AllDebuffsOnPartyMemberFrame_GetDataForTable(challengeId, "ALL-AURAS", "DEBUFF");
+    local columns = self:Table_Headers_GetForSpellsSummary(challengeId);
+    local table = self:TableWidget_Create(columns, 11, 40, nil, allDebuffsOnPartyMemberFrame, "all-debuffs-on-party-members");
+    table:SetData(data);
     table:RegisterEvents({
         OnEnter = function (_, cellFrame, data, _, _, realrow, column)
             if (realrow) then
@@ -45,8 +37,7 @@ function MyDungeonsBook:AllDebuffsOnPartyMemberFrame_Create(parentFrame)
             end
         end
     });
-    tableWrapper.table = table;
-    return tableWrapper;
+    return allDebuffsOnPartyMemberFrame;
 end
 
 --[[--
@@ -105,19 +96,4 @@ function MyDungeonsBook:AllDebuffsOnPartyMemberFrame_GetDataForTable(challengeId
         tinsert(remappedTableData, r);
     end
     return remappedTableData;
-end
-
---[[--
-Update All Buffs On Party Members tab for challenge with id `challengeId`.
-
-@param[type=number] challengeId
-]]
-function MyDungeonsBook:AllDebuffsOnPartyMemberFrame_Update(challengeId)
-    local challenge = self.db.char.challenges[challengeId];
-    if (challenge) then
-        local allDebuffsOnPartyMembersTableData = self:AllDebuffsOnPartyMemberFrame_GetDataForTable(challengeId, "ALL-AURAS", "DEBUFF");
-        self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.allDebuffsOnPartyMembersFrame.table:SetData(allDebuffsOnPartyMembersTableData);
-        self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.allDebuffsOnPartyMembersFrame.table:SetDisplayCols(self:Table_Headers_GetForSpellsSummary(challengeId));
-        self.challengeDetailsFrame.mechanicsFrame.effectsAndAurasFrame.allDebuffsOnPartyMembersFrame.table:SortData();
-    end
 end

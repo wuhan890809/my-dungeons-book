@@ -18,12 +18,36 @@ Created frame has a field `tabButtons` with tab-buttons. Keys in the `tabButtons
 @return[type=Frame] tabsButtonsFrame
 ]]
 function MyDungeonsBook:EffectsAndAurasFrame_CreateTabButtonsFrame(parentFrame)
-	return self:Tabs_Create(parentFrame, {
-		{id = "dispels", title = L["Dispels"]},
-		{id = "avoidableDebuffs", title = L["Avoidable Debuffs"]},
-		{id = "allDebuffsOnPartyMembers", title = L["All Debuffs"]},
-		{id = "allBuffsOnPartyMembers", title = L["All Buffs"]},
-		{id = "buffsOrDebuffsOnPartyMembers", title = L["Special Buffs Or Debuffs"]},
-		{id = "buffsOrDebuffsOnUnits", title = L["Buffs Or Debuffs On Units"]},
+	local tabs = self:TabsWidget_Create(parentFrame);
+	tabs:SetTabs({
+		{value = "dispels", text = L["Dispels"]},
+		{value = "avoidableDebuffs", text = L["Avoidable Debuffs"]},
+		{value = "allDebuffsOnPartyMembers", text = L["All Debuffs"]},
+		{value = "allBuffsOnPartyMembers", text = L["All Buffs"]},
+		{value = "buffsOrDebuffsOnPartyMembers", text = L["Special Buffs Or Debuffs"]},
+		{value = "buffsOrDebuffsOnUnits", text = L["Buffs Or Debuffs On Units"]}
 	});
+	tabs:SetCallback("OnGroupSelected", function (container, _, tabId)
+		container:ReleaseChildren();
+		if (tabId == "dispels") then
+			self:DispelsFrame_Create(container, self.activeChallengeId);
+		end
+		if (tabId == "avoidableDebuffs") then
+			self:AvoidableDebuffsFrame_Create(container, self.activeChallengeId);
+		end
+		if (tabId == "allDebuffsOnPartyMembers") then
+			self:AllDebuffsOnPartyMemberFrame_Create(container, self.activeChallengeId);
+		end
+		if (tabId == "allBuffsOnPartyMembers") then
+			self:AllBuffsOnPartyMemberFrame_Create(container, self.activeChallengeId);
+		end
+		if (tabId == "buffsOrDebuffsOnPartyMembers") then
+			self:BuffsOrDebuffsOnPartyMembersFrame_Create(container, self.activeChallengeId);
+		end
+		if (tabId == "buffsOrDebuffsOnUnits") then
+			self:BuffsOrDebuffsOnUnitsFrame_Create(container, self.activeChallengeId);
+		end
+	end);
+	tabs:SetHeight(546);
+	return tabs;
 end

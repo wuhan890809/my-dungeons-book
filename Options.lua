@@ -17,15 +17,15 @@ MyDungeonsBook.OptionsDefaults = {
 	profile = {
 		display = {
 			x = 0,
-			y = 0,
-			scale = 1
+			y = 0
 		},
 		verbose = {
 			debug = true,
 			log = true
 		},
 		performance = {
-			collectgarbage = true
+			collectgarbage = true,
+			showdevtab = false
 		}
 	},
 	global = {
@@ -43,23 +43,7 @@ MyDungeonsBook.Options = {
 			order = 1,
 			name = L["UI"],
 			type="group",
-			args = {
-				scale = {
-					order = 1,
-					name = L["Main Window Scale"],
-					type = "range",
-					min = 0.8,
-					max = 2.0,
-					step = 0.1,
-					width = "full",
-					get = function()
-						return MyDungeonsBook.db.profile.display.scale;
-					end,
-					set = function(_, v)
-						MyDungeonsBook.db.profile.display.scale = v;
-					end
-				}
-			}
+			args = {}
 		},
 		verbose = {
 			order = 1,
@@ -108,8 +92,20 @@ MyDungeonsBook.Options = {
 					set = function (_, v)
 						MyDungeonsBook.db.profile.performance.collectgarbage = v;
 					end
+				},
+				showdevtab = {
+					order = 2,
+					name = L["Show DEV Tab"],
+					type = "toggle",
+					width = "full",
+					get = function()
+						return MyDungeonsBook.db.profile.performance.showdevtab;
+					end,
+					set = function (_, v)
+						MyDungeonsBook.db.profile.performance.showdevtab = v;
+					end
 				}
 			}
 		}
 	}
-};
+};	
