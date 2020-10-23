@@ -80,6 +80,13 @@ L["Dispels"] = "Dispels";
 L["Casts"] = "Casts";
 -- UI end
 
+-- Help start
+L["alias for previous word"] = "alias for previous word";
+L["save info from Details addon. It's done automatically when challenge is completed (in time or not), however it's not done if challenge is abandonned. Use this command right before leave the party."] = "save info from Details addon. It's done automatically when challenge is completed (in time or not), however it's not done if challenge is abandonned. Use this command right before leave the party.";
+L["update info about party member for current challenge. unitId must be 'player' or 'party1..4'."] = "update info about party member for current challenge. unitId must be 'player' or 'party1..4'.";
+L["print this text."] = "print this text.";
+-- Help end
+
 -- Settings start
 L["Performance"] = "Performance";
 L["Run garbage collector on close"] = "Run garbage collector on close";
