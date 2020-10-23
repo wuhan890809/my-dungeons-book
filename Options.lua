@@ -74,7 +74,7 @@ MyDungeonsBook.Options = {
 						},
 						timeFormat = {
 							order = 2,
-							name = L["Date Format"],
+							name = L["Time Format"],
 							type = "select",
 							width = "normal",
 							style = "dropdown",
@@ -184,4 +184,4 @@ MyDungeonsBook.Options = {
 			}
 		}
 	}
-};	
+};

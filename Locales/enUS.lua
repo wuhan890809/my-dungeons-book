@@ -90,6 +90,7 @@ L["Show LOG messages"] = "Show LOG messages";
 L["UI"] = "UI";
 L["Main Window Scale"] = "Main Window Scale";
 L["Date Format"] = "Date Format";
+L["Time Format"] = "Time Format";
 L["Icons"] = "Icons";
 L["Time Format"] = "Time Format";
 L["Flatten Icons"] = "Flatten Icons";
