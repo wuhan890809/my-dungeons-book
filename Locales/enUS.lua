@@ -85,10 +85,16 @@ L["Performance"] = "Performance";
 L["Run garbage collector on close"] = "Run garbage collector on close";
 L["Show DEV Tab"] = "Show DEV Tab";
 L["Verbose"] = "Verbose";
-L["MainFrame_Show DEBUG messages"] = "MainFrame_Show DEBUG messages";
-L["MainFrame_Show LOG messages"] = "MainFrame_Show LOG messages";
+L["Show DEBUG messages"] = "Show DEBUG messages";
+L["Show LOG messages"] = "Show LOG messages";
 L["UI"] = "UI";
 L["Main Window Scale"] = "Main Window Scale";
+L["Date Format"] = "Date Format";
+L["Icons"] = "Icons";
+L["Time Format"] = "Time Format";
+L["Flatten Icons"] = "Flatten Icons";
+L["Date and Time"] = "Date and Time";
+L["Logs"] = "Logs";
 -- Settings end
 
 -- BfA start

@@ -60,7 +60,8 @@ Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/proje
 ]]
 function MyDungeonsBook:Table_Cell_FormatAsDate(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local val = data[realrow].cols[column].value;
-    (cellFrame.text or cellFrame):SetText((val and date("%Y-%m-%d\n%H:%M", val)) or "-");
+	local dateFormat = self.db.profile.display.dateFormat;
+    (cellFrame.text or cellFrame):SetText((val and date(dateFormat, val)) or "-");
 	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
 end
 
@@ -73,7 +74,8 @@ Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/proje
 ]]
 function MyDungeonsBook:Table_Cell_FormatAsTime(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local val = data[realrow].cols[column].value;
-    (cellFrame.text or cellFrame):SetText((val > 0 and date("%M:%S", val / 1000)) or "-");
+	local timeFormat = self.db.profile.display.timeFormat;
+    (cellFrame.text or cellFrame):SetText((val > 0 and date(timeFormat, val / 1000)) or "-");
 	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
 end
 
@@ -86,15 +88,16 @@ Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/proje
 ]]
 function MyDungeonsBook:Table_Cell_FormatAsSpellIcon(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local spellId = data[realrow].cols[column].value;
+	local suffix = self:GetIconTextureSuffix(30);
 	if (spellId) then
 		if (spellId == -2) then
 			-- Hack to show "fist" icon for swing dmg
-			local itemIcon = "|T999951:30:30:0:0:64:64:5:59:5:59|t";
+			local itemIcon = "|T999951" .. suffix .. "|t";
 			(cellFrame.text or cellFrame):SetText(itemIcon);
 		else
 			if (spellId > 0) then
 				local _, _, icon = GetSpellInfo(spellId);
-				local spellIcon = "|T" .. (icon or "") .. ":30:30:0:0:64:64:5:59:5:59|t";
+				local spellIcon = "|T" .. (icon or "") .. suffix .. "|t";
 				(cellFrame.text or cellFrame):SetText(spellIcon);
 			else
 				(cellFrame.text or cellFrame):SetText("");
@@ -141,9 +144,10 @@ Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/proje
 ]]
 function MyDungeonsBook:Table_Cell_FormatAsItemIcon(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local itemId = data[realrow].cols[column].value;
+	local suffix = self:GetIconTextureSuffix(30);
 	if (itemId and itemId > 0) then
 		local _, _, _, _, _, _, _, _, _, icon = GetItemInfo(itemId);
-		local itemIcon = "|T" .. (icon or "") .. ":30:30:0:0:64:64:5:59:5:59|t";
+		local itemIcon = "|T" .. (icon or "") .. suffix .. "|t";
 		(cellFrame.text or cellFrame):SetText(itemIcon);
 	else
 		(cellFrame.text or cellFrame):SetText("");

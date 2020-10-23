@@ -233,10 +233,10 @@ function MyDungeonsBook:GetChallengeAffixesIconsStr(challengeId, iconSize)
 	if (not challenge) then
 		self:DebugPrint(string.format("[GetChallengeAffixesIconsStr] Challenge #%s not found"), challengeId);
 	end
-	local iconFormatter = string.format(":%s:%s:0:0:64:64:5:59:5:59|t", iconSize, iconSize);
+	local suffix = self:GetIconTextureSuffix(iconSize);
 	if (challenge.challengeInfo.affixes) then
 		for _, affixId in pairs(challenge.challengeInfo.affixes) do
-			affixes = string.format("%s |T%s%s", affixes, self:GetAffixTextureById(affixId), iconFormatter);
+			affixes = string.format("%s |T%s%s|t", affixes, self:GetAffixTextureById(affixId), suffix);
 		end
 	end
 	return affixes;
@@ -403,8 +403,11 @@ function MyDungeonsBook:MergeTables(table1, table2)
 	return table1;
 end
 
-function MyDungeonsBook:HighlightFrame(frame)
-	frame.highlight = frame:CreateTexture(nil, "OVERLAY");
-	frame.highlight:SetAllPoints(frame);
-	frame.highlight:SetColorTexture(0.5, 0.5, 0.5, 0.5);
+--[[--
+]]
+function MyDungeonsBook:GetIconTextureSuffix(size)
+	if (self.db.profile.display.flattenIcons) then
+		return string.format(":%s:%s:0:0:64:64:5:59:5:59", size, size);
+	end
+	return string.format(":%s:%s:0:0:64:64:0:64:0:64", size, size);
 end

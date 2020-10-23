@@ -84,7 +84,7 @@ function MyDungeonsBook:EncountersFrame_GetColumnsForTable()
 			name = L["Result"],
 			width = 40,
 			align = "CENTER",
-			DoCellUpdate = function(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
+			DoCellUpdate = function(_, cellFrame, data, _, _, realrow, column)
 				local success = data[realrow].cols[column].value;
 				local icon;
 				if (success == 1) then
@@ -92,7 +92,8 @@ function MyDungeonsBook:EncountersFrame_GetColumnsForTable()
 				else
 					icon = "interface\\raidframe\\readycheck-notready.blp";
 				end
-				(cellFrame.text or cellFrame):SetText("|T" .. (icon or "") .. ":16:16:0:0:64:64:5:59:5:59|t");
+				local suffix = self:GetIconTextureSuffix(16);
+				(cellFrame.text or cellFrame):SetText("|T" .. (icon or "") .. suffix .. "|t");
 			end
 		}
 	}

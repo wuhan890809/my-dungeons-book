@@ -126,6 +126,7 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 	self:DebugPrint(string.format("affixesKey is %s", affixesKey));
 
 	self.db.char.challenges[id].players.player = self:ParseUnitInfoWithWowApi("player");
+	NotifyInspect("player");
 	for i = 1, 4 do
 		self:ScheduleTimer(function()
 			NotifyInspect("party" .. i);
@@ -254,7 +255,7 @@ Each encounter has next fields:
 * `deathCountOnEnd` - number of deaths when encounter ends (it's set in the `MyDungeonsBook:ENCOUNTER_END`)
 * `success` - was encounter passed or not (it's set in the `MyDungeonsBook:ENCOUNTER_END`)
 
-@param[type=string] _ 
+@param[type=string] _
 @param[type=number] encounterId
 @param[type=string] encounterName
 ]]

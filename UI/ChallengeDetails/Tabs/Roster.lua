@@ -72,7 +72,8 @@ function MyDungeonsBook:RosterFrame_PartyMemberFrame_ClassIcon_Create(parentFram
 		self:Table_Cell_MouseOut();
 	end);
     if (challenge.players[unitId].class) then
-        classFrame:SetText("|T" .. self:GetClassIconByIndex(challenge.players[unitId].class) .. ":30:30:0:0:64:64:5:59:5:59|t");
+		local suffix = self:GetIconTextureSuffix(30);
+        classFrame:SetText("|T" .. self:GetClassIconByIndex(challenge.players[unitId].class) .. suffix .. "|t");
     end
 	return classFrame;
 end
@@ -99,7 +100,8 @@ function MyDungeonsBook:RosterFrame_PartyMemberFrame_SpecIcon_Create(parentFrame
     if (challenge.players[unitId].spec) then
         local _, _, _, icon = GetSpecializationInfoByID(challenge.players[unitId].spec);
         if (icon) then
-            specFrame:SetText("|T" .. icon .. ":30:30:0:0:64:64:5:59:5:59|t");
+			local suffix = self:GetIconTextureSuffix(30);
+            specFrame:SetText("|T" .. icon .. suffix .. "|t");
         end
     end
 	return specFrame;
@@ -144,7 +146,8 @@ function MyDungeonsBook:RosterFrame_PartyMemberFrame_Equipment_Create(parentFram
         if (itemString) then
             local _, itemId = strsplit(":", itemString);
             if (itemId) then
-                itemFrame:SetText("|T" .. GetItemIcon(itemId) .. ":30:30:0:0:64:64:5:59:5:59|t");
+				local suffix = self:GetIconTextureSuffix(30);
+                itemFrame:SetText("|T" .. GetItemIcon(itemId) .. suffix .. "|t");
             end
         end
 		tinsert(itemFrames, itemFrame);
