@@ -105,7 +105,7 @@ It doesn't do anything if value `mechanics[first][second][third][fourth]` alread
 @param[type=string|number] first key for the new table inside `mechanics`
 @param[type=string|number] second key for the new table inside mechanics&lbrack;first&rbrack;
 @param[type=string|number] third key for the new table inside mechanics&lbrack;first&rbrack;&lbrack;second&rbrack;
-@param[type=string|number] fourth key for the new value inside mechanics&lbrack;first&rbrack;&lbrack;second&rbrack&lbrack;third&rbrack;
+@param[type=string|number] fourth key for the new value inside mechanics&lbrack;first&rbrack;&lbrack;second&rbrack;&lbrack;third&rbrack;
 @param[type=bool] asCounter truly for new value `0`, falsy for `{}`
 ]]
 function MyDungeonsBook:InitMechanics4Lvl(first, second, third, fourth, asCounter)
@@ -113,6 +113,26 @@ function MyDungeonsBook:InitMechanics4Lvl(first, second, third, fourth, asCounte
 	self:InitMechanics3Lvl(first, second, third, false);
 	if (not self.db.char.challenges[id].mechanics[first][second][third][fourth]) then
 		self.db.char.challenges[id].mechanics[first][second][third][fourth] = (asCounter and 0) or {};
+	end
+end
+
+--[[--
+Add a table or counter (depends on `asCounter`) to the active challenge inside a `mechanics` (nested in 5 levels).
+
+It doesn't do anything if value `mechanics[first][second][third][fourth][fifth]` already exists.
+
+@param[type=string|number] first key for the new table inside `mechanics`
+@param[type=string|number] second key for the new table inside mechanics&lbrack;first&rbrack;
+@param[type=string|number] third key for the new table inside mechanics&lbrack;first&rbrack;&lbrack;second&rbrack;
+@param[type=string|number] fourth key for the new value inside mechanics&lbrack;first&rbrack;&lbrack;second&rbrack;&lbrack;third&rbrack;
+@param[type=string|number] fifth key for the new value inside mechanics&lbrack;first&rbrack;&lbrack;second&rbrack;&lbrack;third&rbrack;&lbrack;fourth&rbrack;
+@param[type=bool] asCounter truly for new value `0`, falsy for `{}`
+]]
+function MyDungeonsBook:InitMechanics5Lvl(first, second, third, fourth, fifth, asCounter)
+	local id = self.db.char.activeChallengeId;
+	self:InitMechanics4Lvl(first, second, third, fourth, false);
+	if (not self.db.char.challenges[id].mechanics[first][second][third][fourth][fifth]) then
+		self.db.char.challenges[id].mechanics[first][second][third][fourth][fifth] = (asCounter and 0) or {};
 	end
 end
 
@@ -213,11 +233,11 @@ Track casts that should interrupt enemies.
 
 This mechanic is used together with `COMMON-INTERRUPTS` to get number of failed "interrrupt"-casts (e.g. when 2+ party member tried to interrupt the same cast together).
 
-@param[type=number] spellId 12th param for `SPELL_CAST_SUCCESS`
-@param[type=string] sourceGUID 4th param for `SPELL_CAST_SUCCESS`
 @param[type=string] sourceName 5th param for `SPELL_CAST_SUCCESS`
+@param[type=string] sourceGUID 4th param for `SPELL_CAST_SUCCESS`
+@param[type=number] spellId 12th param for `SPELL_CAST_SUCCESS`
 ]]
-function MyDungeonsBook:TrackTryInterrupt(spellId, sourceGUID, sourceName)
+function MyDungeonsBook:TrackTryInterrupt(sourceName, sourceGUID, spellId)
 	local interrupts = {
 		[47528] = true,  --Mind Freeze
 		[106839] = true, --Skull Bash
@@ -237,7 +257,7 @@ function MyDungeonsBook:TrackTryInterrupt(spellId, sourceGUID, sourceName)
 		[15487] = true,  --Silence
 		[31935] = true,  --Avenger's Shield
 		[15487] = true,  --Silence
-		[93985] = true,  --Skull Bash 
+		[93985] = true,  --Skull Bash
 		[97547] = true,  --Solar Beam
 		[91807] = true,  --Shambling Rush
 	};
@@ -364,6 +384,25 @@ function MyDungeonsBook:TrackAllAurasOnPartyMembers(unit, spellId, auraType)
 		self.db.char.challenges[id].mechanics[key][unit][spellId].count = 0;
 	end
 	self.db.char.challenges[id].mechanics[key][unit][spellId].count = self.db.char.challenges[id].mechanics[key][unit][spellId].count + 1;
+end
+
+--[[--
+Track all casts done by party members and their pets
+
+@param[type=string] unitName caster name
+@param[type=GUID] unitGUID caster GUID
+@param[type=number] spellId casted spell id
+]]
+function MyDungeonsBook:TrackAllCastsDoneByPartyMembers(unitName, unitGUID, spellId)
+	local isPlayer = strfind(unitGUID, "Player");
+	local isPet = strfind(unitGUID, "Pet");
+	if (isPlayer or isPet) then
+		return;
+	end
+	local KEY = "ALL-CASTS-DONE-BY-PARTY-MEMBERS";
+	local id = self.db.char.activeChallengeId;
+	self:InitMechanics3Lvl(KEY, unitName, spellId, true);
+	self.db.char.challenges[id].mechanics[KEY][unitName][spellId] = self.db.char.challenges[id].mechanics[KEY][unitName][spellId] + 1;
 end
 
 --[[--
@@ -575,5 +614,34 @@ function MyDungeonsBook:TrackUnitsAppearsInCombat(key, units, sourceUnitGUID, ta
 	if (neededNpcGUID and neededNpcId) then
 		self:InitMechanics2Lvl(key, neededNpcId);
 		self.db.char.challenges[id].mechanics[key][neededNpcId][neededNpcGUID] = true;
+	end
+end
+
+--[[--
+Track all heal done by party members to each other
+
+@param[type=string] sourceUnitName caster name
+@param[type=string] sourceUnitGUID caster GUID
+@param[type=string] targetUnitName cast's target name
+@param[type=string] targetUnitGUID cast's target GUID
+@param[type=number] spellId casted spell id
+@param[type=number] amount amount of healing done
+@param[type=number] overheal amount of overhealing done
+]]
+function MyDungeonsBook:TrackAllHealDoneByPartyMembers(sourceUnitName, sourceUnitGUID, targetUnitName, targetUnitGUID, spellId, amount, overheal)
+	local sourceIsPlayer = strfind(sourceUnitGUID, "Player");
+	local targetIsPlayer = strfind(targetUnitGUID, "Player");
+	if (not sourceIsPlayer or not targetIsPlayer) then
+		return;
+	end
+	local id = self.db.char.activeChallengeId;
+	local KEY = "PARTY-MEMBERS-HEAL";
+	self:InitMechanics5Lvl(KEY, sourceUnitName, spellId, targetUnitName, "amount", true);
+	self:InitMechanics5Lvl(KEY, sourceUnitName, spellId, targetUnitName, "overheal", true);
+	self:InitMechanics5Lvl(KEY, sourceUnitName, spellId, targetUnitName, "hits", true);
+	self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId][targetUnitName].hits = self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId][targetUnitName].hits + 1;
+	self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId][targetUnitName].amount = self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId][targetUnitName].amount + amount;
+	if (overheal and overheal > 0) then
+		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId][targetUnitName].overheal = self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId][targetUnitName].overheal + overheal;
 	end
 end

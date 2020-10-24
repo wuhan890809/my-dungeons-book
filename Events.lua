@@ -15,67 +15,71 @@ Check combat events while player is in challenge.
 It's triggered only when challenge is active.
 ]]
 function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
-	if (self.db.char.activeChallengeId) then
-		local timestamp, subEventName, hideCaster, srcGUID, srcName, srcFlags, srcFlags2, dstGUID, dstName, dstFlags, dstFlags2 = CombatLogGetCurrentEventInfo();
-		local subEventPrefix, subEventSuffix = subEventName:match("^(.-)_?([^_]*)$");
-		self:TrackBfAUnitsAppearsInCombat(srcGUID, dstGUID);
-		self:TrackSLUnitsAppearsInCombat(srcGUID, dstGUID);
-		if (subEventName == "UNIT_DIED") then
-			self:TrackDeath(dstGUID, dstName);
-		end
-		if (subEventSuffix == "HEAL") then
-		end
-		if (subEventSuffix == "INTERRUPT") then
-			local spellId, _, _, extraSpellId = select(12, CombatLogGetCurrentEventInfo());
-			self:TrackInterrupt(srcName, srcGUID, spellId, extraSpellId);
-		end
-		if (subEventSuffix == "DISPEL") then
-			local spellId, _, _, extraSpellId = select(12, CombatLogGetCurrentEventInfo());
-			self:TrackDispel(srcName, srcGUID, spellId, extraSpellId);
-		end
-		if (subEventName == "SPELL_CAST_SUCCESS") then
-			local spellId = select(12, CombatLogGetCurrentEventInfo());
-			self:TrackTryInterrupt(spellId, srcGUID, srcName);
-			self:TrackSLPassedCasts(srcName, spellId);
-			self:TrackBfAPassedCasts(srcName, spellId);
-			self:TrackAllEnemiesPassedCasts(srcName, srcGUID, spellId);
-			self:TrackBfASpecificCastDoneByPartyMembers(srcName, spellId);
-			self:TrackSLSpecificCastDoneByPartyMembers(srcName, spellId);
-			self:TrackBfAOwnCastDoneByPartyMembers(srcName, spellId, dstName);
-			self:TrackSLOwnCastDoneByPartyMembers(srcName, spellId, dstName);
-			self:TrackBfASpecificItemUsedByPartyMembers(srcName, spellId);
-			self:TrackSLSpecificItemUsedByPartyMembers(srcName, spellId);
-		end
-		if ((subEventPrefix:match("^SPELL") or subEventPrefix:match("^RANGE")) and subEventSuffix == "DAMAGE") then
-			local spellId, _, _, amount, overkill = select(12, CombatLogGetCurrentEventInfo());
-			self:TrackAllDamageDoneToPartyMembers(dstName, spellId, amount);
-			self:TrackBfAAvoidableSpells(dstName, spellId, amount);
-			self:TrackSLAvoidableSpells(dstName, spellId, amount);
-			self:TrackBfADamageDoneToSpecificUnits(srcName, srcGUID, spellId, amount, overkill, dstName, dstGUID);
-			self:TrackSLDamageDoneToSpecificUnits(srcName, srcGUID, spellId, amount, overkill, dstName, dstGUID);
-		end
-		if (subEventName == "SWING_DAMAGE") then
-			local amount, overkill = select(12, CombatLogGetCurrentEventInfo());
-			self:TrackAllDamageDoneToPartyMembers(dstName, -2, amount);
-			self:TrackBfADamageDoneToSpecificUnits(srcName, srcGUID, -2, amount, overkill, dstName, dstGUID);
-			self:TrackSLDamageDoneToSpecificUnits(srcName, srcGUID, -2, amount, overkill, dstName, dstGUID);
-		end
-		if (subEventPrefix:match("^SPELL") and subEventSuffix == "MISSED") then
-			local spellId, _, _, _, _, amount = select(12, CombatLogGetCurrentEventInfo());
-			self:TrackBfAAvoidableSpells(dstName, spellId, amount);
-			self:TrackSLAvoidableSpells(dstName, spellId, amount);
-			self:TrackAllDamageDoneToPartyMembers(dstName, spellId, amount);
-		end
-		if (subEventName == "SPELL_AURA_APPLIED" or subEventName == "SPELL_AURA_APPLIED_DOSE") then
-			local spellId, _, _, auraType = select(12, CombatLogGetCurrentEventInfo());
-			self:TrackAllAurasOnPartyMembers(dstName, spellId, auraType);
-			self:TrackBfAAvoidableAuras(dstName, spellId);
-			self:TrackSLAvoidableAuras(dstName, spellId);
-			self:TrackBfASpecificBuffOrDebuffOnPartyMembers(dstName, spellId);
-			self:TrackSLSpecificBuffOrDebuffOnPartyMembers(dstName, spellId);
-			self:TrackBfASpecificBuffOrDebuffOnUnit(dstGUID, spellId);
-			self:TrackSLSpecificBuffOrDebuffOnUnit(dstGUID, spellId);
-		end
+	if (not self.db.char.activeChallengeId) then
+		return;
+	end
+	local timestamp, subEventName, hideCaster, srcGUID, srcName, srcFlags, srcFlags2, dstGUID, dstName, dstFlags, dstFlags2 = CombatLogGetCurrentEventInfo();
+	local subEventPrefix, subEventSuffix = subEventName:match("^(.-)_?([^_]*)$");
+	self:TrackBfAUnitsAppearsInCombat(srcGUID, dstGUID);
+	self:TrackSLUnitsAppearsInCombat(srcGUID, dstGUID);
+	if (subEventName == "UNIT_DIED") then
+		self:TrackDeath(dstGUID, dstName);
+	end
+	if (subEventSuffix == "HEAL") then
+		local spellId, _, _, amount, overheal = select(12, CombatLogGetCurrentEventInfo());
+		self:TrackAllHealDoneByPartyMembers(srcName, srcGUID, dstName, dstGUID, spellId, amount, overheal);
+	end
+	if (subEventSuffix == "INTERRUPT") then
+		local spellId, _, _, extraSpellId = select(12, CombatLogGetCurrentEventInfo());
+		self:TrackInterrupt(srcName, srcGUID, spellId, extraSpellId);
+	end
+	if (subEventSuffix == "DISPEL") then
+		local spellId, _, _, extraSpellId = select(12, CombatLogGetCurrentEventInfo());
+		self:TrackDispel(srcName, srcGUID, spellId, extraSpellId);
+	end
+	if (subEventName == "SPELL_CAST_SUCCESS") then
+		local spellId = select(12, CombatLogGetCurrentEventInfo());
+		self:TrackTryInterrupt(srcName, srcGUID, spellId);
+		self:TrackSLPassedCasts(srcName, spellId);
+		self:TrackBfAPassedCasts(srcName, spellId);
+		self:TrackAllEnemiesPassedCasts(srcName, srcGUID, spellId);
+		self:TrackBfASpecificCastDoneByPartyMembers(srcName, spellId);
+		self:TrackSLSpecificCastDoneByPartyMembers(srcName, spellId);
+		self:TrackAllCastsDoneByPartyMembers(srcName, srcGUID, spellId);
+		self:TrackBfAOwnCastDoneByPartyMembers(srcName, spellId, dstName);
+		self:TrackSLOwnCastDoneByPartyMembers(srcName, spellId, dstName);
+		self:TrackBfASpecificItemUsedByPartyMembers(srcName, spellId);
+		self:TrackSLSpecificItemUsedByPartyMembers(srcName, spellId);
+	end
+	if ((subEventPrefix:match("^SPELL") or subEventPrefix:match("^RANGE")) and subEventSuffix == "DAMAGE") then
+		local spellId, _, _, amount, overkill = select(12, CombatLogGetCurrentEventInfo());
+		self:TrackAllDamageDoneToPartyMembers(dstName, spellId, amount);
+		self:TrackBfAAvoidableSpells(dstName, spellId, amount);
+		self:TrackSLAvoidableSpells(dstName, spellId, amount);
+		self:TrackBfADamageDoneToSpecificUnits(srcName, srcGUID, spellId, amount, overkill, dstName, dstGUID);
+		self:TrackSLDamageDoneToSpecificUnits(srcName, srcGUID, spellId, amount, overkill, dstName, dstGUID);
+	end
+	if (subEventName == "SWING_DAMAGE") then
+		local amount, overkill = select(12, CombatLogGetCurrentEventInfo());
+		self:TrackAllDamageDoneToPartyMembers(dstName, -2, amount);
+		self:TrackBfADamageDoneToSpecificUnits(srcName, srcGUID, -2, amount, overkill, dstName, dstGUID);
+		self:TrackSLDamageDoneToSpecificUnits(srcName, srcGUID, -2, amount, overkill, dstName, dstGUID);
+	end
+	if (subEventPrefix:match("^SPELL") and subEventSuffix == "MISSED") then
+		local spellId, _, _, _, _, amount = select(12, CombatLogGetCurrentEventInfo());
+		self:TrackBfAAvoidableSpells(dstName, spellId, amount);
+		self:TrackSLAvoidableSpells(dstName, spellId, amount);
+		self:TrackAllDamageDoneToPartyMembers(dstName, spellId, amount);
+	end
+	if (subEventName == "SPELL_AURA_APPLIED" or subEventName == "SPELL_AURA_APPLIED_DOSE") then
+		local spellId, _, _, auraType = select(12, CombatLogGetCurrentEventInfo());
+		self:TrackAllAurasOnPartyMembers(dstName, spellId, auraType);
+		self:TrackBfAAvoidableAuras(dstName, spellId);
+		self:TrackSLAvoidableAuras(dstName, spellId);
+		self:TrackBfASpecificBuffOrDebuffOnPartyMembers(dstName, spellId);
+		self:TrackSLSpecificBuffOrDebuffOnPartyMembers(dstName, spellId);
+		self:TrackBfASpecificBuffOrDebuffOnUnit(dstGUID, spellId);
+		self:TrackSLSpecificBuffOrDebuffOnUnit(dstGUID, spellId);
 	end
 end
 
@@ -112,12 +116,12 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 	local zoneName, _, maxTime = C_ChallengeMode.GetMapUIInfo(currentMapId);
 	self:DebugPrint(string.format("zoneName is %s", zoneName));
 	self:DebugPrint(string.format("maxTime is %s", maxTime));
-	
+
 	local affixIds = {};
 	for _, affixId in pairs(affixes) do
 		table.insert(affixIds, affixId);
 	end
-	
+
 	local affixesKey = "affixes";
 	for _, k in ipairs(affixIds) do
 		affixesKey = string.format("%s-%s", affixesKey, k);
