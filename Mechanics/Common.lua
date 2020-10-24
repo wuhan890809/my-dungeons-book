@@ -396,7 +396,7 @@ Track all casts done by party members and their pets
 function MyDungeonsBook:TrackAllCastsDoneByPartyMembers(unitName, unitGUID, spellId)
 	local isPlayer = strfind(unitGUID, "Player");
 	local isPet = strfind(unitGUID, "Pet");
-	if (isPlayer or isPet) then
+	if (not isPlayer) then
 		return;
 	end
 	local KEY = "ALL-CASTS-DONE-BY-PARTY-MEMBERS";
