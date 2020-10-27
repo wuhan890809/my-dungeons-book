@@ -20,6 +20,10 @@ local function mergeInterruptSpellId(spellId)
 	if (spellId == 220543) then
 		return 15487;
 	end
+	-- Druid
+	if (spellId == 97547) then
+		return 78675;
+	end
 	return spellId;
 end
 
