@@ -38,12 +38,14 @@ end
 
 -- Tooltip to track pet's owner
 local scanTool = CreateFrame("GameTooltip", "ScanTooltip", nil, "GameTooltipTemplate");
+scanTool:SetOwner(WorldFrame, "ANCHOR_NONE");
+local scanText = _G["ScanTooltipTextLeft2"]; -- This is the line with <[Player]'s Pet>
 
 -- from https://www.wowinterface.com/forums/showthread.php?t=43082
 local function getPetOwnerWithTooltip(petName)
 	scanTool:ClearLines();
 	scanTool:SetUnit(petName);
-	local ownerText = scanTool:GetText();
+	local ownerText = scanText:GetText();
 	if (not ownerText) then
 		return nil;
 	end
