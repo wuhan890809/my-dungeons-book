@@ -14,9 +14,9 @@ Original idea for avoidable damage is taken from addon ElitismHelper (thanks to 
 ]]
 
 local BfASpells = {
-	
+
 	[296142] = true,          -- Shadow Smash (Lost Soul)
-	
+
 	-- Affixes
 	[209862] = true,		-- Volcanic Plume (Environment)
 	[226512] = true,		-- Sanguine Ichor (Environment)
@@ -39,7 +39,7 @@ local BfASpells = {
 	[258673] = true,		--- Azerite Grenade (Irontide Crackshot)
 	[274389] = true,		--- Rat Traps (Vermin Trapper)
 	[257460] = true,		--- Fiery Debris (Harlan Sweete)
-	
+
 	-- Shrine of the Storm
 	[276268] = true,		--- Heaving Blow (Shrine Templar)
 	[267973] = true,		--- Wash Away (Temple Attendant)
@@ -51,7 +51,7 @@ local BfASpells = {
 	[276286] = true,		--- Slicing Hurricane (Galecaller Apprentice)
 	[276292] = true,		--- Whirlign Slam (Ironhull Apprentice)
 	[267385] = true,		--- Tentacle Slam (Vol'zith the Whisperer)
-	
+
 	-- Siege of Boralus
 	[273718] = true,        --- Heavy Ordnance (Sergeant Bainbridge)
 	[256627] = true,		--- Slobber Knocker (Kul Tiran Halberd)
@@ -72,7 +72,7 @@ local BfASpells = {
 	[257886] = true,		--- Brine Pool (Hadal Darkfathom)
 	[261565] = true,		--- Crashing Tide (Hadal Darkfathom)
 	[277535] = true,		--- Viq'Goth's Wrath (Viq'Goth)
-	
+
 	-- Tol Dagor
 	[257119] = true,		--- Sand Trap (The Sand Queen)
 	[257785] = true,		--- Flashing Daggers (Jes Howlis)
@@ -83,7 +83,7 @@ local BfASpells = {
 	[258364] = true,		--- Fuselighter (Ashvane Flamecaster)
 	[259711] = true,		--- Lockdown (Ashvane Warden)
 	[256710] = true,		--- Burning Arsenal (Knight Captain Valyri)
-	
+
 	-- Waycrest Manor
 	[264531] = true,		--- Shrapnel Trap (Maddened Survivalist)
 	[264476] = true,		--- Tracking Explosive (Crazed Marksman)
@@ -127,7 +127,7 @@ local BfASpells = {
 	[267639] = true,		--- Burn Corruption (Mchimba the Embalmer)
 	[268419] = true,		--- Gale Slash (King Dazar)
 	[268796] = true,		--- Impaling Spear (King Dazar)
-	
+
 	-- The MOTHERLODE!!
 	[257371] = true,		--- Gas Can (Mechanized Peace Keeper)
 	[262287] = true,		--- Concussion Charge (Mech Jockey / Venture Co. Skyscorcher)
@@ -161,7 +161,7 @@ local BfASpells = {
 	[272821] = true,		--- Call Lightning (Imbued Stormcaller)
 	[264763] = true,		--- Spark (Static-charged Dervish)
 	[279014] = true,		--- Cardiac Shock (Avatar, Environment)
-	
+
 	-- Underrot
 	[265542] = true,		--- Rotten Bile (Fetid Maggot)
 	[265019] = true,		--- Savage Cleave (Chosen Blood Matron)
@@ -175,7 +175,7 @@ local BfASpells = {
 	[272609] = true,		--- Maddenin Gaze (Faceless Corruptor)
 	[272469] = true,		--- Abyssal Slam (Faceless Corruptor)
 	[270108] = true,		--- Rotting Spore (Unbound Abomination)
-	
+
 	-- Mechagon Workshop
 	[294128] = true,		--- Rocket Barrage (Rocket Tonk)
 	[285020] = true,		--- Whirling Edge (The Platinum Pummeler)
@@ -185,8 +185,8 @@ local BfASpells = {
 	[293861] = true,		--- Anti-Personnel Squirrel (Anti-Personnel Squirrel)
 	[295168] = true,		--- Capacitor Discharge (Blastatron X-80)
 	[294954] = true,		--- Self-Trimming Hedge (Head Machinist Sparkflux)
-	
-	
+
+
 	-- Mechagon Junkyard
 	[300816] = true,		--- Slimewave (Slime Elemental)
 	[300188] = true,		--- Scrap Cannon (Weaponized Crawler)
@@ -198,7 +198,7 @@ local BfASpells = {
 	[299535] = true,		--- Scrap Blast (Pistonhead Blaster)
 	[298940] = true,		--- Bolt Buster (Naeno Megacrash)
 	[297283] = true,		--- Cave In (King Gobbamak)
-	
+
 	--- Awakened Lieutenant
 	[314309] = true,		--- Dark Fury (Urg'roth, Breaker of Heroes)
 	[314467] = true,		--- Volatile Rupture (Voidweaver Mal'thir)
@@ -209,46 +209,46 @@ local BfASpellsNoTank = {
 	-- Freehold
 
 	-- Shrine of the Storm
-	
+
 	-- Siege of Boralus
 	[268230] = true,		--- Crimson Swipe (Ashvane Deckhand)
-	
+
 	-- Tol Dagor
 	[258864] = true,		--- Suppression Fire (Ashvane Marine/Spotter)
-	
+
 	-- Waycrest Manor
 	[263905] = true,		--- Marking Cleave (Heartsbane Runeweaver)
 	[265372] = true,		---	Shadow Cleave (Enthralled Guard)
 	[271174] = true,		--- Retch (Pallid Gorger)
-	
+
 	-- Atal'Dazar
 
 	-- King's Rest
 	[270289] = true,		--- Purification Beam (Purification Construct)
-	
+
 	-- The MOTHERLODE!!
 	[268846] = true,		--- Echo Blade (Weapons Tester)
 	[263105] = true,		--- Blowtorch (Feckless Assistant)
 	[263583] = true,		--- Broad Slash (Taskmaster Askari)
-		
+
 	-- Temple of Sethraliss
 	[255741] = true,		--- Cleave (Scaled Krolusk Rider)
 
 	-- Underrot
 	[272457] = true,		--- Shockwave (Sporecaller Zancha)
 	[260793] = true,		--- Indigestion (Cragmaw the Infested)
-	
+
 };
 
 local BfAAuras = {
 	-- Freehold
 	[274516] = true,		-- Slippery Suds
-	
+
 	-- Shrine of the Storm
 	[268391] = true,		-- Mental Assault (Abyssal Cultist)
 	[269104] = true,		-- Explosive Void (Lord Stormsong)
 	[267956] = true,		-- Zap (Jellyfish)
-	
+
 	-- Siege of Boralus
 	[274942] = true,		-- Banana Stun
 	[257169] = true,		-- Fear
@@ -259,13 +259,13 @@ local BfAAuras = {
 	-- Waycrest Manor
 	[265352] = true,		-- Toad Blight (Toad)
 	[278468] = true,		-- Freezing Trap
-	
+
 	-- Atal'Dazar
 	[255371] = true,		-- Terrifying Visage (Rezan)
 
 	-- King's Rest
 	[276031] = true,		-- Pit of Despair (Minion of Zul)
-	
+
 	-- Temple of Sethraliss
 	[269970] = true,		-- Blinding Sand (Merektha)
 
@@ -273,10 +273,10 @@ local BfAAuras = {
 
 	-- The MOTHERLODE!!
 	[280605] = true,        -- Brain Freeze (Refreshment Vendor)
-	
+
 	-- Mechagon Workshop
 	[293986] = true,		--- Sonic Pulse (Blastatron X-80)
-	
+
 	-- Mechaton Junkyard
 	[398529] = true,		-- Gooped (Gunker)
 	[300659] = true,		-- Consuming Slime (Toxic Monstrosity)
@@ -631,6 +631,62 @@ local BfAOwnCastsDoneByPartyMembers = {
 	[228920] = true, -- Ravager
 	[871] = true,    -- Shield Wall
 	[23920] = true,  -- Spell Reflection
+	--[[
+		RACE SPECIFIC
+	]]
+	-- Dark Iron Dwarf
+	[265221] = true, -- Fireblood
+	-- Draenei
+	[28880] = true,  -- Gift of the Naaru
+	[59542] = true,  -- Gift of the Naaru
+	[59543] = true,  -- Gift of the Naaru
+	[59544] = true,  -- Gift of the Naaru
+	[59545] = true,  -- Gift of the Naaru
+	[59547] = true,  -- Gift of the Naaru
+	[59548] = true,  -- Gift of the Naaru
+	[121093] = true, -- Gift of the Naaru
+	-- Dwarf
+	[20594] = true,  -- Stoneform
+	-- Gnome
+	[20589] = true,  -- Escape Artist
+	-- Goblin
+	[69041] = true,  -- Rocket Barrage
+	[69070] = true,  -- Rocket Jump
+	-- Highmountain Tauren
+	[255654] = true, -- Bull Rush
+	-- Human
+	[59752] = true,  -- Will to Survive
+	-- Kul Tiran
+	[287712] = true, -- Haymaker
+	-- Lightforged Draenei
+	[255647] = true, -- Light's Judgment
+	-- Mag'har Orc
+	[274738] = true, -- Ancestral Call
+	-- Mechgnome
+	[312924] = true, -- Hyper Organic Light Originator
+	-- Nightborne
+	[260364] = true, -- Arcane Pulse
+	-- Night Elf
+	[58984] = true,  -- Shadowmeld
+	-- Orc
+	[20572] = true,  -- Blood Fury
+	[33697] = true,  -- Blood Fury
+	[33702] = true,  -- Blood Fury
+	-- Pandaren
+	[107079] = true, -- Quaking Palm
+	-- Tauren
+	[20549] = true,  -- War Stomp
+	-- Troll
+	[26297] = true,  -- Berserking
+	-- Undead
+	[7744] = true,   -- Will of the Forsaken
+	[20577] = true,  -- Cannibalize
+	-- Vulpera
+	[312411] = true, -- Bag of Tricks
+	-- Worgen
+	[68992] = true,  -- Darkflight
+	-- Zandalari Troll
+	[291944] = true, -- Regeneratin'
 };
 
 local BfASpecificItemsUsedByPartyMembers = {
