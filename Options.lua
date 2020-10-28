@@ -23,7 +23,7 @@ MyDungeonsBook.OptionsDefaults = {
 			flattenIcons = true
 		},
 		verbose = {
-			debug = true,
+			debug = false,
 			log = true
 		},
 		performance = {
