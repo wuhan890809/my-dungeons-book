@@ -325,12 +325,10 @@ end
 @param[type=number] amount amount of damage done to `unit` by `spellId`
 ]]
 function MyDungeonsBook:SaveTrackedDamageToPartyMembers(key, unit, spellId, amount)
-	local partyUnit = self:GetPartyUnitByName(unit);
-	if (partyUnit) then
-		local amountInPercents = amount / UnitHealthMax(partyUnit) * 100;
-		if (amountInPercents > 40) then
-			self:LogPrint(string.format(L["%s got hit by %s for %s (%s)"], unit, GetSpellLink(spellId), self:FormatNumber(amount), string.format("%.1f\%", amountInPercents)));
-		end
+	local amountInPercents = amount and amount / UnitHealthMax(unit) * 100 or 0;
+	if (amountInPercents >= 40) then
+		local spellLink = GetSpellLink(spellId);
+		self:LogPrint(string.format(L["%s got hit by %s for %s (%s)"], unit, spellLink, self:FormatNumber(amount), string.format("%.1f%%", amountInPercents)));
 	end
 	local id = self.db.char.activeChallengeId;
 	self:InitMechanics2Lvl(key, unit);
@@ -360,7 +358,7 @@ Check events `SPELL_AURA_APPLIED` and `SPELL_AURA_APPLIED_DOSE`.
 @param[type=number] spellId spell that apply debuff to `damagedUnit`
 ]]
 function MyDungeonsBook:TrackAvoidableAuras(key, auras, aurasNoTank, unit, spellId)
-	if (auras[spellId] or (aurasNoTank[spellId] and UnitGroupRolesAssigned(unit) ~= "TANK")) and UnitIsPlayer(unit) then
+	if ((auras[spellId] or (aurasNoTank[spellId] and UnitGroupRolesAssigned(unit) ~= "TANK")) and UnitIsPlayer(unit)) then
 		local id = self.db.char.activeChallengeId;
 		self:InitMechanics3Lvl(key, unit, spellId, true);
 		self.db.char.challenges[id].mechanics[key][unit][spellId] = self.db.char.challenges[id].mechanics[key][unit][spellId] + 1;
@@ -422,12 +420,13 @@ This mechanic is a subset of one from `TrackAllEnemyPassedCasts`.
 @param[type=number] spellId casted spell id
 ]]
 function MyDungeonsBook:TrackPassedCasts(key, spells, unitName, spellId)
-	if (spells[spellId]) then
-		self:LogPrint(string.format(L["%s's cast %s is passed"], unitName, GetSpellLink(spellId)));
-		local id = self.db.char.activeChallengeId;
-		self:InitMechanics2Lvl(key, spellId, true);
-		self.db.char.challenges[id].mechanics[key][spellId] = self.db.char.challenges[id].mechanics[key][spellId] + 1;
+	if (not spells[spellId]) then
+		return;
 	end
+	self:LogPrint(string.format(L["%s's cast %s is passed"], unitName, GetSpellLink(spellId)));
+	local id = self.db.char.activeChallengeId;
+	self:InitMechanics2Lvl(key, spellId, true);
+	self.db.char.challenges[id].mechanics[key][spellId] = self.db.char.challenges[id].mechanics[key][spellId] + 1;
 end
 
 --[[--
@@ -586,13 +585,14 @@ Track specific buffs or debuffs got by any unit.
 @param[type=number] spellId buff (or debuff) id
 ]]
 function MyDungeonsBook:TrackSpecificBuffOrDebuffOnUnit(key, spells, unitGUID, spellId)
-	if (spells[spellId]) then
-		local id = self.db.char.activeChallengeId;
-		local npcId = self:GetNpcIdFromGuid(unitGUID);
-		if (npcId) then
-			self:InitMechanics3Lvl(key, spellId, npcId, true);
-			self.db.char.challenges[id].mechanics[key][spellId][npcId] = self.db.char.challenges[id].mechanics[key][spellId][npcId] + 1;
-		end
+	if (not spells[spellId]) then
+		return;
+	end
+	local id = self.db.char.activeChallengeId;
+	local npcId = self:GetNpcIdFromGuid(unitGUID);
+	if (npcId) then
+		self:InitMechanics3Lvl(key, spellId, npcId, true);
+		self.db.char.challenges[id].mechanics[key][spellId][npcId] = self.db.char.challenges[id].mechanics[key][spellId][npcId] + 1;
 	end
 end
 
@@ -635,19 +635,64 @@ Track all heal done by party members to each other
 @param[type=number] overheal amount of overhealing done
 ]]
 function MyDungeonsBook:TrackAllHealDoneByPartyMembers(sourceUnitName, sourceUnitGUID, targetUnitName, targetUnitGUID, spellId, amount, overheal)
+	local id = self.db.char.activeChallengeId;
 	local sourceIsPlayer = strfind(sourceUnitGUID, "Player");
 	local targetIsPlayer = strfind(targetUnitGUID, "Player");
-	if (not sourceIsPlayer or not targetIsPlayer) then
+	local sourceNameToUse;
+	if (sourceIsPlayer) then
+		sourceNameToUse = sourceUnitName;
+	else
+		local KEY = "PARTY-MEMBERS-SUMMON";
+		self:InitMechanics1Lvl(KEY);
+		local sourceOwnerName = self.db.char.challenges[id].mechanics[KEY][sourceUnitGUID];
+		if (sourceOwnerName) then
+			sourceNameToUse = sourceOwnerName;
+		end
+	end
+	if (not sourceNameToUse or not targetIsPlayer) then
+		return;
+	end
+	local KEY = "PARTY-MEMBERS-HEAL";
+	self:InitMechanics5Lvl(KEY, sourceNameToUse, spellId, targetUnitName, "amount", true);
+	self:InitMechanics5Lvl(KEY, sourceNameToUse, spellId, targetUnitName, "overheal", true);
+	self:InitMechanics5Lvl(KEY, sourceNameToUse, spellId, targetUnitName, "hits", true);
+	self.db.char.challenges[id].mechanics[KEY][sourceNameToUse][spellId][targetUnitName].hits = self.db.char.challenges[id].mechanics[KEY][sourceNameToUse][spellId][targetUnitName].hits + 1;
+	self.db.char.challenges[id].mechanics[KEY][sourceNameToUse][spellId][targetUnitName].amount = self.db.char.challenges[id].mechanics[KEY][sourceNameToUse][spellId][targetUnitName].amount + amount;
+	if (overheal and overheal > 0) then
+		self.db.char.challenges[id].mechanics[KEY][sourceNameToUse][spellId][targetUnitName].overheal = self.db.char.challenges[id].mechanics[KEY][sourceNameToUse][spellId][targetUnitName].overheal + overheal;
+	end
+end
+
+--[[--
+Track when some party member summons some unit
+
+@param[type=string] sourceUnitName
+@param[type=GUID] sourceUnitGUID
+@param[type=string] targetUnitName
+@param[type=GUID] targetUnitGUID
+]]
+function MyDungeonsBook:TrackSummonnedByPartyMembersUnit(sourceUnitName, sourceUnitGUID, targetUnitName, targetUnitGUID)
+	local sourceIsPlayer = strfind(sourceUnitGUID, "Player");
+	if (not sourceIsPlayer) then
 		return;
 	end
 	local id = self.db.char.activeChallengeId;
-	local KEY = "PARTY-MEMBERS-HEAL";
-	self:InitMechanics5Lvl(KEY, sourceUnitName, spellId, targetUnitName, "amount", true);
-	self:InitMechanics5Lvl(KEY, sourceUnitName, spellId, targetUnitName, "overheal", true);
-	self:InitMechanics5Lvl(KEY, sourceUnitName, spellId, targetUnitName, "hits", true);
-	self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId][targetUnitName].hits = self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId][targetUnitName].hits + 1;
-	self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId][targetUnitName].amount = self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId][targetUnitName].amount + amount;
-	if (overheal and overheal > 0) then
-		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId][targetUnitName].overheal = self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId][targetUnitName].overheal + overheal;
+	local KEY = "PARTY-MEMBERS-SUMMON";
+	self:InitMechanics1Lvl(KEY);
+	self.db.char.challenges[id].mechanics[KEY][targetUnitGUID] = sourceUnitName;
+end
+
+--[[--
+Track if summonned by party members unit is dead
+
+@param[type=string] targetUnitName
+@param[type=GUID] targetUnitGUID
+]]
+function MyDungeonsBook:TrackSummonByPartyMemberUnitDeath(targetUnitName, targetUnitGUID)
+	local id = self.db.char.activeChallengeId;
+	local KEY = "PARTY-MEMBERS-SUMMON";
+	self:InitMechanics1Lvl(KEY);
+	if (self.db.char.challenges[id].mechanics[KEY][targetUnitGUID]) then
+		self.db.char.challenges[id].mechanics[KEY][targetUnitGUID] = nil;
 	end
 end

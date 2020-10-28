@@ -22,18 +22,36 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 	local subEventPrefix, subEventSuffix = subEventName:match("^(.-)_?([^_]*)$");
 	self:TrackBfAUnitsAppearsInCombat(srcGUID, dstGUID);
 	self:TrackSLUnitsAppearsInCombat(srcGUID, dstGUID);
+	if (subEventSuffix == "SUMMON" or
+		subEventSuffix == "CREATE") then
+		self:TrackSummonnedByPartyMembersUnit(srcName, srcGUID, dstName, dstGUID);
+	end
 	if (subEventName == "UNIT_DIED") then
 		self:TrackDeath(dstGUID, dstName);
+		self:TrackSummonByPartyMemberUnitDeath(dstGUID, dstName);
+	end
+	if (subEventName == "UNIT_DESTROYED") then
+		self:TrackSummonByPartyMemberUnitDeath(dstGUID, dstName);
 	end
 	if (subEventSuffix == "HEAL") then
 		local spellId, _, _, amount, overheal = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackAllHealDoneByPartyMembers(srcName, srcGUID, dstName, dstGUID, spellId, amount, overheal);
 	end
+	if (subEventName == "DAMAGE_SPLIT" or
+		subEventName == "DAMAGE_SHIELD") then
+		local spellId, _, _, amount, overheal = select(12, CombatLogGetCurrentEventInfo());
+		self:TrackAllHealDoneByPartyMembers(srcName, srcGUID, dstName, dstGUID, spellId, amount, overheal);
+	end
+	if (subEventName == "SPELL_ABSORBED") then
+		local unitGUID, unitName, _, _, spellId, _, _, amount = select(12, CombatLogGetCurrentEventInfo());
+		self:TrackAllHealDoneByPartyMembers(unitName, unitGUID, dstName, dstGUID, spellId, amount, -1);
+	end
 	if (subEventSuffix == "INTERRUPT") then
 		local spellId, _, _, extraSpellId = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackInterrupt(srcName, srcGUID, spellId, extraSpellId);
 	end
-	if (subEventSuffix == "DISPEL") then
+	if (subEventSuffix == "DISPEL" or
+		subEventName == "SPELL_STOLEN") then
 		local spellId, _, _, extraSpellId = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackDispel(srcName, srcGUID, spellId, extraSpellId);
 	end
@@ -65,13 +83,19 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		self:TrackBfADamageDoneToSpecificUnits(srcName, srcGUID, -2, amount, overkill, dstName, dstGUID);
 		self:TrackSLDamageDoneToSpecificUnits(srcName, srcGUID, -2, amount, overkill, dstName, dstGUID);
 	end
-	if (subEventPrefix:match("^SPELL") and subEventSuffix == "MISSED") then
+	if (subEventName == "SPELL_EXTRA_ATTACKS") then
+		local amount = select(12, CombatLogGetCurrentEventInfo());
+		self:TrackAllDamageDoneToPartyMembers(dstName, -2, amount);
+	end
+	if (subEventPrefix:match("^SPELL") and
+		subEventSuffix == "MISSED") then
 		local spellId, _, _, _, _, amount = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackBfAAvoidableSpells(dstName, spellId, amount);
 		self:TrackSLAvoidableSpells(dstName, spellId, amount);
 		self:TrackAllDamageDoneToPartyMembers(dstName, spellId, amount);
 	end
-	if (subEventName == "SPELL_AURA_APPLIED" or subEventName == "SPELL_AURA_APPLIED_DOSE") then
+	if (subEventName == "SPELL_AURA_APPLIED" or
+		subEventName == "SPELL_AURA_APPLIED_DOSE") then
 		local spellId, _, _, auraType = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackAllAurasOnPartyMembers(dstName, spellId, auraType);
 		self:TrackBfAAvoidableAuras(dstName, spellId);
@@ -205,6 +229,9 @@ function MyDungeonsBook:CHALLENGE_MODE_COMPLETED()
 		self:LogPrint(string.format(L["%s +%s is completed"], self.db.char.challenges[id].challengeInfo.zoneName, self.db.char.challenges[id].challengeInfo.cmLevel));
 		if (self.challengesTable) then
 			self.challengesTable:SetData(self:ChallengesFrame_GetDataForTable());
+		end
+		if (self.db.char.challenges[id].mechanics["PARTY-MEMBERS-SUMMON"]) then
+			wipe(self.db.char.challenges[id].mechanics["PARTY-MEMBERS-SUMMON"]); -- no sense to store hundreds of GUIDs
 		end
 	end
 	self.db.char.activeChallengeId = nil;

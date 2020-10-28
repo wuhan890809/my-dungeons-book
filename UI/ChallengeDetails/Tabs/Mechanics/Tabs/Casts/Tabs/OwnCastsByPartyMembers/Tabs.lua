@@ -10,8 +10,6 @@ UI
 --[[--
 Creates tabs (with click-handlers) for Own Casts frame.
 
-Created frame has a field `tabButtons` with tab-buttons. Keys in the `tabButtons` are equal to keys in the `ownCastsFrame.tabs`.
-
 @param[type=Frame] parentFrame
 @param[type=number] challengeId
 @return[type=Frame] tabsButtonsFrame
@@ -26,7 +24,7 @@ function MyDungeonsBook:OwnCastsByPartyMembersFrame_CreateTabButtonsFrame(parent
 	tabs:SetCallback("OnGroupSelected", function (container, _, tabId)
 		container:ReleaseChildren();
 		self:OwnCastsByPartyMemberFrame_Create(container, self.activeChallengeId, tabId);
-	end)
+	end);
 	tabs:SetHeight(510);
 	return tabs;
 end

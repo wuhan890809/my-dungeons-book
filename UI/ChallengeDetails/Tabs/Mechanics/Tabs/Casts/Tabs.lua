@@ -12,8 +12,6 @@ local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 --[[--
 Creates tabs (with click-handlers) for Casts frame.
 
-Created frame has a field `tabButtons` with tab-buttons. Keys in the `tabButtons` are equal to keys in the `casts.tabs`.
-
 @param[type=Frame] parentFrame
 @return[type=Frame] tabsButtonsFrame
 ]]
@@ -35,7 +33,7 @@ function MyDungeonsBook:CastsFrame_CreateTabButtonsFrame(parentFrame)
 		if (tabId == "ownCasts") then
 			self:OwnCastsByPartyMembersFrame_Create(container, self.activeChallengeId);
 		end
-	end)
+	end);
 	tabs:SetHeight(546);
 	return tabs;
 end

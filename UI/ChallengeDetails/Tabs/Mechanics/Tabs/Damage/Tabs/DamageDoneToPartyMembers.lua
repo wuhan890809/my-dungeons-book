@@ -19,7 +19,7 @@ Mouse hover/out handler are included.
 function MyDungeonsBook:DamageDoneToPartyMembersFrame_Create(parentFrame, challengeId)
 	local damageDoneToPartyMembersFrame = self:TabContentWrapperWidget_Create(parentFrame);
 	local data = self:DamageDoneToPartyMembersFrame_GetDataForTable(challengeId, "ALL-DAMAGE-DONE-TO-PARTY-MEMBERS");
-	local columns = self:Table_Columns_GetForDamageToPartyMembers(challengeId);
+	local columns = self:Table_Columns_GetForDamageOrHealToPartyMembers(challengeId);
 	local table = self:TableWidget_Create(columns, 11, 40, nil, damageDoneToPartyMembersFrame, "damage-done-to-party-members");
 	table:SetData(data);
 	table:RegisterEvents({

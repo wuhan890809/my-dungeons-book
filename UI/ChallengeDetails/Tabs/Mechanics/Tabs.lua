@@ -12,8 +12,6 @@ local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 --[[--
 Creates tabs (with click-handlers) for Mechanics frame.
 
-Created frame has a field `tabButtons` with tab-buttons. Keys in the `tabButtons` are equal to keys in the `mechanicsFrame.tabs`.
-
 @param[type=Frame] parentFrame
 @return[type=Frame] tabsButtonsFrame
 ]]
@@ -22,6 +20,7 @@ function MyDungeonsBook:MechanicsFrame_CreateTabButtonsFrame(parentFrame)
 	tabs:SetTabs({
 		{value = "usedItems", text = L["Used Items"]},
 		{value = "casts", text = L["Casts"]},
+		{value = "heal", text = L["Heal"]},
 		{value = "damage", text = L["Damage"]},
 		{value = "effectsAndAuras", text = L["Effects and Auras"]}
 	});
@@ -32,6 +31,9 @@ function MyDungeonsBook:MechanicsFrame_CreateTabButtonsFrame(parentFrame)
 		end
 		if (tabId == "casts") then
 			self:CastsFrame_Create(container, self.activeChallengeId);
+		end
+		if (tabId == "heal") then
+			self:HealByPartyMembersFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "damage") then
 			self:DamageFrame_Create(container, self.activeChallengeId);

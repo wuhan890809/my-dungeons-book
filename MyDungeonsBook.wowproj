@@ -147,6 +147,15 @@
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\Dispels.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Heal.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Heal\Tabs.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Heal\Tabs\HealByPartyMember.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\UsedItems.lua">
       <SubType>Code</SubType>
     </Content>
@@ -194,6 +203,8 @@
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Casts" />
+    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Heal" />
+    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Heal\Tabs" />
     <Folder Include="Utils" />
     <Folder Include="UI" />
     <Folder Include="UI\ChallengeDetails" />

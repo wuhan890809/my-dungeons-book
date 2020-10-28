@@ -169,7 +169,7 @@ function MyDungeonsBook:Table_Cell_FormatAsItemLink(rowFrame, cellFrame, data, c
 		(cellFrame.text or cellFrame):SetText(itemLink);
 	else
 		(cellFrame.text or cellFrame):SetText("");
-	end	
+	end
 	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
 end
 
@@ -306,8 +306,8 @@ Get columns for table that looks like `| spell icon | spell link | party member 
 @param[type=?number] challengeId
 @return[type=table]
 ]]
-function MyDungeonsBook:Table_Columns_GetForDamageToPartyMembers(challengeId)
-local challenge = self.db.char.challenges[challengeId];
+function MyDungeonsBook:Table_Columns_GetForDamageOrHealToPartyMembers(challengeId)
+	local challenge = self.db.char.challenges[challengeId];
 	local player = "Player";
 	local party1 = "Party1";
 	local party2 = "Party2";

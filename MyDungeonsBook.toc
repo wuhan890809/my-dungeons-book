@@ -38,6 +38,9 @@ UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/AvoidableDamage.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/DamageDoneToPartyMembers.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/DamageDoneToUnits.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal/Tabs.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal/Tabs/HealByPartyMember.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs/AvoidableDebuffs.lua

@@ -19,7 +19,7 @@ Mouse hover/out handler are included.
 function MyDungeonsBook:AvoidableDamageFrame_Create(parentFrame, challengeId)
 	local avoidableDamageFrame = self:TabContentWrapperWidget_Create(parentFrame);
 	local data = self:AvoidableDamageFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-AVOIDABLE-SPELLS");
-	local columns = self:Table_Columns_GetForDamageToPartyMembers(challengeId);
+	local columns = self:Table_Columns_GetForDamageOrHealToPartyMembers(challengeId);
 	local table = self:TableWidget_Create(columns, 11, 40, nil, avoidableDamageFrame, "avoidable-damage");
 	table:SetData(data);
 	table:RegisterEvents({

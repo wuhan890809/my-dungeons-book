@@ -34,7 +34,104 @@ MyDungeonsBook.OptionsDefaults = {
 	global = {
 		meta = {
 			spells = {},
-			npcs = {}
+			npcs = {},
+			mechanics = {
+				["DEATHS"] = {
+					id = "DEATHS"
+				},
+				["COMMON-INTERRUPTS"] = {
+					id = "COMMON-INTERRUPTS"
+				},
+				["COMMON-TRY-INTERRUPT"] = {
+					id = "COMMON-TRY-INTERRUPT"
+				},
+				["COMMON-AFFIX-QUAKING-INTERRUPTS"] = {
+					id = "COMMON-AFFIX-QUAKING-INTERRUPTS"
+				},
+				["COMMON-DISPEL"] = {
+					id = "COMMON-DISPEL"
+				},
+				["ALL-DAMAGE-DONE-TO-PARTY-MEMBERS"] = {
+					id = "ALL-DAMAGE-DONE-TO-PARTY-MEMBERS"
+				},
+				["ALL-AURAS"] = {
+					id = "ALL-AURAS"
+				},
+				["ALL-CASTS-DONE-BY-PARTY-MEMBERS"] = {
+					id = "ALL-CASTS-DONE-BY-PARTY-MEMBERS"
+				},
+				["ALL-ENEMY-PASSED-CASTS"] = {
+					id = "ALL-ENEMY-PASSED-CASTS",
+					internal = true
+				},
+				["PARTY-MEMBERS-HEAL"] = {
+					id = "PARTY-MEMBERS-HEAL"
+				},
+				["PARTY-MEMBERS-SUMMON"] = {
+					id = "PARTY-MEMBERS-SUMMON",
+					internal = true
+				},
+				["BFA-AVOIDABLE-SPELLS"] = {
+					id = "BFA-AVOIDABLE-SPELLS"
+				},
+				["BFA-AVOIDABLE-AURAS"] = {
+					id = "BFA-AVOIDABLE-AURAS"
+				},
+				["BFA-SPELLS-TO-INTERRUPT"] = {
+					id = "BFA-SPELLS-TO-INTERRUPT"
+				},
+				["BFA-UNITS-APPEARS-IN-COMBAT"] = {
+					id = "BFA-UNITS-APPEARS-IN-COMBAT"
+				},
+				["BFA-BUFFS-OR-DEBUFFS-ON-PARTY-MEMBERS"] = {
+					id = "BFA-BUFFS-OR-DEBUFFS-ON-PARTY-MEMBERS"
+				},
+				["BFA-BUFFS-OR-DEBUFFS-ON-UNIT"] = {
+					id = "BFA-BUFFS-OR-DEBUFFS-ON-UNIT"
+				},
+				["BFA-CASTS-DONE-BY-PARTY-MEMBERS"] = {
+					id = "BFA-CASTS-DONE-BY-PARTY-MEMBERS"
+				},
+				["BFA-OWN-CASTS-DONE-BY-PARTY-MEMBERS"] = {
+					id = "BFA-OWN-CASTS-DONE-BY-PARTY-MEMBERS"
+				},
+				["BFA-ITEM-USED-BY-PARTY-MEMBERS"] = {
+					id = "BFA-ITEM-USED-BY-PARTY-MEMBERS"
+				},
+				["BFA-DAMAGE-DONE-TO-UNITS"] = {
+					id = "BFA-DAMAGE-DONE-TO-UNITS"
+				},
+				["SL-AVOIDABLE-SPELLS"] = {
+					id = "SL-AVOIDABLE-SPELLS"
+				},
+				["SL-AVOIDABLE-AURAS"] = {
+					id = "SL-AVOIDABLE-AURAS"
+				},
+				["SL-SPELLS-TO-INTERRUPT"] = {
+					id = "SL-SPELLS-TO-INTERRUPT"
+				},
+				["SL-UNITS-APPEARS-IN-COMBAT"] = {
+					id = "SL-UNITS-APPEARS-IN-COMBAT"
+				},
+				["SL-BUFFS-OR-DEBUFFS-ON-PARTY-MEMBERS"] = {
+					id = "SL-BUFFS-OR-DEBUFFS-ON-PARTY-MEMBERS"
+				},
+				["SL-BUFFS-OR-DEBUFFS-ON-UNIT"] = {
+					id = "SL-BUFFS-OR-DEBUFFS-ON-UNIT"
+				},
+				["SL-CASTS-DONE-BY-PARTY-MEMBERS"] = {
+					id = "SL-CASTS-DONE-BY-PARTY-MEMBERS"
+				},
+				["SL-OWN-CASTS-DONE-BY-PARTY-MEMBERS"] = {
+					id = "SL-OWN-CASTS-DONE-BY-PARTY-MEMBERS"
+				},
+				["SL-ITEM-USED-BY-PARTY-MEMBERS"] = {
+					id = "SL-ITEM-USED-BY-PARTY-MEMBERS"
+				},
+				["SL-DAMAGE-DONE-TO-UNITS"] = {
+					id = "SL-DAMAGE-DONE-TO-UNITS"
+				}
+			},
 		}
 	}
 };
