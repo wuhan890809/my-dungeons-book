@@ -21,6 +21,7 @@
     <Content Include="Challenge.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="CHANGELOG.txt" />
     <Content Include="Chat.lua">
       <SubType>Code</SubType>
     </Content>

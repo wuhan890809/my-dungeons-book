@@ -1,5 +1,6 @@
 ﻿### v1.2.0
 
+* #22 Add date for challenge details title
 * #2 Add custom changelog and not use git commits
 * #1 Allow to delete challenges
 * Make Debug-messages disabled by default

@@ -30,7 +30,6 @@ Creates all frames related to the challenge details frames (with itself).
 @return[type=Frame] challengeDetailsFrame
 ]]
 function MyDungeonsBook:ChallengeDetailsFrame_Create(parentFrame)
-	local parentFrameHeight = parentFrame.frame:GetHeight();
 	local challengeDetailsFrame = AceGUI:Create("SimpleGroup");
 	challengeDetailsFrame:SetLayout("List");
 	challengeDetailsFrame:SetFullHeight(true);
@@ -40,9 +39,10 @@ function MyDungeonsBook:ChallengeDetailsFrame_Create(parentFrame)
 	grid:SetLayout("List");
 	grid:SetFullWidth(true);
 	challengeDetailsFrame:AddChild(grid);
-	local titleAffixes, titleText = self:ChallengeDetailsFrame_TitleFrame_Create(grid);
+	local titleAffixes, titleText, dateText = self:ChallengeDetailsFrame_TitleFrame_Create(grid);
 	challengeDetailsFrame.titleAffixes = titleAffixes;
 	challengeDetailsFrame.titleText = titleText;
+	challengeDetailsFrame.dateText = dateText;
 	local tabButtonsFrame = self:ChallengeDetailsFrame_CreateTabButtonsFrame(grid);
 	challengeDetailsFrame.tabButtonsFrame = tabButtonsFrame;
 	challengeDetailsFrame.frame:Hide();
@@ -70,7 +70,13 @@ function MyDungeonsBook:ChallengeDetailsFrame_TitleFrame_Create(parentFrame)
 	titleText:SetFontObject(GameFontNormalLarge);
 	titleText:SetWidth(300);
 	grid:AddChild(titleText);
-	return titleAffixes, titleText;
+
+	local dateText = AceGUI:Create("Label");
+	dateText:SetFontObject(GameFontNormalLarge);
+	dateText:SetWidth(190);
+	dateText:SetJustifyH("RIGHT");
+	grid:AddChild(dateText);
+	return titleAffixes, titleText, dateText;
 end
 
 --[[--
@@ -83,6 +89,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_Update(challengeId)
 	if (challenge) then
 		self.challengeDetailsFrame.titleText:SetText(string.format(L["%s (%s) %s"], challenge.challengeInfo.zoneName, challenge.challengeInfo.cmLevel, self:GetKeyUpgradeStr(challenge)));
 		self.challengeDetailsFrame.titleAffixes:SetText(self:GetChallengeAffixesIconsStr(challengeId, 30));
+		self.challengeDetailsFrame.dateText:SetText(date(self.db.profile.display.dateFormat, challenge.challengeInfo.startTime));
 	else
 		self:DebugPrint(string.format("Challenge #%s not found", challengeId));
 	end
