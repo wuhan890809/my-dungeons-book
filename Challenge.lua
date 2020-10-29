@@ -7,6 +7,8 @@ Challenge
 @section Challenge
 ]]
 
+local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
+
 --[[--
 Check if player is in challenge mode.
 
@@ -164,7 +166,7 @@ function MyDungeonsBook:ParseUnitInfoFromDetailsAddon(detailsUnitName)
 		else
 			self:DebugPrint(string.format("%s actor not found for unit %s", "HEAL", detailsUnitName));
 		end
-		
+
 		local miscActor = combat:GetActor(DETAILS_ATTRIBUTE_MISC, detailsUnitName);
 		if (miscActor) then
 			local interrupt = miscActor.interrupt;
@@ -175,4 +177,24 @@ function MyDungeonsBook:ParseUnitInfoFromDetailsAddon(detailsUnitName)
 			self:DebugPrint(string.format("%s actor not found for unit %s", "MISC", detailsUnitName));
 		end
 		return details;
+end
+
+--[[--
+Delete info about challenge from local DB
+
+@param[type=number] challengeId
+]]
+function MyDungeonsBook:Challenge_Delete(challengeId)
+	local challenge = self.db.char.challenges[challengeId];
+	if (challenge) then
+		if (self.activeChallengeId == challengeId) then
+			self.activeChallengeId = nil;
+			self.challengeDetailsFrame.frame:Hide();
+		end
+		wipe(self.db.char.challenges[challengeId]);
+		if (self.challengesTable) then
+			self.challengesTable:SetData(self:ChallengesFrame_GetDataForTable());
+		end
+		self:LogPrint(string.format(L["Challenge #%s is deleted successfully"], challengeId));
+	end
 end

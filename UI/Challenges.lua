@@ -36,7 +36,7 @@ function MyDungeonsBook:ChallengesFrame_Create(parentFrame)
 		},
 		{
 			name = L["Dungeon"],
-			width = 150,
+			width = 130,
 			align = "LEFT"
 		},
 		{
@@ -81,6 +81,11 @@ function MyDungeonsBook:ChallengesFrame_Create(parentFrame)
 			name = "  " .. L["Affixes"],
 			width = 100,
 			align = "LEFT"
+		},
+		{
+			name = " ",
+			width = 30,
+			align = "CENTER"
 		}
 	};
 	local challengesFrame = AceGUI:Create("SimpleGroup");
@@ -92,14 +97,23 @@ function MyDungeonsBook:ChallengesFrame_Create(parentFrame)
 	table:SetData(self:ChallengesFrame_GetDataForTable());
 	table:SortData();
 	table:RegisterEvents({
-		OnClick = function (_, _, data, _, _, realrow, _, _, button)
+		OnClick = function (_, _, data, _, _, realrow, column, _, button)
 			if (button == "LeftButton" and realrow) then
 				local challengeId = data[realrow].cols[1].value;
-				self:ChallengeDetailsFrame_Show(challengeId);
+				if (column == 9) then
+					-- Show confirmation modal to delete info about selected challenge
+					local dialog = StaticPopup_Show("MDB_CONFIRM_DELETE_CHALLENGE", challengeId);
+					if (dialog) then
+						dialog.data = challengeId;
+					end
+				else
+					-- Show challenge details
+					self:ChallengeDetailsFrame_Show(challengeId);
+				end
 			end
 	    end,
-		OnEnter = function (_, cellFrame, data, _, _, realrow)
-			if (realrow) then
+		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
+			if (realrow and column ~= 9) then
 				self:ChallengesFrame_RowHover(cellFrame, data[realrow].cols[1].value);
 			end
 	    end,
@@ -193,6 +207,9 @@ function MyDungeonsBook:ChallengesFrame_GetDataForTable()
 					},
 					{
 						value = self:GetChallengeAffixesIconsStr(id, 20)
+					},
+					{
+						value = "|Tinterface\\raidframe\\readycheck-notready.blp" .. self:GetIconTextureSuffix(16) .. "|t"
 					}
 				}
 			};

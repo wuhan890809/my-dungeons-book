@@ -16,6 +16,8 @@ L["Dungeon"] = "Dungeon";
 L["Key"] = "Key";
 L["Affixes"] = "Affixes";
 L["Not Found"] = "Not Found";
+L["Yes"] = "Yes";
+L["No"] = "No";
 
 -- UI start
 L["Hits"] = "Hits";
@@ -78,6 +80,8 @@ L["Result"] = "Result";
 L["All damage taken"] = "All damage taken";
 L["Dispels"] = "Dispels";
 L["Casts"] = "Casts";
+L["Are you sure you want to delete info about challenge?"] = "Are you sure you want to delete info about challenge?";
+L["Challenge #%s is deleted successfully"] = "Challenge #%s is deleted successfully";
 -- UI end
 
 -- Help start

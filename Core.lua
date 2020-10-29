@@ -19,6 +19,18 @@ function MyDungeonsBook:OnInitialize()
 	LibStub("AceConfigDialog-3.0"):AddToBlizOptions("MyDungeonsBook", L["My Dungeons Book"]);
 	self:RegisterChatCommand("mydungeonsbook", "ParseChatCommand");
 	self:RegisterChatCommand("mdb", "ParseChatCommand");
+	StaticPopupDialogs["MDB_CONFIRM_DELETE_CHALLENGE"] = {
+		text = L["Are you sure you want to delete info about challenge?"],
+		button1 = L["Yes"],
+		button2 = L["No"],
+		OnAccept = function(data)
+			self:Challenge_Delete(data.data)
+		end,
+		timeout = 0,
+		whileDead = true,
+		hideOnEscape = true,
+		preferredIndex = 3,  -- avoid some UI taint, see http://www.wowace.com/announcements/how-to-avoid-some-ui-taint/
+	}
 	self:DebugPrint("Loaded");
 end
 
