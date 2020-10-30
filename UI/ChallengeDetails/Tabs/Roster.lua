@@ -47,6 +47,7 @@ function MyDungeonsBook:RosterFrame_PartyMemberFrame_Create(rosterFrame, unitId,
 	partyMemberFrame:SetTitle(self:GetUnitNameRealmRoleStr(challenge.players[unitId]) or L["Not Found"]);
 	self:RosterFrame_PartyMemberFrame_ClassIcon_Create(partyMemberFrame, unitId, challengeId);
 	self:RosterFrame_PartyMemberFrame_SpecIcon_Create(partyMemberFrame, unitId, challengeId);
+	self:RosterFrame_PartyMemberFrame_Race_Create(partyMemberFrame, unitId, challengeId);
 	self:RosterFrame_PartyMemberFrame_Equipment_Create(partyMemberFrame, unitId, challengeId);
 	return partyMemberFrame;
 end
@@ -83,6 +84,7 @@ Creates a frame with spec icon for `unitId`
 
 @param[type=Frame] parentFrame
 @param[type=unitId] unitId
+@param[type=number] challengeId
 @return[type=Frame] specFrame
 ]]
 function MyDungeonsBook:RosterFrame_PartyMemberFrame_SpecIcon_Create(parentFrame, unitId, challengeId)
@@ -105,6 +107,25 @@ function MyDungeonsBook:RosterFrame_PartyMemberFrame_SpecIcon_Create(parentFrame
         end
     end
 	return specFrame;
+end
+
+--[[--
+Creates a frame with `unitId`'s race.
+
+@param[type=Frame] parentFrame
+@param[type=unitId] unitId
+@param[type=number] challengeId
+@return[type=Frame] specFrame
+]]
+function MyDungeonsBook:RosterFrame_PartyMemberFrame_Race_Create(parentFrame, unitId, challengeId)
+	local challenge = self.db.char.challenges[challengeId];
+	local raceFrame = AceGUI:Create("Label");
+	parentFrame:AddChild(raceFrame);
+	if (challenge.players[unitId]) then
+		raceFrame:SetText(string.format(L["Race: %s"], challenge.players[unitId].race or L["Not Found"]));
+	end
+	raceFrame:SetWidth(150);
+	return raceFrame;
 end
 
 --[[--

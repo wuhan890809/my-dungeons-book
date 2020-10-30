@@ -25,6 +25,7 @@ L["Tyrannical"] = "Tyrannical";
 L["In Time"] = "In Time";
 L["Not In Time"] = "Not In Time";
 L["All"] = "All";
+L["Race: %s"] = "Race: %s";
 
 -- UI start
 L["Hits"] = "Hits";
