@@ -1,5 +1,6 @@
 ﻿### v1.2.0
 
+* #24 Show each party member's race
 * #23 Add filters for challenges table
 * #22 Add date for challenge details title
 * #2 Add custom changelog and not use git commits
