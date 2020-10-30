@@ -41,7 +41,9 @@ function MyDungeonsBook:MainFrame_Show()
 		grid:SetLayout("Flow");
 		frame:AddChild(grid);
 		frame:PauseLayout();
-		self.challengesTable = self:ChallengesFrame_Create(grid);
+		local challengesTable, challengesFiltersFrame = self:ChallengesFrame_Create(grid);
+		self.challengesTable = challengesTable;
+		self.challengesFiltersFrame = challengesFiltersFrame;
 		self.challengeDetailsFrame = self:ChallengeDetailsFrame_Create(grid);
 		self.frame = frame;
 		frame:ResumeLayout();

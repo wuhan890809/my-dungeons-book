@@ -404,10 +404,26 @@ function MyDungeonsBook:MergeTables(table1, table2)
 end
 
 --[[--
+@param[type=number] size
 ]]
 function MyDungeonsBook:GetIconTextureSuffix(size)
 	if (self.db.profile.display.flattenIcons) then
 		return string.format(":%s:%s:0:0:64:64:5:59:5:59", size, size);
 	end
 	return string.format(":%s:%s:0:0:64:64:0:64:0:64", size, size);
+end
+
+--[[--
+Check if value exists in the table
+
+@param[type=table] tbl
+@param[type=string|number|bool] value
+]]
+function MyDungeonsBook:TableContainsValue(tbl, value)
+	for _, v in pairs(tbl) do
+		if (v == value) then
+			return true;
+		end
+	end
+	return false;
 end

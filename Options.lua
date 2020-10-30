@@ -9,9 +9,13 @@ MyDungeonsBook.OptionsDefaults = {
 		activeChallengeId = nil,
 		challenges = {},
 		filters = {
-			inTime = nil,
-			level = nil,
-			version = nil,
+			challenges = {
+				inTime = "ALL",
+				keyLevel = "ALL",
+				dungeon = "ALL",
+				affixes = "ALL",
+				deaths = "ALL",
+			}
 		}
 	},
 	profile = {

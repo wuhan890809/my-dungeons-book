@@ -18,6 +18,13 @@ L["Affixes"] = "Affixes";
 L["Not Found"] = "Not Found";
 L["Yes"] = "Yes";
 L["No"] = "No";
+L["Reset"] = "Reset";
+L["Deaths"] = "Deaths";
+L["Fortified"] = "Fortified";
+L["Tyrannical"] = "Tyrannical";
+L["In Time"] = "In Time";
+L["Not In Time"] = "Not In Time";
+L["All"] = "All";
 
 -- UI start
 L["Hits"] = "Hits";
