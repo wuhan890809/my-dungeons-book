@@ -27,17 +27,22 @@ local affixesMap = {
 	[117] = 2446016, -- Reaping
 	[119] = 237565, -- Beguiling
 	[120] = 442737, -- Awakened
+	[122] = 135946, -- Inspiring
+	[123] = 135945, -- Spiteful
+	[124] = 136018, -- Storming
+	[121] = 3528307, -- Prideful
 };
 
 --[[--
-Get texture for affix's icon.
+Get texture for affix's icon (question mark is returned if no affix icon found).
+
 It can be used in the strings like `"|T%%%:20:20:0:0:64:64:5:59:5:59|t"`, where `%%%` is a result of `MyDungeonsBook:GetAffixTextureById`.
 
 @param[type=number] affixId myth+ affix identifier
 @return[type=number] texture id for affix's icon
 ]]
 function MyDungeonsBook:GetAffixTextureById(affixId)
-	return affixesMap[affixId];
+	return affixesMap[affixId] or 134400;
 end
 
 

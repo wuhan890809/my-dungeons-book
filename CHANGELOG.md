@@ -1,4 +1,8 @@
-﻿### v1.2.1
+﻿### v1.3.0
+
+* #26 Add icons for the new affixes
+
+### v1.2.1
 
 * Fix path for external libs
 
