@@ -1,4 +1,8 @@
-﻿### v1.2.0
+﻿### v1.2.1
+
+* Fix path for external libs
+
+### v1.2.0
 
 * #25 Use `externals` and don't publish "public" libs
 * Force to update players info on challenge start
