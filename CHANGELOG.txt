@@ -1,5 +1,6 @@
 ﻿### v1.2.0
 
+* #25 Use `externals` and don't publish "public" libs
 * Force to update players info on challenge start
 * #24 Show each party member's race
 * #23 Add filters for challenges table
