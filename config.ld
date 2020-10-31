@@ -1,4 +1,4 @@
-file = {"./", exclude = {"./Locales", "./libs"}}
+file = {"./", exclude = {"./Locales", "./Libs"}}
 project = "My Dungeons Book"
 title = "My Dungeons Book Code Docs"
 format = "markdown"
