@@ -154,6 +154,9 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 	self:DebugPrint(string.format("affixesKey is %s", affixesKey));
 
 	self.db.char.challenges[id].players.player = self:ParseUnitInfoWithWowApi("player");
+	for _, unitId in pairs(self:GetPartyRoster()) do
+		self:UpdateUnitInfo(UnitGUID(unitId));
+	end
 	NotifyInspect("player");
 	for i = 1, 4 do
 		self:ScheduleTimer(function()
@@ -255,19 +258,9 @@ Its request is sent in the `MyDungeonsBook:CHALLENGE_MODE_START`
 @param[type=GUID] guid
 ]]
 function MyDungeonsBook:INSPECT_READY(_, guid)
-	local id = self.db.char.activeChallengeId;
-	if (not id) then
-		return;
+	if (self:UpdateUnitInfo(guid)) then
+		ClearInspectPlayer(guid);
 	end
-	local unit = self:GetPartyUnitByGuid(guid);
-	if (not unit) then
-		self:DebugPrint(string.format("Unit with guid %s not found", guid));
-		return;
-	end
-	local unitInfo = self:ParseUnitInfoWithWowApi(unit);
-	self.db.char.challenges[id].players[unit] = self:MergeTables(self.db.char.challenges[id].players[unit], unitInfo);
-	self:DebugPrint(string.format("Info about %s is stored", unit));
-	ClearInspectPlayer(guid);
 end
 
 --[[--

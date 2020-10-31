@@ -1,5 +1,6 @@
 ﻿### v1.2.0
 
+* Force to update players info on challenge start
 * #24 Show each party member's race
 * #23 Add filters for challenges table
 * #22 Add date for challenge details title

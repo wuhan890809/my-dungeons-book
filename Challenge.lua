@@ -180,6 +180,25 @@ function MyDungeonsBook:ParseUnitInfoFromDetailsAddon(detailsUnitName)
 end
 
 --[[--
+@param[type=GUID] guid
+]]
+function MyDungeonsBook:UpdateUnitInfo(guid)
+	local id = self.db.char.activeChallengeId;
+	if (not id) then
+		return false;
+	end
+	local unit = self:GetPartyUnitByGuid(guid);
+	if (not unit) then
+		self:DebugPrint(string.format("Unit with guid %s not found", guid));
+		return false;
+	end
+	local unitInfo = self:ParseUnitInfoWithWowApi(unit);
+	self.db.char.challenges[id].players[unit] = self:MergeTables(self.db.char.challenges[id].players[unit], unitInfo);
+	self:DebugPrint(string.format("Info about %s is stored", unit));
+	return true;
+end
+
+--[[--
 Delete info about challenge from local DB
 
 @param[type=number] challengeId
