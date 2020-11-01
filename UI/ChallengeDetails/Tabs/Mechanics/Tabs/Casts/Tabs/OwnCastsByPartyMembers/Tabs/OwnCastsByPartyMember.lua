@@ -160,7 +160,7 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetDataForTable(challengeId, 
         return nil;
     end
     local challenge = self.db.char.challenges[challengeId];
-    local mechanics = challenge.mechanics[key];
+    local mechanics = challenge.mechanics["OWN-CASTS-DONE-BY-PARTY-MEMBERS"] or challenge.mechanics[key];
     if (not mechanics) then
         self:DebugPrint(string.format("No Own Casts Done By Party Members data for challenge #%s", challengeId));
         return tableData;
@@ -202,7 +202,7 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetDataForSummaryTable(challe
         return nil;
     end
     local challenge = self.db.char.challenges[challengeId];
-    local mechanics = challenge.mechanics[key];
+    local mechanics = challenge.mechanics["OWN-CASTS-DONE-BY-PARTY-MEMBERS"] or challenge.mechanics[key];
     if (not mechanics) then
         self:DebugPrint(string.format("No Own Casts Done By Party Members data for challenge #%s", challengeId));
         return tableData;

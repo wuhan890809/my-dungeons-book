@@ -46,6 +46,9 @@
     <Content Include="Mechanics\Common.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Mechanics\COMMON\OwnCastsDoneByPartyMembers.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Mechanics\SL\Common.lua">
       <SubType>Code</SubType>
     </Content>
@@ -192,6 +195,7 @@
     <Folder Include="Locales" />
     <Folder Include="Mechanics" />
     <Folder Include="Mechanics\BfA" />
+    <Folder Include="Mechanics\COMMON" />
     <Folder Include="Mechanics\SL" />
     <Folder Include="ldoc" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics" />

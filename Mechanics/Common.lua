@@ -501,29 +501,6 @@ function MyDungeonsBook:TrackDamageDoneToSpecificUnits(key, npcs, sourceUnitName
 end
 
 --[[--
-Track cast done by any party member.
-
-It should be used for player's own spells.
-
-@param[type=string] key mechanic unique identifier
-@param[type=table] spells table with spells needed to track (each key is a spell id)
-@param[type=string] sourceUnitName name of unit that casted a spell
-@param[type=number] spellId casted spell id
-@param[type=?string] targetUnitName name of unit that is spell's target (only for single target spells)
-]]
-function MyDungeonsBook:TrackOwnCastDoneByPartyMembers(key, spells, sourceUnitName, spellId, targetUnitName)
-	if (spells[spellId] and UnitIsPlayer(sourceUnitName)) then
-		local id = self.db.char.activeChallengeId;
-		self:InitMechanics3Lvl(key, sourceUnitName, spellId);
-		local timestamp = time();
-		self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId][timestamp] = {
-			time = timestamp,
-			target = targetUnitName
-		};
-	end
-end
-
---[[--
 Track specific cast done by any party member.
 
 It should not be used for player's own spells. It should be used for some specific for dungeon spells (e.g. kicking balls in the ML).
