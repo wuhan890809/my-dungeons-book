@@ -1,4 +1,8 @@
-﻿### v1.3.0
+﻿### v1.4.0
+
+* [#66](https://github.com/onechiporenko/my-dungeons-book/issues/66) Don't track **-MISSED for party damage
+
+### v1.3.0
 
 * [#15](https://github.com/onechiporenko/my-dungeons-book/issues/15) Track all damage done by party members
 * [#7](https://github.com/onechiporenko/my-dungeons-book/issues/7) Add trackable own casts ("OwnCastsDoneByPartyMembers") for party members

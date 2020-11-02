@@ -91,11 +91,10 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 	if (subEventPrefix:match("^SPELL") and
 		subEventSuffix == "MISSED") then
-		local spellId, _, _, _, _, amount, overkill, _, _, _, _, crit = select(12, CombatLogGetCurrentEventInfo());
+		local spellId, _, _, _, _, amount = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackBfAAvoidableSpells(dstName, spellId, amount);
 		self:TrackSLAvoidableSpells(dstName, spellId, amount);
 		self:TrackAllDamageDoneToPartyMembers(dstName, spellId, amount);
-		self:TrackAllDamageDoneByPartyMembers(srcName, srcGUID, spellId, amount, overkill or -1, crit or false);
 	end
 	if (subEventName == "SPELL_AURA_APPLIED" or
 		subEventName == "SPELL_AURA_APPLIED_DOSE") then
