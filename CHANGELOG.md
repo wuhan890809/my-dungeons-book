@@ -1,8 +1,8 @@
 ﻿### v1.3.0
 
-* #15 Track all damage done by party members
-* #7 Add trackable own casts ("OwnCastsDoneByPartyMembers") for party members
-* #26 Add icons for the new affixes
+* [#15](https://github.com/onechiporenko/my-dungeons-book/issues/15) Track all damage done by party members
+* [#7](https://github.com/onechiporenko/my-dungeons-book/issues/7) Add trackable own casts ("OwnCastsDoneByPartyMembers") for party members
+* [#26](https://github.com/onechiporenko/my-dungeons-book/issues/26) Add icons for the new affixes
 
 ### v1.2.1
 
@@ -10,13 +10,13 @@
 
 ### v1.2.0
 
-* #25 Use `externals` and don't publish "public" libs
+* [#25](https://github.com/onechiporenko/my-dungeons-book/issues/25) Use `externals` and don't publish "public" libs
 * Force to update players info on challenge start
-* #24 Show each party member's race
-* #23 Add filters for challenges table
-* #22 Add date for challenge details title
-* #2 Add custom changelog and not use git commits
-* #1 Allow to delete challenges
+* [#24](https://github.com/onechiporenko/my-dungeons-book/issues/24) Show each party member's race
+* [#23](https://github.com/onechiporenko/my-dungeons-book/issues/23) Add filters for challenges table
+* [#22](https://github.com/onechiporenko/my-dungeons-book/issues/22) Add date for challenge details title
+* [#2](https://github.com/onechiporenko/my-dungeons-book/issues/2) Add custom changelog and not use git commits
+* [#1](https://github.com/onechiporenko/my-dungeons-book/issues/1) Allow to delete challenges
 * Make Debug-messages disabled by default
 
 ### v1.1.0
