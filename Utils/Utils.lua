@@ -84,6 +84,17 @@ function MyDungeonsBook:RoundNumber(n)
 end
 
 --[[--
+@param[type=number] n number to format
+@return[type=string] formatted string
+]]
+function MyDungeonsBook:FormatPercents(n)
+	if (type(n) ~= "number") then
+		return n;
+	end
+	return string.format("%.2f", n);
+end
+
+--[[--
 Print message with DEBUG prefix.
 Mostly used for debugging (and it's used a lot). It can be disabled in the addon settings.
 

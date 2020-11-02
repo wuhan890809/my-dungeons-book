@@ -20,6 +20,7 @@ function MyDungeonsBook:DamageFrame_CreateTabButtonsFrame(parentFrame)
 	tabs:SetTabs({
 		{value = "avoidableDamage", text = L["Avoidable Damage"]},
 		{value = "damageDoneToPartyMembers", text = L["All damage taken"]},
+		{value = "damageDoneByPartyMembers", text = L["All damage done"]},
 		{value = "damageDoneToUnits", text = L["Damage Done To Units"]},
 	});
 	tabs:SetCallback("OnGroupSelected", function (container, _, tabId)
@@ -29,6 +30,9 @@ function MyDungeonsBook:DamageFrame_CreateTabButtonsFrame(parentFrame)
 		end
 		if (tabId == "damageDoneToPartyMembers") then
 			self:DamageDoneToPartyMembersFrame_Create(container, self.activeChallengeId);
+		end
+		if (tabId == "damageDoneByPartyMembers") then
+			self:DamageDoneByPartyMembersFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "damageDoneToUnits") then
 			self:DamageDoneToUnitsFrame_Create(container, self.activeChallengeId);

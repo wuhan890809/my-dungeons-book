@@ -318,6 +318,74 @@ function MyDungeonsBook:TrackAllDamageDoneToPartyMembers(unit, spellId, amount)
 end
 
 --[[--
+Track all damage done by party members (including pets)
+
+@param[type=string] sourceUnitName
+@param[type=GUID] sourceUnitGUID
+@param[type=number] spellId
+@param[type=number] amount
+@param[type=number] overkill
+@param[type=bool] crit
+]]
+function MyDungeonsBook:TrackAllDamageDoneByPartyMembers(sourceUnitName, sourceUnitGUID, spellId, amount, overkill, crit)
+	local id = self.db.char.activeChallengeId;
+	local type = strsplit("-", sourceUnitGUID);
+	if ((type ~= "Pet") and (type ~= "Player")) then
+		return;
+	end
+	if (type == "Pet") then
+		local petOwnerId = getPetOwnerWithTooltip(sourceUnitGUID);
+		if (petOwnerId) then
+			sourceUnitName = string.format("%s (%s)", sourceUnitName, UnitName(petOwnerId));
+		end
+	end
+	local key = "ALL-DAMAGE-DONE-BY-PARTY-MEMBERS";
+	self:InitMechanics3Lvl(key, sourceUnitName, spellId);
+	if (not self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].hits) then
+		self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId] = {
+			hits = 0,
+			amount = 0,
+			overkill = 0,
+			hitsCrit = 0,
+			maxCrit = 0,
+			minCrit = math.huge,
+			amountCrit = 0,
+			hitsNotCrit = 0,
+			maxNotCrit = 0,
+			minNotCrit = math.huge,
+			amountNotCrit = 0,
+		};
+	end
+	local realAmount = amount or 0;
+	local realOverkill = 0;
+	if (overkill and overkill > 0) then
+		realOverkill = overkill;
+	end
+	self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].hits = self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].hits + 1;
+	self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].amount = self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].amount + realAmount;
+	self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].overkill = self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].overkill + realOverkill;
+	if (crit) then
+		self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].hitsCrit = self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].hitsCrit + 1;
+		self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].amountCrit = self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].amountCrit + realAmount;
+		if (realAmount > self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].maxCrit) then
+			self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].maxCrit = realAmount;
+		end
+		if (realAmount < self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].minCrit) then
+			self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].minCrit = realAmount;
+		end
+	else
+		self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].hitsNotCrit = self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].hitsNotCrit + 1;
+		self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].amountNotCrit = self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].amountNotCrit + realAmount;
+		if (realAmount > self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].maxNotCrit) then
+			self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].maxNotCrit = realAmount;
+		end
+		if (realAmount < self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].minNotCrit) then
+			self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].minNotCrit = realAmount;
+		end
+	end
+end
+
+--[[--
 @local
 @param[type=string] key db key
 @param[type=string] unit unit name that got damage (usualy it's a destUnit from `CombatLogGetCurrentEventInfo`)
@@ -328,7 +396,7 @@ function MyDungeonsBook:SaveTrackedDamageToPartyMembers(key, unit, spellId, amou
 	local amountInPercents = amount and amount / UnitHealthMax(unit) * 100 or 0;
 	if (amountInPercents >= 40) then
 		local spellLink = GetSpellLink(spellId);
-		self:LogPrint(string.format(L["%s got hit by %s for %s (%s)"], unit, spellLink, self:FormatNumber(amount), string.format("%.1f%%", amountInPercents)));
+		self:LogPrint(string.format(L["%s got hit by %s for %s (%s)"], unit, spellLink or spellId, self:FormatNumber(amount), string.format("%.1f%%", amountInPercents)));
 	end
 	local id = self.db.char.activeChallengeId;
 	self:InitMechanics2Lvl(key, unit);

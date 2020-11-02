@@ -36,6 +36,9 @@ UI/ChallengeDetails/Tabs/Mechanics/Tabs/Casts/Tabs/OwnCastsByPartyMembers/Tabs/O
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/AvoidableDamage.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/DamageDoneByPartyMembers.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/DamageDoneByPartyMembers/Tabs.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/DamageDoneByPartyMembers/Tabs/DamageDoneByPartyMember.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/DamageDoneToPartyMembers.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/DamageDoneToUnits.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal.lua

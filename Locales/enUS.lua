@@ -86,10 +86,18 @@ L["Target?"] = "Target?";
 L["Swing Damage"] = "Swing Damage";
 L["Result"] = "Result";
 L["All damage taken"] = "All damage taken";
+L["All damage done"] = "All damage done";
 L["Dispels"] = "Dispels";
 L["Casts"] = "Casts";
 L["Are you sure you want to delete info about challenge?"] = "Are you sure you want to delete info about challenge?";
 L["Challenge #%s is deleted successfully"] = "Challenge #%s is deleted successfully";
+L["Min Not Crit"] = "Min Not Crit";
+L["Hits Not Crit"] = "Hits Not Crit";
+L["Max Not Crit"] = "Max Not Crit";
+L["Min Crit"] = "Min Crit";
+L["Max Crit"] = "Max Crit";
+L["Crit, %"] = "Crit, %";
+L["Hits Crit"] = "Hits Crit";
 -- UI end
 
 -- Help start

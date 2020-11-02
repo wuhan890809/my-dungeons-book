@@ -1,5 +1,6 @@
 ﻿### v1.3.0
 
+* #15 Track all damage done by party members
 * #7 Add trackable own casts ("OwnCastsDoneByPartyMembers") for party members
 * #26 Add icons for the new affixes
 

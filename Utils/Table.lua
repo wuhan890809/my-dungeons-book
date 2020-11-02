@@ -52,6 +52,19 @@ function MyDungeonsBook:Table_Cell_FormatAsNumber(rowFrame, cellFrame, data, col
 end
 
 --[[--
+Wrapper for cells with formatted percents. Uses `MyDungeonsBook:FormatPercents` to format cell value.
+
+Original value (number) is left "as is" for sorting purposes.
+
+Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
+]]
+function MyDungeonsBook:Table_Cell_FormatAsPercents(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
+	local val = data[realrow].cols[column].value;
+	(cellFrame.text or cellFrame):SetText((val and self:FormatPercents(val)) or "-");
+	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
+end
+
+--[[--
 Wrapper for cells with formatted date.
 
 Original value (timestamp) is left "as is" for sorting purposes.
@@ -122,11 +135,15 @@ function MyDungeonsBook:Table_Cell_FormatAsSpellLink(rowFrame, cellFrame, data, 
 		if (spellId == -2) then
 			(cellFrame.text or cellFrame):SetText(L["Swing Damage"]);
 		else
-			if (spellId > 0) then
-				local spellLink = GetSpellLink(spellId);
-				(cellFrame.text or cellFrame):SetText(spellLink);
+			if (spellId == -1) then
+				(cellFrame.text or cellFrame):SetText(L["Sum"]);
 			else
-				(cellFrame.text or cellFrame):SetText("");
+				if (spellId > 0) then
+					local spellLink = GetSpellLink(spellId);
+					(cellFrame.text or cellFrame):SetText(spellLink);
+				else
+					(cellFrame.text or cellFrame):SetText("");
+				end
 			end
 		end
 	else

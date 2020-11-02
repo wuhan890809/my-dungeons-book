@@ -69,29 +69,33 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		self:TrackOwnCastDoneByPartyMembers(srcName, spellId, dstName);
 	end
 	if ((subEventPrefix:match("^SPELL") or subEventPrefix:match("^RANGE")) and subEventSuffix == "DAMAGE") then
-		local spellId, _, _, amount, overkill = select(12, CombatLogGetCurrentEventInfo());
+		local spellId, _, _, amount, overkill, _, _, _, _, crit = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackAllDamageDoneToPartyMembers(dstName, spellId, amount);
+		self:TrackAllDamageDoneByPartyMembers(srcName, srcGUID, spellId, amount, overkill, crit);
 		self:TrackBfAAvoidableSpells(dstName, spellId, amount);
 		self:TrackSLAvoidableSpells(dstName, spellId, amount);
 		self:TrackBfADamageDoneToSpecificUnits(srcName, srcGUID, spellId, amount, overkill, dstName, dstGUID);
 		self:TrackSLDamageDoneToSpecificUnits(srcName, srcGUID, spellId, amount, overkill, dstName, dstGUID);
 	end
 	if (subEventName == "SWING_DAMAGE") then
-		local amount, overkill = select(12, CombatLogGetCurrentEventInfo());
+		local amount, overkill, _, _, _, _, crit = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackAllDamageDoneToPartyMembers(dstName, -2, amount);
+		self:TrackAllDamageDoneByPartyMembers(srcName, srcGUID, -2, amount, overkill, crit);
 		self:TrackBfADamageDoneToSpecificUnits(srcName, srcGUID, -2, amount, overkill, dstName, dstGUID);
 		self:TrackSLDamageDoneToSpecificUnits(srcName, srcGUID, -2, amount, overkill, dstName, dstGUID);
 	end
 	if (subEventName == "SPELL_EXTRA_ATTACKS") then
 		local amount = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackAllDamageDoneToPartyMembers(dstName, -2, amount);
+		self:TrackAllDamageDoneByPartyMembers(srcName, srcGUID, -2, amount, 0, false);
 	end
 	if (subEventPrefix:match("^SPELL") and
 		subEventSuffix == "MISSED") then
-		local spellId, _, _, _, _, amount = select(12, CombatLogGetCurrentEventInfo());
+		local spellId, _, _, _, _, amount, overkill, _, _, _, _, crit = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackBfAAvoidableSpells(dstName, spellId, amount);
 		self:TrackSLAvoidableSpells(dstName, spellId, amount);
 		self:TrackAllDamageDoneToPartyMembers(dstName, spellId, amount);
+		self:TrackAllDamageDoneByPartyMembers(srcName, srcGUID, spellId, amount, overkill or -1, crit or false);
 	end
 	if (subEventName == "SPELL_AURA_APPLIED" or
 		subEventName == "SPELL_AURA_APPLIED_DOSE") then

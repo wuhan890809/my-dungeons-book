@@ -21,7 +21,7 @@
     <Content Include="Challenge.lua">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="CHANGELOG.txt" />
+    <Content Include="CHANGELOG.md" />
     <Content Include="Chat.lua">
       <SubType>Code</SubType>
     </Content>
@@ -121,10 +121,19 @@
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\AvoidableDamage.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\DamageDoneByPartyMembers\Tabs.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\DamageDoneByPartyMembers\Tabs\DamageDoneByPartyMember.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\DamageDoneToPartyMembers.lua">
       <SubType>Code</SubType>
     </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\DamageDoneToUnits.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\DamageDoneByPartyMembers.lua">
       <SubType>Code</SubType>
     </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras.lua">
@@ -205,6 +214,8 @@
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Casts\Tabs\OwnCastsByPartyMembers\Tabs\" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs" />
+    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\DamageDoneByPartyMembers" />
+    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\DamageDoneByPartyMembers\Tabs\" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Casts" />

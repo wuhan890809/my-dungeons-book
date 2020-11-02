@@ -64,6 +64,9 @@ MyDungeonsBook.OptionsDefaults = {
 				["ALL-CASTS-DONE-BY-PARTY-MEMBERS"] = {
 					id = "ALL-CASTS-DONE-BY-PARTY-MEMBERS"
 				},
+				["ALL-DAMAGE-DONE-BY-PARTY-MEMBERS"] = {
+					id = "ALL-DAMAGE-DONE-BY-PARTY-MEMBERS"
+				},
 				["ALL-ENEMY-PASSED-CASTS"] = {
 					id = "ALL-ENEMY-PASSED-CASTS",
 					internal = true
