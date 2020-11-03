@@ -1,5 +1,6 @@
 ﻿### v1.4.0
 
+* [#69](https://github.com/onechiporenko/my-dungeons-book/issues/69) Add toggle to show counts for all casts
 * [#68](https://github.com/onechiporenko/my-dungeons-book/issues/68) Don't save "0" for party member spec 
 * [#67](https://github.com/onechiporenko/my-dungeons-book/issues/67) "infM" is shown when there are no crits 
 * [#66](https://github.com/onechiporenko/my-dungeons-book/issues/66) Don't track **-MISSED for party damage

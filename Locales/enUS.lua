@@ -98,6 +98,7 @@ L["Min Crit"] = "Min Crit";
 L["Max Crit"] = "Max Crit";
 L["Crit, %"] = "Crit, %";
 L["Hits Crit"] = "Hits Crit";
+L["Show All Casts"] = "Show All Casts";
 -- UI end
 
 -- Help start
