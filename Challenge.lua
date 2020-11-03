@@ -65,6 +65,9 @@ function MyDungeonsBook:ParseUnitInfoWithWowApi(unit)
 	local name, realm = UnitFullName(unit);
 	local _, race = UnitRace(unit);
 	local spec = GetInspectSpecialization(unit);
+	if (spec == 0) then
+		spec = nil;
+	end
 	local role = UnitGroupRolesAssigned(unit);
 	if (not realm) then
 		local _, myRealm = UnitFullName("player");
