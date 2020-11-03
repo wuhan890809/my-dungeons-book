@@ -224,10 +224,10 @@ function MyDungeonsBook:DamageDoneByPartyMemberFrame_GetDataForTable(challengeId
                 {value = spellStats.overkill},
                 {value = (spellStats.hitsCrit or 0) / spellStats.hits * 100},
                 {value = spellStats.hitsCrit or 0},
-                {value = spellStats.maxCrit or 0},
-                {value = spellStats.minCrit or 0},
-                {value = spellStats.maxNotCrit or 0},
-                {value = spellStats.minNotCrit or 0},
+                {value = (spellStats.maxCrit == 0 and "-") or spellStats.maxCrit},
+                {value = (spellStats.minCrit == math.huge and "-") or spellStats.minCrit},
+                {value = (spellStats.maxNotCrit == 0 and "-") or spellStats.maxNotCrit},
+                {value = (spellStats.minNotCrit == math.huge and "-") or spellStats.minNotCrit},
             }
         });
         summaryRow.cols[4].value = summaryRow.cols[4].value + spellStats.hits;

@@ -1,5 +1,6 @@
 ﻿### v1.4.0
 
+* [#67](https://github.com/onechiporenko/my-dungeons-book/issues/67) "infM" is shown when there are no crits 
 * [#66](https://github.com/onechiporenko/my-dungeons-book/issues/66) Don't track **-MISSED for party damage
 
 ### v1.3.0
