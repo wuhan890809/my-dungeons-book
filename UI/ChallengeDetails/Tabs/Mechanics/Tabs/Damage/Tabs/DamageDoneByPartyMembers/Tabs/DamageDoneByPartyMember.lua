@@ -166,8 +166,37 @@ function MyDungeonsBook:DamageDoneByPartyMemberFrame_GetHeadersForTable()
     };
 end
 
+local function proceedSpellStats(spellId, spellStats, summaryRow, unitName)
+    local row = {
+        cols = {
+            {value = spellId},
+            {value = spellId},
+            {value = spellId},
+            {value = spellStats.hits},
+            {value = spellStats.amount},
+            {value = spellStats.overkill},
+            {value = (spellStats.hitsCrit or 0) / spellStats.hits * 100},
+            {value = spellStats.hitsCrit or 0},
+            {value = (spellStats.maxCrit == 0 and "-") or spellStats.maxCrit},
+            {value = (spellStats.minCrit == math.huge and "-") or spellStats.minCrit},
+            {value = (spellStats.maxNotCrit == 0 and "-") or spellStats.maxNotCrit},
+            {value = (spellStats.minNotCrit == math.huge and "-") or spellStats.minNotCrit},
+        },
+        meta = {
+            unitName = unitName
+        }
+    };
+    summaryRow.cols[4].value = summaryRow.cols[4].value + spellStats.hits;
+    summaryRow.cols[5].value = summaryRow.cols[5].value + spellStats.amount;
+    summaryRow.cols[6].value = summaryRow.cols[6].value + spellStats.overkill;
+    summaryRow.cols[8].value = summaryRow.cols[8].value + spellStats.hitsCrit;
+    return row, summaryRow;
+end
+
 --[[--
 Map data about own casts by party member `unitId` for challenge with id `challengeId`.
+
+Pets and other summonned units are included.
 
 @param[type=number] challengeId
 @param[type=string] key for mechanics table
@@ -213,27 +242,21 @@ function MyDungeonsBook:DamageDoneByPartyMemberFrame_GetDataForTable(challengeId
             {value = ""}
         }
     };
-    for spellId, spellStats in pairs(mechanicsData) do
-        tinsert(tableData, {
-            cols = {
-                {value = spellId},
-                {value = spellId},
-                {value = spellId},
-                {value = spellStats.hits},
-                {value = spellStats.amount},
-                {value = spellStats.overkill},
-                {value = (spellStats.hitsCrit or 0) / spellStats.hits * 100},
-                {value = spellStats.hitsCrit or 0},
-                {value = (spellStats.maxCrit == 0 and "-") or spellStats.maxCrit},
-                {value = (spellStats.minCrit == math.huge and "-") or spellStats.minCrit},
-                {value = (spellStats.maxNotCrit == 0 and "-") or spellStats.maxNotCrit},
-                {value = (spellStats.minNotCrit == math.huge and "-") or spellStats.minNotCrit},
-            }
-        });
-        summaryRow.cols[4].value = summaryRow.cols[4].value + spellStats.hits;
-        summaryRow.cols[5].value = summaryRow.cols[5].value + spellStats.amount;
-        summaryRow.cols[6].value = summaryRow.cols[6].value + spellStats.overkill;
-        summaryRow.cols[8].value = summaryRow.cols[8].value + spellStats.hitsCrit;
+    for spellId, spellStats in pairs(mechanicsData.spells or mechanicsData) do
+        if (spellId ~= "meta") then
+            local row = proceedSpellStats(spellId, spellStats, summaryRow);
+            tinsert(tableData, row);
+        end
+    end
+    for unitName, damageDoneByUnit in pairs(mechanics) do
+        if (damageDoneByUnit.meta and (damageDoneByUnit.meta.unitName == name or damageDoneByUnit.meta.unitName == nameAndRealm) and damageDoneByUnit.meta.unitName ~= unitName) then
+            for spellId, spellStats in pairs(damageDoneByUnit.spells or damageDoneByUnit) do
+                if (spellId ~= "meta") then
+                    local row = proceedSpellStats(spellId, spellStats, summaryRow, unitName);
+                    tinsert(tableData, row);
+                end
+            end
+        end
     end
     summaryRow.cols[7].value = summaryRow.cols[8].value / summaryRow.cols[4].value * 100;
     tinsert(tableData, summaryRow);

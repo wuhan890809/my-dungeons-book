@@ -158,6 +158,11 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 	self.db.char.challenges[id].players.player = self:ParseUnitInfoWithWowApi("player");
 	for _, unitId in pairs(self:GetPartyRoster()) do
 		self:UpdateUnitInfo(UnitGUID(unitId));
+        local petUnitId = unitId .. "pet";
+        if (UnitExists(petUnitId)) then
+            self:TrackSummonnedByPartyMembersUnit(UnitName(unitId), UnitGUID(unitId), UnitName(petUnitId), UnitGUID(petUnitId));
+            self:DebugPrint(string.format("%s is saved is pet for %s", UnitName(petUnitId) or petUnitId, UnitName(unitId) or unitId));
+        end
 	end
 	NotifyInspect("player");
 	for i = 1, 4 do

@@ -1,5 +1,6 @@
 ﻿### v1.4.0
 
+* [#63](https://github.com/onechiporenko/my-dungeons-book/issues/63) Track pets damage and show it on the UI
 * [#69](https://github.com/onechiporenko/my-dungeons-book/issues/69) Add toggle to show counts for all casts
 * [#68](https://github.com/onechiporenko/my-dungeons-book/issues/68) Don't save "0" for party member spec 
 * [#67](https://github.com/onechiporenko/my-dungeons-book/issues/67) "infM" is shown when there are no crits 

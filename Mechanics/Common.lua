@@ -318,7 +318,7 @@ function MyDungeonsBook:TrackAllDamageDoneToPartyMembers(unit, spellId, amount)
 end
 
 --[[--
-Track all damage done by party members (including pets)
+Track all damage done by party members (including pets and other summonned units)
 
 @param[type=string] sourceUnitName
 @param[type=GUID] sourceUnitGUID
@@ -330,19 +330,20 @@ Track all damage done by party members (including pets)
 function MyDungeonsBook:TrackAllDamageDoneByPartyMembers(sourceUnitName, sourceUnitGUID, spellId, amount, overkill, crit)
 	local id = self.db.char.activeChallengeId;
 	local type = strsplit("-", sourceUnitGUID);
-	if ((type ~= "Pet") and (type ~= "Player")) then
+	self:InitMechanics1Lvl("PARTY-MEMBERS-SUMMON");
+	local summonedUnitOwner = self.db.char.challenges[id].mechanics["PARTY-MEMBERS-SUMMON"][sourceUnitGUID];
+	local sourceUnitNameToUse = sourceUnitName;
+	if ((not summonedUnitOwner) and (type ~= "Pet") and (type ~= "Player")) then
 		return;
 	end
-	if (type == "Pet") then
-		local petOwnerId = getPetOwnerWithTooltip(sourceUnitGUID);
-		if (petOwnerId) then
-			sourceUnitName = string.format("%s (%s)", sourceUnitName, UnitName(petOwnerId));
-		end
-	end
 	local key = "ALL-DAMAGE-DONE-BY-PARTY-MEMBERS";
-	self:InitMechanics3Lvl(key, sourceUnitName, spellId);
-	if (not self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].hits) then
-		self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId] = {
+	self:InitMechanics4Lvl(key, sourceUnitName, "spells", spellId);
+	if (summonedUnitOwner) then
+		self:InitMechanics3Lvl(key, sourceUnitName, "meta");
+		self.db.char.challenges[id].mechanics[key][sourceUnitName].meta.unitName = summonedUnitOwner; -- save original unit name
+	end
+	if (not self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].hits) then
+		self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId] = {
 			hits = 0,
 			amount = 0,
 			overkill = 0,
@@ -353,7 +354,7 @@ function MyDungeonsBook:TrackAllDamageDoneByPartyMembers(sourceUnitName, sourceU
 			hitsNotCrit = 0,
 			maxNotCrit = 0,
 			minNotCrit = math.huge,
-			amountNotCrit = 0,
+			amountNotCrit = 0
 		};
 	end
 	local realAmount = amount or 0;
@@ -361,26 +362,26 @@ function MyDungeonsBook:TrackAllDamageDoneByPartyMembers(sourceUnitName, sourceU
 	if (overkill and overkill > 0) then
 		realOverkill = overkill;
 	end
-	self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].hits = self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].hits + 1;
-	self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].amount = self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].amount + realAmount;
-	self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].overkill = self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].overkill + realOverkill;
+	self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].hits = self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].hits + 1;
+	self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].amount = self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].amount + realAmount;
+	self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].overkill = self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].overkill + realOverkill;
 	if (crit) then
-		self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].hitsCrit = self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].hitsCrit + 1;
-		self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].amountCrit = self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].amountCrit + realAmount;
-		if (realAmount > self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].maxCrit) then
-			self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].maxCrit = realAmount;
+		self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].hitsCrit = self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].hitsCrit + 1;
+		self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].amountCrit = self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].amountCrit + realAmount;
+		if (realAmount > self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].maxCrit) then
+			self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].maxCrit = realAmount;
 		end
-		if (realAmount < self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].minCrit) then
-			self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].minCrit = realAmount;
+		if (realAmount < self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].minCrit) then
+			self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].minCrit = realAmount;
 		end
 	else
-		self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].hitsNotCrit = self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].hitsNotCrit + 1;
-		self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].amountNotCrit = self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].amountNotCrit + realAmount;
-		if (realAmount > self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].maxNotCrit) then
-			self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].maxNotCrit = realAmount;
+		self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].hitsNotCrit = self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].hitsNotCrit + 1;
+		self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].amountNotCrit = self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].amountNotCrit + realAmount;
+		if (realAmount > self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].maxNotCrit) then
+			self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].maxNotCrit = realAmount;
 		end
-		if (realAmount < self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].minNotCrit) then
-			self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId].minNotCrit = realAmount;
+		if (realAmount < self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].minNotCrit) then
+			self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].minNotCrit = realAmount;
 		end
 	end
 end

@@ -133,14 +133,21 @@ function MyDungeonsBook:Table_Cell_FormatAsSpellLink(rowFrame, cellFrame, data, 
 	local spellId = data[realrow].cols[column].value;
 	if (spellId) then
 		if (spellId == -2) then
-			(cellFrame.text or cellFrame):SetText(L["Swing Damage"]);
+			local cellText = L["Swing Damage"];
+			if (data[realrow].meta and data[realrow].meta.unitName) then
+				cellText = string.format("%s (%s)", cellText, data[realrow].meta.unitName);
+			end
+			(cellFrame.text or cellFrame):SetText(cellText);
 		else
 			if (spellId == -1) then
 				(cellFrame.text or cellFrame):SetText(L["Sum"]);
 			else
 				if (spellId > 0) then
-					local spellLink = GetSpellLink(spellId);
-					(cellFrame.text or cellFrame):SetText(spellLink);
+					local cellText = GetSpellLink(spellId);
+					if (data[realrow].meta and data[realrow].meta.unitName) then
+						cellText = string.format("%s (%s)", cellText, data[realrow].meta.unitName);
+					end
+					(cellFrame.text or cellFrame):SetText(cellText);
 				else
 					(cellFrame.text or cellFrame):SetText("");
 				end
