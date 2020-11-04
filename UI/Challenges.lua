@@ -287,19 +287,16 @@ function MyDungeonsBook:ChallengesFrame_RowHover(tableCellFrame, challengeId)
 		local healthMod = challenge.challengeInfo.healthMod;
 		local maxTime = challenge.challengeInfo.maxTime;
 		local duration = challenge.challengeInfo.duration;
-		if (duration) then
-			duration = duration / 1000;
-		end
 		GameTooltip:AddLine(string.format(L["Dungeon: %s (+%s)"], zoneName, cmLevel));
 		if (damageMod and healthMod) then
 			GameTooltip:AddLine(string.format(L["Key damage bonus: %s%%"], damageMod));
 			GameTooltip:AddLine(string.format(L["Key HP bonus: %s%%"], healthMod));
 		end
 		if (maxTime and duration) then
-			local saved = maxTime - duration;
+			local saved = maxTime - duration / 1000;
 			local sign = (saved < 0 and "+") or "-";
 			local percents = math.abs(saved / maxTime * 100);
-			GameTooltip:AddLine(string.format(L["Time: %s / %s (%s%s) %.1f%%"], date("%M:%S", duration), date("%M:%S", maxTime), sign, date("%M:%S", math.abs(saved)), percents));
+			GameTooltip:AddLine(string.format(L["Time: %s / %s (%s%s) %.1f%%"], self:FormatTime(duration), date("%M:%S", maxTime), sign, date("%M:%S", math.abs(saved)), percents));
 		end
 		GameTooltip:AddLine(string.format(L["Time lost: %ss"], timeLost));
 		GameTooltip:Show();
@@ -396,12 +393,12 @@ function MyDungeonsBook:ChallengesFrame_GetColumnsForTable()
 		},
 		{
 			name = L["Dungeon"],
-			width = 130,
+			width = 110,
 			align = "LEFT"
 		},
 		{
 			name = L["Time"],
-			width = 40,
+			width = 55,
 			align = "CENTER",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsTime(...);

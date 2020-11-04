@@ -1,4 +1,8 @@
-﻿### v1.4.0
+﻿### v1.5.0
+
+* [#71](https://github.com/onechiporenko/my-dungeons-book/issues/71) Duration for 60+ minutes is shown incorrectly
+
+### v1.4.0
 
 * [#63](https://github.com/onechiporenko/my-dungeons-book/issues/63) Track pets damage and show it on the UI
 * [#69](https://github.com/onechiporenko/my-dungeons-book/issues/69) Add toggle to show counts for all casts

@@ -95,6 +95,33 @@ function MyDungeonsBook:FormatPercents(n)
 end
 
 --[[--
+Format seconds as date string
+
+@param[type=number] seconds
+@return[type=string]
+]]
+function MyDungeonsBook:FormatDate(seconds)
+	local dateFormat = self.db.profile.display.dateFormat;
+	return seconds and date(dateFormat, seconds) or seconds;
+end
+
+--[[--
+Format milliseconds as time string
+
+@param[type=number] milliseconds
+@return[type=string]
+]]
+function MyDungeonsBook:FormatTime(milliseconds)
+	local timeFormat = self.db.profile.display.timeFormat;
+	local time = milliseconds / 1000;
+	if (time > 3600) then
+		local separator = (strfind(timeFormat, ":") and ":") or "-";
+		return date("%S", math.floor(time / 3600 + 0.5)) .. separator .. date(timeFormat, time % 3600);
+	end
+	return date(timeFormat, time);
+end
+
+--[[--
 Print message with DEBUG prefix.
 Mostly used for debugging (and it's used a lot). It can be disabled in the addon settings.
 
