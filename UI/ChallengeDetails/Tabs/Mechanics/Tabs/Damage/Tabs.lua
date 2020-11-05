@@ -38,6 +38,6 @@ function MyDungeonsBook:DamageFrame_CreateTabButtonsFrame(parentFrame)
 			self:DamageDoneToUnitsFrame_Create(container, self.activeChallengeId);
 		end
 	end);
-	tabs:SetHeight(546);
+	tabs:SetHeight(538);
 	return tabs;
 end

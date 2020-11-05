@@ -7,6 +7,8 @@ UI
 @section UI
 ]]
 
+local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
+
 --[[--
 Create a frame for All Buffs On Party Members tab (data is taken from `mechanics[ALL-AURAS]`).
 
@@ -17,11 +19,13 @@ Mouse hover/out handler are included.
 @return[type=Frame] tableWrapper
 ]]
 function MyDungeonsBook:AllBuffsOnPartyMemberFrame_Create(parentFrame, challengeId)
-    local allBuffsOnPartyMemberFrame = self:TabContentWrapperWidget_Create(parentFrame);
+    local allBuffsOnPartyMemberFrame, descriptionLabel = self:TabContentWrapperWidget_Create(parentFrame);
+    descriptionLabel:SetText(L["List of all buffs gotten by party members."]);
     local data = self:AllBuffsOnPartyMemberFrame_GetDataForTable(challengeId, "ALL-AURAS", "BUFF");
     local columns = self:Table_Headers_GetForSpellsSummary(challengeId);
-    local table = self:TableWidget_Create(columns, 11, 40, nil, allBuffsOnPartyMemberFrame, "all-buffs-on-party-members");
+    local table = self:TableWidget_Create(columns, 10, 40, nil, allBuffsOnPartyMemberFrame, "all-buffs-on-party-members");
     table:SetData(data);
+    table.frame:SetPoint("TOPLEFT", 0, -70);
     table:RegisterEvents({
         OnEnter = function (_, cellFrame, data, _, _, realrow, column)
             if (realrow) then

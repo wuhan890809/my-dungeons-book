@@ -7,6 +7,8 @@ UI
 @section UI
 ]]
 
+local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
+
 --[[--
 Create a frame for Avoidable Debuffs tab (data is taken from `mechanics[**-AVOIDABLE-AURAS]`).
 
@@ -17,11 +19,13 @@ Mouse hover/out handler are included.
 @return[type=Frame] tableWrapper
 ]]
 function MyDungeonsBook:AvoidableDebuffsFrame_Create(parentFrame, challengeId)
-	local avoidableDebuffsFrame = self:TabContentWrapperWidget_Create(parentFrame);
+	local avoidableDebuffsFrame, descriptionLabel = self:TabContentWrapperWidget_Create(parentFrame);
+	descriptionLabel:SetText(L["List of avoidable debuffs gotten by party members."]);
 	local data = self:AvoidableDebuffsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-AVOIDABLE-AURAS");
 	local columns = self:Table_Headers_GetForSpellsSummary(challengeId);
-	local table = self:TableWidget_Create(columns, 11, 40, nil, avoidableDebuffsFrame, "avoidable-debuffs");
+	local table = self:TableWidget_Create(columns, 10, 40, nil, avoidableDebuffsFrame, "avoidable-debuffs");
 	table:SetData(data);
+	table.frame:SetPoint("TOPLEFT", 0, -70);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then

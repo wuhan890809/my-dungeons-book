@@ -7,6 +7,8 @@ UI
 @section UI
 ]]
 
+local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
+
 --[[--
 Create a frame for Damage Done To Party Members tab (data is taken from `mechanics[ALL-DAMAGE-DONE-TO-PARTY-MEMBERS]`).
 
@@ -17,11 +19,13 @@ Mouse hover/out handler are included.
 @return[type=Frame] tableWrapper
 ]]
 function MyDungeonsBook:DamageDoneToPartyMembersFrame_Create(parentFrame, challengeId)
-	local damageDoneToPartyMembersFrame = self:TabContentWrapperWidget_Create(parentFrame);
+	local damageDoneToPartyMembersFrame, descriptionLabel = self:TabContentWrapperWidget_Create(parentFrame);
+	descriptionLabel:SetText(L["All damage taken by each party member (lower values are better)."]);
 	local data = self:DamageDoneToPartyMembersFrame_GetDataForTable(challengeId, "ALL-DAMAGE-DONE-TO-PARTY-MEMBERS");
 	local columns = self:Table_Columns_GetForDamageOrHealToPartyMembers(challengeId);
-	local table = self:TableWidget_Create(columns, 11, 40, nil, damageDoneToPartyMembersFrame, "damage-done-to-party-members");
+	local table = self:TableWidget_Create(columns, 10, 40, nil, damageDoneToPartyMembersFrame, "damage-done-to-party-members");
 	table:SetData(data);
+	table.frame:SetPoint("TOPLEFT", 0, -80);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column, _)
 			if (realrow) then

@@ -7,6 +7,8 @@ UI
 @section UI
 ]]
 
+local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
+
 --[[--
 Create a frame for Avoidable Damage tab (data is taken from `mechanics[**-AVOIDABLE-SPELLS]`).
 
@@ -17,11 +19,13 @@ Mouse hover/out handler are included.
 @return[type=Frame] tableWrapper
 ]]
 function MyDungeonsBook:AvoidableDamageFrame_Create(parentFrame, challengeId)
-	local avoidableDamageFrame = self:TabContentWrapperWidget_Create(parentFrame);
+	local avoidableDamageFrame, descriptionLabel = self:TabContentWrapperWidget_Create(parentFrame);
+	descriptionLabel:SetText(L["Avoidable damage taken by each party member (lower values are better)."]);
 	local data = self:AvoidableDamageFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-AVOIDABLE-SPELLS");
 	local columns = self:Table_Columns_GetForDamageOrHealToPartyMembers(challengeId);
-	local table = self:TableWidget_Create(columns, 11, 40, nil, avoidableDamageFrame, "avoidable-damage");
+	local table = self:TableWidget_Create(columns, 10, 40, nil, avoidableDamageFrame, "avoidable-damage");
 	table:SetData(data);
+	table.frame:SetPoint("TOPLEFT", 0, -80);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then

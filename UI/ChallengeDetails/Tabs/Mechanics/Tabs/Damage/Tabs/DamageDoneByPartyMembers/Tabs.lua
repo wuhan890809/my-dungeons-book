@@ -25,6 +25,6 @@ function MyDungeonsBook:DamageDoneByPartyMembersFrame_CreateTabButtonsFrame(pare
 		container:ReleaseChildren();
 		self:DamageDoneByPartyMemberFrame_Create(container, self.activeChallengeId, tabId);
 	end);
-	tabs:SetHeight(510);
+	tabs:SetHeight(489);
 	return tabs;
 end

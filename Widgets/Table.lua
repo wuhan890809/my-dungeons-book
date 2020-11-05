@@ -11,6 +11,15 @@ local ScrollingTable = LibStub("ScrollingTable");
 
 local tables = {};
 
+--[[--
+@param[type=table] cols
+@param[type=number] numRows
+@param[type=number] rowHeight
+@param[type=table] highlight
+@param[type=table] parentFrame
+@param[type=string] id
+@return[type=table]
+]]
 function MyDungeonsBook:TableWidget_Create(cols, numRows, rowHeight, highlight, parentFrame, id)
     local table = tables[id];
     if (table) then
@@ -33,6 +42,9 @@ function MyDungeonsBook:TableWidget_Create(cols, numRows, rowHeight, highlight, 
     return table;
 end
 
+--[[--
+@param[type=string] id
+]]
 function MyDungeonsBook:TableWidget_Release(id)
     local table = tables[id];
     if (table) then

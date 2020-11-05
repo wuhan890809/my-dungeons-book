@@ -19,11 +19,13 @@ Mouse hover/out handler are included.
 @return[type=Frame] tableWrapper
 ]]
 function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_Create(parentFrame, challengeId)
-	local buffsOrDebuffsOnUnitsFrame = self:TabContentWrapperWidget_Create(parentFrame);
+	local buffsOrDebuffsOnUnitsFrame, descriptionLabel = self:TabContentWrapperWidget_Create(parentFrame);
+	descriptionLabel:SetText(L["List of important buffs and debuffs thay may appear on enemy units."]);
 	local data = self:BuffsOrDebuffsOnUnitsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-BUFFS-OR-DEBUFFS-ON-UNIT");
 	local columns = self:BuffsOrDebuffsOnUnitsFrame_GetHeadersForTable();
-	local table = self:TableWidget_Create(columns, 11, 40, nil, buffsOrDebuffsOnUnitsFrame, "buffs-or-debuffs-on-units");
+	local table = self:TableWidget_Create(columns, 10, 40, nil, buffsOrDebuffsOnUnitsFrame, "buffs-or-debuffs-on-units");
 	table:SetData(data);
+	table.frame:SetPoint("TOPLEFT", 0, -70);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then

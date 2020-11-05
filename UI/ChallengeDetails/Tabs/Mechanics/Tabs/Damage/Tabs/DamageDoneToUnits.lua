@@ -18,11 +18,13 @@ Mouse hover/out handler are included.
 @return[type=Frame] tableWrapper
 ]]
 function MyDungeonsBook:DamageDoneToUnitsFrame_Create(parentFrame, challengeId)
-	local damageDoneToUnitsFrame = self:TabContentWrapperWidget_Create(parentFrame);
+	local damageDoneToUnitsFrame, descriptionLabel = self:TabContentWrapperWidget_Create(parentFrame);
+	descriptionLabel:SetText(L["All damage done by party members to specific units (only summary is shown)."]);
 	local data = self:DamageDoneToUnitsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-DAMAGE-DONE-TO-UNITS");
 	local columns = self:DamageDoneToUnitsFrame_GetHeadersForTable(challengeId);
-	local table = self:TableWidget_Create(columns, 11, 40, nil, damageDoneToUnitsFrame, "damage-done-to-units");
+	local table = self:TableWidget_Create(columns, 10, 40, nil, damageDoneToUnitsFrame, "damage-done-to-units");
 	table:SetData(data);
+	table.frame:SetPoint("TOPLEFT", 0, -70);
 	table:RegisterEvents({
 		OnEnter = function (...)
 			self:DamageDoneToUnitsFrame_RowHover(...);
