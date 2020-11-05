@@ -1,5 +1,6 @@
 ﻿### v1.5.0
 
+* [#70](https://github.com/onechiporenko/my-dungeons-book/issues/70) Add descriptions for tabs
 * [#71](https://github.com/onechiporenko/my-dungeons-book/issues/71) Duration for 60+ minutes is shown incorrectly
 
 ### v1.4.0
