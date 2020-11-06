@@ -25,6 +25,6 @@ function MyDungeonsBook:OwnCastsByPartyMembersFrame_CreateTabButtonsFrame(parent
 		container:ReleaseChildren();
 		self:OwnCastsByPartyMemberFrame_Create(container, self.activeChallengeId, tabId);
 	end);
-	tabs:SetHeight(489);
+	tabs:SetHeight(510);
 	return tabs;
 end

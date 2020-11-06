@@ -7,8 +7,6 @@ UI
 @section UI
 ]]
 
-local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
-
 --[[--
 Create a frame for Special Casts tab (data is taken from `mechanics[**-CASTS-DONE-BY-PARTY-MEMBERS]`).
 
@@ -19,12 +17,10 @@ Mouse hover/out handler are included.
 @return[type=Frame] tableWrapper
 ]]
 function MyDungeonsBook:SpecialCastsFrame_Create(parentFrame, challengeId)
-	local specialCastsFrame, descriptionLabel = self:TabContentWrapperWidget_Create(parentFrame);
-	descriptionLabel:SetText(L["Some specific casts done by party members. Usually there are dungeon-specific casts or casts related for affixes."]);
+	local specialCastsFrame = self:TabContentWrapperWidget_Create(parentFrame);
 	local data = self:SpecialCastsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-CASTS-DONE-BY-PARTY-MEMBERS");
 	local columns = self:Table_Headers_GetForSpellsSummary(challengeId);
-	local table = self:TableWidget_Create(columns, 10, 40, nil, specialCastsFrame, "special-casts-by-party-members");
-	table.frame:SetPoint("TOPLEFT", 0, -80);
+	local table = self:TableWidget_Create(columns, 11, 40, nil, specialCastsFrame, "special-casts-by-party-members");
 	table:SetData(data);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)

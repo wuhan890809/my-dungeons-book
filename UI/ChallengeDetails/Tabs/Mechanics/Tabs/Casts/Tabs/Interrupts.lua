@@ -16,11 +16,10 @@ Creates a frame for Interrupts tab.
 @return[type=Frame]
 ]]
 function MyDungeonsBook:InterruptsFrame_Create(parentFrame, challengeId)
-	local interruptsFrame, descriptionLabel = self:TabContentWrapperWidget_Create(parentFrame);
-	descriptionLabel:SetText(L["First table shows who interrupted what casts. Second one shows how many tries of interrupts were done by each party member."]);
+	local interruptsFrame = self:TabContentWrapperWidget_Create(parentFrame);
 	local data = self:InterruptsFrame_GetDataForTable(challengeId);
 	local columns = self:InterruptsFrame_GetHeadersForTable(challengeId);
-	local table = self:TableWidget_Create(columns, 5, 30, nil, interruptsFrame, "interrupts");
+	local table = self:TableWidget_Create(columns, 5, 40, nil, interruptsFrame, "interrupts");
 	table:SetData(data);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
@@ -38,7 +37,6 @@ function MyDungeonsBook:InterruptsFrame_Create(parentFrame, challengeId)
 			end
 		end
 	});
-	table.frame:SetPoint("TOPLEFT", 0, -70);
 	local summaryData = self:InterruptsFrame_GetDataForSummaryTable(challengeId);
 	local summaryColumns = self:InterruptsFrame_GetHeadersForSummaryTable(challengeId);
 	local summaryTable = self:TableWidget_Create(summaryColumns, 5, 40, nil, interruptsFrame, "interrupts-summary");

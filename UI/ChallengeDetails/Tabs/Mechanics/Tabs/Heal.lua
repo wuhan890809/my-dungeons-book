@@ -7,8 +7,6 @@ UI
 @section UI
 ]]
 
-local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
-
 --[[--
 Creates a frame for Heal By Party Members tab
 
@@ -17,9 +15,7 @@ Creates a frame for Heal By Party Members tab
 @return[type=Frame]
 ]]
 function MyDungeonsBook:HealByPartyMembersFrame_Create(parentFrame, challengeId)
-    local healByPartyMembersFrame, descriptionLabel = self:TabContentWrapperWidget_Create(parentFrame);
-    descriptionLabel.label:SetHeight(25);
-    descriptionLabel:SetText(L["Healing done by each party member for all party members."]);
+    local healByPartyMembersFrame = self:TabContentWrapperWidget_Create(parentFrame);
     healByPartyMembersFrame.tabButtonsFrame = self:HealByPartyMembersFrame_CreateTabButtonsFrame(healByPartyMembersFrame, challengeId);
     healByPartyMembersFrame.tabButtonsFrame:SelectTab("player");
     return healByPartyMembersFrame;

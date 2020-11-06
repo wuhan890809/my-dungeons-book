@@ -25,6 +25,6 @@ function MyDungeonsBook:HealByPartyMembersFrame_CreateTabButtonsFrame(parentFram
         container:ReleaseChildren();
         self:HealByPartyMemberFrame_Create(container, self.activeChallengeId, tabId);
     end);
-    tabs:SetHeight(529);
+    tabs:SetHeight(546);
     return tabs;
 end

@@ -16,13 +16,11 @@ Creates a frame for Dispels tab.
 @return[type=Frame]
 ]]
 function MyDungeonsBook:DispelsFrame_Create(parentFrame, challengeId)
-	local dispelsFrame, descriptionLabel = self:TabContentWrapperWidget_Create(parentFrame);
-	descriptionLabel:SetText(L["First table shows who dispelled what effect. Second one shows used dispel or purge casts done by each party member."]);
+	local dispelsFrame = self:TabContentWrapperWidget_Create(parentFrame);
 	local data = self:DispelsFrame_GetDataForTable(challengeId);
 	local columns = self:Table_Headers_GetForSpellsSummary(challengeId);
-	local table = self:TableWidget_Create(columns, 5, 30, nil, dispelsFrame, "dispels");
+	local table = self:TableWidget_Create(columns, 5, 40, nil, dispelsFrame, "dispels");
 	table:SetData(data);
-	table.frame:SetPoint("TOPLEFT", 0, -70);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then

@@ -8,7 +8,6 @@ UI
 ]]
 
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
-local AceGUI = LibStub("AceGUI-3.0");
 
 --[[--
 Create a frame for Used Items tab (data is taken from `mechanics[**-ITEM-USED-BY-PARTY-MEMBERS]`).
@@ -19,12 +18,10 @@ Mouse hover/out handler are included.
 @return[type=Frame] tableWrapper
 ]]
 function MyDungeonsBook:UsedItemsFrame_Create(parentFrame, challengeId)
-	local usedItemsFrame, descriptionLabel = self:TabContentWrapperWidget_Create(parentFrame);
-	descriptionLabel:SetText(L["List of items used by party members (trinkets, alchemy potions etc)."]);
+	local usedItemsFrame = self:TabContentWrapperWidget_Create(parentFrame);
 	local data = self:UsedItemsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-ITEM-USED-BY-PARTY-MEMBERS");
 	local columns = self:UsedItemsFrame_GetColumnsForTable(challengeId);
-	local table = self:TableWidget_Create(columns, 11, 40, nil, usedItemsFrame, "used-items");
-	table.frame:SetPoint("TOPLEFT", 0, -70);
+	local table = self:TableWidget_Create(columns, 12, 40, nil, usedItemsFrame, "used-items");
 	table:SetData(data);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
