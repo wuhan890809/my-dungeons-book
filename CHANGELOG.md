@@ -1,5 +1,6 @@
 ﻿### v1.5.0
 
+* [#72](https://github.com/onechiporenko/my-dungeons-book/issues/72) Add missing AceHook lib to embeds.xml
 * [#71](https://github.com/onechiporenko/my-dungeons-book/issues/71) Duration for 60+ minutes is shown incorrectly
 
 ### v1.4.0
