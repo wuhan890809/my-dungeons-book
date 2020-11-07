@@ -53,11 +53,12 @@ function MyDungeonsBook:DamageDoneToPartyMembersFrame_GetDataForTable(challengeI
 	if (not challengeId) then
 		return nil;
 	end
-	if (not self.db.char.challenges[challengeId].mechanics[key]) then
+	local mechanics = self:Challenge_Mechanic_GetById(challengeId, key);
+	if (not mechanics) then
 		self:DebugPrint(string.format("No Damage Done To Party Members data for challenge #%s", challengeId));
 		return tableData;
 	end
-	for unitName, damageDoneToPartyMember in pairs(self.db.char.challenges[challengeId].mechanics[key]) do
+	for unitName, damageDoneToPartyMember in pairs(mechanics) do
 		for spellId, numSumBySpell in pairs(damageDoneToPartyMember) do
 			if (not tableData[spellId]) then
 				tableData[spellId] = {};
@@ -122,7 +123,8 @@ function MyDungeonsBook:DamageDoneToPartyMembersFrame_GetSummaryRow(challengeId,
 	local tableData = {
 		spellId = -1
 	};
-	for unitName, damageDoneToPartyMember in pairs(self.db.char.challenges[challengeId].mechanics[key]) do
+	local mechanics = self:Challenge_Mechanic_GetById(challengeId, key);
+	for unitName, damageDoneToPartyMember in pairs(mechanics) do
 		local partyUnitId = self:GetPartyUnitByName(challengeId, unitName);
 		if (partyUnitId) then
 			tableData[partyUnitId .. "Hits"] = 0;
@@ -134,7 +136,7 @@ function MyDungeonsBook:DamageDoneToPartyMembersFrame_GetSummaryRow(challengeId,
 				end
 			end
 		else
-			self:DebugPrint(string.format("%s not found in the challenge party roster", name));
+			self:DebugPrint(string.format("%s not found in the challenge party roster", unitName));
 		end
 	end
 	tableData.hits = 0;

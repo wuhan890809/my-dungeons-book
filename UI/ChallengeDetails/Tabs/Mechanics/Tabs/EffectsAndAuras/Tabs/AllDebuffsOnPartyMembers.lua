@@ -53,11 +53,12 @@ function MyDungeonsBook:AllDebuffsOnPartyMemberFrame_GetDataForTable(challengeId
     if (not challengeId) then
         return nil;
     end
-    if (not self.db.char.challenges[challengeId].mechanics[key]) then
+    local mechanics = self:Challenge_Mechanic_GetById(challengeId, key);
+    if (not mechanics) then
         self:DebugPrint(string.format("No All Buffs data for challenge #%s", challengeId));
         return {};
     end
-    for name, buffsAndDebuffsOnUnit in pairs(self.db.char.challenges[challengeId].mechanics[key]) do
+    for name, buffsAndDebuffsOnUnit in pairs(mechanics) do
         for buffOnDebuffId, buffOrDebuffSummary in pairs(buffsAndDebuffsOnUnit) do
             if (buffOrDebuffSummary.auraType == neededType or (self.db.global.meta.spells[buffOnDebuffId] and self.db.global.meta.spells[buffOnDebuffId].auraType == neededType)) then
                 if (not tableData[buffOnDebuffId]) then

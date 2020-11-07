@@ -225,12 +225,13 @@ function MyDungeonsBook:HealByPartyMemberFrame_GetDataForTable(challengeId, key,
     if (not challengeId) then
         return nil;
     end
-    if (not self.db.char.challenges[challengeId].mechanics[key]) then
+    local mechanics = self:Challenge_Mechanic_GetById(challengeId, key);
+    if (not mechanics) then
         self:DebugPrint(string.format("No Heal To Party Members data for challenge #%s", challengeId));
         return tableData;
     end
     local unitName, unitNameAndRealm = self:GetNameByPartyUnit(challengeId, unitId);
-    local healDoneByUnit = self.db.char.challenges[challengeId].mechanics[key][unitName] or self.db.char.challenges[challengeId].mechanics[key][unitNameAndRealm];
+    local healDoneByUnit = mechanics[unitName] or mechanics[unitNameAndRealm];
     if (not healDoneByUnit) then
         self:DebugPrint(string.format("No Heal Found for '%s' with name '%s'", unitId, unitName));
         return tableData;

@@ -197,11 +197,12 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetDataForTable(challengeId, key)
 	if (not challengeId) then
 		return nil;
 	end
-	if (not self.db.char.challenges[challengeId].mechanics[key]) then
+	local mechanics = self:Challenge_Mechanic_GetById(challengeId, key);
+	if (not mechanics) then
 		self:DebugPrint(string.format("No Damage Done To Units data for challenge #%s", challengeId));
 		return tableData;
 	end
-	for npcId, damageByPartyMembers in pairs(self.db.char.challenges[challengeId].mechanics[key]) do
+	for npcId, damageByPartyMembers in pairs(mechanics) do
 		local row = {};
 		for partyMemberName, partyMemberDamage in pairs(damageByPartyMembers) do
 			local amount = 0;

@@ -243,6 +243,7 @@ function MyDungeonsBook:CHALLENGE_MODE_COMPLETED()
 		if (self.db.char.challenges[id].mechanics["PARTY-MEMBERS-SUMMON"]) then
 			wipe(self.db.char.challenges[id].mechanics["PARTY-MEMBERS-SUMMON"]); -- no sense to store hundreds of GUIDs
 		end
+		self.db.char.challenges[id].mechanics = self:Compress(self.db.char.challenges[id].mechanics);
 	end
 	self.db.char.activeChallengeId = nil;
 end

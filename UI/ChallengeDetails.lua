@@ -18,6 +18,7 @@ Click-handler for challenges table. Used on row click.
 function MyDungeonsBook:ChallengeDetailsFrame_Show(challengeId)
 	self:DebugPrint("Show details for challenge #" .. challengeId);
 	self.activeChallengeId = challengeId;
+	self.activeChallengeMechanics = nil;
 	self:ChallengeDetailsFrame_Update(challengeId);
 	self.challengeDetailsFrame.frame:Show();
 	self.challengeDetailsFrame.tabButtonsFrame:SelectTab("roster");

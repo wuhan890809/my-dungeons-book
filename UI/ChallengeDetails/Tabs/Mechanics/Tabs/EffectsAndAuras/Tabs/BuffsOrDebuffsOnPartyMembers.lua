@@ -55,12 +55,13 @@ function MyDungeonsBook:BuffsOrDebuffsOnPartyMembersFrame_GetDataForTable(challe
 	local tableData = {};
 	if (not challengeId) then
 		return nil;
-	end
-	if (not self.db.char.challenges[challengeId].mechanics[key]) then
+    end
+    local mechanics = self:Challenge_Mechanic_GetById(challengeId, key);
+	if (not mechanics) then
 		self:DebugPrint(string.format("No Buff Or Debuffs On Party Members data for challenge #%s", challengeId));
 		return tableData;
 	end
-	for spellId, buffsOrDebuffsOnPartyMembers in pairs(self.db.char.challenges[challengeId].mechanics[key]) do
+	for spellId, buffsOrDebuffsOnPartyMembers in pairs(mechanics) do
 		local sum = 0;
 		local row = {};
 		for unitName, numberOfBuffsOrDebuffs in pairs(buffsOrDebuffsOnPartyMembers) do

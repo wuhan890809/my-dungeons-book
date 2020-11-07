@@ -53,11 +53,12 @@ function MyDungeonsBook:AvoidableDamageFrame_GetDataForTable(challengeId, key)
 	if (not challengeId) then
 		return nil;
 	end
-	if (not self.db.char.challenges[challengeId].mechanics[key]) then
+	local mechanics = self:Challenge_Mechanic_GetById(challengeId, key);
+	if (not mechanics) then
 		self:DebugPrint(string.format("No Avoidable Damage data for challenge #%s", challengeId));
 		return {};
 	end
-	for name, damageBySpells in pairs(self.db.char.challenges[challengeId].mechanics[key]) do
+	for name, damageBySpells in pairs(mechanics) do
 		if (damageBySpells) then
 			for spellId, numSumDetails in pairs(damageBySpells) do
 				if (not tableData[spellId]) then
@@ -137,7 +138,8 @@ function MyDungeonsBook:AvoidableDamageFrame_GetSummaryRow(challengeId, key)
 	local tableData = {
 		spellId = -1
 	};
-	for name, damageBySpells in pairs(self.db.char.challenges[challengeId].mechanics[key]) do
+	local mechanics = self:Challenge_Mechanic_GetById(challengeId, key);
+	for name, damageBySpells in pairs(mechanics) do
 		local partyUnitId = self:GetPartyUnitByName(challengeId, name);
 		if (partyUnitId) then
 			tableData[partyUnitId .. "Num"] = 0;

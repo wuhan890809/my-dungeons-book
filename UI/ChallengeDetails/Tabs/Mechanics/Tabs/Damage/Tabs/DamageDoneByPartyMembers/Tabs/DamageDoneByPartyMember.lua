@@ -208,8 +208,7 @@ function MyDungeonsBook:DamageDoneByPartyMemberFrame_GetDataForTable(challengeId
     if (not challengeId) then
         return nil;
     end
-    local challenge = self.db.char.challenges[challengeId];
-    local mechanics = challenge.mechanics[key];
+    local mechanics = self:Challenge_Mechanic_GetById(challengeId, key);
     if (not mechanics) then
         self:DebugPrint(string.format("No Damage Done By Party Members data for challenge #%s", challengeId));
         return tableData;

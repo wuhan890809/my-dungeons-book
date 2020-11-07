@@ -163,18 +163,18 @@ function MyDungeonsBook:InterruptsFrame_GetDataForTable(challengeId)
 	if (not challengeId) then
 		return nil;
 	end
-	local challenge = self.db.char.challenges[challengeId];
-	if (not challenge.mechanics["COMMON-INTERRUPTS"]) then
+	local interruptsMechanics = self:Challenge_Mechanic_GetById(challengeId, "COMMON-INTERRUPTS");
+	if (not interruptsMechanics) then
 		self:DebugPrint(string.format("No Interrupts data for challenge #%s", challengeId));
 		return nil;
 	end
-	local passedSpellsToInterrupt = challenge.mechanics[self:GetMechanicsPrefixForChallenge(challengeId) .. "-SPELLS-TO-INTERRUPT"] or {};
+	local passedSpellsToInterrupt = self:Challenge_Mechanic_GetById(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-SPELLS-TO-INTERRUPT") or {};
 	local passedSpellsToInterruptNotInterrupted = {};
 	for spellId, _ in pairs(passedSpellsToInterrupt) do
 		passedSpellsToInterruptNotInterrupted[spellId] = true;
 	end
-	local allEnemiesPassedCasts = challenge.mechanics["ALL-ENEMY-PASSED-CASTS"] or {};
-	for unitName, interruptsBySpells in pairs(challenge.mechanics["COMMON-INTERRUPTS"]) do
+	local allEnemiesPassedCasts = self:Challenge_Mechanic_GetById(challengeId, "ALL-ENEMY-PASSED-CASTS") or {};
+	for unitName, interruptsBySpells in pairs(interruptsMechanics) do
 		if (interruptsBySpells) then
 			for _, interruptsByUnitSpell in pairs(interruptsBySpells) do
 				for interruptedSpellId, interruptsCount in pairs(interruptsByUnitSpell) do
@@ -305,13 +305,14 @@ function MyDungeonsBook:InterruptsFrame_GetDataForSummaryTable(challengeId)
 	if (not challengeId) then
 		return nil;
 	end
-	local challenge = self.db.char.challenges[challengeId];
-	if (not challenge.mechanics["COMMON-INTERRUPTS"]) then
+	local challenge = self:Challenge_GetById(challengeId);
+	local interruptsMechanics = self:Challenge_Mechanic_GetById(challengeId, "COMMON-INTERRUPTS");
+	if (not interruptsMechanics) then
 		self:DebugPrint(string.format("No Interrupts data for challenge #%s", challengeId));
 		return nil;
 	end
-	local tryInterrupts = challenge.mechanics["COMMON-TRY-INTERRUPT"] or {};
-	for unitName, interruptsBySpells in pairs(challenge.mechanics["COMMON-INTERRUPTS"]) do
+	local tryInterrupts = self:Challenge_Mechanic_GetById(challengeId, "COMMON-TRY-INTERRUPT") or {};
+	for unitName, interruptsBySpells in pairs(interruptsMechanics) do
 		local partyUnitId = self:GetPartyUnitByName(challengeId, unitName);
 		if (partyUnitId) then
 			if (interruptsBySpells) then

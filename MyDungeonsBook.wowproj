@@ -181,6 +181,9 @@
     <Content Include="UI\Main.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Utils\Compress.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Utils\JSON.lua">
       <SubType>Code</SubType>
     </Content>

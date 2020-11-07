@@ -313,14 +313,6 @@ function MyDungeonsBook:ChallengesFrame_GetDataForTable()
 	for id, challenge in pairs(self.db.char.challenges) do
 		if (challenge and next(challenge) ~= nil) then
 			local deaths = challenge.challengeInfo.numDeaths;
-			if (not deaths) then
-				deaths = 0;
-                if (challenge.mechanics["DEATHS"]) then
-                    for _, unitDeaths in pairs(challenge.mechanics["DEATHS"]) do
-                        deaths = deaths + #unitDeaths;
-                    end
-                end
-			end
 			local row = {
 				cols = {
 					{

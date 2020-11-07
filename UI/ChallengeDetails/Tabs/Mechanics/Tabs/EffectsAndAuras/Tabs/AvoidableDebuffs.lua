@@ -53,11 +53,12 @@ function MyDungeonsBook:AvoidableDebuffsFrame_GetDataForTable(challengeId, key)
 	if (not challengeId) then
 		return nil;
 	end
-	if (not self.db.char.challenges[challengeId].mechanics[key]) then
+	local mechanics = self:Challenge_Mechanic_GetById(challengeId, key);
+	if (not mechanics) then
 		self:DebugPrint(string.format("No Avoidable Debuffs data for challenge #%s", challengeId));
 		return {};
 	end
-	for name, damageBySpells in pairs(self.db.char.challenges[challengeId].mechanics[key]) do
+	for name, damageBySpells in pairs(mechanics) do
 		if (damageBySpells) then
 			for spellId, hits in pairs(damageBySpells) do
 				if (not tableData[spellId]) then

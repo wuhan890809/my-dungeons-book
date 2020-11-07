@@ -74,12 +74,12 @@ function MyDungeonsBook:DispelsFrame_GetDataForTable(challengeId)
 	if (not challengeId) then
 		return nil;
 	end
-	local challenge = self.db.char.challenges[challengeId];
-	if (not challenge.mechanics["COMMON-DISPEL"]) then
+    local mechanics = self:Challenge_Mechanic_GetById(challengeId, "COMMON-DISPEL");
+	if (not mechanics) then
 		self:DebugPrint(string.format("No Dispels data for challenge #%s", challengeId));
 		return nil;
 	end
-	for unitName, dispelsBySpells in pairs(challenge.mechanics["COMMON-DISPEL"]) do
+	for unitName, dispelsBySpells in pairs(mechanics) do
 		if (dispelsBySpells) then
 			for _, dispelsBySpells in pairs(dispelsBySpells) do
 				for dispelledSpellId, dispelsCount in pairs(dispelsBySpells) do
@@ -175,13 +175,14 @@ function MyDungeonsBook:DispelsFrame_GetDataForSummaryTable(challengeId)
 	local tableData = {};
 	if (not challengeId) then
 		return nil;
-	end
-	local challenge = self.db.char.challenges[challengeId];
-	if (not challenge.mechanics["COMMON-DISPEL"]) then
+    end
+    local challenge = self:Challenge_GetById(challengeId);
+	local mechanics = self:Challenge_Mechanic_GetById(challengeId, "COMMON-DISPEL");
+    if (not mechanics) then
 		self:DebugPrint(string.format("No Dispels data for challenge #%s", challengeId));
 		return nil;
 	end
-	for unitName, dispelsBySpells in pairs(challenge.mechanics["COMMON-DISPEL"]) do
+	for unitName, dispelsBySpells in pairs(mechanics) do
 		local partyUnitId = self:GetPartyUnitByName(challengeId, unitName);
 		if (partyUnitId) then
 			if (dispelsBySpells) then

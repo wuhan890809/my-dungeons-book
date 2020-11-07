@@ -139,11 +139,12 @@ function MyDungeonsBook:UsedItemsFrame_GetDataForTable(challengeId, key)
 	if (not challengeId) then
 		return nil;
 	end
-	if (not self.db.char.challenges[challengeId].mechanics[key]) then
+	local mechanic = self:Challenge_Mechanic_GetById(challengeId, key);
+	if (not mechanic) then
 		self:DebugPrint(string.format("No Used Items data for challenge #%s", challengeId));
 		return tableData;
 	end
-	for itemId, usageByPartyMember in pairs(self.db.char.challenges[challengeId].mechanics[key]) do
+	for itemId, usageByPartyMember in pairs(mechanic) do
 		local row = {};
 		local sum = 0;
 		for unitName, numberOfUsages in pairs(usageByPartyMember) do

@@ -172,8 +172,8 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetDataForTable(challengeId, 
     if (not challengeId) then
         return nil;
     end
-    local challenge = self.db.char.challenges[challengeId];
-    local mechanics = challenge.mechanics["OWN-CASTS-DONE-BY-PARTY-MEMBERS"] or challenge.mechanics[key];
+    local challenge = self:Challenge_GetById(challengeId);
+    local mechanics = self:Challenge_Mechanic_GetById(challengeId, "OWN-CASTS-DONE-BY-PARTY-MEMBERS") or self:Challenge_Mechanic_GetById(challengeId, key);
     if (not mechanics) then
         self:DebugPrint(string.format("No Own Casts Done By Party Members data for challenge #%s", challengeId));
         return tableData;
@@ -214,8 +214,7 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetImportantDataForSummaryTab
     if (not challengeId) then
         return nil;
     end
-    local challenge = self.db.char.challenges[challengeId];
-    local mechanics = challenge.mechanics["OWN-CASTS-DONE-BY-PARTY-MEMBERS"] or challenge.mechanics[key];
+    local mechanics = self:Challenge_Mechanic_GetById(challengeId, "OWN-CASTS-DONE-BY-PARTY-MEMBERS") or self:Challenge_Mechanic_GetById(challengeId, key);
     if (not mechanics) then
         self:DebugPrint(string.format("No Own Casts Done By Party Members data for challenge #%s", challengeId));
         return tableData;
@@ -255,8 +254,7 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetAllDataForSummaryTable(cha
     if (not challengeId) then
         return nil;
     end
-    local challenge = self.db.char.challenges[challengeId];
-    local mechanics = challenge.mechanics["ALL-CASTS-DONE-BY-PARTY-MEMBERS"];
+    local mechanics = self:Challenge_Mechanic_GetById(challengeId, "ALL-CASTS-DONE-BY-PARTY-MEMBERS");
     if (not mechanics) then
         self:DebugPrint(string.format("No Own Casts Done By Party Members data for challenge #%s", challengeId));
         return tableData;

@@ -100,11 +100,12 @@ function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_GetDataForTable(challengeId, 
 	if (not challengeId) then
 		return nil;
 	end
-	if (not self.db.char.challenges[challengeId].mechanics[key]) then
+	local mechanics = self:Challenge_Mechanic_GetById(challengeId, key);
+	if (not mechanics) then
 		self:DebugPrint(string.format("No Buff Or Debuffs On Units data for challenge #%s", challengeId));
 		return tableData;
 	end
-	for spellId, buffsOrDebuffsOnUnit in pairs(self.db.char.challenges[challengeId].mechanics[key]) do
+	for spellId, buffsOrDebuffsOnUnit in pairs(mechanics) do
 		local sum = 0;
 		for _, count in pairs(buffsOrDebuffsOnUnit) do
 			sum = sum + count;

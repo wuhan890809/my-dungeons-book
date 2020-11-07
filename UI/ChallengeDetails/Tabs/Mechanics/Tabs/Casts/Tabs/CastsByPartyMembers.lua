@@ -53,11 +53,12 @@ function MyDungeonsBook:SpecialCastsFrame_GetDataForTable(challengeId, key)
 	if (not challengeId) then
 		return nil;
 	end
-	if (not self.db.char.challenges[challengeId].mechanics[key]) then
+	local mechanics = self:Challenge_Mechanic_GetById(challengeId, key);
+	if (not mechanics) then
 		self:DebugPrint(string.format("No Special Casts data for challenge #%s", challengeId));
 		return tableData;
 	end
-	for spellId, castsByPartyMember in pairs(self.db.char.challenges[challengeId].mechanics[key]) do
+	for spellId, castsByPartyMember in pairs(mechanics) do
 		local row = {};
 		local sum = 0;
 		for unitName, numberOfCasts in pairs(castsByPartyMember) do

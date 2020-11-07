@@ -220,3 +220,40 @@ function MyDungeonsBook:Challenge_Delete(challengeId)
 		self:LogPrint(string.format(L["Challenge #%s is deleted successfully"], challengeId));
 	end
 end
+
+--[[--
+@param[type=number] id
+@return[type=?table]
+]]
+function MyDungeonsBook:Challenge_GetById(id)
+	if (not id) then
+		id = self.db.char.activeChallengeId;
+	end
+	return self.db.char.challenges[id];
+end
+
+--[[--
+@param[type=number] challengeId
+@param[type=string] mechanicKey
+@return[type=?table]
+]]
+function MyDungeonsBook:Challenge_Mechanic_GetById(challengeId, mechanicKey)
+	local challenge = self:Challenge_GetById(challengeId);
+	if (not challenge) then
+		return nil;
+	end
+	if (challengeId == self.activeChallengeId) then
+		if (not self.activeChallengeMechanics) then
+			self.activeChallengeMechanics = challenge.mechanics;
+			if (type(challenge.mechanics) ~= "table") then
+				self.activeChallengeMechanics = select(2, self:Decompress(challenge.mechanics));
+			end
+		end
+		return self.activeChallengeMechanics[mechanicKey];
+	end
+	local mechanics = challenge.mechanics;
+	if (type(challenge.mechanics) ~= "table") then
+		mechanics = select(2, self:Decompress(challenge.mechanics));
+	end
+	return mechanics[mechanicKey];
+end
