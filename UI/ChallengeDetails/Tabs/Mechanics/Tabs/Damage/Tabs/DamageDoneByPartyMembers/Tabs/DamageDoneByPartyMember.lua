@@ -189,7 +189,7 @@ local function proceedSpellStats(spellId, spellStats, summaryRow, unitName)
     summaryRow.cols[4].value = summaryRow.cols[4].value + spellStats.hits;
     summaryRow.cols[5].value = summaryRow.cols[5].value + spellStats.amount;
     summaryRow.cols[6].value = summaryRow.cols[6].value + spellStats.overkill;
-    summaryRow.cols[8].value = summaryRow.cols[8].value + spellStats.hitsCrit;
+    summaryRow.cols[8].value = summaryRow.cols[8].value + (spellStats.hitsCrit or 0);
     return row, summaryRow;
 end
 
