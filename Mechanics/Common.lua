@@ -387,6 +387,75 @@ function MyDungeonsBook:TrackAllDamageDoneByPartyMembers(sourceUnitName, sourceU
 end
 
 --[[--
+Track all heal done by party members (including pets and other summonned units)
+
+@param[type=string] sourceUnitName
+@param[type=GUID] sourceUnitGUID
+@param[type=number] spellId
+@param[type=number] amount
+@param[type=number] overheal
+@param[type=bool] crit
+]]
+function MyDungeonsBook:TrackAllHealBySpellDoneByPartyMembers(sourceUnitName, sourceUnitGUID, spellId, amount, overheal, crit)
+	local id = self.db.char.activeChallengeId;
+	local type = strsplit("-", sourceUnitGUID);
+	self:InitMechanics1Lvl("PARTY-MEMBERS-SUMMON");
+	local summonedUnitOwner = self.db.char.challenges[id].mechanics["PARTY-MEMBERS-SUMMON"][sourceUnitGUID];
+	local sourceUnitNameToUse = sourceUnitName;
+	if ((not summonedUnitOwner) and (type ~= "Pet") and (type ~= "Player")) then
+		return;
+	end
+	local key = "ALL-HEAL-DONE-BY-PARTY-MEMBERS";
+	self:InitMechanics4Lvl(key, sourceUnitName, "spells", spellId);
+	if (summonedUnitOwner) then
+		self:InitMechanics3Lvl(key, sourceUnitName, "meta");
+		self.db.char.challenges[id].mechanics[key][sourceUnitName].meta.unitName = summonedUnitOwner; -- save original unit name
+	end
+	if (not self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].hits) then
+		self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId] = {
+			hits = 0,
+			amount = 0,
+			overheal = 0,
+			hitsCrit = 0,
+			maxCrit = 0,
+			minCrit = math.huge,
+			amountCrit = 0,
+			hitsNotCrit = 0,
+			maxNotCrit = 0,
+			minNotCrit = math.huge,
+			amountNotCrit = 0
+		};
+	end
+	local realAmount = amount or 0;
+	local realOverkill = 0;
+	if (overheal and overheal > 0) then
+		realOverkill = overheal;
+	end
+	self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].hits = self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].hits + 1;
+	self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].amount = self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].amount + realAmount;
+	self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].overheal = self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].overheal + realOverkill;
+	if (crit) then
+		self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].hitsCrit = self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].hitsCrit + 1;
+		self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].amountCrit = self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].amountCrit + realAmount;
+		if (realAmount > self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].maxCrit) then
+			self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].maxCrit = realAmount;
+		end
+		if (realAmount < self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].minCrit) then
+			self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].minCrit = realAmount;
+		end
+	else
+		self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].hitsNotCrit = self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].hitsNotCrit + 1;
+		self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].amountNotCrit = self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].amountNotCrit + realAmount;
+		if (realAmount > self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].maxNotCrit) then
+			self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].maxNotCrit = realAmount;
+		end
+		if (realAmount < self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].minNotCrit) then
+			self.db.char.challenges[id].mechanics[key][sourceUnitName].spells[spellId].minNotCrit = realAmount;
+		end
+	end
+end
+
+--[[--
 @local
 @param[type=string] key db key
 @param[type=string] unit unit name that got damage (usualy it's a destUnit from `CombatLogGetCurrentEventInfo`)
@@ -680,7 +749,7 @@ Track all heal done by party members to each other
 @param[type=number] amount amount of healing done
 @param[type=number] overheal amount of overhealing done
 ]]
-function MyDungeonsBook:TrackAllHealDoneByPartyMembers(sourceUnitName, sourceUnitGUID, targetUnitName, targetUnitGUID, spellId, amount, overheal)
+function MyDungeonsBook:TrackAllHealDoneByPartyMembersToEachOther(sourceUnitName, sourceUnitGUID, targetUnitName, targetUnitGUID, spellId, amount, overheal)
 	local id = self.db.char.activeChallengeId;
 	local sourceIsPlayer = strfind(sourceUnitGUID, "Player");
 	local targetIsPlayer = strfind(targetUnitGUID, "Player");

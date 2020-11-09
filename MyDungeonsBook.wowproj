@@ -169,6 +169,15 @@
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Heal\Tabs\HealByPartyMember.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Heal\Tabs\HealByPartyMember\Tabs.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Heal\Tabs\HealByPartyMember\Tabs\BySpell.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Heal\Tabs\HealByPartyMember\Tabs\ToEachPartyMember.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\UsedItems.lua">
       <SubType>Code</SubType>
     </Content>
@@ -224,6 +233,8 @@
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Casts" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Heal" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Heal\Tabs" />
+    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Heal\Tabs\HealByPartyMember" />
+    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Heal\Tabs\HealByPartyMember\Tabs" />
     <Folder Include="Utils" />
     <Folder Include="UI" />
     <Folder Include="UI\ChallengeDetails" />

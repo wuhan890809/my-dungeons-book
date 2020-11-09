@@ -24,7 +24,7 @@ function MyDungeonsBook:DevFrame_Create(parentFrame, challengeId)
 		editBox.button:SetText("Get JSON");
 		editBox.button:Show();
 		editBox:SetCallback("OnEnterPressed", function ()
-			editBox:SetText(self:Table2Json(challenge));
+			editBox:SetText(self:Table2Json(select(2, self:Decompress(challenge.mechanics))));
 			editBox:HighlightText();
 		end);
 		devFrame:AddChild(editBox);

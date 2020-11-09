@@ -34,17 +34,20 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		self:TrackSummonByPartyMemberUnitDeath(dstGUID, dstName);
 	end
 	if (subEventSuffix == "HEAL") then
-		local spellId, _, _, amount, overheal = select(12, CombatLogGetCurrentEventInfo());
-		self:TrackAllHealDoneByPartyMembers(srcName, srcGUID, dstName, dstGUID, spellId, amount, overheal);
+		local spellId, _, _, amount, overheal, _, crit = select(12, CombatLogGetCurrentEventInfo());
+		self:TrackAllHealDoneByPartyMembersToEachOther(srcName, srcGUID, dstName, dstGUID, spellId, amount, overheal);
+		self:TrackAllHealBySpellDoneByPartyMembers(srcName, srcGUID, spellId, amount, overheal, crit);
 	end
 	if (subEventName == "DAMAGE_SPLIT" or
 		subEventName == "DAMAGE_SHIELD") then
 		local spellId, _, _, amount, overheal = select(12, CombatLogGetCurrentEventInfo());
-		self:TrackAllHealDoneByPartyMembers(srcName, srcGUID, dstName, dstGUID, spellId, amount, overheal);
+		self:TrackAllHealDoneByPartyMembersToEachOther(srcName, srcGUID, dstName, dstGUID, spellId, amount, overheal);
+		self:TrackAllHealBySpellDoneByPartyMembers(srcName, srcGUID, spellId, amount, overheal, false);
 	end
 	if (subEventName == "SPELL_ABSORBED") then
 		local unitGUID, unitName, _, _, spellId, _, _, amount = select(12, CombatLogGetCurrentEventInfo());
-		self:TrackAllHealDoneByPartyMembers(unitName, unitGUID, dstName, dstGUID, spellId, amount, -1);
+		self:TrackAllHealDoneByPartyMembersToEachOther(unitName, unitGUID, dstName, dstGUID, spellId, amount, -1);
+		self:TrackAllHealBySpellDoneByPartyMembers(srcName, srcGUID, spellId, amount, -1, false);
 	end
 	if (subEventSuffix == "INTERRUPT") then
 		local spellId, _, _, extraSpellId = select(12, CombatLogGetCurrentEventInfo());

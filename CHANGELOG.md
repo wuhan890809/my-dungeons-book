@@ -1,6 +1,10 @@
-﻿### v1.5.0
+﻿### v1.6.0
 
+* [#73](https://github.com/onechiporenko/my-dungeons-book/issues/73) Show heal done by each spell
 * [#64](https://github.com/onechiporenko/my-dungeons-book/issues/64) Don't store challenges info uncompressed
+
+### v1.5.0
+
 * [#72](https://github.com/onechiporenko/my-dungeons-book/issues/72) Add missing AceHook lib to embeds.xml
 * [#71](https://github.com/onechiporenko/my-dungeons-book/issues/71) Duration for 60+ minutes is shown incorrectly
 

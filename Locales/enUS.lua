@@ -1,5 +1,6 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("MyDungeonsBook", "enUS", true);
 
+-- UI start
 L["My Dungeons Book"] = true;
 L["%s died"] = "%s died";
 L["%s got hit by %s for %s (%s)"] = "%s got hit by %s for %s (%s)";
@@ -26,8 +27,6 @@ L["In Time"] = "In Time";
 L["Not In Time"] = "Not In Time";
 L["All"] = "All";
 L["Race: %s"] = "Race: %s";
-
--- UI start
 L["Hits"] = "Hits";
 L["Spell"] = "Spell";
 L["DEV"] = "DEV";
@@ -99,6 +98,8 @@ L["Max Crit"] = "Max Crit";
 L["Crit, %"] = "Crit, %";
 L["Hits Crit"] = "Hits Crit";
 L["Show All Casts"] = "Show All Casts";
+L["By Spell"] = "By Spell";
+L["To Each Party Member"] = "To Each Party Member";
 -- UI end
 
 -- Help start
