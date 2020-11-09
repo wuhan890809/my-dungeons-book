@@ -341,6 +341,18 @@ local OwnCastsDoneByPartyMembers = {
     [68992] = true,  -- Darkflight
     -- Zandalari Troll
     [291944] = true, -- Regeneratin'
+    --[[
+        CLASS SPECIFIC
+    ]]
+    -- Shaman
+    [2825] = true,   -- Blood Lust
+    [21169] = true,  -- Reincarnation
+    -- DK
+    [61999] = true,  -- Raise Ally
+    -- Druid
+    [20484] = true,  -- Rebirth
+    -- Warlock
+    [20707] = true,  -- Soulstone
 };
 
 --[[--
