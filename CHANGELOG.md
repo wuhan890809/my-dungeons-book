@@ -1,5 +1,6 @@
 ﻿### v1.6.0
 
+* [#76](https://github.com/onechiporenko/my-dungeons-book/issues/76) Shield/offhand item sometimes is shifted to the second row
 * [#74](https://github.com/onechiporenko/my-dungeons-book/issues/74) Reset viewed challenge info when MDB is closed
 * [#73](https://github.com/onechiporenko/my-dungeons-book/issues/73) Show heal done by each spell
 * [#64](https://github.com/onechiporenko/my-dungeons-book/issues/64) Don't store challenges info uncompressed

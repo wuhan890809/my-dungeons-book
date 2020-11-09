@@ -65,7 +65,6 @@ function MyDungeonsBook:RosterFrame_PartyMemberFrame_ClassIcon_Create(parentFram
 	local classFrame = AceGUI:Create("InteractiveLabel");
 	parentFrame:AddChild(classFrame);
     classFrame:SetWidth(35);
-	classFrame.label:SetHeight(40);
 	classFrame:SetCallback("OnEnter", function()
 		self:RosterFrame_TableClassHover(classFrame, unitId);
 	end);
@@ -92,7 +91,6 @@ function MyDungeonsBook:RosterFrame_PartyMemberFrame_SpecIcon_Create(parentFrame
 	local specFrame = AceGUI:Create("InteractiveLabel");
 	parentFrame:AddChild(specFrame);
     specFrame:SetWidth(35);
-	specFrame.label:SetHeight(40);
 	specFrame:SetCallback("OnEnter", function()
 		self:RosterFrame_TableSpecHover(specFrame, unitId);
 	end);
@@ -139,17 +137,19 @@ Creates a frame with equipment for `unitId`.
 function MyDungeonsBook:RosterFrame_PartyMemberFrame_Equipment_Create(parentFrame, unitId, challengeId)
     local challenge = self.db.char.challenges[challengeId];
 	local itemFrames = {};
-	local itemsRow = AceGUI:Create("SimpleGroup");
-	itemsRow:SetLayout("Flow");
+	--local itemsRow = AceGUI:Create("SimpleGroup");
+	--[[itemsRow:SetLayout("Flow");
 	itemsRow:SetFullWidth(true);
-	itemsRow:SetHeight(40);
-	itemsRow:SetAutoAdjustHeight(false);
-	parentFrame:AddChild(itemsRow);
+	itemsRow:SetHeight(40);]]
+	local itemsTitle = AceGUI:Create("Label");
+	itemsTitle:SetText("Items:");
+	itemsTitle:SetFullWidth(true);
+	parentFrame:AddChild(itemsTitle);
+	--parentFrame:AddChild(itemsRow);
 	for i = 1, 16 do
 		local itemFrame = AceGUI:Create("InteractiveLabel");
-		itemsRow:AddChild(itemFrame);
+		parentFrame:AddChild(itemFrame);
 		itemFrame:SetWidth(35);
-		itemFrame.label:SetHeight(40);
 		itemFrame:SetJustifyV("MIDDLE");
 		itemFrame:SetCallback("OnEnter", function(frame)
 			self:RosterFrame_TableItemHover(frame, unitId, i);
