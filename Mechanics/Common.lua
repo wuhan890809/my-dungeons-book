@@ -391,17 +391,25 @@ Track all heal done by party members (including pets and other summonned units)
 
 @param[type=string] sourceUnitName
 @param[type=GUID] sourceUnitGUID
+@param[type=number] sourceUnitFlags
+@param[type=string] targetUnitName
+@param[type=GUID] targetUnitGUID
+@param[type=number] targetUnitFlags
 @param[type=number] spellId
 @param[type=number] amount
 @param[type=number] overheal
 @param[type=bool] crit
 ]]
-function MyDungeonsBook:TrackAllHealBySpellDoneByPartyMembers(sourceUnitName, sourceUnitGUID, spellId, amount, overheal, crit)
+function MyDungeonsBook:TrackAllHealBySpellDoneByPartyMembers(sourceUnitName, sourceUnitGUID, sourceUnitFlags, targetUnitName, targetUnitGUID, targetUnitFlags, spellId, amount, overheal, crit)
 	local id = self.db.char.activeChallengeId;
 	local type = strsplit("-", sourceUnitGUID);
 	self:InitMechanics1Lvl("PARTY-MEMBERS-SUMMON");
 	local summonedUnitOwner = self.db.char.challenges[id].mechanics["PARTY-MEMBERS-SUMMON"][sourceUnitGUID];
 	local sourceUnitNameToUse = sourceUnitName;
+	local targetIsEnemy = bit.band(targetUnitFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0;
+	if (targetIsEnemy) then
+		return;
+	end
 	if ((not summonedUnitOwner) and (type ~= "Pet") and (type ~= "Player")) then
 		return;
 	end
