@@ -124,7 +124,15 @@ L["Icons"] = "Icons";
 L["Time Format"] = "Time Format";
 L["Flatten Icons"] = "Flatten Icons";
 L["Date and Time"] = "Date and Time";
+L["Logging Levels"] = "Logging Levels";
 L["Logs"] = "Logs";
+L["Show LOG messages about avoidable DEBUFFS"] = "Show LOG messages about avoidable DEBUFFS";
+L["Show LOG messages about avoidable DAMAGE taken"] = "Show LOG messages about avoidable DAMAGE taken";
+L["Show LOG messages about INTERRUPTS"] = "Show LOG messages about INTERRUPTS";
+L["Show LOG messages about DISPELS"] = "Show LOG messages about DISPELS";
+L["Show LOG messages about DEATHS"] = "Show LOG messages about DEATHS";
+L["Show LOG messages about NOT INTERRUPTED casts"] = "Show LOG messages about NOT INTERRUPTED casts";
+L["Options below are global. However they are overridden by LOG-option above. E.g. when \"Show LOG messages\" is disabled, no log messages will be printed independently of settings below."] = "Options below are global. However they are overridden by LOG-option above. E.g. when \"Show LOG messages\" is disabled, no log messages will be printed independently of settings below.";
 -- Settings end
 
 -- BfA start

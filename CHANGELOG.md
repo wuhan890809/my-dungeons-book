@@ -1,4 +1,8 @@
-﻿### v1.6.0
+﻿### v1.7.0
+
+* [#79](https://github.com/onechiporenko/my-dungeons-book/issues/79) Add extra settings for verbose options for mechanics
+
+### v1.6.0
 
 * [#77](https://github.com/onechiporenko/my-dungeons-book/issues/77) Don't track heal done to enemy units
 * [#76](https://github.com/onechiporenko/my-dungeons-book/issues/76) Shield/offhand item sometimes is shifted to the second row

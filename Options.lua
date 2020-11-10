@@ -41,10 +41,12 @@ MyDungeonsBook.OptionsDefaults = {
 			npcs = {},
 			mechanics = {
 				["DEATHS"] = {
-					id = "DEATHS"
+					id = "DEATHS",
+					verbose = true
 				},
 				["COMMON-INTERRUPTS"] = {
-					id = "COMMON-INTERRUPTS"
+					id = "COMMON-INTERRUPTS",
+					verbose = true
 				},
 				["COMMON-TRY-INTERRUPT"] = {
 					id = "COMMON-TRY-INTERRUPT"
@@ -53,7 +55,8 @@ MyDungeonsBook.OptionsDefaults = {
 					id = "COMMON-AFFIX-QUAKING-INTERRUPTS"
 				},
 				["COMMON-DISPEL"] = {
-					id = "COMMON-DISPEL"
+					id = "COMMON-DISPEL",
+					verbose = true
 				},
 				["ALL-DAMAGE-DONE-TO-PARTY-MEMBERS"] = {
 					id = "ALL-DAMAGE-DONE-TO-PARTY-MEMBERS"
@@ -79,13 +82,16 @@ MyDungeonsBook.OptionsDefaults = {
 					internal = true
 				},
 				["BFA-AVOIDABLE-SPELLS"] = {
-					id = "BFA-AVOIDABLE-SPELLS"
+					id = "BFA-AVOIDABLE-SPELLS",
+					verbose = true
 				},
 				["BFA-AVOIDABLE-AURAS"] = {
-					id = "BFA-AVOIDABLE-AURAS"
+					id = "BFA-AVOIDABLE-AURAS",
+					verbose = true
 				},
 				["BFA-SPELLS-TO-INTERRUPT"] = {
-					id = "BFA-SPELLS-TO-INTERRUPT"
+					id = "BFA-SPELLS-TO-INTERRUPT",
+					verbose = true
 				},
 				["BFA-UNITS-APPEARS-IN-COMBAT"] = {
 					id = "BFA-UNITS-APPEARS-IN-COMBAT"
@@ -109,13 +115,16 @@ MyDungeonsBook.OptionsDefaults = {
 					id = "BFA-DAMAGE-DONE-TO-UNITS"
 				},
 				["SL-AVOIDABLE-SPELLS"] = {
-					id = "SL-AVOIDABLE-SPELLS"
+					id = "SL-AVOIDABLE-SPELLS",
+					verbose = true
 				},
 				["SL-AVOIDABLE-AURAS"] = {
-					id = "SL-AVOIDABLE-AURAS"
+					id = "SL-AVOIDABLE-AURAS",
+					verbose = true
 				},
 				["SL-SPELLS-TO-INTERRUPT"] = {
-					id = "SL-SPELLS-TO-INTERRUPT"
+					id = "SL-SPELLS-TO-INTERRUPT",
+					verbose = true
 				},
 				["SL-UNITS-APPEARS-IN-COMBAT"] = {
 					id = "SL-UNITS-APPEARS-IN-COMBAT"
@@ -226,7 +235,7 @@ MyDungeonsBook.Options = {
 					type = "group",
 					inline = true,
 					order = 1,
-					name = L["Logs"],
+					name = L["Logging Levels"],
 					args = {
 						debug = {
 							order = 1,
@@ -250,6 +259,100 @@ MyDungeonsBook.Options = {
 							end,
 							set = function(_, v)
 								MyDungeonsBook.db.profile.verbose.log = v;
+							end
+						}
+					}
+				},
+				logDetailsDescription = {
+					order = 2,
+					type = "description",
+					name = L["Options below are global. However they are overridden by LOG-option above. E.g. when \"Show LOG messages\" is disabled, no log messages will be printed independently of settings below."]
+				},
+				logDetails = {
+					type = "group",
+					inline = true,
+					order = 3,
+					name = L["Logs"],
+					args = {
+						avoidableSpells = {
+							order = 1,
+							name = L["Show LOG messages about avoidable DAMAGE taken"],
+							type = "toggle",
+							width = "full",
+							get = function()
+								-- Doesn't metter which one to use. Both BFA and SL have the same value
+								return MyDungeonsBook.db.global.meta.mechanics["BFA-AVOIDABLE-SPELLS"].verbose;
+							end,
+							set = function(_, v)
+								for _, key in pairs({"BFA-AVOIDABLE-SPELLS", "SL-AVOIDABLE-SPELLS"}) do
+									MyDungeonsBook.db.global.meta.mechanics[key].verbose = v;
+								end
+							end
+						},
+						avoidableAuras = {
+							order = 2,
+							name = L["Show LOG messages about avoidable DEBUFFS"],
+							type = "toggle",
+							width = "full",
+							get = function()
+								-- Doesn't metter which one to use. Both BFA and SL have the same value
+								return MyDungeonsBook.db.global.meta.mechanics["BFA-AVOIDABLE-AURAS"].verbose;
+							end,
+							set = function(_, v)
+								for _, key in pairs({"BFA-AVOIDABLE-AURAS", "SL-AVOIDABLE-AURAS"}) do
+									MyDungeonsBook.db.global.meta.mechanics[key].verbose = v;
+								end
+							end
+						},
+						interrupts = {
+							order = 3,
+							name = L["Show LOG messages about INTERRUPTS"],
+							type = "toggle",
+							width = "full",
+							get = function()
+								return MyDungeonsBook.db.global.meta.mechanics["COMMON-INTERRUPTS"].verbose;
+							end,
+							set = function(_, v)
+								MyDungeonsBook.db.global.meta.mechanics["COMMON-INTERRUPTS"].verbose = v;
+							end
+						},
+						notInterrupted = {
+							order = 4,
+							name = L["Show LOG messages about NOT INTERRUPTED casts"],
+							type = "toggle",
+							width = "full",
+							get = function()
+								-- Doesn't metter which one to use. Both BFA and SL have the same value
+								return MyDungeonsBook.db.global.meta.mechanics["BFA-SPELLS-TO-INTERRUPT"].verbose;
+							end,
+							set = function(_, v)
+								for _, key in pairs({"BFA-SPELLS-TO-INTERRUPT", "SL-SPELLS-TO-INTERRUPT"}) do
+									MyDungeonsBook.db.global.meta.mechanics[key].verbose = v;
+								end
+							end
+						},
+						dispels = {
+							order = 5,
+							name = L["Show LOG messages about DISPELS"],
+							type = "toggle",
+							width = "full",
+							get = function()
+								return MyDungeonsBook.db.global.meta.mechanics["COMMON-DISPEL"].verbose;
+							end,
+							set = function(_, v)
+								MyDungeonsBook.db.global.meta.mechanics["COMMON-DISPEL"].verbose = v;
+							end
+						},
+						deaths = {
+							order = 6,
+							name = L["Show LOG messages about DEATHS"],
+							type = "toggle",
+							width = "full",
+							get = function()
+								return MyDungeonsBook.db.global.meta.mechanics["DEATHS"].verbose;
+							end,
+							set = function(_, v)
+								MyDungeonsBook.db.global.meta.mechanics["DEATHS"].verbose = v;
 							end
 						}
 					}

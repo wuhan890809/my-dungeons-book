@@ -172,7 +172,9 @@ function MyDungeonsBook:TrackDeath(deadUnitGUID, unit)
 	local key = "DEATHS";
 	self:InitMechanics2Lvl(key, unit);
 	tinsert(self.db.char.challenges[id].mechanics[key][unit], time());
-	self:LogPrint(string.format(L["%s died"], self:ClassColorText(unit, unit)));
+	if (self.db.global.meta.mechanics[key].verbose) then
+		self:LogPrint(string.format(L["%s died"], self:ClassColorText(unit, unit)));
+	end
 end
 
 --[[--
@@ -201,7 +203,9 @@ function MyDungeonsBook:TrackInterrupt(unit, srcGUID, spellId, interruptedSpellI
 		KEY = "COMMON-AFFIX-QUAKING-INTERRUPTS";
 	end
 	spellId = mergeInterruptSpellId(spellId);
-	self:LogPrint(string.format(L["%s interrupted %s using %s"], self:ClassColorText(unit, unit), GetSpellLink(interruptedSpellId), GetSpellLink(spellId)));
+	if (self.db.global.meta.mechanics[KEY].verbose) then
+		self:LogPrint(string.format(L["%s interrupted %s using %s"], self:ClassColorText(unit, unit), GetSpellLink(interruptedSpellId), GetSpellLink(spellId)));
+	end
 	self:InitMechanics4Lvl(KEY, unit, spellId, interruptedSpellId, true);
 	self.db.char.challenges[id].mechanics[KEY][unit][spellId][interruptedSpellId] = self.db.char.challenges[id].mechanics[KEY][unit][spellId][interruptedSpellId] + 1;
 end
@@ -229,7 +233,9 @@ function MyDungeonsBook:TrackDispel(unit, srcGUID, spellId, dispelledSpellId)
 		return;
 	end
 	local KEY = "COMMON-DISPEL";
-	self:LogPrint(string.format(L["%s dispelled %s using %s"], self:ClassColorText(unit, unit), GetSpellLink(dispelledSpellId), GetSpellLink(spellId)));
+	if (self.db.global.meta.mechanics[KEY].verbose) then
+		self:LogPrint(string.format(L["%s dispelled %s using %s"], self:ClassColorText(unit, unit), GetSpellLink(dispelledSpellId), GetSpellLink(spellId)));
+	end
 	self:InitMechanics4Lvl(KEY, unit, spellId, dispelledSpellId, true);
 	self.db.char.challenges[id].mechanics[KEY][unit][spellId][dispelledSpellId] = self.db.char.challenges[id].mechanics[KEY][unit][spellId][dispelledSpellId] + 1;
 end
@@ -472,7 +478,7 @@ end
 ]]
 function MyDungeonsBook:SaveTrackedDamageToPartyMembers(key, unit, spellId, amount)
 	local amountInPercents = amount and amount / UnitHealthMax(unit) * 100 or 0;
-	if (amountInPercents >= 40) then
+	if (amountInPercents >= 40 and self.db.global.meta.mechanics[key].verbose) then
 		local spellLink = GetSpellLink(spellId);
 		self:LogPrint(string.format(L["%s got hit by %s for %s (%s)"], unit, spellLink or spellId, self:FormatNumber(amount), string.format("%.1f%%", amountInPercents)));
 	end
@@ -508,7 +514,9 @@ function MyDungeonsBook:TrackAvoidableAuras(key, auras, aurasNoTank, unit, spell
 		local id = self.db.char.activeChallengeId;
 		self:InitMechanics3Lvl(key, unit, spellId, true);
 		self.db.char.challenges[id].mechanics[key][unit][spellId] = self.db.char.challenges[id].mechanics[key][unit][spellId] + 1;
-		self:LogPrint(string.format(L["%s got debuff by %s"], unit, GetSpellLink(spellId)));
+		if (self.db.global.meta.mechanics[key].verbose) then
+			self:LogPrint(string.format(L["%s got debuff by %s"], unit, GetSpellLink(spellId)));
+		end
 	end
 end
 
@@ -569,7 +577,9 @@ function MyDungeonsBook:TrackPassedCasts(key, spells, unitName, spellId)
 	if (not spells[spellId]) then
 		return;
 	end
-	self:LogPrint(string.format(L["%s's cast %s is passed"], unitName, GetSpellLink(spellId)));
+	if (self.db.global.meta.mechanics[key].verbose) then
+		self:LogPrint(string.format(L["%s's cast %s is passed"], unitName, GetSpellLink(spellId)));
+	end
 	local id = self.db.char.activeChallengeId;
 	self:InitMechanics2Lvl(key, spellId, true);
 	self.db.char.challenges[id].mechanics[key][spellId] = self.db.char.challenges[id].mechanics[key][spellId] + 1;
