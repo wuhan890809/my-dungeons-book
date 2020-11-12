@@ -116,6 +116,9 @@ function MyDungeonsBook:ChallengesFrame_Table_Create(parentFrame)
 		local deathsFilter = self.db.char.filters.challenges.deaths;
 		if (deathsFilter ~= "ALL") then
 			local deaths = row.cols[8].value;
+			if (type(deaths) ~= "number") then
+				return false;
+			end
 			if (
 				(deathsFilter == "0" and deaths ~= 0) or
 				(deathsFilter == "1-5" and (deaths > 5 or deaths < 1)) or

@@ -1,5 +1,6 @@
 ﻿### v1.7.0
 
+* [#80](https://github.com/onechiporenko/my-dungeons-book/issues/80) Deaths count is not set when challenge is abandoned
 * [#79](https://github.com/onechiporenko/my-dungeons-book/issues/79) Add extra settings for verbose options for mechanics
 
 ### v1.6.0

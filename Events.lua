@@ -195,7 +195,8 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 		steps = steps,
 		startTime = startTimestamp,
 		damageMod = damageMod,
-		healthMod = healthMod
+		healthMod = healthMod,
+		numDeaths = 0
 	};
 	if (self.challengesTable) then
 		self.challengesTable:SetData(self:ChallengesFrame_GetDataForTable());

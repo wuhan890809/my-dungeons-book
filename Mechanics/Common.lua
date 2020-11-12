@@ -172,6 +172,7 @@ function MyDungeonsBook:TrackDeath(deadUnitGUID, unit)
 	local key = "DEATHS";
 	self:InitMechanics2Lvl(key, unit);
 	tinsert(self.db.char.challenges[id].mechanics[key][unit], time());
+	self.db.char.challenges[id].challengeInfo.numDeaths = self.db.char.challenges[id].challengeInfo.numDeaths + 1;
 	if (self.db.global.meta.mechanics[key].verbose) then
 		self:LogPrint(string.format(L["%s died"], self:ClassColorText(unit, unit)));
 	end
