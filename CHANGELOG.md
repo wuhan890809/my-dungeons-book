@@ -1,5 +1,6 @@
 ﻿### v1.7.0
 
+* [#78](https://github.com/onechiporenko/my-dungeons-book/issues/78) Row with currently viewed challenge should be highlighted
 * [#81](https://github.com/onechiporenko/my-dungeons-book/issues/81) Show interrupts done by Quaking affix
 * [#80](https://github.com/onechiporenko/my-dungeons-book/issues/80) Deaths count is not set when challenge is abandoned
 * [#79](https://github.com/onechiporenko/my-dungeons-book/issues/79) Add extra settings for verbose options for mechanics

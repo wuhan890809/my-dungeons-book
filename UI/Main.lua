@@ -27,6 +27,7 @@ function MyDungeonsBook:MainFrame_Create()
 		self.activeChallengeId = nil;
 		self.activeChallengeMechanics = nil;
 		self.challengeDetailsFrame.frame:Hide();
+		self.challengesTable:ClearSelection();
         if (self.db.profile.performance.collectgarbage) then
             collectgarbage("collect");
         end

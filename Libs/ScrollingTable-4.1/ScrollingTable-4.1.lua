@@ -719,7 +719,7 @@ do
 
 					else
 						if table:GetSelection() == realrow then
-							table:ClearSelection();
+							--table:ClearSelection();
 						else
 							table:SetSelection(realrow);
 						end
