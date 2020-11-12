@@ -10,7 +10,7 @@ UI
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
 --[[--
-Creates tabs (with click-handlers) for Effects And Auras frame.
+Creates tabs (with click-handlers) for Healing frame.
 
 @param[type=Frame] parentFrame
 @return[type=Frame] tabsButtonsFrame
