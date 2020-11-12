@@ -100,6 +100,7 @@ L["Hits Crit"] = "Hits Crit";
 L["Show All Casts"] = "Show All Casts";
 L["By Spell"] = "By Spell";
 L["To Each Party Member"] = "To Each Party Member";
+L["Quaked"] = "Quaked";
 -- UI end
 
 -- Help start

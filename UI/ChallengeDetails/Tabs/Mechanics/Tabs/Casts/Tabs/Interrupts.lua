@@ -40,7 +40,7 @@ function MyDungeonsBook:InterruptsFrame_Create(parentFrame, challengeId)
 	local summaryData = self:InterruptsFrame_GetDataForSummaryTable(challengeId);
 	local summaryColumns = self:InterruptsFrame_GetHeadersForSummaryTable(challengeId);
 	local summaryTable = self:TableWidget_Create(summaryColumns, 5, 40, nil, interruptsFrame, "interrupts-summary");
-	summaryTable.frame:SetPoint("TOPLEFT", 0, -280);
+	summaryTable.frame:SetPoint("TOPLEFT", 0, -290);
 	summaryTable:SetData(summaryData);
 	summaryTable:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
@@ -58,7 +58,104 @@ function MyDungeonsBook:InterruptsFrame_Create(parentFrame, challengeId)
 			end
 		end
 	});
+	local quakingData = self:InterruptsFrame_GetDataForQuakingTable(challengeId);
+	local quakingColumns = self:InterruptsFrame_GetHeadersForQuakingTable(challengeId);
+	local quakingTable = self:TableWidget_Create(quakingColumns, 5, 40, nil, interruptsFrame, "quaking-interrupts");
+	quakingTable.frame:SetPoint("TOPLEFT", 320, -290);
+	quakingTable:SetData(quakingData);
+	quakingTable:RegisterEvents({
+		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
+			if (realrow) then
+				if (column == 2 or column == 3) then
+					self:Table_Cell_SpellMouseHover(cellFrame, data[realrow].cols[2].value);
+				end
+			end
+		end,
+		OnLeave = function (_, _, _, _, _, realrow, column)
+			if (realrow) then
+				if (column == 2 or column == 3) then
+					self:Table_Cell_MouseOut();
+				end
+			end
+		end
+	});
+	if (self:Challenge_Mechanic_GetById(challengeId, "COMMON-AFFIX-QUAKING-INTERRUPTS")) then
+		quakingTable.frame:Show();
+	else
+		quakingTable.frame:Hide();
+	end
 	return interruptsFrame;
+end
+
+--[[--
+Map data about interrupts done by Quaking affix
+
+@param[type=?number] challengeId
+@return[type=table]
+]]
+function MyDungeonsBook:InterruptsFrame_GetDataForQuakingTable(challengeId)
+	local tableData = {};
+	local challenge = self:Challenge_GetById(challengeId);
+	local interruptsMechanics = self:Challenge_Mechanic_GetById(challengeId, "COMMON-AFFIX-QUAKING-INTERRUPTS");
+	if (not interruptsMechanics) then
+		self:DebugPrint(string.format("No Quaking Interrupts data for challenge #%s", challengeId));
+		return tableData;
+	end
+	for unitName, v in pairs(interruptsMechanics) do
+		local partyUnitId = self:GetPartyUnitByName(challengeId, unitName);
+		if (partyUnitId) then
+			for _, interrupts in pairs(v) do
+				for spellId, interruptsCount in pairs(interrupts) do
+					tinsert(tableData, {
+						cols = {
+							{value = self:ClassColorTextByClassIndex(challenge.players[partyUnitId].class, challenge.players[partyUnitId].name)},
+							{value = spellId},
+							{value = spellId},
+							{value = interruptsCount},
+						}
+					});
+				end
+			end
+		end
+	end
+	return tableData;
+end
+
+--[[--
+Generate columns for Quaking Interrupts table
+
+@param[type=?number] challengeId
+@return[type=table]
+]]
+function MyDungeonsBook:InterruptsFrame_GetHeadersForQuakingTable(challengeId)
+	return {
+		{
+			name = L["Player"],
+			width = 80,
+			align = "LEFT"
+		},
+		{
+			name = L["Spell"],
+			width = 40,
+			align = "LEFT",
+			DoCellUpdate = function(...)
+				self:Table_Cell_FormatAsSpellIcon(...);
+			end
+		},
+		{
+			name = "",
+			width = 100,
+			align = "LEFT",
+			DoCellUpdate = function(...)
+				self:Table_Cell_FormatAsSpellLink(...);
+			end
+		},
+		{
+			name = L["Quaked"],
+			width = 40,
+			align = "CENTER"
+		}
+	};
 end
 
 --[[--
