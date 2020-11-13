@@ -1,6 +1,7 @@
 ﻿### v1.8.0
 
 * [#82](https://github.com/onechiporenko/my-dungeons-book/issues/82) MDB window should be closable via ESC pressing
+* [#83](https://github.com/onechiporenko/my-dungeons-book/issues/83) Add percentage column for tables "Heal by Spell" and "All Damage Done"
 
 ### v1.7.0
 

@@ -60,7 +60,7 @@ function MyDungeonsBook:HealByPartyMemberBySpellFrame_GetHeadersForTable()
         },
         {
             name = "",
-            width = 120,
+            width = 90,
             align = "LEFT",
             DoCellUpdate = function(...)
                 self:Table_Cell_FormatAsSpellLink(...);
@@ -78,6 +78,14 @@ function MyDungeonsBook:HealByPartyMemberBySpellFrame_GetHeadersForTable()
             sort = "asc",
             DoCellUpdate = function(...)
                 self:Table_Cell_FormatAsNumber(...);
+            end
+        },
+        {
+            name = L["%"],
+            width = 40,
+            align = "RIGHT",
+            DoCellUpdate = function(...)
+                self:Table_Cell_FormatAsPercents(...);
             end
         },
         {
@@ -174,6 +182,7 @@ local function proceedSpellStats(spellId, spellStats, summaryRow, unitName)
             {value = spellId},
             {value = spellStats.hits},
             {value = spellStats.amount},
+            {value = 0},
             {value = spellStats.overheal},
             {value = (spellStats.hitsCrit or 0) / spellStats.hits * 100},
             {value = spellStats.hitsCrit or 0},
@@ -188,8 +197,8 @@ local function proceedSpellStats(spellId, spellStats, summaryRow, unitName)
     };
     summaryRow.cols[4].value = summaryRow.cols[4].value + spellStats.hits;
     summaryRow.cols[5].value = summaryRow.cols[5].value + spellStats.amount;
-    summaryRow.cols[6].value = summaryRow.cols[6].value + spellStats.overheal;
-    summaryRow.cols[8].value = summaryRow.cols[8].value + spellStats.hitsCrit;
+    summaryRow.cols[7].value = summaryRow.cols[7].value + spellStats.overheal;
+    summaryRow.cols[9].value = summaryRow.cols[9].value + spellStats.hitsCrit;
     return row, summaryRow;
 end
 
@@ -232,6 +241,7 @@ function MyDungeonsBook:HealByPartyMemberBySpellFrame_GetDataForTable(challengeI
             {value = -1},
             {value = 0},
             {value = 0},
+            {value = ""},
             {value = 0},
             {value = 0},
             {value = 0},
@@ -257,7 +267,10 @@ function MyDungeonsBook:HealByPartyMemberBySpellFrame_GetDataForTable(challengeI
             end
         end
     end
-    summaryRow.cols[7].value = summaryRow.cols[8].value / summaryRow.cols[4].value * 100;
+    summaryRow.cols[8].value = summaryRow.cols[9].value / summaryRow.cols[4].value * 100;
+    for _, tableRow in pairs(tableData) do
+        tableRow.cols[6].value = tableRow.cols[5].value / summaryRow.cols[5].value * 100;
+    end
     tinsert(tableData, summaryRow);
     return tableData;
 end
