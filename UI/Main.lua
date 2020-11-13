@@ -51,6 +51,8 @@ function MyDungeonsBook:MainFrame_Show()
 		self.challengeDetailsFrame = self:ChallengeDetailsFrame_Create(grid);
 		self.frame = frame;
 		frame:ResumeLayout();
+		_G["MyDungeonsBookMainFrame"] = frame.frame;
+		tinsert(UISpecialFrames, "MyDungeonsBookMainFrame");
     end
 	self.frame:Show();
 	self.challengesTable:SetData(self:ChallengesFrame_GetDataForTable());

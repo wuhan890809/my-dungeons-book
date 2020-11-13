@@ -1,4 +1,8 @@
-﻿### v1.7.0
+﻿### v1.8.0
+
+* [#82](https://github.com/onechiporenko/my-dungeons-book/issues/82) MDB window should be closable via ESC pressing
+
+### v1.7.0
 
 * [#78](https://github.com/onechiporenko/my-dungeons-book/issues/78) Row with currently viewed challenge should be highlighted
 * [#81](https://github.com/onechiporenko/my-dungeons-book/issues/81) Show interrupts done by Quaking affix
