@@ -15,6 +15,9 @@ MyDungeonsBook.OptionsDefaults = {
 				dungeon = "ALL",
 				affixes = "ALL",
 				deaths = "ALL",
+			},
+			ownCasts = {
+				spellId = "ALL"
 			}
 		}
 	},

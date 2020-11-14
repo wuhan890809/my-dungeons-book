@@ -19,11 +19,105 @@ local AceGUI = LibStub("AceGUI-3.0");
 function MyDungeonsBook:OwnCastsByPartyMemberFrame_Create(parentFrame, challengeId, unitId)
     local ownCastsByPartyMemberFrame = self:TabContentWrapperWidget_Create(parentFrame);
     local key = self:GetMechanicsPrefixForChallenge(challengeId) .. "-OWN-CASTS-DONE-BY-PARTY-MEMBERS";
+    self.db.char.filters.ownCasts.spellId = "ALL";
+    ownCastsByPartyMemberFrame.userdata.table = self:OwnCastsByPartyMemberFrame_Table_Create(ownCastsByPartyMemberFrame, challengeId, key, unitId);
+    ownCastsByPartyMemberFrame.userdata.summaryTable = self:OwnCastsByPartyMemberFrame_SummaryTable_Create(ownCastsByPartyMemberFrame, challengeId, key, unitId);
+    ownCastsByPartyMemberFrame.userdata.allImportantCastsToggle = self:OwnCastsByPartyMemberFrame_AllImportantCastsToggle_Create(ownCastsByPartyMemberFrame, challengeId, key, unitId);
+    ownCastsByPartyMemberFrame.userdata.filterBySpellId = self:OwnCastsByPartyMemberFrame_FilterBySpellId_Create(ownCastsByPartyMemberFrame, challengeId, key, unitId);
+    self.ownCastsByPartyMemberFrame = ownCastsByPartyMemberFrame;
+    return ownCastsByPartyMemberFrame;
+end
+
+--[[--
+@param[type=Frame] parentFrame
+@param[type=number] challengeId
+@param[type=string] key
+@param[type=unitId] unitId
+@param[type=Frame] filterBySpellId
+]]
+function MyDungeonsBook:OwnCastsByPartyMemberFrame_FilterBySpellId_Create(parentFrame, challengeId, key, unitId)
+    local filterBySpellId = AceGUI:Create("Dropdown");
+    local summaryData = self:OwnCastsByPartyMemberFrame_GetImportantDataForSummaryTable(challengeId, key, unitId);
+    filterBySpellId:SetWidth(200);
+    local filterBySpellIdOptions = {
+        ["ALL"] = L["All"]
+    };
+    local filterBySpellIdOptionsOrder = {"ALL"}
+    for _, row in pairs(summaryData) do
+        local spellId = row.cols[1].value;
+        filterBySpellIdOptions[spellId] = GetSpellInfo(spellId);
+        tinsert(filterBySpellIdOptionsOrder, spellId);
+    end
+    filterBySpellId:SetList(filterBySpellIdOptions, filterBySpellIdOptionsOrder);
+    filterBySpellId:SetValue(self.db.char.filters.ownCasts.spellId);
+    filterBySpellId:SetCallback("OnValueChanged", function (_, _, filterValue)
+        self:OwnCastsByPartyMemberFrame_FilterBySpellId_Update(filterValue);
+    end);
+    parentFrame:AddChild(filterBySpellId);
+    local resetFilters = AceGUI:Create("Button");
+    resetFilters:SetText(L["Reset"]);
+    resetFilters:SetWidth(90);
+    resetFilters:SetCallback("OnClick", function()
+        self:OwnCastsByPartyMemberFrame_FilterBySpellId_Update("ALL");
+        filterBySpellId:SetValue("ALL");
+    end);
+    parentFrame:AddChild(resetFilters);
+    return filterBySpellId;
+end
+
+--[[--
+@param[type=string|number] newSpellId
+]]
+function MyDungeonsBook:OwnCastsByPartyMemberFrame_FilterBySpellId_Update(newSpellId)
+    self.db.char.filters.ownCasts.spellId = newSpellId;
+    self.ownCastsByPartyMemberFrame.userdata.table:SortData();
+end
+
+--[[--
+@param[type=Frame] parentFrame
+@param[type=number] challengeId
+@param[type=string] key
+@param[type=unitId] unitId
+@param[type=Frame] allImportantCastsToggle
+]]
+function MyDungeonsBook:OwnCastsByPartyMemberFrame_AllImportantCastsToggle_Create(parentFrame, challengeId, key, unitId)
+    local allImportantCastsToggle = AceGUI:Create("CheckBox");
+    allImportantCastsToggle:SetLabel(L["Show All Casts"]);
+    allImportantCastsToggle:SetWidth(260);
+    allImportantCastsToggle:SetValue(false);
+    allImportantCastsToggle:SetCallback("OnValueChanged", function(_, _, newValue)
+        if (newValue) then
+            self.ownCastsByPartyMemberFrame.userdata.summaryTable:SetData(self:OwnCastsByPartyMemberFrame_GetAllDataForSummaryTable(challengeId, unitId));
+        else
+            self.ownCastsByPartyMemberFrame.userdata.summaryTable:SetData(self:OwnCastsByPartyMemberFrame_GetImportantDataForSummaryTable(challengeId, key, unitId));
+        end
+    end);
+    allImportantCastsToggle:SetCallback("OnEnter", function(container)
+        GameTooltip:SetOwner(container.frame, "ANCHOR_NONE");
+        GameTooltip:SetPoint("TOPLEFT", container.frame, "TOPLEFT", 0, -20);
+        GameTooltip:AddLine(L["Not all spells have usage timestamps"]);
+        GameTooltip:Show();
+    end);
+    allImportantCastsToggle:SetCallback("OnLeave", function()
+        self:Table_Cell_MouseOut(); -- just hide a tooltip
+    end);
+    parentFrame:AddChild(allImportantCastsToggle);
+    return allImportantCastsToggle;
+end
+
+--[[--
+@param[type=Frame] parentFrame
+@param[type=number] challengeId
+@param[type=string] key
+@param[type=unitId] unitId
+@param[type=table]
+]]
+function MyDungeonsBook:OwnCastsByPartyMemberFrame_Table_Create(parentFrame, challengeId, key, unitId)
     local data = self:OwnCastsByPartyMemberFrame_GetDataForTable(challengeId, key, unitId);
     local columns = self:OwnCastsByPartyMemberFrame_GetHeadersForTable(challengeId, unitId);
-    local table = self:TableWidget_Create(columns, 10, 40, nil, ownCastsByPartyMemberFrame, "own-casts-by-" .. unitId);
+    local table = self:TableWidget_Create(columns, 9, 40, {r = 1.0, g = 0.9, b = 0.0, a = 0.5}, parentFrame, "own-casts-by-" .. unitId);
     table:SetData(data);
-    table.frame:SetPoint("TOPLEFT", 260, -40);
+    table.frame:SetPoint("TOPLEFT", 260, -80);
     table:RegisterEvents({
         OnEnter = function (_, cellFrame, data, _, _, realrow, column)
             if (realrow) then
@@ -40,9 +134,29 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_Create(parentFrame, challenge
             end
         end
     });
+    table:SetFilter(function(_, row)
+        local spellId = self.db.char.filters.ownCasts.spellId;
+        if (spellId ~= "ALL") then
+            if (row.cols[1].value ~= spellId) then
+                return false;
+            end
+        end
+        return true;
+    end);
+    return table;
+end
+
+--[[--
+@param[type=Frame] parentFrame
+@param[type=number] challengeId
+@param[type=string] key
+@param[type=unitId] unitId
+@param[type=table]
+]]
+function MyDungeonsBook:OwnCastsByPartyMemberFrame_SummaryTable_Create(parentFrame, challengeId, key, unitId)
     local summaryData = self:OwnCastsByPartyMemberFrame_GetImportantDataForSummaryTable(challengeId, key, unitId);
     local summaryColumns = self:OwnCastsByPartyMemberFrame_GetHeadersForSummaryTable();
-    local summaryTable = self:TableWidget_Create(summaryColumns, 9, 40, nil, ownCastsByPartyMemberFrame, "own-casts-by-" .. unitId .. "-summary");
+    local summaryTable = self:TableWidget_Create(summaryColumns, 9, 40, nil, parentFrame, "own-casts-by-" .. unitId .. "-summary");
     summaryTable:SetData(summaryData);
     summaryTable.frame:SetPoint("TOPLEFT", 0, -80);
     summaryTable:RegisterEvents({
@@ -59,20 +173,16 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_Create(parentFrame, challenge
                     self:Table_Cell_MouseOut();
                 end
             end
+        end,
+        OnClick = function(_, _, data, _, _, realrow, _, _, button)
+            if (button == "LeftButton" and realrow) then
+                local spellId = data[realrow].cols[1].value;
+                self.ownCastsByPartyMemberFrame.userdata.filterBySpellId:SetValue(spellId);
+                self:OwnCastsByPartyMemberFrame_FilterBySpellId_Update(spellId);
+            end
         end
     });
-    local allImportantCastsToggle = AceGUI:Create("CheckBox");
-    allImportantCastsToggle:SetLabel(L["Show All Casts"]);
-    allImportantCastsToggle:SetValue(false);
-    allImportantCastsToggle:SetCallback("OnValueChanged", function(_, _, newValue)
-        if (newValue) then
-            summaryTable:SetData(self:OwnCastsByPartyMemberFrame_GetAllDataForSummaryTable(challengeId, unitId));
-        else
-            summaryTable:SetData(self:OwnCastsByPartyMemberFrame_GetImportantDataForSummaryTable(challengeId, key, unitId));
-        end
-    end);
-    ownCastsByPartyMemberFrame:AddChild(allImportantCastsToggle);
-    return ownCastsByPartyMemberFrame;
+    return summaryTable;
 end
 
 --[[--

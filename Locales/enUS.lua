@@ -103,6 +103,7 @@ L["To Each Party Member"] = "To Each Party Member";
 L["Quaked"] = "Quaked";
 L["%"] = "%";
 L["Summary"] = "Summary";
+L["Not all spells have usage timestamps"] = "Not all spells have usage timestamps";
 -- UI end
 
 -- Help start
