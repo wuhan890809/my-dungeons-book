@@ -76,7 +76,7 @@
     <Content Include="UI\ChallengeDetails\Tabs.lua">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="UI\ChallengeDetails\Tabs\Details.lua">
+    <Content Include="UI\ChallengeDetails\Tabs\Summary.lua">
       <SubType>Code</SubType>
     </Content>
     <Content Include="UI\ChallengeDetails\Tabs\DEV.lua">

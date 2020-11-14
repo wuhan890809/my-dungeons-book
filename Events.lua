@@ -239,7 +239,6 @@ function MyDungeonsBook:CHALLENGE_MODE_COMPLETED()
 		self.db.char.challenges[id].challengeInfo.keystoneUpgradeLevels = keystoneUpgradeLevels;
 		self.db.char.challenges[id].challengeInfo.timeLost = timeLost;
 		self.db.char.challenges[id].challengeInfo.numDeaths = numDeaths;
-		self.db.char.challenges[id].details = self:ParseInfoFromDetailsAddon();
 		self:LogPrint(string.format(L["%s +%s is completed"], self.db.char.challenges[id].challengeInfo.zoneName, self.db.char.challenges[id].challengeInfo.cmLevel));
 		if (self.challengesTable) then
 			self.challengesTable:SetData(self:ChallengesFrame_GetDataForTable());

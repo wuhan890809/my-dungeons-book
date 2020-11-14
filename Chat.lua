@@ -22,7 +22,6 @@ function MyDungeonsBook:ParseChatCommand(msg)
 	if (type == "help" or type == "h") then
 		local tpl = "|c0070DE00%s|r - %s";
 		self:Print(string.format(tpl, "[..]", L["alias for previous word"]));
-		self:Print(string.format(tpl, "/mdb challenge[c] active[a] details[d] parse[p]", L["save info from Details addon. It's done automatically when challenge is completed (in time or not), however it's not done if challenge is abandonned. Use this command right before leave the party."]));
 		self:Print(string.format(tpl, "/mdb challenge[c] active[a] roster[r] {{unitId}} update[u]", L["update info about party member for current challenge. unitId must be 'player' or 'party1..4'."]));
 		self:Print(string.format(tpl, "/mdb help[h]", L["print this text."]));
 		return;
@@ -43,9 +42,6 @@ function MyDungeonsBook:ParseChallengeChatCommand(challengeId, resource, subReso
 	if (resource == "roster" or resource == "r") then
 		return self:ParseRosterChatCommand(challengeId, resource, subResourceOrAction, actionOrNothing, ...);
 	end
-	if (resource == "details" or resource == "d") then
-		return self:ParseDetailsChatCommand(challengeId, resource, subResourceOrAction, ...);
-	end
 end
 
 --[[--
@@ -64,26 +60,6 @@ function MyDungeonsBook:ParseRosterChatCommand(challengeId, _, subResource, acti
 				if (action == "update" or action == "u") then
 					NotifyInspect(unitId);
 				end
-			end
-		end
-	end
-end
-
---[[--
-Parse chat command about Details addon integration (e.g. `/mdb c a d ...`).
-
-@local
-@param[type=string|number] challengeId
-@param[type=string] _
-@param[type=string] action
-]]
-function MyDungeonsBook:ParseDetailsChatCommand(challengeId, _, action)
-	if (isActiveChallengeId(challengeId) and self.db.char.activeChallengeId) then
-		local challenge = self.db.char.challenges[self.db.char.activeChallengeId];
-		if (challenge and (action == "parse" or action == "p")) then
-			if (not challenge.details.exists) then
-				self.db.char.challenges[self.db.char.activeChallengeId].details = self:ParseInfoFromDetailsAddon();
-				self:LogPrint(string.format("Info from Details addon is stored for challenge #%s", self.db.char.activeChallengeId));
 			end
 		end
 	end

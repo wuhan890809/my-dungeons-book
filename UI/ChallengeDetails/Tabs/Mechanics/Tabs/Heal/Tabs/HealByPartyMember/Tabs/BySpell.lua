@@ -60,7 +60,7 @@ function MyDungeonsBook:HealByPartyMemberBySpellFrame_GetHeadersForTable()
         },
         {
             name = "",
-            width = 90,
+            width = 110,
             align = "LEFT",
             DoCellUpdate = function(...)
                 self:Table_Cell_FormatAsSpellLink(...);
@@ -68,7 +68,7 @@ function MyDungeonsBook:HealByPartyMemberBySpellFrame_GetHeadersForTable()
         },
         {
             name = L["Hits"],
-            width = 60,
+            width = 40,
             align = "RIGHT"
         },
         {
@@ -210,7 +210,8 @@ Pets and other summonned units are included.
 @param[type=number] challengeId
 @param[type=string] key for mechanics table
 @param[type=unitId] unitId
-@return[type=table]
+@return[type=table] whole table data
+@return[type=table] summary row
 ]]
 function MyDungeonsBook:HealByPartyMemberBySpellFrame_GetDataForTable(challengeId, key, unitId)
     local tableData = {};
@@ -272,5 +273,5 @@ function MyDungeonsBook:HealByPartyMemberBySpellFrame_GetDataForTable(challengeI
         tableRow.cols[6].value = tableRow.cols[5].value / summaryRow.cols[5].value * 100;
     end
     tinsert(tableData, summaryRow);
-    return tableData;
+    return tableData, summaryRow;
 end

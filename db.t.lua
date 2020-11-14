@@ -35,7 +35,6 @@ Every challenge has next fields:
 @field[type=ChallengeInfo] challengeInfo detailed info about challenge
 @field[type=Encounters] encounters table with data about encounters (start, end, duration, deaths)
 @field[type=table] misc
-@field[type=Details] details information from Details addon about DPS, HPS etc. It's collected only if Details addon is installed
 ]]
 
 --[[--
@@ -108,30 +107,6 @@ Almost all of them can be calculated and stored. After passing challenge party c
 Each mechanic is a unique counter (well, technically it's a table with deep nested structure). One of them track interrupts, another one check how many avoidable damage got party members (say "Hello" to addon EH) etc. Every mechanic is shown in the Challenge Details tab.
 
 @table Mechanic
-]]
-
---[[--
-Information from Details addon for each party member. It's parsed when challenge is completed (e.g. after event `CHALLENGE_MODE_COMPLETED` is fired).
-
-Every key is a party member name (with realm for `party1..4`). Every value is a table from Details like `PartyMemberDetails`.
-
-@see PartyMemberDetails
-
-@table Details
-]]
-
---[[--
-Data from Details addon for a single party member.
-
-@table PartyMemberDetails
-@field[type=number] effectiveHps
-@field[type=number] activeDps
-@field[type=number] activeHps
-@field[type=number] effectiveDps
-@field[type=number] interrupt
-@field[type=number] totalHeal
-@field[type=number] dispell
-@field[type=number] totalDamage
 ]]
 
 --[[--

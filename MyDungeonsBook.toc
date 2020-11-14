@@ -19,13 +19,10 @@ UI/Main.lua
 UI/Challenges.lua
 UI/ChallengeDetails.lua
 UI/ChallengeDetails/Tabs.lua
-UI/ChallengeDetails/Tabs/Details.lua
 UI/ChallengeDetails/Tabs/DEV.lua
 UI/ChallengeDetails/Tabs/Encounters.lua
-UI/ChallengeDetails/Tabs/Roster.lua
 UI/ChallengeDetails/Tabs/Mechanics.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs.lua
-UI/ChallengeDetails/Tabs/Mechanics/Tabs/UsedItems.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Casts.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Casts/Tabs.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Casts/Tabs/Interrupts.lua
@@ -41,12 +38,6 @@ UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/DamageDoneByPartyMembers/Tab
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/DamageDoneByPartyMembers/Tabs/DamageDoneByPartyMember.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/DamageDoneToPartyMembers.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/DamageDoneToUnits.lua
-UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal.lua
-UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal/Tabs.lua
-UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal/Tabs/HealByPartyMember.lua
-UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal/Tabs/HealByPartyMember/Tabs.lua
-UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal/Tabs/HealByPartyMember/Tabs/BySpell.lua
-UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal/Tabs/HealByPartyMember/Tabs/ToEachPartyMember.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs/AvoidableDebuffs.lua
@@ -55,6 +46,15 @@ UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs/BuffsOrDebuffsOnPar
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs/AllBuffsOnPartyMembers.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs/AllDebuffsOnPartyMembers.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs/Dispels.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal/Tabs.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal/Tabs/HealByPartyMember.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal/Tabs/HealByPartyMember/Tabs.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal/Tabs/HealByPartyMember/Tabs/BySpell.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal/Tabs/HealByPartyMember/Tabs/ToEachPartyMember.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/UsedItems.lua
+UI/ChallengeDetails/Tabs/Roster.lua
+UI/ChallengeDetails/Tabs/Summary.lua
 
 Widgets/Table.lua
 Widgets/Tabs.lua

@@ -161,6 +161,11 @@ function MyDungeonsBook:DispelsFrame_GetHeadersForSummaryTable()
 			name = L["Casts"],
 			width = 35,
 			align = "CENTER"
+		},
+		{
+			name = " ",
+			width = 1,
+			align = "CENTER"
 		}
 	};
 end
@@ -198,6 +203,7 @@ function MyDungeonsBook:DispelsFrame_GetDataForSummaryTable(challengeId)
 							{value = unitSpellId},
 							{value = unitSpellId},
 							{value = sum},
+							{value = partyUnitId}
 						}
 					});
 				end

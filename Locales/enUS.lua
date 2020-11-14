@@ -102,6 +102,7 @@ L["By Spell"] = "By Spell";
 L["To Each Party Member"] = "To Each Party Member";
 L["Quaked"] = "Quaked";
 L["%"] = "%";
+L["Summary"] = "Summary";
 -- UI end
 
 -- Help start

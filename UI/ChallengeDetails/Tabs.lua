@@ -19,7 +19,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 	local tabs = self:TabsWidget_Create(parentFrame);
 	local tabsConfig = {
 		{value = "roster", text = L["Roster"]},
-		{value = "details", text = L["Details"]},
+		{value = "summary", text = L["Summary"]},
 		{value = "encounters", text = L["Encounters"]},
 		{value = "mechanics", text = L["Mechanics"]}
 	};
@@ -32,8 +32,8 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 		if (tabId == "roster") then
 			self:RosterFrame_Create(container, self.activeChallengeId);
 		end
-		if (tabId == "details") then
-			self:DetailsFrame_Create(container, self.activeChallengeId);
+		if (tabId == "summary") then
+			self:SummaryFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "encounters") then
 			self:EncountersFrame_Create(container, self.activeChallengeId);

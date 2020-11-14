@@ -387,6 +387,11 @@ function MyDungeonsBook:InterruptsFrame_GetHeadersForSummaryTable()
 			name = L["Casts"],
 			width = 35,
 			align = "CENTER"
+		},
+		{
+			name = " ",
+			width = 1,
+			align = "CENTER"
 		}
 	};
 end
@@ -434,7 +439,8 @@ function MyDungeonsBook:InterruptsFrame_GetDataForSummaryTable(challengeId)
 							{value = unitSpellId},
 							{value = unitSpellId},
 							{value = sum},
-							{value = triedToInterrupt or "-"}
+							{value = triedToInterrupt or "-"},
+							{value = partyUnitId}
 						}
 					});
 				end
