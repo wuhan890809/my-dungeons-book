@@ -28,22 +28,22 @@ function MyDungeonsBook:EffectsAndAurasFrame_CreateTabButtonsFrame(parentFrame)
 	tabs:SetCallback("OnGroupSelected", function (container, _, tabId)
 		container:ReleaseChildren();
 		if (tabId == "dispels") then
-			self:DispelsFrame_Create(container, self.activeChallengeId);
+			self.dispelsFrame = self:DispelsFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "avoidableDebuffs") then
-			self:AvoidableDebuffsFrame_Create(container, self.activeChallengeId);
+			self.avoidableDebuffsFrame = self:AvoidableDebuffsFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "allDebuffsOnPartyMembers") then
-			self:AllDebuffsOnPartyMemberFrame_Create(container, self.activeChallengeId);
+			self.allDebuffsOnPartyMemberFrame = self:AllDebuffsOnPartyMemberFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "allBuffsOnPartyMembers") then
-			self:AllBuffsOnPartyMemberFrame_Create(container, self.activeChallengeId);
+			self.allBuffsOnPartyMemberFrame = self:AllBuffsOnPartyMemberFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "buffsOrDebuffsOnPartyMembers") then
-			self:BuffsOrDebuffsOnPartyMembersFrame_Create(container, self.activeChallengeId);
+			self.buffsOrDebuffsOnPartyMembersFrame = self:BuffsOrDebuffsOnPartyMembersFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "buffsOrDebuffsOnUnits") then
-			self:BuffsOrDebuffsOnUnitsFrame_Create(container, self.activeChallengeId);
+			self.buffsOrDebuffsOnUnitsFrame = self:BuffsOrDebuffsOnUnitsFrame_Create(container, self.activeChallengeId);
 		end
 	end);
 	tabs:SetHeight(546);

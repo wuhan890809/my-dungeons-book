@@ -27,19 +27,19 @@ function MyDungeonsBook:MechanicsFrame_CreateTabButtonsFrame(parentFrame)
 	tabs:SetCallback("OnGroupSelected", function (container, _, tabId)
 		container:ReleaseChildren();
 		if (tabId == "usedItems") then
-			self:UsedItemsFrame_Create(container, self.activeChallengeId);
+			self.usedItemsFrame = self:UsedItemsFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "casts") then
-			self:CastsFrame_Create(container, self.activeChallengeId);
+			self.castsFrame = self:CastsFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "heal") then
-			self:HealByPartyMembersFrame_Create(container, self.activeChallengeId);
+			self.healByPartyMembersFrameFrame = self:HealByPartyMembersFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "damage") then
-			self:DamageFrame_Create(container, self.activeChallengeId);
+			self.damageFrame = self:DamageFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "effectsAndAuras") then
-			self:EffectsAndAurasFrame_Create(container, self.activeChallengeId);
+			self.effectsAndAurasFrame = self:EffectsAndAurasFrame_Create(container, self.activeChallengeId);
 		end
 	end);
 	tabs:SetHeight(582);

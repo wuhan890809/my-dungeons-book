@@ -1,5 +1,6 @@
 ﻿### v1.8.0
 
+* [#85](https://github.com/onechiporenko/my-dungeons-book/issues/85) Make Summary table interactable
 * [#84](https://github.com/onechiporenko/my-dungeons-book/issues/84) Add spell filter for own casts timeline
 * [#16](https://github.com/onechiporenko/my-dungeons-book/issues/16) Reformat "Details"-tab to "Summary"-tab
 * [#82](https://github.com/onechiporenko/my-dungeons-book/issues/82) MDB window should be closable via ESC pressing

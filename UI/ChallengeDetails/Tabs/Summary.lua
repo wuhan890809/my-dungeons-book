@@ -21,6 +21,34 @@ function MyDungeonsBook:SummaryFrame_Create(parentFrame, challengeId)
 	local cols = self:SummaryFrame_GetColumnsForTable();
 	local table = self:TableWidget_Create(cols, 5, 40, nil, summaryFrame, "summary");
 	table:SetData(self:SummaryFrame_GetDataForTable(challengeId));
+	table:RegisterEvents({
+		OnClick = function(_, _, data, _, _, realrow, column)
+			if (realrow) then
+				local unitId = data[realrow].cols[1].value;
+				if (column == 3 or column == 4) then
+					self.challengeDetailsFrame.tabButtonsFrame:SelectTab("mechanics");
+					self.mechanicsFrame.tabButtonsFrame:SelectTab("damage");
+					self.damageFrame.tabButtonsFrame:SelectTab("damageDoneByPartyMembers");
+					self.damageDoneByPartyMembersFrame.tabButtonsFrame:SelectTab(unitId);
+				end
+				if (column == 5 or column == 6) then
+					self.challengeDetailsFrame.tabButtonsFrame:SelectTab("mechanics");
+					self.mechanicsFrame.tabButtonsFrame:SelectTab("heal");
+					self.healByPartyMembersFrameFrame.tabButtonsFrame:SelectTab(unitId);
+				end
+				if (column == 7) then
+					self.challengeDetailsFrame.tabButtonsFrame:SelectTab("mechanics");
+					self.mechanicsFrame.tabButtonsFrame:SelectTab("casts");
+					self.castsFrame.tabButtonsFrame:SelectTab("interrupts");
+				end
+				if (column == 8) then
+					self.challengeDetailsFrame.tabButtonsFrame:SelectTab("mechanics");
+					self.mechanicsFrame.tabButtonsFrame:SelectTab("effectsAndAuras");
+					self.effectsAndAurasFrame.tabButtonsFrame:SelectTab("dispels");
+				end
+			end
+		end
+	});
 	table:SortData();
 	return summaryFrame;
 end
@@ -32,6 +60,11 @@ Generate columns for Summary table.
 ]]
 function MyDungeonsBook:SummaryFrame_GetColumnsForTable()
 	return {
+		{
+			name = "",
+			width = 1,
+			align = "LEFT"
+		},
 		{
 			name = L["Player"],
 			width = 200,
@@ -130,6 +163,9 @@ function MyDungeonsBook:SummaryFrame_GetDataForTable(challengeId)
 		end
 		tinsert(tableData, {
 			cols = {
+				{
+					value = unitId
+				},
 				{
 					value = self:GetUnitNameRealmRoleStr(challenge.players[unitId])
 				},

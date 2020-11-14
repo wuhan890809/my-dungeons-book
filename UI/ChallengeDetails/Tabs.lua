@@ -30,19 +30,19 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 	tabs:SetCallback("OnGroupSelected", function (container, _, tabId)
 		container:ReleaseChildren();
 		if (tabId == "roster") then
-			self:RosterFrame_Create(container, self.activeChallengeId);
+			self.rosterFrame = self:RosterFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "summary") then
-			self:SummaryFrame_Create(container, self.activeChallengeId);
+			self.summaryFrame = self:SummaryFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "encounters") then
-			self:EncountersFrame_Create(container, self.activeChallengeId);
+			self.encountersFrame = self:EncountersFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "dev") then
-			self:DevFrame_Create(container, self.activeChallengeId);
+			self.devFrame = self:DevFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "mechanics") then
-			self:MechanicsFrame_Create(container, self.activeChallengeId);
+			self.mechanicsFrame = self:MechanicsFrame_Create(container, self.activeChallengeId);
 		end
 	end);
 	tabs:SetHeight(618);

@@ -26,16 +26,16 @@ function MyDungeonsBook:DamageFrame_CreateTabButtonsFrame(parentFrame)
 	tabs:SetCallback("OnGroupSelected", function (container, _, tabId)
 		container:ReleaseChildren();
 		if (tabId == "avoidableDamage") then
-			self:AvoidableDamageFrame_Create(container, self.activeChallengeId);
+			self.avoidableDamageFrame = self:AvoidableDamageFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "damageDoneToPartyMembers") then
-			self:DamageDoneToPartyMembersFrame_Create(container, self.activeChallengeId);
+			self.damageDoneToPartyMembersFrame = self:DamageDoneToPartyMembersFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "damageDoneByPartyMembers") then
-			self:DamageDoneByPartyMembersFrame_Create(container, self.activeChallengeId);
+			self.damageDoneByPartyMembersFrame = self:DamageDoneByPartyMembersFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "damageDoneToUnits") then
-			self:DamageDoneToUnitsFrame_Create(container, self.activeChallengeId);
+			self.damageDoneToUnitsFrame = self:DamageDoneToUnitsFrame_Create(container, self.activeChallengeId);
 		end
 	end);
 	tabs:SetHeight(546);

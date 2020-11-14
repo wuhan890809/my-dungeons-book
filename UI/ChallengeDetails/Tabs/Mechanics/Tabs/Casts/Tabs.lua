@@ -25,13 +25,13 @@ function MyDungeonsBook:CastsFrame_CreateTabButtonsFrame(parentFrame)
 	tabs:SetCallback("OnGroupSelected", function (container, _, tabId)
 		container:ReleaseChildren();
 		if (tabId == "interrupts") then
-			self:InterruptsFrame_Create(container, self.activeChallengeId);
+			self.interruptsFrame = self:InterruptsFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "specialCasts") then
-			self:SpecialCastsFrame_Create(container, self.activeChallengeId);
+			self.specialCastsFrame = self:SpecialCastsFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "ownCasts") then
-			self:OwnCastsByPartyMembersFrame_Create(container, self.activeChallengeId);
+			self.ownCastsByPartyMembersFrame = self:OwnCastsByPartyMembersFrame_Create(container, self.activeChallengeId);
 		end
 	end);
 	tabs:SetHeight(546);
