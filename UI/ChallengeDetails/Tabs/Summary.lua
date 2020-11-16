@@ -74,14 +74,40 @@ function MyDungeonsBook:SummaryFrame_GetColumnsForTable()
 			name = L["Damage"],
 			width = 60,
 			align = "RIGHT",
+			bgcolor = {
+				r = 0,
+				g = 0,
+				b = 0,
+				a = 0.4
+			},
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsNumber(...);
 			end
 		},
 		{
-			name = L["DPS"],
-			width = 60,
+			name = L["%"],
+			width = 40,
 			align = "RIGHT",
+			bgcolor = {
+				r = 0,
+				g = 0,
+				b = 0,
+				a = 0.4
+			},
+			DoCellUpdate = function(...)
+				self:Table_Cell_FormatAsPercents(...);
+			end
+		},
+		{
+			name = L["DPS"],
+			width = 40,
+			align = "RIGHT",
+			bgcolor = {
+				r = 0,
+				g = 0,
+				b = 0,
+				a = 0.4
+			},
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsNumber(...);
 			end
@@ -95,8 +121,16 @@ function MyDungeonsBook:SummaryFrame_GetColumnsForTable()
 			end
 		},
 		{
+			name = L["%"],
+			width = 40,
+			align = "RIGHT",
+			DoCellUpdate = function(...)
+				self:Table_Cell_FormatAsPercents(...);
+			end
+		},
+		{
 			name = L["HPS"],
-			width = 60,
+			width = 40,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsNumber(...);
@@ -105,17 +139,35 @@ function MyDungeonsBook:SummaryFrame_GetColumnsForTable()
 		{
 			name = L["Interrupts"],
 			width = 60,
-			align = "RIGHT"
+			align = "RIGHT",
+			bgcolor = {
+				r = 0,
+				g = 0,
+				b = 0,
+				a = 0.4
+			},
 		},
 		{
 			name = L["Dispells"],
 			width = 60,
-			align = "RIGHT"
+			align = "RIGHT",
+			bgcolor = {
+				r = 0,
+				g = 0,
+				b = 0,
+				a = 0.4
+			},
 		},
 		{
 			name = L["Deaths"],
 			width = 60,
-			align = "RIGHT"
+			align = "RIGHT",
+			bgcolor = {
+				r = 0,
+				g = 0,
+				b = 0,
+				a = 0.4
+			},
 		}
 	};
 end
@@ -134,11 +186,13 @@ function MyDungeonsBook:SummaryFrame_GetDataForTable(challengeId)
 	end
 	local challengeDuration = (challenge.challengeInfo.duration and challenge.challengeInfo.duration / 1000) or nil;
 	local partyDeaths = self:Challenge_Mechanic_GetById(challengeId, "DEATHS");
+	local damageSum = 0;
+	local healSum = 0;
 	for _, unitId in pairs(self:GetPartyRoster()) do
 		local _, damageDoneSummaryRow = self:DamageDoneByPartyMemberFrame_GetDataForTable(challengeId, "ALL-DAMAGE-DONE-BY-PARTY-MEMBERS", unitId);
-		local allDamageDone = damageDoneSummaryRow.cols[5].value;
+		local allDamageDoneByPartyMember = damageDoneSummaryRow.cols[5].value;
 		local _, healDoneSummaryRow = self:HealByPartyMemberBySpellFrame_GetDataForTable(challengeId, "ALL-HEAL-DONE-BY-PARTY-MEMBERS", unitId);
-		local allHealDone = healDoneSummaryRow.cols[5].value;
+		local allHealDoneByPartyMember = healDoneSummaryRow.cols[5].value;
 		local interruptsTableData = self:InterruptsFrame_GetDataForSummaryTable(challengeId);
 		local unitInterruptsSum = 0;
 		for _, v in pairs(interruptsTableData) do
@@ -161,6 +215,8 @@ function MyDungeonsBook:SummaryFrame_GetDataForTable(challengeId)
 		if (partyDeaths[nameAndRealm]) then
 			deathsCount = #partyDeaths[nameAndRealm];
 		end
+		damageSum = damageSum + allDamageDoneByPartyMember;
+		healSum = healSum + allHealDoneByPartyMember;
 		tinsert(tableData, {
 			cols = {
 				{
@@ -170,16 +226,22 @@ function MyDungeonsBook:SummaryFrame_GetDataForTable(challengeId)
 					value = self:GetUnitNameRealmRoleStr(challenge.players[unitId])
 				},
 				{
-					value = allDamageDone
+					value = allDamageDoneByPartyMember
 				},
 				{
-					value = (challengeDuration and allDamageDone / challengeDuration) or "-"
+					value = 0,
 				},
 				{
-					value = allHealDone
+					value = (challengeDuration and allDamageDoneByPartyMember / challengeDuration) or "-"
 				},
 				{
-					value = (challengeDuration and allHealDone / challengeDuration) or "-"
+					value = allHealDoneByPartyMember
+				},
+				{
+					value = 0,
+				},
+				{
+					value = (challengeDuration and allHealDoneByPartyMember / challengeDuration) or "-"
 				},
 				{
 					value = unitInterruptsSum
@@ -192,6 +254,10 @@ function MyDungeonsBook:SummaryFrame_GetDataForTable(challengeId)
 				}
 			}
 		});
+	end
+	for _, row in pairs(tableData) do
+		row.cols[4].value = row.cols[3].value / damageSum * 100;
+		row.cols[7].value = row.cols[6].value / healSum * 100;
 	end
 	return tableData;
 end
