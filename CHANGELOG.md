@@ -1,5 +1,6 @@
 ﻿### v1.8.0
 
+* [#87](https://github.com/onechiporenko/my-dungeons-book/issues/87) Use `PARTY-MEMBERS-SUMMON` to check pets and summoned units in the all trackers
 * [#86](https://github.com/onechiporenko/my-dungeons-book/issues/86) Add percentage columns for Summary Table
 * [#85](https://github.com/onechiporenko/my-dungeons-book/issues/85) Make Summary table interactable
 * [#84](https://github.com/onechiporenko/my-dungeons-book/issues/84) Add spell filter for own casts timeline

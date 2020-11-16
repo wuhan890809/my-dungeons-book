@@ -159,12 +159,18 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 	self:DebugPrint(string.format("affixesKey is %s", affixesKey));
 
 	self.db.char.challenges[id].players.player = self:ParseUnitInfoWithWowApi("player");
+	local playersRealm = self.db.char.challenges[id].players.player.realm;
 	for _, unitId in pairs(self:GetPartyRoster()) do
-		self:UpdateUnitInfo(UnitGUID(unitId));
+		self:UpdateUnitInfo(UnitGUID(unitId)); -- must be done first!
+		local name, nameAndRealm = self:GetNameByPartyUnit(id, unitId);
         local petUnitId = unitId .. "pet";
         if (UnitExists(petUnitId)) then
-            self:TrackSummonnedByPartyMembersUnit(UnitName(unitId), UnitGUID(unitId), UnitName(petUnitId), UnitGUID(petUnitId));
-            self:DebugPrint(string.format("%s is saved is pet for %s", UnitName(petUnitId) or petUnitId, UnitName(unitId) or unitId));
+			local nameToUse = name;
+			if (playersRealm ~= self.db.char.challenges[id].players[unitId].realm) then
+				nameToUse = nameAndRealm;
+			end
+			self:TrackSummonnedByPartyMembersUnit(nameToUse, UnitGUID(unitId), UnitName(petUnitId), UnitGUID(petUnitId));
+            self:DebugPrint(string.format("%s is saved is pet for %s", UnitName(petUnitId) or petUnitId, nameToUse));
         end
 	end
 	NotifyInspect("player");

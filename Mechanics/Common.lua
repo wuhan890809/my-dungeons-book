@@ -27,32 +27,6 @@ local function mergeInterruptSpellId(spellId)
 	return spellId;
 end
 
-local function getPetOwner(unitGUID, partyRoster)
-	for _, unitId in pairs(partyRoster) do
-        if (UnitGUID(unitId .. "pet") == unitGUID) then
-            return unitId;
-        end
-    end
-	return nil;
-end
-
--- Tooltip to track pet's owner
-local scanTool = CreateFrame("GameTooltip", "ScanTooltip", nil, "GameTooltipTemplate");
-scanTool:SetOwner(WorldFrame, "ANCHOR_NONE");
-local scanText = _G["ScanTooltipTextLeft2"]; -- This is the line with <[Player]'s Pet>
-
--- from https://www.wowinterface.com/forums/showthread.php?t=43082
-local function getPetOwnerWithTooltip(petName)
-	scanTool:ClearLines();
-	scanTool:SetUnit(petName);
-	local ownerText = scanText:GetText();
-	if (not ownerText) then
-		return nil;
-	end
-	local owner, _ = string.split("'", ownerText);
-	return owner; -- This is the pet's owner
-end
-
 --[[--
 Add a table or counter (depends on `asCounter`) to the active challenge inside a `mechanics` (nested in 1 level).
 
@@ -190,13 +164,14 @@ function MyDungeonsBook:TrackInterrupt(unit, srcGUID, spellId, interruptedSpellI
 	local id = self.db.char.activeChallengeId;
 	--Attribute Pet Spell's to its owner
     local type = strsplit("-", srcGUID);
+	local petOwner;
     if (type == "Pet") then
-		local petOwnerId = getPetOwnerWithTooltip(srcGUID);
-		if (petOwnerId) then
-			unit = UnitName(petOwnerId);
+		local petOwner = self:SafeNestedGet(self.db.char.challenges[id].mechanics, "PARTY-MEMBERS-SUMMON", srcGUID);
+		if (not petOwner) then
+			return;
 		end
     end
-	if (not UnitIsPlayer(unit)) then
+	if ((not petOwner) and (not UnitIsPlayer(unit))) then
 		self:DebugPrint(string.format("%s is not player", unit));
 	end
 	local KEY = "COMMON-INTERRUPTS";
@@ -223,13 +198,14 @@ function MyDungeonsBook:TrackDispel(unit, srcGUID, spellId, dispelledSpellId)
 	local id = self.db.char.activeChallengeId;
 	--Attribute Pet Spell's to its owner
     local type = strsplit("-", srcGUID);
+	local petOwner;
     if (type == "Pet") then
-		local petOwnerId = getPetOwnerWithTooltip(srcGUID);
-		if (petOwnerId) then
-			unit = UnitName(petOwnerId);
+		petOwner = self:SafeNestedGet(self.db.char.challenges[id].mechanics, "PARTY-MEMBERS-SUMMON", srcGUID);
+		if (not petOwner) then
+			return;
 		end
     end
-	if (not UnitIsPlayer(unit)) then
+	if ((not petOwner) and (not UnitIsPlayer(unit))) then
 		self:DebugPrint(string.format("%s is not player", unit));
 		return;
 	end
@@ -281,10 +257,11 @@ function MyDungeonsBook:TrackTryInterrupt(sourceName, sourceGUID, spellId)
 	local KEY = "COMMON-TRY-INTERRUPT";
     --Attribute Pet Spell's to its owner
     local type = strsplit("-", sourceGUID);
+	local petOwnerId;
     if (type == "Pet") then
-		local petOwnerId = getPetOwnerWithTooltip(sourceGUID);
-		if (petOwnerId) then
-			sourceName = UnitName(unit);
+		petOwnerId = self:SafeNestedGet(self.db.char.challenges[id].mechanics, "PARTY-MEMBERS-SUMMON", sourceGUID);
+		if (not petOwnerId) then
+			return;
 		end
     end
     spellId = mergeInterruptSpellId(spellId);
@@ -337,9 +314,7 @@ Track all damage done by party members (including pets and other summonned units
 function MyDungeonsBook:TrackAllDamageDoneByPartyMembers(sourceUnitName, sourceUnitGUID, spellId, amount, overkill, crit)
 	local id = self.db.char.activeChallengeId;
 	local type = strsplit("-", sourceUnitGUID);
-	self:InitMechanics1Lvl("PARTY-MEMBERS-SUMMON");
-	local summonedUnitOwner = self.db.char.challenges[id].mechanics["PARTY-MEMBERS-SUMMON"][sourceUnitGUID];
-	local sourceUnitNameToUse = sourceUnitName;
+	local summonedUnitOwner = self:SafeNestedGet(self.db.char.challenges[id].mechanics, "PARTY-MEMBERS-SUMMON", sourceUnitGUID);
 	if ((not summonedUnitOwner) and (type ~= "Pet") and (type ~= "Player")) then
 		return;
 	end
@@ -410,9 +385,7 @@ Track all heal done by party members (including pets and other summonned units)
 function MyDungeonsBook:TrackAllHealBySpellDoneByPartyMembers(sourceUnitName, sourceUnitGUID, sourceUnitFlags, targetUnitName, targetUnitGUID, targetUnitFlags, spellId, amount, overheal, crit)
 	local id = self.db.char.activeChallengeId;
 	local type = strsplit("-", sourceUnitGUID);
-	self:InitMechanics1Lvl("PARTY-MEMBERS-SUMMON");
-	local summonedUnitOwner = self.db.char.challenges[id].mechanics["PARTY-MEMBERS-SUMMON"][sourceUnitGUID];
-	local sourceUnitNameToUse = sourceUnitName;
+	local summonedUnitOwner = self:SafeNestedGet(self.db.char.challenges[id].mechanics, "PARTY-MEMBERS-SUMMON", sourceUnitGUID);
 	local targetIsEnemy = bit.band(targetUnitFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0;
 	if (targetIsEnemy) then
 		return;
@@ -628,13 +601,14 @@ function MyDungeonsBook:TrackDamageDoneToSpecificUnits(key, npcs, sourceUnitName
 	if (not npcs[npcId]) then
 		return;
 	end
+	self:InitMechanics4Lvl(key, npcId, sourceUnitName, spellId);
     if (type == "Pet") then
-		local petOwnerId = getPetOwnerWithTooltip(sourceUnitGUID);
-		if (petOwnerId) then
-			sourceUnitName = string.format("%s (%s)", sourceUnitName, UnitName(petOwnerId));
+		local summonedUnitOwner = self:SafeNestedGet(self.db.char.challenges[id].mechanics, "PARTY-MEMBERS-SUMMON", sourceUnitGUID);
+		if (summonedUnitOwner) then
+			self:InitMechanics4Lvl(key, npcId, sourceUnitName, "meta");
+			self.db.char.challenges[id].mechanics[key][npcId][sourceUnitName].meta.unitName = summonedUnitOwner; -- save original unit name
 		end
     end
-	self:InitMechanics4Lvl(key, npcId, sourceUnitName, spellId);
 	if (not self.db.global.meta.npcs[npcId]) then
 		self.db.global.meta.npcs[npcId] = {};
 	end
@@ -650,7 +624,7 @@ function MyDungeonsBook:TrackDamageDoneToSpecificUnits(key, npcs, sourceUnitName
 	if (amount) then
 		self.db.char.challenges[id].mechanics[key][npcId][sourceUnitName][spellId].amount = self.db.char.challenges[id].mechanics[key][npcId][sourceUnitName][spellId].amount + amount;
 	else
-		self:DebugPrint(string.format("Cast of %s did `nil` amount of damage", GetSpellLink(spellId)));
+		self:DebugPrint(string.format("Cast of %s did `nil` amount of damage to %s", GetSpellLink(spellId), targetUnitName));
 	end
 	if (overkill and overkill > 0) then
 		self.db.char.challenges[id].mechanics[key][npcId][sourceUnitName][spellId].overkill = self.db.char.challenges[id].mechanics[key][npcId][sourceUnitName][spellId].overkill + overkill;
@@ -776,9 +750,7 @@ function MyDungeonsBook:TrackAllHealDoneByPartyMembersToEachOther(sourceUnitName
 	if (sourceIsPlayer) then
 		sourceNameToUse = sourceUnitName;
 	else
-		local KEY = "PARTY-MEMBERS-SUMMON";
-		self:InitMechanics1Lvl(KEY);
-		local sourceOwnerName = self.db.char.challenges[id].mechanics[KEY][sourceUnitGUID];
+		local sourceOwnerName = self:SafeNestedGet(self.db.char.challenges[id].mechanics, "PARTY-MEMBERS-SUMMON", sourceUnitGUID);
 		if (sourceOwnerName) then
 			sourceNameToUse = sourceOwnerName;
 		end
@@ -825,8 +797,7 @@ Track if summonned by party members unit is dead
 function MyDungeonsBook:TrackSummonByPartyMemberUnitDeath(targetUnitName, targetUnitGUID)
 	local id = self.db.char.activeChallengeId;
 	local KEY = "PARTY-MEMBERS-SUMMON";
-	self:InitMechanics1Lvl(KEY);
-	if (self.db.char.challenges[id].mechanics[KEY][targetUnitGUID]) then
+	if (self:SafeNestedGet(self.db.char.challenges[id].mechanics, KEY, targetUnitGUID)) then
 		self.db.char.challenges[id].mechanics[KEY][targetUnitGUID] = nil;
 	end
 end

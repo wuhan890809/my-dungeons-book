@@ -470,3 +470,48 @@ function MyDungeonsBook:TableContainsValue(tbl, value)
 	end
 	return false;
 end
+
+--[[--
+Get a value from nested table without throwing an error if some needed subtable is `nil`
+
+@usage
+MyDungeonsBook:SafeNestedGet({a = {b = {c = 1}}}, "a", "b", "c");
+@local
+@param[type=table]
+@return[type=*|nil]
+]]
+function MyDungeonsBook:SafeNestedGet(tbl, ...)
+	if (type(tbl) ~= "table") then
+		return nil;
+	end
+	local val = tbl;
+	for _, key in pairs({...}) do
+		if (type(val) ~= "table" or val[key] == nil) then
+			return nil;
+		else
+			val = val[key];
+		end
+	end
+	return val;
+end
+
+--[[--
+@usage
+local = tbl = {a = {b = {c = 1}}};
+MyDungeonsBook:SafeNestedNumberModify(tbl, 1, "a", "b", "c");
+
+@local
+]]
+function MyDungeonsBook:SafeNestedNumberModify(tbl, num, ...)
+	if (not self:SafeNestedGet(tbl, ...)) then
+		return;
+	end
+	local n = select('#', ...);
+	local lastKey = select(n, ...);
+	local lastTable = self:SafeNestedGet(tbl, unpack({...}, 1, n - 1));
+	if (lastTable) then
+		if (type(lastTable[lastKey]) == "number") then
+			lastTable[lastKey] = lastTable[lastKey] + num;
+		end
+	end
+end
