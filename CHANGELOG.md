@@ -1,4 +1,8 @@
-﻿### v1.8.0
+﻿### v1.8.1
+
+* [#88](https://github.com/onechiporenko/my-dungeons-book/issues/88) Routing on Summary table is broken
+
+### v1.8.0
 
 * [#87](https://github.com/onechiporenko/my-dungeons-book/issues/87) Use `PARTY-MEMBERS-SUMMON` to check pets and summoned units in the all trackers
 * [#86](https://github.com/onechiporenko/my-dungeons-book/issues/86) Add percentage columns for Summary Table

@@ -25,23 +25,23 @@ function MyDungeonsBook:SummaryFrame_Create(parentFrame, challengeId)
 		OnClick = function(_, _, data, _, _, realrow, column)
 			if (realrow) then
 				local unitId = data[realrow].cols[1].value;
-				if (column == 3 or column == 4) then
+				if (column == 3 or column == 4 or column == 5) then
 					self.challengeDetailsFrame.tabButtonsFrame:SelectTab("mechanics");
 					self.mechanicsFrame.tabButtonsFrame:SelectTab("damage");
 					self.damageFrame.tabButtonsFrame:SelectTab("damageDoneByPartyMembers");
 					self.damageDoneByPartyMembersFrame.tabButtonsFrame:SelectTab(unitId);
 				end
-				if (column == 5 or column == 6) then
+				if (column == 6 or column == 7 or column == 8) then
 					self.challengeDetailsFrame.tabButtonsFrame:SelectTab("mechanics");
 					self.mechanicsFrame.tabButtonsFrame:SelectTab("heal");
 					self.healByPartyMembersFrameFrame.tabButtonsFrame:SelectTab(unitId);
 				end
-				if (column == 7) then
+				if (column == 9) then
 					self.challengeDetailsFrame.tabButtonsFrame:SelectTab("mechanics");
 					self.mechanicsFrame.tabButtonsFrame:SelectTab("casts");
 					self.castsFrame.tabButtonsFrame:SelectTab("interrupts");
 				end
-				if (column == 8) then
+				if (column == 10) then
 					self.challengeDetailsFrame.tabButtonsFrame:SelectTab("mechanics");
 					self.mechanicsFrame.tabButtonsFrame:SelectTab("effectsAndAuras");
 					self.effectsAndAurasFrame.tabButtonsFrame:SelectTab("dispels");
