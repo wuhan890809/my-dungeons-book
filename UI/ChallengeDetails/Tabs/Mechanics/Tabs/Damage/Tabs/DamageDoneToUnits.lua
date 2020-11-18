@@ -208,16 +208,19 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetDataForTable(challengeId, key)
 			local amount = 0;
 			local hits = 0;
 			local overkill = 0;
-			local partyUnitId = self:GetPartyUnitByName(challengeId, partyMemberName);
+			local realPartyMemberName = (partyMemberDamage.meta and partyMemberDamage.meta.unitName) or partyMemberName;
+			local partyUnitId = self:GetPartyUnitByName(challengeId, realPartyMemberName);
 			if (partyUnitId) then
-				for _, damageBySpell in pairs(partyMemberDamage) do
-					amount = amount + damageBySpell.amount;
-					overkill = overkill + damageBySpell.overkill;
-					hits = hits + damageBySpell.hits;
+				for spellId, damageBySpell in pairs(partyMemberDamage) do
+					if (spellId ~= "meta") then
+						amount = amount + damageBySpell.amount;
+						overkill = overkill + damageBySpell.overkill;
+						hits = hits + damageBySpell.hits;
+					end
 				end
-				row[partyUnitId .. "Amount"] = amount;
-				row[partyUnitId .. "Hits"] = hits;
-				row[partyUnitId .. "Overkill"] = overkill;
+				row[partyUnitId .. "Amount"] = (row[partyUnitId .. "Amount"] or 0) + amount;
+				row[partyUnitId .. "Hits"] = (row[partyUnitId .. "Hits"] or 0) + hits;
+				row[partyUnitId .. "Overkill"] = (row[partyUnitId .. "Overkill"] or 0) + overkill;
 			else
 				self:DebugPrint(string.format("%s not found in the challenge party roster", partyMemberName));
 			end

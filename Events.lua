@@ -170,7 +170,6 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 				nameToUse = nameAndRealm;
 			end
 			self:TrackSummonnedByPartyMembersUnit(nameToUse, UnitGUID(unitId), UnitName(petUnitId), UnitGUID(petUnitId));
-            self:DebugPrint(string.format("%s is saved is pet for %s", UnitName(petUnitId) or petUnitId, nameToUse));
         end
 	end
 	NotifyInspect("player");

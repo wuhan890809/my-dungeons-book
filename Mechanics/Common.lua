@@ -11,6 +11,67 @@ Mechanics
 
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
+local petTooltipFrame = CreateFrame("GameTooltip", "MyDungeonsBookPetTooltip", nil, "GameTooltipTemplate");
+
+--[[--
+Original idea is taken from Details addon
+
+@local
+@return[type=bool]
+]]
+function MyDungeonsBook:FindNameDeclension(petTooltipText, partyMemberName)
+	--> 2 - male, 3 - female
+	for gender = 3, 2, -1 do
+		for declensionSet = 1, GetNumDeclensionSets(partyMemberName, gender) do
+			--> check genitive case of player name
+			local genitive = DeclineName(partyMemberName, gender, declensionSet);
+			if (petTooltipText:find(genitive)) then
+				return true;
+			end
+		end
+	end
+	return false;
+end
+
+--[[--
+Original idea is taken from Details addon
+
+@local
+@param[type=GUID] unitGUID
+@return[type=?string]
+]]
+function MyDungeonsBook:FindPetOwnerId(unitGUID)
+	petTooltipFrame:SetOwner(WorldFrame, "ANCHOR_NONE");
+	petTooltipFrame:SetHyperlink("unit:" .. unitGUID or "");
+
+	for _, line in pairs({"MyDungeonsBookPetTooltipTextLeft2", "MyDungeonsBookPetTooltipTextLeft3"}) do
+		local text = _G[line] and _G[line]:GetText();
+		if (text and text ~= "") then
+			for _, unitId in pairs(self:GetPartyRoster()) do
+				if (UnitExists(unitId)) then
+					local partyMemberName = UnitName(unitId);
+					--if the user client is in russian language
+					--make an attempt to remove declensions from the character's name
+					--this is equivalent to remove 's from the owner on enUS
+					if (GetLocale() == "ruRU") then
+						if (self:FindNameDeclension(text, partyMemberName)) then
+							return unitId;
+						else
+							if (text:find(partyMemberName)) then
+								return unitId;
+							end
+						end
+					else
+						if (text:find(partyMemberName)) then
+							return unitId;
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
 local function mergeInterruptSpellId(spellId)
 	-- Warlock
 	if (spellId == 119910 or spellId == 132409) then
@@ -166,13 +227,10 @@ function MyDungeonsBook:TrackInterrupt(unit, srcGUID, spellId, interruptedSpellI
     local type = strsplit("-", srcGUID);
 	local petOwner;
     if (type == "Pet") then
-		local petOwner = self:SafeNestedGet(self.db.char.challenges[id].mechanics, "PARTY-MEMBERS-SUMMON", srcGUID);
-		if (not petOwner) then
-			return;
-		end
+		local petOwner = self:GetSummonedUnitOwner(unit, srcGUID);
     end
 	if ((not petOwner) and (not UnitIsPlayer(unit))) then
-		self:DebugPrint(string.format("%s is not player", unit));
+		self:DebugPrint(string.format("%s is not player or pet", unit));
 	end
 	local KEY = "COMMON-INTERRUPTS";
 	if (spellId == 240448) then
@@ -200,13 +258,10 @@ function MyDungeonsBook:TrackDispel(unit, srcGUID, spellId, dispelledSpellId)
     local type = strsplit("-", srcGUID);
 	local petOwner;
     if (type == "Pet") then
-		petOwner = self:SafeNestedGet(self.db.char.challenges[id].mechanics, "PARTY-MEMBERS-SUMMON", srcGUID);
-		if (not petOwner) then
-			return;
-		end
+		petOwner = self:GetSummonedUnitOwner(unit, srcGUID);
     end
 	if ((not petOwner) and (not UnitIsPlayer(unit))) then
-		self:DebugPrint(string.format("%s is not player", unit));
+		self:DebugPrint(string.format("%s is not player or pet", unit));
 		return;
 	end
 	local KEY = "COMMON-DISPEL";
@@ -259,7 +314,7 @@ function MyDungeonsBook:TrackTryInterrupt(sourceName, sourceGUID, spellId)
     local type = strsplit("-", sourceGUID);
 	local petOwnerId;
     if (type == "Pet") then
-		petOwnerId = self:SafeNestedGet(self.db.char.challenges[id].mechanics, "PARTY-MEMBERS-SUMMON", sourceGUID);
+		petOwnerId = self:GetSummonedUnitOwner(sourceName, sourceGUID);
 		if (not petOwnerId) then
 			return;
 		end
@@ -314,7 +369,7 @@ Track all damage done by party members (including pets and other summonned units
 function MyDungeonsBook:TrackAllDamageDoneByPartyMembers(sourceUnitName, sourceUnitGUID, spellId, amount, overkill, crit)
 	local id = self.db.char.activeChallengeId;
 	local type = strsplit("-", sourceUnitGUID);
-	local summonedUnitOwner = self:SafeNestedGet(self.db.char.challenges[id].mechanics, "PARTY-MEMBERS-SUMMON", sourceUnitGUID);
+	local summonedUnitOwner = self:GetSummonedUnitOwner(sourceUnitName, sourceUnitGUID);
 	if ((not summonedUnitOwner) and (type ~= "Pet") and (type ~= "Player")) then
 		return;
 	end
@@ -385,7 +440,7 @@ Track all heal done by party members (including pets and other summonned units)
 function MyDungeonsBook:TrackAllHealBySpellDoneByPartyMembers(sourceUnitName, sourceUnitGUID, sourceUnitFlags, targetUnitName, targetUnitGUID, targetUnitFlags, spellId, amount, overheal, crit)
 	local id = self.db.char.activeChallengeId;
 	local type = strsplit("-", sourceUnitGUID);
-	local summonedUnitOwner = self:SafeNestedGet(self.db.char.challenges[id].mechanics, "PARTY-MEMBERS-SUMMON", sourceUnitGUID);
+	local summonedUnitOwner = self:GetSummonedUnitOwner(sourceUnitName, sourceUnitGUID);
 	local targetIsEnemy = bit.band(targetUnitFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0;
 	if (targetIsEnemy) then
 		return;
@@ -603,7 +658,7 @@ function MyDungeonsBook:TrackDamageDoneToSpecificUnits(key, npcs, sourceUnitName
 	end
 	self:InitMechanics4Lvl(key, npcId, sourceUnitName, spellId);
     if (type == "Pet") then
-		local summonedUnitOwner = self:SafeNestedGet(self.db.char.challenges[id].mechanics, "PARTY-MEMBERS-SUMMON", sourceUnitGUID);
+		local summonedUnitOwner = self:GetSummonedUnitOwner(sourceUnitName, sourceUnitGUID);
 		if (summonedUnitOwner) then
 			self:InitMechanics4Lvl(key, npcId, sourceUnitName, "meta");
 			self.db.char.challenges[id].mechanics[key][npcId][sourceUnitName].meta.unitName = summonedUnitOwner; -- save original unit name
@@ -750,7 +805,7 @@ function MyDungeonsBook:TrackAllHealDoneByPartyMembersToEachOther(sourceUnitName
 	if (sourceIsPlayer) then
 		sourceNameToUse = sourceUnitName;
 	else
-		local sourceOwnerName = self:SafeNestedGet(self.db.char.challenges[id].mechanics, "PARTY-MEMBERS-SUMMON", sourceUnitGUID);
+		local sourceOwnerName = self:GetSummonedUnitOwner(sourceUnitName, sourceUnitGUID);
 		if (sourceOwnerName) then
 			sourceNameToUse = sourceOwnerName;
 		end
@@ -786,6 +841,7 @@ function MyDungeonsBook:TrackSummonnedByPartyMembersUnit(sourceUnitName, sourceU
 	local KEY = "PARTY-MEMBERS-SUMMON";
 	self:InitMechanics1Lvl(KEY);
 	self.db.char.challenges[id].mechanics[KEY][targetUnitGUID] = sourceUnitName;
+	self:DebugPrint(string.format("%s is saved as pet for %s", targetUnitName, sourceUnitName));
 end
 
 --[[--
@@ -799,5 +855,32 @@ function MyDungeonsBook:TrackSummonByPartyMemberUnitDeath(targetUnitName, target
 	local KEY = "PARTY-MEMBERS-SUMMON";
 	if (self:SafeNestedGet(self.db.char.challenges[id].mechanics, KEY, targetUnitGUID)) then
 		self.db.char.challenges[id].mechanics[KEY][targetUnitGUID] = nil;
+	end
+end
+
+--[[--
+Works only for currently active challenge
+
+@param[type=string] petUnitName
+@param[type=GUID] petUnitGUID
+@return[type=?string]
+]]
+function MyDungeonsBook:GetSummonedUnitOwner(petUnitName, petUnitGUID)
+	local id = self.db.char.activeChallengeId;
+	local challenge = self:Challenge_GetById(id);
+	local summonedUnitOwner = self:SafeNestedGet(self.db.char.challenges[id].mechanics, "PARTY-MEMBERS-SUMMON", petUnitGUID);
+	if (not summonedUnitOwner) then
+		local ownerUnitId = self:FindPetOwnerId(petUnitGUID);
+		if (ownerUnitId) then
+			local playerRealm = challenge.players.player.realm;
+			local ownerRealm = challenge.players[ownerUnitId].realm;
+			local name, nameAndRealm = self:GetNameByPartyUnit(id, ownerUnitId);
+			local ownerName = name;
+			if (playerRealm ~= ownerRealm) then
+				ownerName = nameAndRealm;
+			end
+			self:TrackSummonnedByPartyMembersUnit(ownerName, UnitGUID(ownerName), petUnitName, petUnitGUID);
+			return ownerName;
+		end
 	end
 end

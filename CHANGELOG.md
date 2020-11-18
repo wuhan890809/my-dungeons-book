@@ -1,4 +1,8 @@
-﻿### v1.8.1
+﻿### v1.9.0
+
+* [#89](https://github.com/onechiporenko/my-dungeons-book/issues/89) Improve pet's owner tracking
+
+### v1.8.1
 
 * [#88](https://github.com/onechiporenko/my-dungeons-book/issues/88) Routing on Summary table is broken
 
