@@ -1,5 +1,6 @@
 ﻿### v1.9.0
 
+* Add more spells to track like party member's own casts
 * [#89](https://github.com/onechiporenko/my-dungeons-book/issues/89) Improve pet's owner tracking
 
 ### v1.8.1

@@ -122,6 +122,7 @@ local OwnCastsDoneByPartyMembers = {
     [114052] = true, -- Ascendance
     [198838] = true, -- Earthen Wall Tot
     [108280] = true, -- Healing Tide Tot
+    [98008] = true, -- Spirit Link Totem
     --[[
         IMMUNITY
     ]]
@@ -263,6 +264,7 @@ local OwnCastsDoneByPartyMembers = {
     [29166] = true, -- Innervate
     [132158] = true, -- Nature's Swiftne
     [106898] = true, -- Stampeding Roar
+    [77764] = true, -- Stampeding Roar
     [186257] = true, -- Aspect of the Ch
     [199483] = true, -- Camouflage
     [5384] = true, -- Feign Death
@@ -285,6 +287,11 @@ local OwnCastsDoneByPartyMembers = {
     [192077] = true, -- Wind Rush Totem
     [333889] = true, -- Fel Domination
     [64382] = true, -- Shattering Throw
+    [8143] = true, -- Tremor Totem
+    [2484] = true, -- Earthbind Totem
+    [190784] = true, -- Divine Steed
+    [1044] = true, -- Blessing of Freedom
+    [19801] = true, -- Tranquilizing Shot
     --[[
         RACE SPECIFIC
     ]]
