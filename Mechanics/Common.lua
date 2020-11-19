@@ -211,6 +211,7 @@ function MyDungeonsBook:TrackDeath(deadUnitGUID, unit)
 	if (self.db.global.meta.mechanics[key].verbose) then
 		self:LogPrint(string.format(L["%s died"], self:ClassColorText(unit, unit)));
 	end
+	self:RemoveAurasFromPartyMember(unit, deadUnitGUID);
 end
 
 --[[--
@@ -855,6 +856,88 @@ function MyDungeonsBook:TrackSummonByPartyMemberUnitDeath(targetUnitName, target
 	local KEY = "PARTY-MEMBERS-SUMMON";
 	if (self:SafeNestedGet(self.db.char.challenges[id].mechanics, KEY, targetUnitGUID)) then
 		self.db.char.challenges[id].mechanics[KEY][targetUnitGUID] = nil;
+	end
+end
+
+--[[--
+@param[type=string] sourceUnitName
+@param[type=string] sourceUnitGUID
+@param[type=number] spellId
+@param[type=string] auraType
+@param[type=number] amount
+]]
+function MyDungeonsBook:TrackAuraAddedToPartyMember(sourceUnitName, sourceUnitGUID, spellId, auraType, amount)
+	if (not UnitIsPlayer(sourceUnitName)) then
+		return;
+	end
+	if (not self.db.global.meta.spells[spellId]) then
+		self.db.global.meta.spells[spellId] = {};
+	end
+	self.db.global.meta.spells[spellId].auraType = auraType;
+	local id = self.db.char.activeChallengeId;
+	local KEY = "PARTY-MEMBERS-AURAS";
+	self:InitMechanics3Lvl(KEY, sourceUnitName, spellId);
+	if (not self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].hits) then
+		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId] = {
+			hits = 0,
+			duration = 0,
+			lastStartTime = nil,
+			maxAmount = 0
+		};
+	end
+	self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].hits = self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].hits + 1;
+	if (amount > self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].maxAmount) then
+		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].maxAmount = amount;
+	end
+	if (not self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].lastStartTime) then
+		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].lastStartTime = time();
+	end
+end
+
+--[[--
+@param[type=string] sourceUnitName
+@param[type=string] sourceUnitGUID
+@param[type=number] spellId
+@param[type=string] auraType
+@param[type=number] amount
+]]
+function MyDungeonsBook:TrackAuraRemovedFromPartyMember(sourceUnitName, sourceUnitGUID, spellId, auraType, amount)
+	if (not UnitIsPlayer(sourceUnitName)) then
+		return;
+	end
+	if (not self.db.global.meta.spells[spellId]) then
+		self.db.global.meta.spells[spellId] = {};
+	end
+	if (not self.db.global.meta.spells[spellId].auraType) then
+		self.db.global.meta.spells[spellId].auraType = auraType;
+	end
+	local id = self.db.char.activeChallengeId;
+	local KEY = "PARTY-MEMBERS-AURAS";
+	self:InitMechanics3Lvl(KEY, sourceUnitName, spellId);
+	local endTime = time();
+	if (amount == 0 and self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].lastStartTime) then
+		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].duration = self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].duration +
+			(endTime - self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].lastStartTime);
+		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].lastStartTime = nil;
+	end
+end
+
+--[[--
+Force to "clear" auras from some party member.
+
+Used when party member dies or when challenge is completed.
+
+@param[type=string] sourceUnitName
+@param[type=string] sourceUnitGUID
+]]
+function MyDungeonsBook:RemoveAurasFromPartyMember(sourceUnitName, sourceUnitGUID)
+	local KEY = "PARTY-MEMBERS-AURAS";
+	self:InitMechanics2Lvl(KEY, sourceUnitName);
+	local id = self.db.char.activeChallengeId;
+	for spellId, info in pairs(self.db.char.challenges[id].mechanics[KEY][sourceUnitName]) do
+		if (info and info.lastStartTime) then
+			self:TrackAuraRemovedFromPartyMember(sourceUnitName, sourceUnitGUID, spellId, self.db.global.meta.spells[spellId].auraType, 0);
+		end
 	end
 end
 

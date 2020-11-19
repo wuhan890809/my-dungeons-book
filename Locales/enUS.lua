@@ -104,6 +104,9 @@ L["Quaked"] = "Quaked";
 L["%"] = "%";
 L["Summary"] = "Summary";
 L["Not all spells have usage timestamps"] = "Not all spells have usage timestamps";
+L["All Buffs & Debuffs"] = "All Buffs & Debuffs";
+L["Uptime, %"] = "Uptime, %";
+L["Max Stacks"] = "Max Stacks";
 -- UI end
 
 -- Help start

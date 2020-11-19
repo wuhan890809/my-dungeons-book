@@ -101,7 +101,7 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 	if (subEventName == "SPELL_AURA_APPLIED" or
 		subEventName == "SPELL_AURA_APPLIED_DOSE") then
-		local spellId, _, _, auraType = select(12, CombatLogGetCurrentEventInfo());
+		local spellId, _, _, auraType, amount = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackAllAurasOnPartyMembers(dstName, spellId, auraType);
 		self:TrackBfAAvoidableAuras(dstName, spellId);
 		self:TrackSLAvoidableAuras(dstName, spellId);
@@ -109,6 +109,14 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		self:TrackSLSpecificBuffOrDebuffOnPartyMembers(dstName, spellId);
 		self:TrackBfASpecificBuffOrDebuffOnUnit(dstGUID, spellId);
 		self:TrackSLSpecificBuffOrDebuffOnUnit(dstGUID, spellId);
+		self:TrackAuraAddedToPartyMember(dstName, dstGUID, spellId, auraType, amount or 1);
+	end
+	if (subEventName == "SPELL_AURA_REMOVED" or
+		subEventName == "SPELL_AURA_REMOVED_DOSE" or
+		subEventName == "SPELL_AURA_BROKEN" or
+		subEventName == "SPELL_AURA_BROKEN_SPELL") then
+		local spellId, _, _, auraType, amount = select(12, CombatLogGetCurrentEventInfo());
+		self:TrackAuraRemovedFromPartyMember(dstName, dstGUID, spellId, auraType, amount or 0);
 	end
 end
 
@@ -163,12 +171,26 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 	for _, unitId in pairs(self:GetPartyRoster()) do
 		self:UpdateUnitInfo(UnitGUID(unitId)); -- must be done first!
 		local name, nameAndRealm = self:GetNameByPartyUnit(id, unitId);
+		local nameToUse = name;
+		if (playersRealm ~= self.db.char.challenges[id].players[unitId].realm) then
+			nameToUse = nameAndRealm;
+		end
+		for i = 1, 40 do
+			local buffName, _, amount, _, _, _, _, _, _, spellId = UnitBuff(unitId, i);
+			if (not buffName) then
+				break;
+			end
+			self:TrackAuraAddedToPartyMember(nameToUse, UnitGUID(unitId), spellId, "BUFF", amount);
+		end
+		for i = 1, 40 do
+			local debuffName, _, amount, _, _, _, _, _, _, spellId = UnitDebuff(unitId, i);
+			if (not debuffName) then
+				break;
+			end
+			self:TrackAuraAddedToPartyMember(nameToUse, UnitGUID(unitId), spellId, "DEBUFF", amount);
+		end
         local petUnitId = unitId .. "pet";
         if (UnitExists(petUnitId)) then
-			local nameToUse = name;
-			if (playersRealm ~= self.db.char.challenges[id].players[unitId].realm) then
-				nameToUse = nameAndRealm;
-			end
 			self:TrackSummonnedByPartyMembersUnit(nameToUse, UnitGUID(unitId), UnitName(petUnitId), UnitGUID(petUnitId));
         end
 	end
@@ -251,7 +273,16 @@ function MyDungeonsBook:CHALLENGE_MODE_COMPLETED()
 		if (self.db.char.challenges[id].mechanics["PARTY-MEMBERS-SUMMON"]) then
 			wipe(self.db.char.challenges[id].mechanics["PARTY-MEMBERS-SUMMON"]); -- no sense to store hundreds of GUIDs
 		end
-		self.db.char.challenges[id].mechanics = self:Compress(self.db.char.challenges[id].mechanics);
+		local playersRealm = self.db.char.challenges[id].players.player.realm;
+		for _, unitId in pairs(self:GetPartyRoster()) do
+			local name, nameAndRealm = self:GetNameByPartyUnit(id, unitId);
+			local nameToUse = name;
+			if (playersRealm ~= self.db.char.challenges[id].players[unitId].realm) then
+				nameToUse = nameAndRealm;
+			end
+			self:RemoveAurasFromPartyMember(nameToUse, UnitGUID(unitId));
+		end
+		self.db.char.challenges[id].mechanics = self:Compress(self.db.char.challenges[id].mechanics); -- must be last!
 	end
 	self.db.char.activeChallengeId = nil;
 end

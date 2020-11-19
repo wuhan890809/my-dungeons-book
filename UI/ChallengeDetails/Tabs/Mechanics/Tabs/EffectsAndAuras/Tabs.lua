@@ -20,8 +20,7 @@ function MyDungeonsBook:EffectsAndAurasFrame_CreateTabButtonsFrame(parentFrame)
 	tabs:SetTabs({
 		{value = "dispels", text = L["Dispels"]},
 		{value = "avoidableDebuffs", text = L["Avoidable Debuffs"]},
-		{value = "allDebuffsOnPartyMembers", text = L["All Debuffs"]},
-		{value = "allBuffsOnPartyMembers", text = L["All Buffs"]},
+		{value = "allBuffsAndDebuffsOnPartyMembers", text = L["All Buffs & Debuffs"]},
 		{value = "buffsOrDebuffsOnPartyMembers", text = L["Special Buffs Or Debuffs"]},
 		{value = "buffsOrDebuffsOnUnits", text = L["Buffs Or Debuffs On Units"]}
 	});
@@ -33,12 +32,9 @@ function MyDungeonsBook:EffectsAndAurasFrame_CreateTabButtonsFrame(parentFrame)
 		if (tabId == "avoidableDebuffs") then
 			self.avoidableDebuffsFrame = self:AvoidableDebuffsFrame_Create(container, self.activeChallengeId);
 		end
-		if (tabId == "allDebuffsOnPartyMembers") then
-			self.allDebuffsOnPartyMemberFrame = self:AllDebuffsOnPartyMemberFrame_Create(container, self.activeChallengeId);
-		end
-		if (tabId == "allBuffsOnPartyMembers") then
-			self.allBuffsOnPartyMemberFrame = self:AllBuffsOnPartyMemberFrame_Create(container, self.activeChallengeId);
-		end
+        if (tabId == "allBuffsAndDebuffsOnPartyMembers") then
+            self.allBuffsAndDebuffsOnPartyMembersFrame = self:AllBuffsAndDebuffsOnPartyMembersFrame_Create(container, self.activeChallengeId);
+        end
 		if (tabId == "buffsOrDebuffsOnPartyMembers") then
 			self.buffsOrDebuffsOnPartyMembersFrame = self:BuffsOrDebuffsOnPartyMembersFrame_Create(container, self.activeChallengeId);
 		end

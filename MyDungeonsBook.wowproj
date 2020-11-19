@@ -142,10 +142,13 @@
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs.lua">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\AllBuffsOnPartyMembers.lua">
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\AllBuffsAndDebuffsOnPartyMembers.lua">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\AllDebuffsOnPartyMembers.lua">
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\AllBuffsAndDebuffsOnPartyMembers\Tabs.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\AllBuffsAndDebuffsOnPartyMembers\Tabs\AllBuffsAndDebuffsOnPartyMember.lua">
       <SubType>Code</SubType>
     </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\AvoidableDebuffs.lua">
@@ -231,6 +234,8 @@
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Casts" />
+    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\AllBuffsAndDebuffsOnPartyMembers" />
+    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\AllBuffsAndDebuffsOnPartyMembers\Tabs" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Heal" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Heal\Tabs" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Heal\Tabs\HealByPartyMember" />

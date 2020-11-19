@@ -88,7 +88,7 @@ Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/proje
 function MyDungeonsBook:Table_Cell_FormatAsTime(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local val = data[realrow].cols[column].value;
 	local time;
-    if (val and val > 0) then
+    if (val and (type(val) == "number") and val > 0) then
         time = self:FormatTime(val);
     else
         time = "-";
