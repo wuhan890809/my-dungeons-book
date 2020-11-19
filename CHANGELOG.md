@@ -1,5 +1,6 @@
 ﻿### v1.9.0
 
+* [#90](https://github.com/onechiporenko/my-dungeons-book/issues/90) Add version `9.0.2` to BfA
 * Add more spells to track like party member's own casts
 * [#89](https://github.com/onechiporenko/my-dungeons-book/issues/89) Improve pet's owner tracking
 
