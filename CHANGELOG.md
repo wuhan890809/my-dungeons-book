@@ -1,4 +1,8 @@
-﻿### v1.9.0
+﻿### v1.10.0
+
+* Version `9.0.2` is for SL now
+
+### v1.9.0
 
 * [#21](https://github.com/onechiporenko/my-dungeons-book/issues/21) Separate all buffs and all debuffs for each player and show their duration
 * [#90](https://github.com/onechiporenko/my-dungeons-book/issues/90) Add version `9.0.2` to BfA

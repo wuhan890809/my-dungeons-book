@@ -355,7 +355,7 @@ function MyDungeonsBook:GetMechanicsPrefixForChallenge(challengeId)
 	end
 	local version = challenge.gameInfo.version;
 	local major = string.sub(version, 1, 1);
-	if (major == "8" or version == "9.0.1" or version == "9.0.2") then
+	if (major == "8" or version == "9.0.1") then
 		return "BFA";
 	end
 	if (major == "9") then
