@@ -551,30 +551,6 @@ function MyDungeonsBook:TrackAvoidableAuras(key, auras, aurasNoTank, unit, spell
 end
 
 --[[--
-Track all buffs and debuffs on party members
-
-@param[type=unitId] unit unit name that got buff or debuff (usualy it's a destUnit from `CombatLogGetCurrentEventInfo`)
-@param[type=number] spellId spell that apply debuff to `damagedUnit`
-@param[type=string] auraType
-]]
-function MyDungeonsBook:TrackAllAurasOnPartyMembers(unit, spellId, auraType)
-	if (not UnitIsPlayer(unit)) then
-		return;
-	end
-	local id = self.db.char.activeChallengeId;
-	local key = "ALL-AURAS";
-	self:InitMechanics3Lvl(key, unit, spellId);
-	if (not self.db.global.meta.spells[spellId]) then
-		self.db.global.meta.spells[spellId] = {};
-	end
-	self.db.global.meta.spells[spellId].auraType = auraType;
-	if (not self.db.char.challenges[id].mechanics[key][unit][spellId].count) then
-		self.db.char.challenges[id].mechanics[key][unit][spellId].count = 0;
-	end
-	self.db.char.challenges[id].mechanics[key][unit][spellId].count = self.db.char.challenges[id].mechanics[key][unit][spellId].count + 1;
-end
-
---[[--
 Track all casts done by party members and their pets
 
 @param[type=string] unitName caster name
@@ -741,26 +717,6 @@ function MyDungeonsBook:TrackSpecificBuffOrDebuffOnPartyMembers(key, spells, uni
 end
 
 --[[--
-Track specific buffs or debuffs got by any unit.
-
-@param[type=string] key mechanic unique identifier
-@param[type=table] spells table with needed to track buffs and debuffs (each key is npc id)
-@param[type=GUID] unitGUID GUID for unit with buff/debuff
-@param[type=number] spellId buff (or debuff) id
-]]
-function MyDungeonsBook:TrackSpecificBuffOrDebuffOnUnit(key, spells, unitGUID, spellId)
-	if (not spells[spellId]) then
-		return;
-	end
-	local id = self.db.char.activeChallengeId;
-	local npcId = self:GetNpcIdFromGuid(unitGUID);
-	if (npcId) then
-		self:InitMechanics3Lvl(key, spellId, npcId, true);
-		self.db.char.challenges[id].mechanics[key][spellId][npcId] = self.db.char.challenges[id].mechanics[key][spellId][npcId] + 1;
-	end
-end
-
---[[--
 Track if specific npc appears in combat (and how many times this happens).
 
 @param[type=string] key - mechanic unique identifier
@@ -877,24 +833,109 @@ function MyDungeonsBook:TrackAuraAddedToPartyMember(sourceUnitName, sourceUnitGU
 	local id = self.db.char.activeChallengeId;
 	local KEY = "PARTY-MEMBERS-AURAS";
 	self:InitMechanics3Lvl(KEY, sourceUnitName, spellId);
-	if (not self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].hits) then
-		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId] = {
+	self:InitMechanics4Lvl(KEY, sourceUnitName, spellId, "timeline");
+	if (not self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta) then
+		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta = {
 			hits = 0,
 			duration = 0,
 			lastStartTime = nil,
 			maxAmount = 0
 		};
 	end
-	self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].hits = self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].hits + 1;
-	if (amount > self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].maxAmount) then
-		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].maxAmount = amount;
+	local timestamp = time();
+	self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.hits = self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.hits + 1;
+	if (amount > self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.maxAmount) then
+		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.maxAmount = amount;
 	end
-	if (not self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].lastStartTime) then
-		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].lastStartTime = time();
+	if (not self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.lastStartTime) then
+		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.lastStartTime = timestamp;
+	end
+	tinsert(self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].timeline, {timestamp, amount});
+end
+
+--[[--
+Track all buffs or debuffs got by any enemy unit.
+
+@param[type=string] sourceUnitName
+@param[type=string] sourceUnitGUID
+@param[type=number] sourceUnitFlags
+@param[type=number] spellId
+@param[type=string] auraType
+@param[type=number] amount
+]]
+function MyDungeonsBook:TrackAllBuffOrDebuffOnUnit(sourceUnitName, sourceUnitGUID, sourceUnitFlags, spellId, auraType, amount)
+	local KEY = "ALL-ENEMY-AURAS";
+	if (not self.db.profile.dev.mechanics[KEY].enabled) then
+		return;
+	end
+	local targetIsEnemy = bit.band(sourceUnitFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0;
+	if (not targetIsEnemy) then
+		return;
+	end
+	local id = self.db.char.activeChallengeId;
+	local npcId = self:GetNpcIdFromGuid(sourceUnitGUID);
+	if (npcId) then
+		self.db.global.meta.spells[spellId] = self.db.global.meta.spells[spellId] or {};
+		self.db.global.meta.spells[spellId].auraType = auraType;
+		self.db.global.meta.npcs[npcId] = self.db.global.meta.npcs[npcId] or {};
+		self.db.global.meta.npcs[npcId].name = sourceUnitName;
+		self:InitMechanics3Lvl(KEY, spellId, npcId, true);
+		self.db.char.challenges[id].mechanics[KEY][spellId][npcId] = self.db.char.challenges[id].mechanics[KEY][spellId][npcId] + 1;
 	end
 end
 
 --[[--
+Tracks when specific buff or debuff is added to enemy unit
+
+@param[type=string] key
+@param[type=table] neededSpells
+@param[type=string] sourceUnitName
+@param[type=string] sourceUnitGUID
+@param[type=number] sourceUnitFlags
+@param[type=number] spellId
+@param[type=string] auraType
+@param[type=number] amount
+]]
+function MyDungeonsBook:TrackSpecificAuraAddedToEnemyUnits(key, neededSpells, sourceUnitName, sourceUnitGUID, sourceUnitFlags, spellId, auraType, amount)
+	if (not neededSpells[spellId]) then
+		return;
+	end
+	local targetIsEnemy = bit.band(sourceUnitFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0;
+	if (not targetIsEnemy) then
+		return;
+	end
+	if (not self.db.global.meta.spells[spellId]) then
+		self.db.global.meta.spells[spellId] = {};
+	end
+	self.db.global.meta.spells[spellId].auraType = auraType;
+	local id = self.db.char.activeChallengeId;
+	local npcId = self:GetNpcIdFromGuid(sourceUnitGUID);
+	self.db.global.meta.npcs[npcId] = self.db.global.meta.npcs[npcId] or {};
+	self.db.global.meta.npcs[npcId].name = sourceUnitName;
+	self:InitMechanics4Lvl(key, npcId, sourceUnitGUID, spellId);
+	if (not self.db.char.challenges[id].mechanics[key][npcId][sourceUnitGUID][spellId].meta) then
+		self.db.char.challenges[id].mechanics[key][npcId][sourceUnitGUID][spellId].meta = {
+			hits = 0,
+			duration = 0,
+			lastStartTime = nil,
+			maxAmount = 0
+		};
+		self.db.char.challenges[id].mechanics[key][npcId][sourceUnitGUID][spellId].timeline = {};
+	end
+	local timestamp = time();
+	self.db.char.challenges[id].mechanics[key][npcId][sourceUnitGUID][spellId].meta.hits = self.db.char.challenges[id].mechanics[key][npcId][sourceUnitGUID][spellId].meta.hits + 1;
+	if (amount > self.db.char.challenges[id].mechanics[key][npcId][sourceUnitGUID][spellId].meta.maxAmount) then
+		self.db.char.challenges[id].mechanics[key][npcId][sourceUnitGUID][spellId].meta.maxAmount = amount;
+	end
+	if (not self.db.char.challenges[id].mechanics[key][npcId][sourceUnitGUID][spellId].meta.lastStartTime) then
+		self.db.char.challenges[id].mechanics[key][npcId][sourceUnitGUID][spellId].meta.lastStartTime = time();
+	end
+	tinsert(self.db.char.challenges[id].mechanics[key][npcId][sourceUnitGUID][spellId].timeline, {timestamp, amount});
+end
+
+--[[--
+Track when buff or debuff is removed from party member (triggers for stacks changing too)
+
 @param[type=string] sourceUnitName
 @param[type=string] sourceUnitGUID
 @param[type=number] spellId
@@ -913,13 +954,48 @@ function MyDungeonsBook:TrackAuraRemovedFromPartyMember(sourceUnitName, sourceUn
 	end
 	local id = self.db.char.activeChallengeId;
 	local KEY = "PARTY-MEMBERS-AURAS";
-	self:InitMechanics3Lvl(KEY, sourceUnitName, spellId);
+	self:InitMechanics4Lvl(KEY, sourceUnitName, spellId, "meta");
+	self:InitMechanics4Lvl(KEY, sourceUnitName, spellId, "timeline");
 	local endTime = time();
-	if (amount == 0 and self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].lastStartTime) then
-		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].duration = self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].duration +
-			(endTime - self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].lastStartTime);
-		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].lastStartTime = nil;
+	if (amount == 0 and self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.lastStartTime) then
+		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.duration = self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.duration +
+			(endTime - self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.lastStartTime);
+		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.lastStartTime = nil;
 	end
+	tinsert(self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].timeline, {endTime, amount});
+end
+
+--[[--
+Track when buff or debuff is removed from enemy unit (triggers for stacks changing too)
+
+@param[type=string] key
+@param[type=string] sourceUnitName
+@param[type=string] sourceUnitGUID
+@param[type=string] sourceUnitFlags
+@param[type=number] spellId
+@param[type=string] auraType
+@param[type=number] amount
+]]
+function MyDungeonsBook:TrackAuraRemovedFromEnemyUnits(key, neededSpells, sourceUnitName, sourceUnitGUID, sourceUnitFlags, spellId, auraType, amount)
+	local targetIsEnemy = bit.band(sourceUnitFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0;
+	if (not targetIsEnemy) then
+		return;
+	end
+	if (not neededSpells[spellId]) then
+		return;
+	end
+	local id = self.db.char.activeChallengeId;
+	local npcId = self:GetNpcIdFromGuid(sourceUnitGUID);
+	self:InitMechanics4Lvl(key, npcId, sourceUnitGUID, spellId);
+	local endTime = time();
+	self:InitMechanics5Lvl(key, npcId, sourceUnitGUID, spellId, "meta");
+	self:InitMechanics5Lvl(key, npcId, sourceUnitGUID, spellId, "timeline");
+	if (amount == 0 and self.db.char.challenges[id].mechanics[key][npcId][sourceUnitGUID][spellId].meta.lastStartTime) then
+		self.db.char.challenges[id].mechanics[key][npcId][sourceUnitGUID][spellId].meta.duration = self.db.char.challenges[id].mechanics[key][npcId][sourceUnitGUID][spellId].meta.duration +
+				(endTime - self.db.char.challenges[id].mechanics[key][npcId][sourceUnitGUID][spellId].meta.lastStartTime);
+		self.db.char.challenges[id].mechanics[key][npcId][sourceUnitGUID][spellId].meta.lastStartTime = nil;
+	end
+	tinsert(self.db.char.challenges[id].mechanics[key][npcId][sourceUnitGUID][spellId].timeline, {endTime, amount});
 end
 
 --[[--
@@ -964,6 +1040,41 @@ function MyDungeonsBook:GetSummonedUnitOwner(petUnitName, petUnitGUID)
 			end
 			self:TrackSummonnedByPartyMembersUnit(ownerName, UnitGUID(ownerName), petUnitName, petUnitGUID);
 			return ownerName;
+		end
+	end
+end
+
+--[[--
+Track when enemy unit died
+
+Used to stop timers for buffs and debuffs for dead unit
+
+@param[type=string] sourceUnitName
+@param[type=GUID] sourceUnitGUID
+@param[type=number] sourceUnitFlags
+]]
+function MyDungeonsBook:TrackEnemyUnitDied(sourceUnitName, sourceUnitGUID, sourceUnitFlags)
+	local targetIsEnemy = bit.band(sourceUnitFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0;
+	if (not targetIsEnemy) then
+		return;
+	end
+	local id = self.db.char.activeChallengeId;
+	local npcId = self:GetNpcIdFromGuid(sourceUnitGUID);
+	local mechanics = self.db.char.challenges[id].mechanics;
+	local bfaMechanic = self:SafeNestedGet(mechanics, "BFA-BUFFS-OR-DEBUFFS-ON-UNIT", npcId, sourceUnitGUID);
+	if (bfaMechanic) then
+		for spellId, info in pairs(bfaMechanic) do
+			if (info and info.lastStartTime) then
+				self:TrackBfASpecificBuffOrDebuffRemovedFromUnit(sourceUnitName, sourceUnitGUID, sourceUnitFlags, spellId, self.db.global.meta.spells[spellId].auraType, 0);
+			end
+		end
+	end
+	local slMechanic = self:SafeNestedGet(mechanics, "SL-BUFFS-OR-DEBUFFS-ON-UNIT", npcId, sourceUnitGUID);
+	if (slMechanic) then
+		for spellId, info in pairs(slMechanic) do
+			if (info and info.lastStartTime) then
+				self:TrackSLSpecificBuffOrDebuffRemovedFromUnit(sourceUnitName, sourceUnitGUID, sourceUnitFlags, spellId, self.db.global.meta.spells[spellId].auraType, 0);
+			end
 		end
 	end
 end

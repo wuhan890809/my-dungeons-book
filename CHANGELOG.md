@@ -1,6 +1,7 @@
 ﻿### v1.10.0
 
 * Version `9.0.2` is for SL now
+* [#91](https://github.com/onechiporenko/my-dungeons-book/issues/91) Update format for buffs and debuffs stored for party members and units
 
 ### v1.9.0
 

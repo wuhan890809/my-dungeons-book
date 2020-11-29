@@ -20,9 +20,10 @@ Mouse hover/out handler are included.
 ]]
 function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_Create(parentFrame, challengeId)
 	local buffsOrDebuffsOnUnitsFrame = self:TabContentWrapperWidget_Create(parentFrame);
-	local data = self:BuffsOrDebuffsOnUnitsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-BUFFS-OR-DEBUFFS-ON-UNIT");
+	-- local data = self:BuffsOrDebuffsOnUnitsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-BUFFS-OR-DEBUFFS-ON-UNIT");
+	local data = self:BuffsOrDebuffsOnUnitsFrame_GetDataForTable(challengeId, "ENEMY-AURAS");
 	local columns = self:BuffsOrDebuffsOnUnitsFrame_GetHeadersForTable();
-	local table = self:TableWidget_Create(columns, 11, 40, nil, buffsOrDebuffsOnUnitsFrame, "buffs-or-debuffs-on-units");
+	local table = self:TableWidget_Create(columns, 11, 40, nil, buffsOrDebuffsOnUnitsFrame, "enemy-auras");
 	table:SetData(data);
 	table:RegisterEvents({
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
@@ -58,6 +59,11 @@ function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_GetHeadersForTable()
 			align = "LEFT"
 		},
 		{
+			name = L["NPC"],
+			width = 150,
+			align = "LEFT"
+		},
+		{
 			name = L["Spell"],
 			width = 40,
 			align = "LEFT",
@@ -74,16 +80,28 @@ function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_GetHeadersForTable()
 			end
 		},
 		{
-			name = L["Count"],
-			width = 80,
+			name = L["Type"],
+			width = 60,
+			align = "LEFT"
+		},
+		{
+			name = L["Time"],
+			width = 40,
 			align = "RIGHT",
-			sort = "dsc",
-			bgcolor = {
-				r = 0,
-				g = 0,
-				b = 0,
-				a = 0.4
-			}
+			sort = "asc",
+			DoCellUpdate = function(...)
+				self:Table_Cell_FormatAsTime(...);
+			end
+		},
+		{
+			name = L["Hits"],
+			width = 40,
+			align = "RIGHT"
+		},
+		{
+			name = L["Max Stacks"],
+			width = 40,
+			align = "RIGHT"
 		}
 	};
 end
@@ -105,20 +123,24 @@ function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_GetDataForTable(challengeId, 
 		self:DebugPrint(string.format("No Buff Or Debuffs On Units data for challenge #%s", challengeId));
 		return tableData;
 	end
-	for spellId, buffsOrDebuffsOnUnit in pairs(mechanics) do
-		local sum = 0;
-		for _, count in pairs(buffsOrDebuffsOnUnit) do
-			sum = sum + count;
+	for npcId, units in pairs(mechanics) do
+		for _, unit in pairs(units) do
+			for spellId, spellInfo in pairs(unit) do
+				local row = {
+					cols = {
+						{value = spellId},
+						{value = (self.db.global.meta.npcs[npcId] and self.db.global.meta.npcs[npcId].name) or npcId},
+						{value = spellId},
+						{value = spellId},
+						{value = (self.db.global.meta.spells[spellId] and self.db.global.meta.spells[spellId].auraType) or "???"},
+						{value = (spellInfo.duration  and spellInfo.duration * 1000) or "-"},
+						{value = spellInfo.hits},
+						{value = spellInfo.maxAmount}
+					}
+				};
+				tinsert(tableData, row);
+			end
 		end
-		local row = {
-			cols = {
-				{value = spellId},
-				{value = spellId},
-				{value = spellId},
-				{value = sum}
-			}
-		};
-		tinsert(tableData, row);
 	end
 	return tableData;
 end

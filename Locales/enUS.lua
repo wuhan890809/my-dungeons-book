@@ -30,6 +30,7 @@ L["Race: %s"] = "Race: %s";
 L["Hits"] = "Hits";
 L["Spell"] = "Spell";
 L["DEV"] = "DEV";
+L["Dev"] = "Dev";
 L["Mechanics"] = "Mechanics";
 L["Interrupts"] = "Interrupts";
 L["Encounters"] = "Encounters";
@@ -107,6 +108,7 @@ L["Not all spells have usage timestamps"] = "Not all spells have usage timestamp
 L["All Buffs & Debuffs"] = "All Buffs & Debuffs";
 L["Uptime, %"] = "Uptime, %";
 L["Max Stacks"] = "Max Stacks";
+L["Type"] = "Type";
 -- UI end
 
 -- Help start
@@ -140,6 +142,7 @@ L["Show LOG messages about DISPELS"] = "Show LOG messages about DISPELS";
 L["Show LOG messages about DEATHS"] = "Show LOG messages about DEATHS";
 L["Show LOG messages about NOT INTERRUPTED casts"] = "Show LOG messages about NOT INTERRUPTED casts";
 L["Options below are global. However they are overridden by LOG-option above. E.g. when \"Show LOG messages\" is disabled, no log messages will be printed independently of settings below."] = "Options below are global. However they are overridden by LOG-option above. E.g. when \"Show LOG messages\" is disabled, no log messages will be printed independently of settings below.";
+L["There is a list of internal trackers. Their info is not used directly on the UI and is useful only for devs. No sense to enable it."] = "There is a list of internal trackers. Their info is not used directly on the UI and is useful only for devs. No sense to enable it.";
 -- Settings end
 
 -- BfA start

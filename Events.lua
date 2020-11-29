@@ -29,6 +29,7 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 	if (subEventName == "UNIT_DIED") then
 		self:TrackDeath(dstGUID, dstName);
 		self:TrackSummonByPartyMemberUnitDeath(dstGUID, dstName);
+		self:TrackEnemyUnitDied(dstName, dstGUID, dstFlags);
 	end
 	if (subEventName == "UNIT_DESTROYED") then
 		self:TrackSummonByPartyMemberUnitDeath(dstGUID, dstName);
@@ -102,13 +103,13 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 	if (subEventName == "SPELL_AURA_APPLIED" or
 		subEventName == "SPELL_AURA_APPLIED_DOSE") then
 		local spellId, _, _, auraType, amount = select(12, CombatLogGetCurrentEventInfo());
-		self:TrackAllAurasOnPartyMembers(dstName, spellId, auraType);
 		self:TrackBfAAvoidableAuras(dstName, spellId);
 		self:TrackSLAvoidableAuras(dstName, spellId);
 		self:TrackBfASpecificBuffOrDebuffOnPartyMembers(dstName, spellId);
 		self:TrackSLSpecificBuffOrDebuffOnPartyMembers(dstName, spellId);
-		self:TrackBfASpecificBuffOrDebuffOnUnit(dstGUID, spellId);
-		self:TrackSLSpecificBuffOrDebuffOnUnit(dstGUID, spellId);
+		self:TrackBfASpecificBuffOrDebuffOnUnit(dstName, dstGUID, dstFlags, spellId, auraType, amount or 1);
+		self:TrackSLSpecificBuffOrDebuffOnUnit(dstName, dstGUID, dstFlags, spellId, auraType, amount or 1);
+		self:TrackAllBuffOrDebuffOnUnit(dstName, dstGUID, dstFlags, spellId, auraType, amount or 1);
 		self:TrackAuraAddedToPartyMember(dstName, dstGUID, spellId, auraType, amount or 1);
 	end
 	if (subEventName == "SPELL_AURA_REMOVED" or
@@ -117,6 +118,8 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		subEventName == "SPELL_AURA_BROKEN_SPELL") then
 		local spellId, _, _, auraType, amount = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackAuraRemovedFromPartyMember(dstName, dstGUID, spellId, auraType, amount or 0);
+		self:TrackBfASpecificBuffOrDebuffRemovedFromUnit(dstName, dstGUID, dstFlags, spellId, auraType, amount or 0);
+		self:TrackSLSpecificBuffOrDebuffRemovedFromUnit(dstName, dstGUID, dstFlags, spellId, auraType, amount or 0);
 	end
 end
 

@@ -201,7 +201,7 @@ function MyDungeonsBook:ChallengesFrame_Filters_Create(parentFrame)
 	dungeonFilter:SetWidth(220);
 	local challengeFilterOptions = {["ALL"] = L["All"]};
 	for _, challenge in pairs(self.db.char.challenges) do
-		if (next(challenge) ~= nil) then
+		if (challenge and challenge.challengeInfo and challenge.challengeInfo.currentMapId and challenge.challengeInfo.zoneName) then
 			challengeFilterOptions[challenge.challengeInfo.currentMapId] = challenge.challengeInfo.zoneName;
 		end
 	end

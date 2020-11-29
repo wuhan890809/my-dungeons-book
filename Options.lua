@@ -36,6 +36,13 @@ MyDungeonsBook.OptionsDefaults = {
 		performance = {
 			collectgarbage = true,
 			showdevtab = false
+		},
+		dev = {
+			mechanics = {
+				["ALL-ENEMY-AURAS"] = {
+					enabled = false
+				}
+			}
 		}
 	},
 	global = {
@@ -66,6 +73,10 @@ MyDungeonsBook.OptionsDefaults = {
 				},
 				["ALL-AURAS"] = {
 					id = "ALL-AURAS"
+				},
+				["ALL-ENEMY-AURAS"] = {
+					id = "ALL-ENEMY-AURAS",
+					internal = true
 				},
 				["ALL-CASTS-DONE-BY-PARTY-MEMBERS"] = {
 					id = "ALL-CASTS-DONE-BY-PARTY-MEMBERS"
@@ -390,6 +401,37 @@ MyDungeonsBook.Options = {
 					set = function (_, v)
 						MyDungeonsBook.db.profile.performance.showdevtab = v;
 					end
+				}
+			}
+		},
+		dev = {
+			order = 4,
+			name = L["Dev"],
+			type = "group",
+			args = {
+				mechanics = {
+					name = "Mechanics",
+					inline = true,
+					type = "group",
+					args = {
+						description = {
+							order = 1,
+							type = "description",
+							name = L["There is a list of internal trackers. Their info is not used directly on the UI and is useful only for devs. No sense to enable it."]
+						},
+						["ALL-ENEMY-AURAS"] = {
+							order = 2,
+							name = "ALL-ENEMY-AURAS",
+							type = "toggle",
+							width = "full",
+							get = function()
+								return MyDungeonsBook.db.profile.dev.mechanics["ALL-ENEMY-AURAS"].enabled;
+							end,
+							set = function(_, v)
+								MyDungeonsBook.db.profile.dev.mechanics["ALL-ENEMY-AURAS"].enabled = v;
+							end
+						}
+					}
 				}
 			}
 		}

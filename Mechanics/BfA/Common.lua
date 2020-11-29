@@ -398,6 +398,14 @@ local BfASpecificBuffOrDebuffOnUnit = {
 	[257649] = true, -- Boiling Rage
 	-- ToS
 	[274149] = true, -- Life Force
+	-- WM
+	[257260] = true, -- Enrage
+	[260512] = true, -- Soul Harvest
+	[264027] = true, -- Warding Candles
+	[264396] = true, -- Spectral Talisman
+	[265005] = true, -- Consumed Servant
+	[265368] = true, -- Spirited Defense
+	[278567] = true, -- Soul Fetish
 };
 
 local BfASpecificCastsDoneByPartyMembers = {
@@ -561,8 +569,12 @@ function MyDungeonsBook:TrackBfASpecificBuffOrDebuffOnPartyMembers(unit, spellId
 	self:TrackSpecificBuffOrDebuffOnPartyMembers("BFA-BUFFS-OR-DEBUFFS-ON-PARTY-MEMBERS", BfASpecificBuffOrDebuffOnPartyMembers, unit, spellId);
 end
 
-function MyDungeonsBook:TrackBfASpecificBuffOrDebuffOnUnit(unit, spellId)
-	self:TrackSpecificBuffOrDebuffOnUnit("BFA-BUFFS-OR-DEBUFFS-ON-UNIT", BfASpecificBuffOrDebuffOnUnit, unit, spellId);
+function MyDungeonsBook:TrackBfASpecificBuffOrDebuffOnUnit(sourceUnitName, sourceUnitGUID, sourceUnitFlags, spellId, auraType, amount)
+	self:TrackSpecificAuraAddedToEnemyUnits("BFA-BUFFS-OR-DEBUFFS-ON-UNIT", BfASpecificBuffOrDebuffOnUnit, sourceUnitName, sourceUnitGUID, sourceUnitFlags, spellId, auraType, amount);
+end
+
+function MyDungeonsBook:TrackBfASpecificBuffOrDebuffRemovedFromUnit(sourceUnitName, sourceUnitGUID, sourceUnitFlags, spellId, auraType, amount)
+	self:TrackAuraRemovedFromEnemyUnits("BFA-BUFFS-OR-DEBUFFS-ON-UNIT", BfASpecificBuffOrDebuffOnUnit, sourceUnitName, sourceUnitGUID, sourceUnitFlags, spellId, auraType, amount);
 end
 
 function MyDungeonsBook:TrackBfASpecificCastDoneByPartyMembers(unit, spellId)
