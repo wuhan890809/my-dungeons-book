@@ -1,5 +1,7 @@
 ﻿### v1.10.0
-
+* [#44](https://github.com/onechiporenko/my-dungeons-book/issues/44) Add spells to interrupt for Plaguefall
+* [#28](https://github.com/onechiporenko/my-dungeons-book/issues/28) Add avoidable spells and debuffs for Plaguefall
+* [#94](https://github.com/onechiporenko/my-dungeons-book/issues/94) Add units to track taken damage for Plaguefall
 * [#92](https://github.com/onechiporenko/my-dungeons-book/issues/92) Track main covenant's abilities
 * Version `9.0.2` is for SL now
 * [#91](https://github.com/onechiporenko/my-dungeons-book/issues/91) Update format for buffs and debuffs stored for party members and units

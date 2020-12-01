@@ -7,27 +7,67 @@ Mechanics
 @section Mechanics
 ]]
 
-local SLSpells = {};
+local SLSpells = {
+    -- Plaguefall
+    [320072] = true, -- Toxic Pool (Decaying Flesh Giant)
+    [328177] = true, -- Fungistorm (Fungi Stormer)
+    [319120] = true, -- Putrid Bile (Gushing Slime)
+    [327233] = true, -- Belch Plague (Plaguebelcher)
+    [326242] = true, -- Slime Wave (Globgrog)
+    [329217] = true, -- Slime Lunge (Doctor Ickus) -- TODO find out which one is correct
+    [329215] = true, -- Slime Lunge (Doctor Ickus)
+    [328395] = true, -- Venompiercer (Venomous Sniper)
+    [329163] = true, -- Ambush (Stealthlings)
+    [318949] = true, -- Festering Belch (Blighted Spinebreaker)
+    [322475] = true, -- Plague Crash (Margrave Stradama)
+    [330135] = true, -- Fount of Pestilence (Margrave Stradama DoT in her pool)
+};
 
-local SLSpellsNoTank = {};
+local SLSpellsNoTank = {
+    -- Plaguefall
+    [330403] = true, -- Wing Buffet (Plaguerocs)
+};
 
-local SLAuras = {};
+local SLAuras = {
+    -- Plaguefall
+    [336301] = true, -- Web Wrap (Domina Venomblade)
+    [333406] = true, -- Assassinate (Domina Venomblade adds)
+};
 
 local SLAurasNoTank = {};
 
-local SLSpellsToInterrupt = {};
+local SLSpellsToInterrupt = {
+    -- Plaguefall
+    [319070] = true, -- Corrosive Gunk (Rotmarrow Slime)
+    [321999] = true, -- Viral Globs (Pestilence Slime)
+    [320103] = true, -- Metamorphosis (Slithering Ooze) It's not interruptable, but npcs should be killed before cast is passed
+    [329163] = true, -- Ambush (Stealthling) It's not interruptable, but npcs can be killed or stunned before cast is passed
+};
 
 local SLUnitsAppearsInCombat = {};
 
 local SLSpecificBuffOrDebuffOnPartyMembers = {};
 
-local SLSpecificBuffOrDebuffOnUnit = {};
+local SLSpecificBuffOrDebuffOnUnit = {
+    -- Plaguefall
+    [332397] = true, -- Shroudweb (Domina Venomblade adds)
+};
 
 local SLSpecificCastsDoneByPartyMembers = {};
 
 local SLSpecificItemsUsedByPartyMembers = {};
 
-local SLDamageDoneToSpecificUnits = {};
+local SLDamageDoneToSpecificUnits = {
+    -- Plaguefall
+    [164362] = true, -- Slimy Morsel (Globgrog adds)
+    [171887] = true, -- Slimy Smorgasbord (Globgrog adds)
+    [163915] = true, -- Hatchling Nest
+    [169159] = true, -- Unstable Canister
+    [169498] = true, -- Plague Bomb (Doctor Ickus adds)
+    [168837] = true, -- Stealthling
+    [170474] = true, -- Brood Assassin (Domina Venomblade adds)
+    [165430] = true, -- Malignant Spawn (Margrave Stradama adds)
+};
 
 function MyDungeonsBook:GetSLDamageDoneToSpecificUnits()
 	return SLDamageDoneToSpecificUnits;
