@@ -1,5 +1,6 @@
 ﻿### v1.10.0
 
+* [#92](https://github.com/onechiporenko/my-dungeons-book/issues/92) Track main covenant's abilities
 * Version `9.0.2` is for SL now
 * [#91](https://github.com/onechiporenko/my-dungeons-book/issues/91) Update format for buffs and debuffs stored for party members and units
 

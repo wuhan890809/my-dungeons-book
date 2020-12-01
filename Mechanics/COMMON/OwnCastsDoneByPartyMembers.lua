@@ -360,6 +360,61 @@ local OwnCastsDoneByPartyMembers = {
     [20484] = true,  -- Rebirth
     -- Warlock
     [20707] = true,  -- Soulstone
+    --[[
+        COVENANTS SPECIFIC
+    ]]
+    -- Kyrian
+    [312202] = true, -- Shackle the Unworthy (Death Knight)
+    [306830] = true, -- Elysian Decree (Demon Hunter)
+    [326434] = true, -- Kindred Spirits (Druid)
+    [308491] = true, -- Resonating Arrow (Hunter)
+    [307443] = true, -- Radiant Spark (Mage)
+    [310454] = true, -- Weapons of Order (Monk)
+    [304971] = true, -- Divine Toll (Paladin)
+    [325013] = true, -- Boon of the Ascended (Priest)
+    [323547] = true, -- Echoing Reprimand (Rogue)
+    [324386] = true, -- Vesper Totem (Shaman)
+    [312321] = true, -- Scouring Tithe (Warlock)
+    [307865] = true, -- Spear of Bastion (Warrior)
+    -- Necrolords
+    [315443] = true, -- Abomination Limb (Death Knight)
+    [329554] = true, -- Fodder to the Flame (Demon Hunter)
+    [325727] = true, -- Adaptive Swarm (Druid)
+    [325028] = true, -- Death Chakram (Hunter)
+    [324220] = true, -- Deathborne (Mage)
+    [325216] = true, -- Bonedust Brew (Monk)
+    [328204] = true, -- Vanquisher's Hammer (Paladin)
+    [324724] = true, -- Unholy Nova (Priest)
+    [328547] = true, -- Serrated Bone Spike (Rogue)
+    [326059] = true, -- Primordial Wave (Shaman)
+    [325289] = true, -- Decimating Bolt (Warlock)
+    [324143] = true, -- Conqueror's Banner (Warrior)
+    -- Night Fae
+    [324128] = true, -- Death's Due (Death Knight)
+    [323639] = true, -- The Hunt (Demon Hunter)
+    [323764] = true, -- Convoke the Spirits (Druid)
+    [328231] = true, -- Wild Spirits (Hunter)
+    [314791] = true, -- Shifting Power (Mage)
+    [327104] = true, -- Faeline Stomp (Monk)
+    [328278] = true, -- Blessing of the Seasons (Paladin)
+    [327661] = true, -- Fae Guardians (Priest)
+    [328305] = true, -- Sepsis (Rogue)
+    [328923] = true, -- Fae Transfusion (Shaman)
+    [325640] = true, -- Soul Rot (Warlock)
+    [325886] = true, -- Ancient Aftershock (Warrior)
+    -- Venthyr
+    [311648] = true, -- Swarming Mist (Death Knight)
+    [317009] = true, -- Sinful Brand (Demon Hunter)
+    [323546] = true, -- Ravenous Frenzy (Druid)
+    [324149] = true, -- Flayed Shot (Hunter)
+    [314793] = true, -- Mirrors of Torment (Mage)
+    [326860] = true, -- Fallen Order (Monk)
+    [316958] = true, -- Ashen Hallow (Paladin)
+    [323673] = true, -- Mindgames (Priest)
+    [323654] = true, -- Flagellation (Rogue)
+    [320674] = true, -- Chain Harvest (Shaman)
+    [321792] = true, -- Impending Catastrophe (Warlock)
+    [317349] = true, -- Condemn (Warrior)
 };
 
 --[[--
