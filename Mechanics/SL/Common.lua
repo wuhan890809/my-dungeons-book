@@ -21,11 +21,19 @@ local SLSpells = {
     [318949] = true, -- Festering Belch (Blighted Spinebreaker)
     [322475] = true, -- Plague Crash (Margrave Stradama)
     [330135] = true, -- Fount of Pestilence (Margrave Stradama DoT in her pool)
+    -- Spires of Ascension
+    [331251] = true, -- Deep Connection (Kin-Tara)
+    [324662] = true, -- Ionized Plasma (Kin-Tara)
+    [324370] = true, -- Attenuated Barrage (Azules)
+    [317661] = true, -- Insidious Venom (Etherdiver)
 };
 
 local SLSpellsNoTank = {
     -- Plaguefall
     [330403] = true, -- Wing Buffet (Plaguerocs)
+    [330417] = true, -- Mighty Swing (Mire Soldier)
+    -- Spires of Ascension
+    [320966] = true, -- Overhead Slash (Kin-Tara)
 };
 
 local SLAuras = {
@@ -42,6 +50,43 @@ local SLSpellsToInterrupt = {
     [321999] = true, -- Viral Globs (Pestilence Slime)
     [320103] = true, -- Metamorphosis (Slithering Ooze) It's not interruptable, but npcs should be killed before cast is passed
     [329163] = true, -- Ambush (Stealthling) It's not interruptable, but npcs can be killed or stunned before cast is passed
+    -- Spires of Ascension
+    [317936] = true, -- Forsworn Doctrine (Forsworn Mender)
+    [317963] = true, -- Burden of Knowledge (Forsworn Castigator)
+    [327413] = true, -- Rebellious Fist (Forsworn Goliath)
+    [328295] = true, -- Greater Mending (Forsworn Warden)
+    [328137] = true, -- Dark Pulse (Forsworn Devastator)
+    [328331] = true, -- Forced Confession (Forsworn Justicar)
+    -- Theater of Pain
+    [341902] = true, -- Unholy Fervor (Battlefield Ritualist)
+    [341969] = true, -- Withering Discharge (Blighted Sludge-Spewer)
+    [342139] = true, -- Battle Trance
+    [330562] = true, -- Demoralizing Shout (Ancient Captain)
+    -- Necrotic Wake
+    [320462] = true, -- Necrotic Bolt
+    [324293] = true, -- Rasping Scream (Skeletal Marauder)
+    [334748] = true, -- Drain Fluids
+    [338353] = true, -- Goresplatter (Corpse Collector)
+    [320170] = true, -- Necrotic Bolt
+    -- Sanguine Depths
+    [319654] = true, -- Hungering Drain (Kryxis the Voracious)
+    [322433] = true, -- Stoneskin (Chamber Sentinel)
+    [321038] = true, -- Wrack Soul (Wicked Oppressor)
+    -- Mists of Tirna Scithe
+    [322938] = true, -- Harvest Essence (Drust Harvester)
+    [324914] = true, -- Nourish the Forest (Mistveil Tender)
+    [324776] = true, -- Bramblethorn Coat (Mistveil Shaper)
+    [326046] = true, -- Stimulate Resistance (Spinemaw Staghorn)
+    [340544] = true, -- Stimulate Regeneration (Spinemaw Staghorn)
+    -- Halls of Atonement
+    [325700] = true, -- Collect Sins (Depraved Collector)
+    [326607] = true, -- Turn to Stone (Stoneborn Reaver)
+    [323552] = true, -- Volley of Power (High Adjudicator Aleez)
+    [323538] = true, -- Bolt of Power (High Adjudicator Aleez)
+    -- De Other Side
+    [332706] = true, -- Heal (Atal'ai High Priest)
+    [332612] = true, -- Healing Wave (Atal'ai Hoodoo Hexxer)
+    [332084] = true, -- Self-Cleaning Cycle (Lubricator)
 };
 
 local SLUnitsAppearsInCombat = {};

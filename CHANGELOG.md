@@ -1,5 +1,13 @@
-﻿### v1.10.0
+﻿### v2.0.0
+
+* [#43](https://github.com/onechiporenko/my-dungeons-book/issues/43) Add spells to interrupt for Necrotic Wake
 * [#44](https://github.com/onechiporenko/my-dungeons-book/issues/44) Add spells to interrupt for Plaguefall
+* [#45](https://github.com/onechiporenko/my-dungeons-book/issues/45) Add spells to interrupt for De Other Side
+* [#46](https://github.com/onechiporenko/my-dungeons-book/issues/46) Add spells to interrupt for Halls of Atonement
+* [#47](https://github.com/onechiporenko/my-dungeons-book/issues/47) Add spells to interrupt for Spires of Ascension
+* [#48](https://github.com/onechiporenko/my-dungeons-book/issues/48) Add spells to interrupt for Theater of Pain
+* [#49](https://github.com/onechiporenko/my-dungeons-book/issues/49) Add spells to interrupt for Mists of Tirna Scithe
+* [#50](https://github.com/onechiporenko/my-dungeons-book/issues/50) Add spells to interrupt for Sanguine Depths
 * [#28](https://github.com/onechiporenko/my-dungeons-book/issues/28) Add avoidable spells and debuffs for Plaguefall
 * [#94](https://github.com/onechiporenko/my-dungeons-book/issues/94) Add units to track taken damage for Plaguefall
 * [#92](https://github.com/onechiporenko/my-dungeons-book/issues/92) Track main covenant's abilities

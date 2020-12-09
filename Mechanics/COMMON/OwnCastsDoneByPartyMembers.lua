@@ -415,6 +415,16 @@ local OwnCastsDoneByPartyMembers = {
     [320674] = true, -- Chain Harvest (Shaman)
     [321792] = true, -- Impending Catastrophe (Warlock)
     [317349] = true, -- Condemn (Warrior)
+
+    --[[
+        Dungeons specific stuff for covenants
+    ]]
+    -- Plaguefall (Necrolord)
+    [340210] = true, -- Corrosive Gunk
+    [340225] = true, -- Rapid Infection
+    [340271] = true, -- Congealed Contagion
+    -- Spires of Ascension (Kyrian)
+    [339916] = true, -- Spear of Destiny
 };
 
 --[[--
