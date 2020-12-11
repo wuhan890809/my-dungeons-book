@@ -9,17 +9,24 @@ Mechanics
 
 local SLSpells = {
     -- Plaguefall
+    [319898] = true, -- Vile Spit (Slime Tentacle)
+    [328501] = true, -- Plague Bomb (Rigged Plagueborer)
+    [322475] = true, -- Plague Crash (Margrave Stradama adds)
+    [322358] = true, -- Burning Strain (Doctor Ickus)
+    [318949] = true, -- Festering Belch (Blighted Spinebreaker)
+    [330404] = true, -- Wing Buffet
+    [328395] = true, -- Venompiercer (Venomous Sniper)
+    [328986] = true, -- Violent Detonation (Unstable Canister)
+    [322410] = true, -- Withering Filth (Congealed Slime)
+    [327233] = true, -- Belch Plague (Plaguebelcher)
+    [319120] = true, -- Putrid Bile
+    [344001] = true, -- Slime Trail
     [320072] = true, -- Toxic Pool (Decaying Flesh Giant)
     [328177] = true, -- Fungistorm (Fungi Stormer)
-    [319120] = true, -- Putrid Bile (Gushing Slime)
-    [327233] = true, -- Belch Plague (Plaguebelcher)
     [326242] = true, -- Slime Wave (Globgrog)
     [329217] = true, -- Slime Lunge (Doctor Ickus) -- TODO find out which one is correct
     [329215] = true, -- Slime Lunge (Doctor Ickus)
-    [328395] = true, -- Venompiercer (Venomous Sniper)
     [329163] = true, -- Ambush (Stealthlings)
-    [318949] = true, -- Festering Belch (Blighted Spinebreaker)
-    [322475] = true, -- Plague Crash (Margrave Stradama)
     [330135] = true, -- Fount of Pestilence (Margrave Stradama DoT in her pool)
     -- Spires of Ascension
     [331251] = true, -- Deep Connection (Kin-Tara)
@@ -32,6 +39,16 @@ local SLSpellsNoTank = {
     -- Plaguefall
     [330403] = true, -- Wing Buffet (Plaguerocs)
     [330417] = true, -- Mighty Swing (Mire Soldier)
+    [322239] = true, -- Touch of Slime (Malignant Spawn)
+    [330417] = true, -- Mighty Swing (Mire Soldier)
+    [325550] = true, -- Venomblades (Domina Venomblade)
+    [327882] = true, -- Blightbeak (Plagueroc)
+    [328094] = true, -- Pestilence Bolt
+    [329110] = true, -- Slime Injection (Doctor Ickus)
+    [335863] = true, -- Nibble (Creepy Crawler)
+    [328342] = true, -- Venomfangs
+    [334926] = true, -- Wretched Phlegm (Rigged Plagueborer)
+    [325552] = true, -- Cytotoxic Slash (Cytotoxic Slash)
     -- Spires of Ascension
     [320966] = true, -- Overhead Slash (Kin-Tara)
 };
@@ -40,9 +57,18 @@ local SLAuras = {
     -- Plaguefall
     [336301] = true, -- Web Wrap (Domina Venomblade)
     [333406] = true, -- Assassinate (Domina Venomblade adds)
+    [344001] = true, -- Slime Trail
+    [322358] = true, -- Burning Strain (Doctor Ickus)
+    [327882] = true, -- Blightbeak (Plagueroc)
+    [319898] = true, -- Vile Spit (Slime Tentacle)
+    [319120] = true, -- Putrid Bile
+    [328501] = true, -- Plague Bomb (Rigged Plagueborer)
+    [320512] = true, -- Corroded Claws (Rotting Slimeclaw)
 };
 
-local SLAurasNoTank = {};
+local SLAurasNoTank = {
+    [325552] = true, -- Cytotoxic Slash (Domina Venomblade)
+};
 
 local SLSpellsToInterrupt = {
     -- Plaguefall
@@ -83,6 +109,7 @@ local SLSpellsToInterrupt = {
     [326607] = true, -- Turn to Stone (Stoneborn Reaver)
     [323552] = true, -- Volley of Power (High Adjudicator Aleez)
     [323538] = true, -- Bolt of Power (High Adjudicator Aleez)
+    [326607] = true, -- Turn to Stone (Stoneborn Reaver)
     -- De Other Side
     [332706] = true, -- Heal (Atal'ai High Priest)
     [332612] = true, -- Healing Wave (Atal'ai Hoodoo Hexxer)

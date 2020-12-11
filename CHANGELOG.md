@@ -1,4 +1,10 @@
-﻿### v2.0.0
+﻿### v2.1.0
+
+* [#28](https://github.com/onechiporenko/my-dungeons-book/issues/28) Add avoidable spells and debuffs for Plaguefall   
+* Remove BfA-related tracker-calls (don't delete trackers)
+* Fix Summary-tab when no deaths were while challenge
+
+### v2.0.0
 
 * [#43](https://github.com/onechiporenko/my-dungeons-book/issues/43) Add spells to interrupt for Necrotic Wake
 * [#44](https://github.com/onechiporenko/my-dungeons-book/issues/44) Add spells to interrupt for Plaguefall

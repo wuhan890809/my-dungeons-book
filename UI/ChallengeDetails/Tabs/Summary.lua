@@ -209,10 +209,10 @@ function MyDungeonsBook:SummaryFrame_GetDataForTable(challengeId)
 		end
 		local deathsCount = 0;
 		local name, nameAndRealm = self:GetNameByPartyUnit(challengeId, unitId);
-		if (partyDeaths[name]) then
+		if (partyDeaths and partyDeaths[name]) then
 			deathsCount = #partyDeaths[name];
 		end
-		if (partyDeaths[nameAndRealm]) then
+		if (partyDeaths and partyDeaths[nameAndRealm]) then
 			deathsCount = #partyDeaths[nameAndRealm];
 		end
 		damageSum = damageSum + allDamageDoneByPartyMember;

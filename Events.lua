@@ -20,7 +20,6 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 	local timestamp, subEventName, hideCaster, srcGUID, srcName, srcFlags, srcFlags2, dstGUID, dstName, dstFlags, dstFlags2 = CombatLogGetCurrentEventInfo();
 	local subEventPrefix, subEventSuffix = subEventName:match("^(.-)_?([^_]*)$");
-	self:TrackBfAUnitsAppearsInCombat(srcGUID, dstGUID);
 	self:TrackSLUnitsAppearsInCombat(srcGUID, dstGUID);
 	if (subEventSuffix == "SUMMON" or
 		subEventSuffix == "CREATE") then
@@ -63,12 +62,9 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		local spellId = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackTryInterrupt(srcName, srcGUID, spellId);
 		self:TrackSLPassedCasts(srcName, spellId);
-		self:TrackBfAPassedCasts(srcName, spellId);
 		self:TrackAllEnemiesPassedCasts(srcName, srcGUID, spellId);
-		self:TrackBfASpecificCastDoneByPartyMembers(srcName, spellId);
 		self:TrackSLSpecificCastDoneByPartyMembers(srcName, spellId);
 		self:TrackAllCastsDoneByPartyMembers(srcName, srcGUID, spellId);
-		self:TrackBfASpecificItemUsedByPartyMembers(srcName, spellId);
 		self:TrackSLSpecificItemUsedByPartyMembers(srcName, spellId);
 		self:TrackOwnCastDoneByPartyMembers(srcName, spellId, dstName);
 	end
@@ -76,16 +72,13 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		local spellId, _, _, amount, overkill, _, _, _, _, crit = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackAllDamageDoneToPartyMembers(dstName, spellId, amount);
 		self:TrackAllDamageDoneByPartyMembers(srcName, srcGUID, spellId, amount, overkill, crit);
-		self:TrackBfAAvoidableSpells(dstName, spellId, amount);
 		self:TrackSLAvoidableSpells(dstName, spellId, amount);
-		self:TrackBfADamageDoneToSpecificUnits(srcName, srcGUID, spellId, amount, overkill, dstName, dstGUID);
 		self:TrackSLDamageDoneToSpecificUnits(srcName, srcGUID, spellId, amount, overkill, dstName, dstGUID);
 	end
 	if (subEventName == "SWING_DAMAGE") then
 		local amount, overkill, _, _, _, _, crit = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackAllDamageDoneToPartyMembers(dstName, -2, amount);
 		self:TrackAllDamageDoneByPartyMembers(srcName, srcGUID, -2, amount, overkill, crit);
-		self:TrackBfADamageDoneToSpecificUnits(srcName, srcGUID, -2, amount, overkill, dstName, dstGUID);
 		self:TrackSLDamageDoneToSpecificUnits(srcName, srcGUID, -2, amount, overkill, dstName, dstGUID);
 	end
 	if (subEventName == "SPELL_EXTRA_ATTACKS") then
@@ -96,18 +89,14 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 	if (subEventPrefix:match("^SPELL") and
 		subEventSuffix == "MISSED") then
 		local spellId, _, _, _, _, amount = select(12, CombatLogGetCurrentEventInfo());
-		self:TrackBfAAvoidableSpells(dstName, spellId, amount);
 		self:TrackSLAvoidableSpells(dstName, spellId, amount);
 		self:TrackAllDamageDoneToPartyMembers(dstName, spellId, amount);
 	end
 	if (subEventName == "SPELL_AURA_APPLIED" or
 		subEventName == "SPELL_AURA_APPLIED_DOSE") then
 		local spellId, _, _, auraType, amount = select(12, CombatLogGetCurrentEventInfo());
-		self:TrackBfAAvoidableAuras(dstName, spellId);
 		self:TrackSLAvoidableAuras(dstName, spellId);
-		self:TrackBfASpecificBuffOrDebuffOnPartyMembers(dstName, spellId);
 		self:TrackSLSpecificBuffOrDebuffOnPartyMembers(dstName, spellId);
-		self:TrackBfASpecificBuffOrDebuffOnUnit(dstName, dstGUID, dstFlags, spellId, auraType, amount or 1);
 		self:TrackSLSpecificBuffOrDebuffOnUnit(dstName, dstGUID, dstFlags, spellId, auraType, amount or 1);
 		self:TrackAllBuffOrDebuffOnUnit(dstName, dstGUID, dstFlags, spellId, auraType, amount or 1);
 		self:TrackAuraAddedToPartyMember(dstName, dstGUID, spellId, auraType, amount or 1);
@@ -118,7 +107,6 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		subEventName == "SPELL_AURA_BROKEN_SPELL") then
 		local spellId, _, _, auraType, amount = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackAuraRemovedFromPartyMember(dstName, dstGUID, spellId, auraType, amount or 0);
-		self:TrackBfASpecificBuffOrDebuffRemovedFromUnit(dstName, dstGUID, dstFlags, spellId, auraType, amount or 0);
 		self:TrackSLSpecificBuffOrDebuffRemovedFromUnit(dstName, dstGUID, dstFlags, spellId, auraType, amount or 0);
 	end
 end
