@@ -376,6 +376,7 @@ local OwnCastsDoneByPartyMembers = {
     [324386] = true, -- Vesper Totem (Shaman)
     [312321] = true, -- Scouring Tithe (Warlock)
     [307865] = true, -- Spear of Bastion (Warrior)
+    [324739] = true, -- Summon Steward
     -- Necrolords
     [315443] = true, -- Abomination Limb (Death Knight)
     [329554] = true, -- Fodder to the Flame (Demon Hunter)
@@ -389,6 +390,7 @@ local OwnCastsDoneByPartyMembers = {
     [326059] = true, -- Primordial Wave (Shaman)
     [325289] = true, -- Decimating Bolt (Warlock)
     [324143] = true, -- Conqueror's Banner (Warrior)
+    [324631] = true, -- Fleshcraft
     -- Night Fae
     [324128] = true, -- Death's Due (Death Knight)
     [323639] = true, -- The Hunt (Demon Hunter)
@@ -402,6 +404,7 @@ local OwnCastsDoneByPartyMembers = {
     [328923] = true, -- Fae Transfusion (Shaman)
     [325640] = true, -- Soul Rot (Warlock)
     [325886] = true, -- Ancient Aftershock (Warrior)
+    [310143] = true, -- Soulshape
     -- Venthyr
     [311648] = true, -- Swarming Mist (Death Knight)
     [317009] = true, -- Sinful Brand (Demon Hunter)
@@ -415,6 +418,7 @@ local OwnCastsDoneByPartyMembers = {
     [320674] = true, -- Chain Harvest (Shaman)
     [321792] = true, -- Impending Catastrophe (Warlock)
     [317349] = true, -- Condemn (Warrior)
+    [300728] = true, -- Door of Shadows
 
     --[[
         Dungeons specific stuff for covenants

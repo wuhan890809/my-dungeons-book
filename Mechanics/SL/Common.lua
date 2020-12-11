@@ -28,6 +28,19 @@ local SLSpells = {
     [329215] = true, -- Slime Lunge (Doctor Ickus)
     [329163] = true, -- Ambush (Stealthlings)
     [330135] = true, -- Fount of Pestilence (Margrave Stradama DoT in her pool)
+    -- The Necrotic Wake
+    [345625] = true, -- Death Burst (Nar'zudah <Servant of Amarth>)
+    [320574] = true, -- Shadow Well
+    [324391] = true, -- Frigid Spikes
+    [327952] = true, -- Meat Hook
+    [320614] = true, -- Blood Gorge (Carrion Worm)
+    [334749] = true, -- Drain Fluids
+    [320784] = true, -- Comet Storm (Nalthor the Rimebinder)
+    [328212] = true, -- Razorshard Ice
+    [324381] = true, -- Chill Scythe
+    [327100] = true, -- Noxious Fog
+    [333489] = true, -- Necrotic Breath
+    [333492] = true, -- Necrotic Ichor
     -- Spires of Ascension
     [331251] = true, -- Deep Connection (Kin-Tara)
     [324662] = true, -- Ionized Plasma (Kin-Tara)
@@ -49,6 +62,21 @@ local SLSpellsNoTank = {
     [328342] = true, -- Venomfangs
     [334926] = true, -- Wretched Phlegm (Rigged Plagueborer)
     [325552] = true, -- Cytotoxic Slash (Cytotoxic Slash)
+    -- The Necrotic Wake
+    [320771] = true, -- Icy Shard (Nalthor the Rimebinder)
+    [338456] = true, -- Mutlilate
+    [321807] = true, -- Boneflay (Zolramus Bonecarver)
+    [320580] = true, -- Melee
+    [324323] = true, -- Gruesome Cleave
+    [320696] = true, -- Bone Claw
+    [338357] = true, -- Tenderize
+    [334488] = true, -- Sever Flesh (Surgeon Stitchflesh)
+    [333477] = true, -- Gut Slice (Goregrind)
+    [320655] = true, -- Crunch (Blightbone)
+    [324394] = true, -- Shatter (Skeletal Monstrosity)
+    [338636] = true, -- Separate Flesh (Separation Assistant)
+    [338653] = true, -- Throw Flesh (Stitching Assistant)
+    [320366] = true, -- Embalming Ichor (Surgeon Stitchflesh)
     -- Spires of Ascension
     [320966] = true, -- Overhead Slash (Kin-Tara)
 };
@@ -64,10 +92,24 @@ local SLAuras = {
     [319120] = true, -- Putrid Bile
     [328501] = true, -- Plague Bomb (Rigged Plagueborer)
     [320512] = true, -- Corroded Claws (Rotting Slimeclaw)
+    -- The Necrotic Wake
+    [322681] = true, -- Meat Hook (Stitchflesh's Creation)
+    [333492] = true, -- Necrotic Ichor
+    [334748] = true, -- Drain Fluids
+    [320573] = true, -- Shadow Well (Zolramus Sorcerer)
+    [320366] = true, -- Embalming Ichor (Surgeon Stitchflesh)
+    [333489] = true, -- Necrotic Breath
+    [327100] = true, -- Noxious Fog
+    [324293] = true, -- Rasping Scream
 };
 
 local SLAurasNoTank = {
+    -- Plaguefall
     [325552] = true, -- Cytotoxic Slash (Domina Venomblade)
+    -- The Necrotic Wake
+    [338357] = true, -- Tenderize
+    [321807] = true, -- Boneflay (Zolramus Bonecarver)
+    [333477] = true, -- Gut Slice (Goregrind)
 };
 
 local SLSpellsToInterrupt = {
@@ -88,12 +130,14 @@ local SLSpellsToInterrupt = {
     [341969] = true, -- Withering Discharge (Blighted Sludge-Spewer)
     [342139] = true, -- Battle Trance
     [330562] = true, -- Demoralizing Shout (Ancient Captain)
-    -- Necrotic Wake
+    -- The Necrotic Wake
     [320462] = true, -- Necrotic Bolt
     [324293] = true, -- Rasping Scream (Skeletal Marauder)
     [334748] = true, -- Drain Fluids
     [338353] = true, -- Goresplatter (Corpse Collector)
     [320170] = true, -- Necrotic Bolt
+    [327130] = true, -- Repair Flesh (Flesh Crafter)
+    [335143] = true, -- Bonemend (Zolramus Bonemender)
     -- Sanguine Depths
     [319654] = true, -- Hungering Drain (Kryxis the Voracious)
     [322433] = true, -- Stoneskin (Chamber Sentinel)
@@ -125,7 +169,13 @@ local SLSpecificBuffOrDebuffOnUnit = {
     [332397] = true, -- Shroudweb (Domina Venomblade adds)
 };
 
-local SLSpecificCastsDoneByPartyMembers = {};
+local SLSpecificCastsDoneByPartyMembers = {
+    -- The Necrotic Wake
+    [328404] = true, -- Discharged Anima (use)
+    [328351] = true, -- Bloody Javelin (use)
+    [328128] = true, -- Forgotten Forgehammer (use)
+    [325189] = true, -- Discarded Shield (use)
+};
 
 local SLSpecificItemsUsedByPartyMembers = {};
 
@@ -139,6 +189,12 @@ local SLDamageDoneToSpecificUnits = {
     [168837] = true, -- Stealthling
     [170474] = true, -- Brood Assassin (Domina Venomblade adds)
     [165430] = true, -- Malignant Spawn (Margrave Stradama adds)
+    -- The Necrotic Wake
+    [163121] = true, -- Stitched Vanguard
+    [164702] = true, -- Carrion Worm (Blightbone adds)
+    [164414] = true, -- Reanimated Mage (Amarth adds)
+    [164427] = true, -- Reanimated Warrior (Amarth adds)
+    [168246] = true, -- Reanimated Crossbowman (Amarth adds)
 };
 
 function MyDungeonsBook:GetSLDamageDoneToSpecificUnits()
