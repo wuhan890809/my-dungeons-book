@@ -1,13 +1,23 @@
 ﻿### v2.1.0
 
-* [#28](https://github.com/onechiporenko/my-dungeons-book/issues/28) Add avoidable spells and debuffs for Plaguefall   
+* [#93](https://github.com/onechiporenko/my-dungeons-book/issues/93) Add units to track taken damage for Necrotic Wake
+* [#94](https://github.com/onechiporenko/my-dungeons-book/issues/94) Add units to track taken damage for Plaguefall
+* [#97](https://github.com/onechiporenko/my-dungeons-book/issues/97) Add units to track taken damage for Spires of Ascension
+* [#32](https://github.com/onechiporenko/my-dungeons-book/issues/32) Add avoidable spells and debuffs for Theater of Pain
+* [#33](https://github.com/onechiporenko/my-dungeons-book/issues/33) Add avoidable spells and debuffs for Mists of Tirna Scithe
+* [#30](https://github.com/onechiporenko/my-dungeons-book/issues/30) Add avoidable spells and debuffs for Halls of Atonement
+* [#31](https://github.com/onechiporenko/my-dungeons-book/issues/31) Add avoidable spells and debuffs for Spires of Ascension 
+* [#54](https://github.com/onechiporenko/my-dungeons-book/issues/54) Add Usable PvP Trinkets
+* [#53](https://github.com/onechiporenko/my-dungeons-book/issues/53) Add Usable Professions Items
+* [#52](https://github.com/onechiporenko/my-dungeons-book/issues/52) Add Usable Raid Trinkets
+* [#28](https://github.com/onechiporenko/my-dungeons-book/issues/28) Add avoidable spells and debuffs for Plaguefall
 * Remove BfA-related tracker-calls (don't delete trackers)
 * Fix Summary-tab when no deaths were while challenge
 * [#27](https://github.com/onechiporenko/my-dungeons-book/issues/27) Add avoidable spells and debuffs for Necrotic Wake
 * Add second covenant abilities to track
 * [#93](https://github.com/onechiporenko/my-dungeons-book/issues/93) Add units to track taken damage for Necrotic Wake
 * [#55](https://github.com/onechiporenko/my-dungeons-book/issues/55) Add special casts in the Necrotic Wake
-* [#43](https://github.com/onechiporenko/my-dungeons-book/issues/43) Add spells to interrupt for Necrotic Wake 
+* [#43](https://github.com/onechiporenko/my-dungeons-book/issues/43) Add spells to interrupt for Necrotic Wake
 
 ### v2.0.0
 

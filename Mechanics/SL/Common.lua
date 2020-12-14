@@ -42,10 +42,38 @@ local SLSpells = {
     [333489] = true, -- Necrotic Breath
     [333492] = true, -- Necrotic Ichor
     -- Spires of Ascension
+    [327413] = true, -- Rebellious Fist (Forsworn Goliath)
+    [336444] = true, -- Crescendo
+    [317626] = true, -- Maw-Touched Venom
+    [324141] = true, -- Dark Bolt
+    [317963] = true, -- Burden of Knowledge (Forsworn Castigator)
+    [324370] = true, -- Attenuated Barrage (Azules)
     [331251] = true, -- Deep Connection (Kin-Tara)
     [324662] = true, -- Ionized Plasma (Kin-Tara)
-    [324370] = true, -- Attenuated Barrage (Azules)
-    [317661] = true, -- Insidious Venom (Etherdiver)
+    [323792] = true, -- Anima Field (Coalesced Anima)
+    [323372] = true, -- Empyreal Ordnance
+    [323943] = true, -- Run Through (Devos)
+    -- Mists of Tirna Scithe
+    [326309] = true, -- Decomposing Acid
+    [326017] = true, -- Decomposing Acid
+    [321828] = true, -- Patty Cake (Mistcaller)
+    [321893] = true, -- Freezing Burst (Freezing Burst)
+    [336759] = true, -- Dodge Ball (Mistcaller)
+    [321834] = true, -- Dodge Ball (Mistcaller)
+    [322655] = true, -- Acid Expulsion
+    [324923] = true, -- Bramble Burst (Drust Boughbreaker)
+    [321837] = true, -- Oopsie (Mistcaller)
+    -- Theater of Pain
+    [320180] = true, -- Noxious Spores (Paceran the Virulent)
+    [339415] = true, -- Deafening Crash (Xav the Unfallen)
+    [321041] = true, -- Disgusting Burst
+    [333297] = true, -- Death Winds
+    [332708] = true, -- Ground Smash (Heavin the Breaker)
+    [318406] = true, -- Tenderizing Smash (Gorechop)
+    -- Halls of Atonement
+    [323001] = true, -- Glass Shards (Halkias)
+    [324044] = true, -- Refracted Sinlight
+    [323126] = true, -- Telekinetic Collision
 };
 
 local SLSpellsNoTank = {
@@ -79,6 +107,40 @@ local SLSpellsNoTank = {
     [320366] = true, -- Embalming Ichor (Surgeon Stitchflesh)
     -- Spires of Ascension
     [320966] = true, -- Overhead Slash (Kin-Tara)
+    [317943] = true, -- Sweeping Blow (Forsworn Vanguard)
+    [324608] = true, -- Charged Stomp (Oryphrion)
+    [328289] = true, -- Blessed Weapon
+    [323786] = true, -- Swift Slice (Kyrian Dark-Praetor)
+    [327331] = true, -- Imbued Weapon
+    [317661] = true, -- Insidious Venom (Etherdiver)
+    -- Mists of Tirna Scithe
+    [322557] = true, -- Soul Split
+    [323057] = true, -- Spirit Bolt (Ingra Maloch)
+    -- Theater of Pain
+    [326835] = true, -- Cruel Slash (Ossified Conscript)
+    [324079] = true, -- Reaping Scythe (Mordretha, the Endless Empress)
+    [323515] = true, -- Hateful Strike (Gorechop)
+    [330875] = true, -- Spirit Frost (Nefarious Darkspeaker)
+    [331319] = true, -- Savage Flurry
+    [331320] = true, -- Savage Flurry
+    [337178] = true, -- Vicious Strike (Unyielding Contender)
+    [324424] = true, -- Reaping Scythe (Mordretha, the Endless Empress)
+    [318102] = true, -- Finishing Blow
+    [316995] = true, -- Quick Strike
+    [331288] = true, -- Colossus Smash (Heavin the Breaker)
+    [320063] = true, -- Slam (Dessia the Decapitator)
+    [330565] = true, -- Shield Bash (Ancient Captain)
+    -- Halls of Atonement
+    [344993] = true, -- Jagged Swipe (Vicious Gargon)
+    [329321] = true, -- Jagged Swipe (Vicious Gargon)
+    [338003] = true, -- Wicked Bolt (Depraved Obliterator)
+    [329324] = true, -- Jaws of Stone (Vicious Gargon)
+    [326997] = true, -- Powerful Swipe (Stoneborn Slasher)
+    [326829] = true, -- Wicked Bolt (Inquisitor Sigar)
+    [323437] = true, -- Stigma of Pride (Lord Chamberlain)
+    [322936] = true, -- Crumbling Slam (Halkias)
+    [323538] = true, -- Bolt of Power (High Adjudicator Aleez)
+    [338004] = true, -- Bonk (Toiling Groundskeeper)
 };
 
 local SLAuras = {
@@ -101,6 +163,20 @@ local SLAuras = {
     [333489] = true, -- Necrotic Breath
     [327100] = true, -- Noxious Fog
     [324293] = true, -- Rasping Scream
+    -- Spires of Ascension
+    [317963] = true, -- Burden of Knowledge (Forsworn Castigator)
+    [317626] = true, -- Maw-Touched Venom
+    [323739] = true, -- Residual Impact
+    [331251] = true, -- Deep Connection (Kin-Tara)
+    [323792] = true, -- Anima Field (Coalesced Anima)
+    -- Mists of Tirna Scithe
+    [325027] = true, -- Bramble Burst (Drust Boughbreaker)
+    [326309] = true, -- Decomposing Acid
+    [321828] = true, -- Patty Cake (Mistcaller)
+    [326017] = true, -- Decomposing Acid
+    [321893] = true, -- Freezing Burst (Illusionary Vulpin)
+    -- Halls of Atonement
+    [319703] = true, -- Blood Torrent (Echelon)
 };
 
 local SLAurasNoTank = {
@@ -110,6 +186,8 @@ local SLAurasNoTank = {
     [338357] = true, -- Tenderize
     [321807] = true, -- Boneflay (Zolramus Bonecarver)
     [333477] = true, -- Gut Slice (Goregrind)
+    -- Halls of Atonement
+    [344993] = true, -- Jagged Swipe (Vicious Gargon)
 };
 
 local SLSpellsToInterrupt = {
@@ -150,7 +228,6 @@ local SLSpellsToInterrupt = {
     [340544] = true, -- Stimulate Regeneration (Spinemaw Staghorn)
     -- Halls of Atonement
     [325700] = true, -- Collect Sins (Depraved Collector)
-    [326607] = true, -- Turn to Stone (Stoneborn Reaver)
     [323552] = true, -- Volley of Power (High Adjudicator Aleez)
     [323538] = true, -- Bolt of Power (High Adjudicator Aleez)
     [326607] = true, -- Turn to Stone (Stoneborn Reaver)
@@ -162,11 +239,16 @@ local SLSpellsToInterrupt = {
 
 local SLUnitsAppearsInCombat = {};
 
-local SLSpecificBuffOrDebuffOnPartyMembers = {};
+local SLSpecificBuffOrDebuffOnPartyMembers = {
+    -- Spires of Ascension
+    [330683] = true, -- Raw Anima (Devos)
+};
 
 local SLSpecificBuffOrDebuffOnUnit = {
     -- Plaguefall
     [332397] = true, -- Shroudweb (Domina Venomblade adds)
+    -- Mists of Tirna Scithe
+    [336499] = true, -- Guessing Game (Mistcaller)
 };
 
 local SLSpecificCastsDoneByPartyMembers = {
@@ -177,24 +259,95 @@ local SLSpecificCastsDoneByPartyMembers = {
     [325189] = true, -- Discarded Shield (use)
 };
 
-local SLSpecificItemsUsedByPartyMembers = {};
+local SLSpecificItemsUsedByPartyMembers = {
+    -- Warlock Health Stone
+    [6262] = 5512, -- Healthstone
+    -- Kyrian
+    [323436] = 177278, -- Phial of Serenity
+    -- Alchemy
+    [307192] = 171267, -- Spiritual Healing Potion
+    [307193] = 171268, -- Spiritual Mana Potion
+    [307495] = 171349, -- Potion of Phantom Fire
+    [338385] = 182163, -- Strength of Blood
+    [307162] = 171273, -- Potion of Spectral Intellect
+    [307159] = 171270, -- Potion of Spectral Agility
+    [334436] = 180771, -- Potion of Unusual Strength
+    [307164] = 171275, -- Potion of Spectral Strength
+    [307497] = 171351, -- Potion of Deathly Fixation
+    [307161] = 171272, -- Potion of Spiritual Clarity
+    [307494] = 171352, -- Potion of Empowered Exorcisms
+    [331974] = 180317, -- Soulful Healing Potion
+    [307496] = 171350, -- Potion of Divine Awakening
+    [322302] = 176811, -- Potion of Sacrificial Anima
+    [307195] = 171266, -- Potion of the Hidden Spirit
+    [307163] = 171274, -- Potion of Spectral Stamina
+    [307501] = 171370, -- Potion of Specter Swiftness
+    [307199] = 171263, -- Potion of Soul Purity
+    [331978] = 180318, -- Soulful Mana Potion
+    [307160] = 171271, -- Potion of Hardened Shadows
+    [307194] = 171269, -- Spiritual Rejuvenation Potion
+    [307196] = 171264, -- Potion of Shaded Sight
+    -- Trinkets (Raids)
+    [344662] = 184025, -- Memory of Past Sins
+    [344245] = 184029, -- Manabound Mirror
+    [344231] = 184031, -- Sanguine Vintage
+    [345019] = 184016, -- Skulker's Wing
+    [345432] = 184024, -- Macabre Sheet Music
+    [344384] = 184017, -- Bargast's Leash
+    [345251] = 184019, -- Soul Igniter
+    [344916] = 184020, -- Tuft of Smoldering Plumage
+    [345500] = 184021, -- Glyph of Assimilation
+    [344732] = 184030, -- Dreadfire Vessel
+    -- Trinkets (Dungeons)
+    [342423] = 178862, -- Bladedancer's Armor Kit
+    [-2] = 178849, -- Overflowing Anima Cage
+    [342432] = 178850, -- Lingering Sunmote
+    [345549] = 178783, -- Siphoning Phylactery Shard
+    [345548] = 178751, -- Spare Meat Hook
+    [345547] = 178742, -- Bottled Flayedwing Toxin
+    [329852] = 179331, -- Blood-Spattered Scale
+    [330323] = 179350, -- Inscrutable Quantum Device TODO or 348098
+    [329831] = 179342, -- Overwhelming Power Crystal
+    [331523] = 179356, -- Shadowgrasp Totem TODO or 329878
+    [345739] = 178811, -- Grim Codex
+    [345807] = 178809, -- Soulletting Ruby TODO or 345806
+    [-2] = 178810, -- Vial of Spectral Essence
+    [-2] = 178715, -- Mistcaller Ocarina
+    [343393] = 178826, -- Sunblood Amethyst
+    [343399] = 178825, -- Pulsating Stoneheart
+    [345595] = 178770, -- Slimy Consumptive Organ
+    [345539] = 180117, -- Empyreal Ordnance
+    [345530] = 180116, -- Overcharged Anima Battery
+    -- Trinkets (Professions)
+    [333734] = 173078, -- Darkmoon Deck: Repose
+    [311444] = 173096, -- Darkmoon Deck: Indomitable Deck
+    [331624] = 173087, -- Darkmoon Deck: Voracity
+    [347047] = 173069, -- Darkmoon Deck: Putrescence
+    -- Trinkets (PvP)
+    [345228] = 175884, -- Sinful Aspirant's Badge of Ferocity (same spell is for item 175921)
+    [345231] = 178334, -- Sinful Aspirant's Emblem (same spell is for item 178447)
+    [345229] = 178298, -- Sinful Gladiator's Insignia of Alacrity (same spell is for item 178386)
+};
 
 local SLDamageDoneToSpecificUnits = {
+    [120651] = {}, -- Explosive Orbs
     -- Plaguefall
-    [164362] = true, -- Slimy Morsel (Globgrog adds)
-    [171887] = true, -- Slimy Smorgasbord (Globgrog adds)
-    [163915] = true, -- Hatchling Nest
-    [169159] = true, -- Unstable Canister
-    [169498] = true, -- Plague Bomb (Doctor Ickus adds)
-    [168837] = true, -- Stealthling
-    [170474] = true, -- Brood Assassin (Domina Venomblade adds)
-    [165430] = true, -- Malignant Spawn (Margrave Stradama adds)
+    [164362] = {}, -- Slimy Morsel (Globgrog adds)
+    [171887] = {}, -- Slimy Smorgasbord (Globgrog adds)
+    [163915] = {}, -- Hatchling Nest
+    [169159] = {}, -- Unstable Canister
+    [169498] = {}, -- Plague Bomb (Doctor Ickus adds)
+    [168837] = {}, -- Stealthling
+    [170474] = {}, -- Brood Assassin (Domina Venomblade adds)
+    [165430] = {}, -- Malignant Spawn (Margrave Stradama adds)
     -- The Necrotic Wake
-    [163121] = true, -- Stitched Vanguard
-    [164702] = true, -- Carrion Worm (Blightbone adds)
-    [164414] = true, -- Reanimated Mage (Amarth adds)
-    [164427] = true, -- Reanimated Warrior (Amarth adds)
-    [168246] = true, -- Reanimated Crossbowman (Amarth adds)
+    [163121] = {}, -- Stitched Vanguard
+    [164702] = {}, -- Carrion Worm (Blightbone adds)
+    [164414] = {}, -- Reanimated Mage (Amarth adds)
+    [164427] = {}, -- Reanimated Warrior (Amarth adds)
+    [168246] = {}, -- Reanimated Crossbowman (Amarth adds)
+    -- Spires of Ascension
+    [163077] = {}, -- Azules
 };
 
 function MyDungeonsBook:GetSLDamageDoneToSpecificUnits()

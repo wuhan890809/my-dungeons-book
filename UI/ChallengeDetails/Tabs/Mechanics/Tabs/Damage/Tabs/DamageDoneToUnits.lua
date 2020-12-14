@@ -225,12 +225,8 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetDataForTable(challengeId, key)
 				self:DebugPrint(string.format("%s not found in the challenge party roster", partyMemberName));
 			end
 		end
-		local npcs = self:GetBfADamageDoneToSpecificUnits();
+		local npcs = self:GetSLDamageDoneToSpecificUnits();
 		local npc = npcs[npcId];
-		if (not npc) then
-			npcs = self:GetSLDamageDoneToSpecificUnits();
-			npc = npcs[npcId];
-		end
 		local npcName;
 		if (npc and npc.name) then
 			npcName = npc.name;
