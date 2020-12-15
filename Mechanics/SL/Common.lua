@@ -74,6 +74,33 @@ local SLSpells = {
     [323001] = true, -- Glass Shards (Halkias)
     [324044] = true, -- Refracted Sinlight
     [323126] = true, -- Telekinetic Collision
+    -- De Other Side
+    [342961] = true, -- Localized Explosive Contrivance (Dealer Xy'exa)
+    [320232] = true, -- Explosive Contrivance (Dealer Xy'exa)
+    [325691] = true, -- Cosmic Collapse
+    [320723] = true, -- Displaced Blastwave (Dealer Xy'exa)
+    [323136] = true, -- Anima Starstorm
+    [345498] = true, -- Anima Starstorm
+    [334913] = true, -- Master of Death (Mueh'zala)
+    [328729] = true, -- Dark Lotus
+    [332729] = true, -- Malefic Blast
+    [333250] = true, -- Reaver (Risen Warlord)
+    [331933] = true, -- Haywire
+    [331398] = true, -- Volatile Capacitor (Volatile Memory)
+    [323118] = true, -- Blood Barrage (Hakkar the Soulflayer)
+    [332672] = true, -- Bladestorm
+    -- Sanguine Depths
+    [320999] = true, -- Echoing Thrust (Regal Mistdancer)
+    [320991] = true, -- Echoing Thrust (Regal Mistdancer)
+    [322418] = true, -- Craggy Fracture
+    [323573] = true, -- Residue
+    [322212] = true, -- Growing Mistrust (Vestige of Doubt)
+    [334563] = true, -- Volatile Trap
+    [334615] = true, -- Sweeping Slash
+    [325885] = true, -- Anguished Cries (Z'rali)
+    [328494] = true, -- Sintouched Anima
+    [323810] = true, -- Piercing Blur (General Kaal)
+    [336277] = true, -- Explosive Anger (Remnant of Fury)
 };
 
 local SLSpellsNoTank = {
@@ -141,6 +168,37 @@ local SLSpellsNoTank = {
     [322936] = true, -- Crumbling Slam (Halkias)
     [323538] = true, -- Bolt of Power (High Adjudicator Aleez)
     [338004] = true, -- Bonk (Toiling Groundskeeper)
+    -- De Other Side
+    [333711] = true, -- Decrepit Bite (Skeletal Raptor)
+    [333728] = true, -- Bonestrike (Risen Bonesoldier)
+    [340016] = true, -- Talon Rake (Mythresh, Sky's Talons)
+    [334535] = true, -- Beak Slice
+    [327649] = true, -- Crushed Soul (Mueh'zala)
+    [327646] = true, -- Soulcrusher (Mueh'zala)
+    [320147] = true, -- Bleeding (Millificent Manastorm)
+    [320145] = true, -- Buzz-Saw
+    [328707] = true, -- Scribe (Risen Cultist)
+    [331548] = true, -- Metallic Jaws (4.RF-4.RF)
+    [322735] = true, -- Piercing Barb (Hakkar the Soulflayer)
+    [322736] = true, -- Piercing Barb (Hakkar the Soulflayer)
+    [332678] = true, -- Gushing Wound (Atal'ai Deathwalker)
+    [332705] = true, -- Smite (Atal'ai High Priest)
+    -- Sanguine Depths
+    [322429] = true, -- Severing Slice (Chamber Sentinel)
+    [320843] = true, -- Thrash
+    [321178] = true, -- Slam (Insatiable Brute)
+    [335308] = true, -- Crushing Strike (Depths Warden)
+    [319650] = true, -- Vicious Headbutt (Kryxis the Voracious)
+    [321264] = true, -- Claw (Rockbound Sprite)
+    [326718] = true, -- Pierce (Sanguine Cadet)
+    [325257] = true, -- Iron Spikes
+    [325260] = true, -- Iron Spikes
+    [325261] = true, -- Iron Spikes
+    [325262] = true, -- Iron Spikes
+    [334326] = true, -- Bludgeoning Bash (Head Custodian Javlin)
+    [316068] = true, -- Bonk
+    [326952] = true, -- Fiery Cantrip (Infused Quill-feather)
+    [316244] = true, -- Animate Pebble
 };
 
 local SLAuras = {
@@ -177,6 +235,17 @@ local SLAuras = {
     [321893] = true, -- Freezing Burst (Illusionary Vulpin)
     -- Halls of Atonement
     [319703] = true, -- Blood Torrent (Echelon)
+    -- De Other Side
+    [331379] = true, -- Lubricate (Lubricator)
+    [323118] = true, -- Blood Barrage (Hakkar the Soulflayer)
+    [333250] = true, -- Reaver (Risen Warlord)
+    [334913] = true, -- Master of Death (Mueh'zala)
+    -- Sanguine Depths
+    [321038] = true, -- Wrack Soul (Wicked Oppressor)
+    [326827] = true, -- Dread Bindings (Grand Overseer)
+    [326836] = true, -- Curse of Suppression (Wicked Oppressor)
+    [322212] = true, -- Growing Mistrust (Vestige of Doubt)
+    [322429] = true, -- Severing Slice (Chamber Sentinel)
 };
 
 local SLAurasNoTank = {
@@ -235,6 +304,7 @@ local SLSpellsToInterrupt = {
     [332706] = true, -- Heal (Atal'ai High Priest)
     [332612] = true, -- Healing Wave (Atal'ai Hoodoo Hexxer)
     [332084] = true, -- Self-Cleaning Cycle (Lubricator)
+    [332605] = true, -- Hex (Atal'ai Hoodoo Hexxer)
 };
 
 local SLUnitsAppearsInCombat = {};
@@ -300,7 +370,7 @@ local SLSpecificItemsUsedByPartyMembers = {
     [344732] = 184030, -- Dreadfire Vessel
     -- Trinkets (Dungeons)
     [342423] = 178862, -- Bladedancer's Armor Kit
-    [-2] = 178849, -- Overflowing Anima Cage
+    [343385] = 178849, -- Overflowing Anima Cage
     [342432] = 178850, -- Lingering Sunmote
     [345549] = 178783, -- Siphoning Phylactery Shard
     [345548] = 178751, -- Spare Meat Hook

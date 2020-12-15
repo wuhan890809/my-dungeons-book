@@ -518,9 +518,9 @@ end
 @param[type=number] amount amount of damage done to `unit` by `spellId`
 ]]
 function MyDungeonsBook:SaveTrackedDamageToPartyMembers(key, unit, spellId, amount)
-	if (self:IsFriendlyFire(spellId)) then
+	--[[if (self:IsFriendlyFire(spellId)) then
 		return;
-	end
+	end]]
 	local amountInPercents = amount and amount / UnitHealthMax(unit) * 100 or 0;
 	if (amountInPercents >= 40 and self.db.global.meta.mechanics[key].verbose) then
 		local spellLink = GetSpellLink(spellId);

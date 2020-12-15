@@ -1,5 +1,8 @@
 ﻿### v2.1.0
 
+* Add spell if for Overflowing Anima Cage
+* [#34](https://github.com/onechiporenko/my-dungeons-book/issues/34) Add avoidable spells and debuffs for Sanguine Depths
+* [#29](https://github.com/onechiporenko/my-dungeons-book/issues/29) Add avoidable spells and debuffs for De Other Side
 * [#93](https://github.com/onechiporenko/my-dungeons-book/issues/93) Add units to track taken damage for Necrotic Wake
 * [#94](https://github.com/onechiporenko/my-dungeons-book/issues/94) Add units to track taken damage for Plaguefall
 * [#97](https://github.com/onechiporenko/my-dungeons-book/issues/97) Add units to track taken damage for Spires of Ascension
