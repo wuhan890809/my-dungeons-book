@@ -8,6 +8,7 @@ Mechanics
 ]]
 
 local SLSpells = {
+    [209862] = true, -- Volcanic Plume (Affix)
     -- Plaguefall
     [319898] = true, -- Vile Spit (Slime Tentacle)
     [328501] = true, -- Plague Bomb (Rigged Plagueborer)
@@ -242,10 +243,8 @@ local SLAuras = {
     [334913] = true, -- Master of Death (Mueh'zala)
     -- Sanguine Depths
     [321038] = true, -- Wrack Soul (Wicked Oppressor)
-    [326827] = true, -- Dread Bindings (Grand Overseer)
     [326836] = true, -- Curse of Suppression (Wicked Oppressor)
     [322212] = true, -- Growing Mistrust (Vestige of Doubt)
-    [322429] = true, -- Severing Slice (Chamber Sentinel)
 };
 
 local SLAurasNoTank = {
@@ -257,6 +256,8 @@ local SLAurasNoTank = {
     [333477] = true, -- Gut Slice (Goregrind)
     -- Halls of Atonement
     [344993] = true, -- Jagged Swipe (Vicious Gargon)
+    -- Sanguine Depths
+    [322429] = true, -- Severing Slice (Chamber Sentinel)
 };
 
 local SLSpellsToInterrupt = {
@@ -326,7 +327,7 @@ local SLSpecificCastsDoneByPartyMembers = {
     [328404] = true, -- Discharged Anima (use)
     [328351] = true, -- Bloody Javelin (use)
     [328128] = true, -- Forgotten Forgehammer (use)
-    [325189] = true, -- Discarded Shield (use)
+    [325189] = true, -- Discarded Shield (use) todo or 328050
 };
 
 local SLSpecificItemsUsedByPartyMembers = {
@@ -418,6 +419,8 @@ local SLDamageDoneToSpecificUnits = {
     [168246] = {}, -- Reanimated Crossbowman (Amarth adds)
     -- Spires of Ascension
     [163077] = {}, -- Azules
+    -- Sanguine Depths
+    [168882] = {}, -- Fleeting Manifestation
 };
 
 function MyDungeonsBook:GetSLDamageDoneToSpecificUnits()
