@@ -118,9 +118,6 @@
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs.lua">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\AvoidableDamage.lua">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\DamageDoneByPartyMembers\Tabs.lua">
       <SubType>Code</SubType>
     </Content>

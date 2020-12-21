@@ -625,7 +625,7 @@ function MyDungeonsBook:TrackAllEnemiesPassedCasts(unitName, unitGUID, spellId)
 end
 
 --[[--
-Track damage done by party members (and pets) for specific unit.
+Track damage done by party members (and pets) for all units.
 
 @param[type=string] key mechanic unique identifier
 @param[type=table] npcs table with npcs needed to track (each key is a npc id)
@@ -644,9 +644,6 @@ function MyDungeonsBook:TrackDamageDoneToSpecificUnits(key, npcs, sourceUnitName
 		return;
 	end
 	local npcId = self:GetNpcIdFromGuid(targetUnitGUID);
-	if (not npcs[npcId]) then
-		return;
-	end
 	self:InitMechanics4Lvl(key, npcId, sourceUnitName, spellId);
     if (type == "Pet") then
 		local summonedUnitOwner = self:GetSummonedUnitOwner(sourceUnitName, sourceUnitGUID);

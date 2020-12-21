@@ -1,4 +1,9 @@
-﻿### v2.1.0
+﻿### v2.2.0
+
+* [#102](https://github.com/onechiporenko/my-dungeons-book/issues/102) Group damage done to all units and highlight important units
+* [#101](https://github.com/onechiporenko/my-dungeons-book/issues/101) Show avoidable damage as part of all taken damage tab
+
+### v2.1.0
 
 * Add spell id for Overflowing Anima Cage
 * [#34](https://github.com/onechiporenko/my-dungeons-book/issues/34) Add avoidable spells and debuffs for Sanguine Depths

@@ -53,11 +53,14 @@ function MyDungeonsBook:DamageDoneToPartyMembersFrame_GetDataForTable(challengeI
 	if (not challengeId) then
 		return nil;
 	end
+	local challenge = self:Challenge_GetById(challengeId);
 	local mechanics = self:Challenge_Mechanic_GetById(challengeId, key);
 	if (not mechanics) then
 		self:DebugPrint(string.format("No Damage Done To Party Members data for challenge #%s", challengeId));
 		return tableData;
 	end
+	local avoidableSpells = self:GetSLAvoidableSpells();
+	local avoidableSpellsNoTank = self:GetSLAvoidableSpellsNoTank();
 	for unitName, damageDoneToPartyMember in pairs(mechanics) do
 		for spellId, numSumBySpell in pairs(damageDoneToPartyMember) do
 			if (not tableData[spellId]) then
@@ -77,6 +80,7 @@ function MyDungeonsBook:DamageDoneToPartyMembersFrame_GetDataForTable(challengeI
 		end
 	end
 	tableData[-1] = self:DamageDoneToPartyMembersFrame_GetSummaryRow(challengeId, key);
+	tableData[-3] = self:DamageDoneToPartyMembersFrame_GetAvoidableSummaryRow(challengeId, key);
 	local remappedTableData = {};
 	for spellId, _ in pairs(tableData) do
 		local remappedRow = {
@@ -89,11 +93,22 @@ function MyDungeonsBook:DamageDoneToPartyMembersFrame_GetDataForTable(challengeI
 		local hits = 0;
 		local amount = 0;
 		for _, rosterUnitId in pairs(self:GetPartyRoster()) do
+			local role = challenge.players[rosterUnitId].role;
 			local hitsForPartyMember = tableData[spellId][rosterUnitId .. "Hits"] or 0;
 			local amountForPartyMember = tableData[spellId][rosterUnitId .. "Amount"] or 0;
 			hits = hits + hitsForPartyMember;
 			amount = amount + amountForPartyMember;
-			tinsert(remappedRow.cols, {value = amountForPartyMember});
+			local amountCell = {value = amountForPartyMember};
+			local amountIsAvoidable = avoidableSpells[spellId] or (avoidableSpellsNoTank[spellId] and role ~= "TANK");
+			if (amountIsAvoidable) then
+				amountCell.color = {
+					r = 200,
+					g = 0,
+					b = 0,
+					a = 1
+				};
+			end
+			tinsert(remappedRow.cols, amountCell);
 			tinsert(remappedRow.cols, {value = hitsForPartyMember});
 		end
 		tinsert(remappedRow.cols, {value = amount});
@@ -102,6 +117,14 @@ function MyDungeonsBook:DamageDoneToPartyMembersFrame_GetDataForTable(challengeI
 			remappedRow.color = {
 				r = 0,
 				g = 100,
+				b = 0,
+				a = 1
+			};
+		end
+		if (spellId == -3) then
+			remappedRow.color = {
+				r = 200,
+				g = 0,
 				b = 0,
 				a = 1
 			};
@@ -133,6 +156,50 @@ function MyDungeonsBook:DamageDoneToPartyMembersFrame_GetSummaryRow(challengeId,
 				for _, numSumDetails in pairs(damageDoneToPartyMember) do
 					tableData[partyUnitId .. "Hits"] = tableData[partyUnitId .. "Hits"] + numSumDetails.num;
 					tableData[partyUnitId .. "Amount"] = tableData[partyUnitId .. "Amount"] + numSumDetails.sum;
+				end
+			end
+		else
+			self:DebugPrint(string.format("%s not found in the challenge party roster", unitName));
+		end
+	end
+	tableData.hits = 0;
+	tableData.amount = 0;
+	for _, unitId in pairs(self:GetPartyRoster()) do
+		if (tableData[unitId .. "Num"] and tableData[unitId .. "Sum"]) then
+			tableData.nums = tableData.nums + tableData[unitId .. "Num"];
+			tableData.sums = tableData.sums + tableData[unitId .. "Sum"];
+		end
+	end
+	return tableData;
+end
+
+--[[--
+@local
+@param[type=number] challengeId
+@param[type=string] key
+@return[type=table]
+]]
+function MyDungeonsBook:DamageDoneToPartyMembersFrame_GetAvoidableSummaryRow(challengeId, key)
+	local tableData = {
+		spellId = -3
+	};
+	local avoidableSpells = self:GetSLAvoidableSpells();
+	local avoidableSpellsNoTank = self:GetSLAvoidableSpellsNoTank();
+	local challenge = self:Challenge_GetById(challengeId);
+	local mechanics = self:Challenge_Mechanic_GetById(challengeId, key);
+	for unitName, damageDoneToPartyMember in pairs(mechanics) do
+		local partyUnitId = self:GetPartyUnitByName(challengeId, unitName);
+		if (partyUnitId) then
+			tableData[partyUnitId .. "Hits"] = 0;
+			tableData[partyUnitId .. "Amount"] = 0;
+			local role = challenge.players[partyUnitId].role;
+			if (damageDoneToPartyMember) then
+				for spellId, numSumDetails in pairs(damageDoneToPartyMember) do
+					local amountIsAvoidable = avoidableSpells[spellId] or (avoidableSpellsNoTank[spellId] and role ~= "TANK");
+					if (amountIsAvoidable) then
+						tableData[partyUnitId .. "Hits"] = tableData[partyUnitId .. "Hits"] + numSumDetails.num;
+						tableData[partyUnitId .. "Amount"] = tableData[partyUnitId .. "Amount"] + numSumDetails.sum;
+					end
 				end
 			end
 		else

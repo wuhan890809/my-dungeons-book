@@ -427,6 +427,18 @@ function MyDungeonsBook:GetSLDamageDoneToSpecificUnits()
 	return SLDamageDoneToSpecificUnits;
 end
 
+function MyDungeonsBook:GetSLSpellsToInterrupt()
+    return SLSpellsToInterrupt;
+end
+
+function MyDungeonsBook:GetSLAvoidableSpells()
+    return SLSpells;
+end
+
+function MyDungeonsBook:GetSLAvoidableSpellsNoTank()
+    return SLSpellsNoTank;
+end
+
 function MyDungeonsBook:TrackSLAvoidableSpells(damagedUnit, spellId, amount)
 	self:TrackAvoidableSpells("SL-AVOIDABLE-SPELLS", SLSpells, SLSpellsNoTank, damagedUnit, spellId, amount);
 end

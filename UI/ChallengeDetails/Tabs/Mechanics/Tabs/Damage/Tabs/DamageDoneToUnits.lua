@@ -166,10 +166,31 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetHeadersForTable(challengeId)
 			name = "",
 			width = 1,
 			align = "RIGHT"
-		}
+		},
+		{
+			name = L["Sum"],
+			width = 70,
+			align = "RIGHT",
+			DoCellUpdate = function(...)
+				self:Table_Cell_FormatAsNumber(...);
+			end
+		},
+		{
+			name = "",
+			width = 1,
+			align = "RIGHT"
+		},
+		{
+			name = "",
+			width = 1,
+			align = "RIGHT"
+		},
 	};
 end
 
+--[[--
+@local
+]]
 function MyDungeonsBook:DamageDoneToUnitsFrame_RowHover(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	if (realrow and column % 3 == 2) then
 		local amount = self:FormatNumber(data[realrow].cols[column].value);
@@ -202,6 +223,7 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetDataForTable(challengeId, key)
 		self:DebugPrint(string.format("No Damage Done To Units data for challenge #%s", challengeId));
 		return tableData;
 	end
+	local specialNpcs = self:GetSLDamageDoneToSpecificUnits();
 	for npcId, damageByPartyMembers in pairs(mechanics) do
 		local row = {};
 		for partyMemberName, partyMemberDamage in pairs(damageByPartyMembers) do
@@ -221,19 +243,14 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetDataForTable(challengeId, key)
 				row[partyUnitId .. "Amount"] = (row[partyUnitId .. "Amount"] or 0) + amount;
 				row[partyUnitId .. "Hits"] = (row[partyUnitId .. "Hits"] or 0) + hits;
 				row[partyUnitId .. "Overkill"] = (row[partyUnitId .. "Overkill"] or 0) + overkill;
+				row["amount"] = (row["amount"] or 0) + amount;
+				row["hits"] = (row["hits"] or 0) + hits;
+				row["overkill"] = (row["overkill"] or 0) + overkill;
 			else
 				self:DebugPrint(string.format("%s not found in the challenge party roster", partyMemberName));
 			end
 		end
-		local npcs = self:GetSLDamageDoneToSpecificUnits();
-		local npc = npcs[npcId];
-		local npcName;
-		if (npc and npc.name) then
-			npcName = npc.name;
-		end
-		if (not npcName) then
-			npcName = self.db.global.meta.npcs[npcId] and self.db.global.meta.npcs[npcId].name;
-		end
+		local npcName = self.db.global.meta.npcs[npcId] and self.db.global.meta.npcs[npcId].name;
 		if (not npcName) then
 			npcName = npcId;
 		end
@@ -243,9 +260,18 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetDataForTable(challengeId, key)
 			}
 		};
 		for _, unitId in pairs(self:GetPartyRoster()) do
-			tinsert(remappedRow.cols, {
+			local amountCell = {
 				value = row[unitId .. "Amount"] or 0
-			});
+			};
+			if (specialNpcs[npcId]) then
+				amountCell.color = {
+					r = 0,
+					g = 100,
+					b = 0,
+					a = 1
+				}
+			end
+			tinsert(remappedRow.cols, amountCell);
 			tinsert(remappedRow.cols, {
 				value = row[unitId .. "Overkill"] or 0
 			});
@@ -253,6 +279,18 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetDataForTable(challengeId, key)
 				value = row[unitId .. "Hits"] or 0
 			});
 		end
+		local amountSumCell = {value = row["amount"]};
+		if (specialNpcs[npcId]) then
+			amountSumCell.color = {
+				r = 0,
+				g = 100,
+				b = 0,
+				a = 1
+			}
+		end
+		tinsert(remappedRow.cols, amountSumCell);
+		tinsert(remappedRow.cols, {value = row["overkill"]});
+		tinsert(remappedRow.cols, {value = row["hits"]});
 		tinsert(tableData, remappedRow);
 	end
 	return tableData;

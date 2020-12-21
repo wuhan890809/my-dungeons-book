@@ -17,6 +17,6 @@ function MyDungeonsBook:DamageFrame_Create(parentFrame)
 	local damageFrame = self:TabContentWrapperWidget_Create(parentFrame);
 	damageFrame:SetHeight(650);
 	damageFrame.tabButtonsFrame = self:DamageFrame_CreateTabButtonsFrame(damageFrame);
-	damageFrame.tabButtonsFrame:SelectTab("avoidableDamage");
+	damageFrame.tabButtonsFrame:SelectTab("damageDoneToPartyMembers");
 	return damageFrame;
 end

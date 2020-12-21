@@ -109,6 +109,7 @@ L["All Buffs & Debuffs"] = "All Buffs & Debuffs";
 L["Uptime, %"] = "Uptime, %";
 L["Max Stacks"] = "Max Stacks";
 L["Type"] = "Type";
+L["Avoidable"] = "Avoidable";
 -- UI end
 
 -- Help start

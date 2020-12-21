@@ -260,6 +260,7 @@ function MyDungeonsBook:InterruptsFrame_GetDataForTable(challengeId)
 	if (not challengeId) then
 		return nil;
 	end
+	local spellsToInterrupt = self:GetSLSpellsToInterrupt();
 	local interruptsMechanics = self:Challenge_Mechanic_GetById(challengeId, "COMMON-INTERRUPTS");
 	if (not interruptsMechanics) then
 		self:DebugPrint(string.format("No Interrupts data for challenge #%s", challengeId));
@@ -333,7 +334,7 @@ function MyDungeonsBook:InterruptsFrame_GetDataForTable(challengeId)
 		end
 	end
 	for k, v in pairs(remappedTableData) do
-		if (passedSpellsToInterrupt[v.cols[1].value]) then
+		if (spellsToInterrupt[v.cols[1].value]) then
 			remappedTableData[k].color = {
 				r = 200,
 				g = 0,

@@ -147,14 +147,18 @@ function MyDungeonsBook:Table_Cell_FormatAsSpellLink(rowFrame, cellFrame, data, 
 			if (spellId == -1) then
 				(cellFrame.text or cellFrame):SetText(L["Sum"]);
 			else
-				if (spellId > 0) then
-					local cellText = GetSpellLink(spellId);
-					if (data[realrow].meta and data[realrow].meta.unitName) then
-						cellText = string.format("%s (%s)", cellText, data[realrow].meta.unitName);
-					end
-					(cellFrame.text or cellFrame):SetText(cellText);
+				if (spellId == -3) then
+					(cellFrame.text or cellFrame):SetText(L["Avoidable"]);
 				else
-					(cellFrame.text or cellFrame):SetText("");
+					if (spellId > 0) then
+						local cellText = GetSpellLink(spellId);
+						if (data[realrow].meta and data[realrow].meta.unitName) then
+							cellText = string.format("%s (%s)", cellText, data[realrow].meta.unitName);
+						end
+						(cellFrame.text or cellFrame):SetText(cellText);
+					else
+						(cellFrame.text or cellFrame):SetText("");
+					end
 				end
 			end
 		end
