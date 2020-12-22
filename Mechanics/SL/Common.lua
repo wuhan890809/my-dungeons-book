@@ -8,7 +8,12 @@ Mechanics
 ]]
 
 local SLSpells = {
-    [209862] = true, -- Volcanic Plume (Affix)
+    -- Affixes
+    [209862] = true, -- Volcanic Plume
+    [343520] = true, -- Storming
+    [226512] = true, -- Sanguine Ichor (Environment)
+    [240448] = true, -- Quaking (Environment)
+    [342494] = true, -- Belligerent Boast(Season 1 Pridefull)
     -- Plaguefall
     [319898] = true, -- Vile Spit (Slime Tentacle)
     [328501] = true, -- Plague Bomb (Rigged Plagueborer)
@@ -29,6 +34,10 @@ local SLSpells = {
     [329215] = true, -- Slime Lunge (Doctor Ickus)
     [329163] = true, -- Ambush (Stealthlings)
     [330135] = true, -- Fount of Pestilence (Margrave Stradama DoT in her pool)
+    [320519] = true, -- Jagged Spines (Blighted Spinebreaker)
+    [324667] = true, -- Slime Wave (Globgrog)
+    [626242] = true, -- Slime Wave (Globgrog)
+    [333808] = true, -- Oozing Outbreak (Doctor Ickus)
     -- The Necrotic Wake
     [345625] = true, -- Death Burst (Nar'zudah <Servant of Amarth>)
     [320574] = true, -- Shadow Well
@@ -42,6 +51,9 @@ local SLSpells = {
     [327100] = true, -- Noxious Fog
     [333489] = true, -- Necrotic Breath
     [333492] = true, -- Necrotic Ichor
+    [333477] = true, -- Gut Slice (Goregrind)
+    [320365] = true, -- Embalming Ichor (Surgeon Stitchflesh)
+    [320366] = true, -- Embalming Ichor (Surgeon Stitchflesh)
     -- Spires of Ascension
     [327413] = true, -- Rebellious Fist (Forsworn Goliath)
     [336444] = true, -- Crescendo
@@ -54,6 +66,18 @@ local SLSpells = {
     [323792] = true, -- Anima Field (Coalesced Anima)
     [323372] = true, -- Empyreal Ordnance
     [323943] = true, -- Run Through (Devos)
+    [323786] = true, -- Swift Slice (Kyrian Dark-Praetor)
+    [317943] = true, -- Sweeping Blow (Frostsworn Vanguard)
+    [324608] = true, -- Charged Stomp (Oryphrion)
+    [323740] = true, -- Impact (Forsworn Squad-Leader)
+    [336447] = true, -- Crashing Strike (Forsworn Squad-Leader)
+    [328466] = true, -- Charged Spear (Lakesis / Klotos)
+    [336420] = true, -- Diminuendo (Klotos / Lakesis)
+    [321034] = true, -- Charged Spear (Kin-Tara)
+    [324141] = true, -- Dark Bolt (Ventunax)
+    [324154] = true, -- Dark Stride (Venturax)
+    [323943] = true, -- Run Through (Devos)
+    [334625] = true, -- Seed of the Abyss (Devos)
     -- Mists of Tirna Scithe
     [326309] = true, -- Decomposing Acid
     [326017] = true, -- Decomposing Acid
@@ -64,6 +88,13 @@ local SLSpells = {
     [322655] = true, -- Acid Expulsion
     [324923] = true, -- Bramble Burst (Drust Boughbreaker)
     [321837] = true, -- Oopsie (Mistcaller)
+    [321968] = true, -- Bewildering Pollen (tirnenn Villager)
+    [323137] = true, -- Bewildering Pollen (tirnenn Villager)
+    [323250] = true, -- Anima Puddle (Droman Oulfarran)
+    [326022] = true, -- Acid Globule (Spinemaw Gorger)
+    [340300] = true, -- Tongue Lashing (Mistveil Gorgegullet)
+    [340304] = true, -- Poisonous Secretions (Mistveil Gorgegullet)
+    [331743] = true, -- Bucking Rampage (Mistveil Guardian)
     -- Theater of Pain
     [320180] = true, -- Noxious Spores (Paceran the Virulent)
     [339415] = true, -- Deafening Crash (Xav the Unfallen)
@@ -71,10 +102,26 @@ local SLSpells = {
     [333297] = true, -- Death Winds
     [332708] = true, -- Ground Smash (Heavin the Breaker)
     [318406] = true, -- Tenderizing Smash (Gorechop)
+    [337037] = true, -- Whirling Blade (Nekthara the Mangler)
+    [331243] = true, -- Bone Spikes (Soulforged Bonereaver)
+    [331224] = true, -- Bonestorm (Soulforged Bonereaver)
+    [330608] = true, -- Vile Eruption (Rancind Gasbag)
+    [317231] = true, -- Crushing Slam (Xav the Unfallen)
+    [320729] = true, -- Massive Cleave (Xav the Unfallen)
+    [323681] = true, -- Dark Devastation (Mordretha)
+    [339573] = true, -- Echos of Carnage (Mordretha)
+    [339759] = true, -- Echos of Carnage (Mordretha)
     -- Halls of Atonement
     [323001] = true, -- Glass Shards (Halkias)
     [324044] = true, -- Refracted Sinlight
     [323126] = true, -- Telekinetic Collision
+    [325523] = true, -- Deadly Thrust (Depraved Darkblade)
+    [325799] = true, -- Rapid Fire (Depraved Houndmaster)
+    [326440] = true, -- Sin Quake (Shard of Halkias)
+    [322945] = true, -- Heave Debris (Halkias)
+    [319702] = true, -- Blood Torrent (Echelon)
+    [329113] = true, -- Telekinteic Onslaught (Lord Chamberlain)
+    [327885] = true, -- Erupting Torment (Lord Chamberlain)
     -- De Other Side
     [342961] = true, -- Localized Explosive Contrivance (Dealer Xy'exa)
     [320232] = true, -- Explosive Contrivance (Dealer Xy'exa)
@@ -90,6 +137,13 @@ local SLSpells = {
     [331398] = true, -- Volatile Capacitor (Volatile Memory)
     [323118] = true, -- Blood Barrage (Hakkar the Soulflayer)
     [332672] = true, -- Bladestorm
+    [334051] = true, -- Erupting Darkness (Death Speaker)
+    [342869] = true, -- Enraged Mask (Enraged Spirit)
+    [333790] = true, -- Enraged Mask (Enraged Spirit)
+    [323569] = true, -- Spilled Essence (Environement)
+    [320830] = true, -- Mechanical Bomb Squirrel
+    [327427] = true, -- Shattered Dominion (Mueh'zala)
+    [335000] = true, -- Stellar cloud (Mueh'zala)
     -- Sanguine Depths
     [320999] = true, -- Echoing Thrust (Regal Mistdancer)
     [320991] = true, -- Echoing Thrust (Regal Mistdancer)
@@ -102,6 +156,18 @@ local SLSpells = {
     [328494] = true, -- Sintouched Anima
     [323810] = true, -- Piercing Blur (General Kaal)
     [336277] = true, -- Explosive Anger (Remnant of Fury)
+    [334563] = true, -- Volatile Trap (Dreadful Huntmaster)
+    [320991] = true, -- Echoing Thrust (Regal Mistdancer)
+    [320999] = true, -- Echoing Thrust (Regal Mistdancer Mirror)
+    [334921] = true, -- Umbral Crash (Insatiable Brute)
+    [322418] = true, -- Craggy Fracture (Chamber Sentinel)
+    [334378] = true, -- Explosive Vellum (Research Scribe)
+    [323573] = true, -- Residue (Fleeting Manifestation)
+    [325885] = true, -- Anguished Cries (Z'rali)
+    [334615] = true, -- Sweeping Slash (Head Custodian Javlin)
+    [322212] = true, -- Growing Mistrust (Vestige of Doubt)
+    [328494] = true, -- Sintouched Anima (Environement)
+    [323810] = true, -- Piercing Blur (General Kaal)
 };
 
 local SLSpellsNoTank = {
@@ -141,9 +207,11 @@ local SLSpellsNoTank = {
     [323786] = true, -- Swift Slice (Kyrian Dark-Praetor)
     [327331] = true, -- Imbued Weapon
     [317661] = true, -- Insidious Venom (Etherdiver)
+    [336444] = true, -- Crescendo (Forsworn Helion)
     -- Mists of Tirna Scithe
     [322557] = true, -- Soul Split
     [323057] = true, -- Spirit Bolt (Ingra Maloch)
+    [331721] = true, -- Spear Flurry (Mistveil Defender)
     -- Theater of Pain
     [326835] = true, -- Cruel Slash (Ossified Conscript)
     [324079] = true, -- Reaping Scythe (Mordretha, the Endless Empress)
@@ -169,6 +237,7 @@ local SLSpellsNoTank = {
     [322936] = true, -- Crumbling Slam (Halkias)
     [323538] = true, -- Bolt of Power (High Adjudicator Aleez)
     [338004] = true, -- Bonk (Toiling Groundskeeper)
+    [346866] = true, -- Stone Breathe (Loyal Stoneborn)
     -- De Other Side
     [333711] = true, -- Decrepit Bite (Skeletal Raptor)
     [333728] = true, -- Bonestrike (Risen Bonesoldier)
@@ -234,6 +303,7 @@ local SLAuras = {
     [321828] = true, -- Patty Cake (Mistcaller)
     [326017] = true, -- Decomposing Acid
     [321893] = true, -- Freezing Burst (Illusionary Vulpin)
+    [323137] = true, -- Bewildering Pollen (Drohman Oulfarran)
     -- Halls of Atonement
     [319703] = true, -- Blood Torrent (Echelon)
     -- De Other Side
@@ -296,6 +366,10 @@ local SLSpellsToInterrupt = {
     [324776] = true, -- Bramblethorn Coat (Mistveil Shaper)
     [326046] = true, -- Stimulate Resistance (Spinemaw Staghorn)
     [340544] = true, -- Stimulate Regeneration (Spinemaw Staghorn)
+    [337255] = true, -- Parasitic Domination (Tred'ova)
+    [337249] = true, -- Parasitic Incapacitation (Tred'ova)
+    [337235] = true, -- Parasitic Pacification (Tred'ova)
+    [321828] = true, -- Patty Cake (MistCaller)
     -- Halls of Atonement
     [325700] = true, -- Collect Sins (Depraved Collector)
     [323552] = true, -- Volley of Power (High Adjudicator Aleez)
@@ -381,7 +455,7 @@ local SLSpecificItemsUsedByPartyMembers = {
     [329831] = 179342, -- Overwhelming Power Crystal
     [331523] = 179356, -- Shadowgrasp Totem TODO or 329878
     [345739] = 178811, -- Grim Codex
-    [345807] = 178809, -- Soulletting Ruby TODO or 345806
+    [345801] = 178809, -- Soulletting Ruby
     [-2] = 178810, -- Vial of Spectral Essence
     [-2] = 178715, -- Mistcaller Ocarina
     [343393] = 178826, -- Sunblood Amethyst
@@ -421,6 +495,9 @@ local SLDamageDoneToSpecificUnits = {
     [163077] = {}, -- Azules
     -- Sanguine Depths
     [168882] = {}, -- Fleeting Manifestation
+    -- Mists of Tirna Scithe
+    [165251] = {}, -- Illusionary Vulpin
+    [165560] = {}, -- Gormling Larva
 };
 
 function MyDungeonsBook:GetSLDamageDoneToSpecificUnits()

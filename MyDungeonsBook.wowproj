@@ -52,6 +52,9 @@
     <Content Include="Mechanics\SL\Common.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Messages.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="MyDungeonsBook.toc">
       <SubType>TableOfContents</SubType>
     </Content>

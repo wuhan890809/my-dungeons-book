@@ -125,6 +125,9 @@ Next fields are saved:
 ]]
 function MyDungeonsBook:CHALLENGE_MODE_START()
 	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+	self:RegisterEvent("PLAYER_REGEN_DISABLED");
+	self:RegisterEvent("PLAYER_REGEN_ENABLED");
+    self:Message_IdleTime_StartTrack();
 	self:DebugPrint("CHALLENGE_MODE_START");
 	if (self.db.char.activeChallengeId) then
 		self:DebugPrint(string.format("Challenge already exists with id %s", self.db.char.activeChallengeId));
@@ -227,6 +230,9 @@ Mark active challenge as completed.
 ]]
 function MyDungeonsBook:CHALLENGE_MODE_RESET()
 	self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+	self:UnregisterEvent("PLAYER_REGEN_DISABLED");
+	self:UnregisterEvent("PLAYER_REGEN_ENABLED");
+    self:Message_IdleTime_StopTrack();
 	local id = self.db.char.activeChallengeId;
 	if (self.db.char.challenges[id]) then
 		self.db.char.challenges[id].endTime = time();
@@ -276,6 +282,12 @@ function MyDungeonsBook:CHALLENGE_MODE_COMPLETED()
 		self.db.char.challenges[id].mechanics = self:Compress(self.db.char.challenges[id].mechanics); -- must be last!
 	end
 	self.db.char.activeChallengeId = nil;
+	self:UnregisterEvent("PLAYER_REGEN_DISABLED");
+	self:UnregisterEvent("PLAYER_REGEN_ENABLED");
+	self:Message_IdleTime_Send();
+	self:ScheduleTimer(function()
+		self:Message_IdleTime_StopTrack();
+	end, 5);
 end
 
 --[[--
@@ -368,4 +380,44 @@ function MyDungeonsBook:ENCOUNTER_END(_, encounterId, encounterName, difficultyI
 	self.db.char.challenges[id].encounters[lastEncounterId].deathCountOnEnd = C_ChallengeMode.GetDeathCount();
 	self.db.char.challenges[id].misc.lastEncounterId = nil;
 	self:DebugPrint("ENCOUNTER_END", encounterId, encounterName, difficultyId, groupSize, success);
+end
+
+--[[--
+Track when player leaves a combat
+
+Used to calculate idle time
+]]
+function MyDungeonsBook:PLAYER_REGEN_ENABLED()
+	local id = self.db.char.activeChallengeId;
+	if (not id) then
+		return;
+	end
+	local KEY = "PARTY_MEMBERS_IDLE";
+	local name = UnitName("player");
+	self:InitMechanics3Lvl(KEY, name, "meta");
+	self:InitMechanics4Lvl(KEY, name, "meta", "duration", true);
+	self.db.char.challenges[id].mechanics[KEY][name].meta.lastStartTime = time();
+	self:DebugPrint("Combat is finished.");
+end
+
+--[[--
+Track when player enters a combat
+
+Used to calculate idle time
+]]
+function MyDungeonsBook:PLAYER_REGEN_DISABLED()
+	local id = self.db.char.activeChallengeId;
+	if (not id) then
+		return;
+	end
+	local KEY = "PARTY_MEMBERS_IDLE";
+	local name = UnitName("player");
+	local now = time();
+	self:InitMechanics3Lvl(KEY, name, "meta");
+	self:InitMechanics4Lvl(KEY, name, "meta", "duration", true);
+	local currentIdle = time() - (self.db.char.challenges[id].mechanics[KEY][name].meta.lastStartTime or now);
+	local overallIdle = self.db.char.challenges[id].mechanics[KEY][name].meta.duration + currentIdle;
+	self.db.char.challenges[id].mechanics[KEY][name].meta.duration = overallIdle;
+	self.db.char.challenges[id].mechanics[KEY][name].meta.lastStartTime = nil;
+	self:DebugPrint(string.format("Combat is started. Idle time - %s, overall - %s", self:FormatTime(currentIdle * 1000), self:FormatTime(overallIdle * 1000)));
 end

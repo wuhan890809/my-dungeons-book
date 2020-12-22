@@ -61,9 +61,20 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetHeadersForTable(challengeId)
 	end
 	return {
 		{
+			name = L["ID"],
+			width = 50,
+			align = "LEFT"
+		},
+		{
 			name = L["NPC"],
 			width = 120,
-			align = "LEFT"
+			align = "LEFT",
+			bgcolor = {
+				r = 0,
+				g = 0,
+				b = 0,
+				a = 0.4
+			},
 		},
 		{
 			name = player,
@@ -192,7 +203,7 @@ end
 @local
 ]]
 function MyDungeonsBook:DamageDoneToUnitsFrame_RowHover(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
-	if (realrow and column % 3 == 2) then
+	if (realrow and column % 3 == 0) then
 		local amount = self:FormatNumber(data[realrow].cols[column].value);
 		local overkill = self:FormatNumber(data[realrow].cols[column + 1].value);
 		local hits = data[realrow].cols[column + 2].value;
@@ -256,6 +267,7 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetDataForTable(challengeId, key)
 		end
 		local remappedRow = {
 			cols = {
+				{value = npcId},
 				{value = npcName}
 			}
 		};

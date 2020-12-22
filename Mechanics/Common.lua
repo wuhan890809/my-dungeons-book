@@ -644,6 +644,9 @@ function MyDungeonsBook:TrackDamageDoneToSpecificUnits(key, npcs, sourceUnitName
 		return;
 	end
 	local npcId = self:GetNpcIdFromGuid(targetUnitGUID);
+	if (not npcId) then
+		return;
+	end
 	self:InitMechanics4Lvl(key, npcId, sourceUnitName, spellId);
     if (type == "Pet") then
 		local summonedUnitOwner = self:GetSummonedUnitOwner(sourceUnitName, sourceUnitGUID);
@@ -1038,8 +1041,10 @@ Works only for currently active challenge
 function MyDungeonsBook:GetSummonedUnitOwner(petUnitName, petUnitGUID)
 	local id = self.db.char.activeChallengeId;
 	local challenge = self:Challenge_GetById(id);
-	local summonedUnitOwner = self:SafeNestedGet(self.db.char.challenges[id].mechanics, "PARTY-MEMBERS-SUMMON", petUnitGUID);
-	if (not summonedUnitOwner) then
+	local summonedUnitOwnerName = self:SafeNestedGet(self.db.char.challenges[id].mechanics, "PARTY-MEMBERS-SUMMON", petUnitGUID);
+	if (summonedUnitOwnerName) then
+		return summonedUnitOwnerName;
+	else
 		local ownerUnitId = self:FindPetOwnerId(petUnitGUID);
 		if (ownerUnitId) then
 			local playerRealm = challenge.players.player.realm;

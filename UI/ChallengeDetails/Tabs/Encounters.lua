@@ -18,7 +18,7 @@ function MyDungeonsBook:EncountersFrame_Create(parentFrame, challengeId)
 	local encountersFrame = self:TabContentWrapperWidget_Create(parentFrame);
 	local data = self:EncountersFrame_GetDataForTable(challengeId);
 	local columns = self:EncountersFrame_GetColumnsForTable();
-	local table = self:TableWidget_Create(columns, 6, 40, nil, encountersFrame, "encounters");
+	local table = self:TableWidget_Create(columns, 13, 40, nil, encountersFrame, "encounters");
 	table:SetData(data);
 	return encountersFrame;
 end

@@ -1,5 +1,8 @@
 ﻿### v2.2.0
 
+* Fix tracker for summoned units
+* Don't highlight 0 for avoidable damage
+* Add more avoidable spells and auras (related to [#34](https://github.com/onechiporenko/my-dungeons-book/issues/34), [#29](https://github.com/onechiporenko/my-dungeons-book/issues/29), [#32](https://github.com/onechiporenko/my-dungeons-book/issues/32), [#33](https://github.com/onechiporenko/my-dungeons-book/issues/33), [#30](https://github.com/onechiporenko/my-dungeons-book/issues/30), [#31](https://github.com/onechiporenko/my-dungeons-book/issues/31), [#28](https://github.com/onechiporenko/my-dungeons-book/issues/28), [#27](https://github.com/onechiporenko/my-dungeons-book/issues/27))
 * [#102](https://github.com/onechiporenko/my-dungeons-book/issues/102) Group damage done to all units and highlight important units
 * [#101](https://github.com/onechiporenko/my-dungeons-book/issues/101) Show avoidable damage as part of all taken damage tab
 

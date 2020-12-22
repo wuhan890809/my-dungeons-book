@@ -100,7 +100,7 @@ function MyDungeonsBook:DamageDoneToPartyMembersFrame_GetDataForTable(challengeI
 			amount = amount + amountForPartyMember;
 			local amountCell = {value = amountForPartyMember};
 			local amountIsAvoidable = avoidableSpells[spellId] or (avoidableSpellsNoTank[spellId] and role ~= "TANK");
-			if (amountIsAvoidable) then
+			if (amountIsAvoidable and amountForPartyMember > 0) then
 				amountCell.color = {
 					r = 200,
 					g = 0,
