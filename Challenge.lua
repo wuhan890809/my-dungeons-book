@@ -70,7 +70,7 @@ function MyDungeonsBook:ParseUnitInfoWithWowApi(unit)
         local itemLink = GetInventoryItemLink(unit, i);
 		items[i] = itemLink;
 	end
-	return {
+	local unitInfo = {
 		name = name,
 		role = role,
 		race = race,
@@ -79,8 +79,28 @@ function MyDungeonsBook:ParseUnitInfoWithWowApi(unit)
 		realm = realm,
 		items = items,
 		talents = {},
-		misc = {}
+		misc = {},
+		covenant = {}
 	};
+	if (unit == "player") then
+		local covenantId = C_Covenants.GetActiveCovenantID();
+		local activeSoulbindId = C_Soulbinds.GetActiveSoulbindID();
+		local activeSoulbindData = C_Soulbinds.GetSoulbindData(activeSoulbindId);
+		local conduits = {};
+		for _, conduit in pairs(activeSoulbindData.tree.nodes) do
+			if (conduit.failureRenownRequirement == nil and conduit.state == 3) then
+				tinsert(conduits, conduit);
+			end
+		end
+		unitInfo.covenant.id = covenantId;
+		unitInfo.covenant.soulbind = {
+			id = activeSoulbindId,
+			name = activeSoulbindData.name,
+			textureKit = activeSoulbindData.textureKit,
+			conduits = conduits
+		};
+	end
+	return unitInfo;
 end
 
 --[[--

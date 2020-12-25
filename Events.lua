@@ -127,8 +127,7 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 	self:RegisterEvent("PLAYER_REGEN_DISABLED");
 	self:RegisterEvent("PLAYER_REGEN_ENABLED");
-    self:Message_IdleTime_StartTrack();
-	self:DebugPrint("CHALLENGE_MODE_START");
+    self:DebugPrint("CHALLENGE_MODE_START");
 	if (self.db.char.activeChallengeId) then
 		self:DebugPrint(string.format("Challenge already exists with id %s", self.db.char.activeChallengeId));
 		return;
@@ -222,6 +221,7 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 	if (self.challengesTable) then
 		self.challengesTable:SetData(self:ChallengesFrame_GetDataForTable());
 	end
+	self:Messages_StartTrack();
 	self:LogPrint(string.format(L["%s +%s is started"], zoneName, cmLevel));
 end
 
@@ -232,7 +232,7 @@ function MyDungeonsBook:CHALLENGE_MODE_RESET()
 	self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 	self:UnregisterEvent("PLAYER_REGEN_DISABLED");
 	self:UnregisterEvent("PLAYER_REGEN_ENABLED");
-    self:Message_IdleTime_StopTrack();
+    self:Messages_StopTrack();
 	local id = self.db.char.activeChallengeId;
 	if (self.db.char.challenges[id]) then
 		self.db.char.challenges[id].endTime = time();
@@ -286,7 +286,7 @@ function MyDungeonsBook:CHALLENGE_MODE_COMPLETED()
 	self:UnregisterEvent("PLAYER_REGEN_ENABLED");
 	self:Message_IdleTime_Send();
 	self:ScheduleTimer(function()
-		self:Message_IdleTime_StopTrack();
+		--self:Messages_StopTrack();
 	end, 5);
 end
 

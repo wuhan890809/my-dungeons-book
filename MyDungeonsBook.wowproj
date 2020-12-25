@@ -55,6 +55,12 @@
     <Content Include="Messages.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Messages\ChallengeIdleTime.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Messages\CovenantInfo.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="MyDungeonsBook.toc">
       <SubType>TableOfContents</SubType>
     </Content>
@@ -222,6 +228,7 @@
     <Folder Include="Mechanics\COMMON" />
     <Folder Include="Mechanics\SL" />
     <Folder Include="ldoc" />
+    <Folder Include="Messages" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Casts\Tabs" />

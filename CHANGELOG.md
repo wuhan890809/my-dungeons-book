@@ -5,6 +5,15 @@
 * Add more avoidable spells and auras (related to [#34](https://github.com/onechiporenko/my-dungeons-book/issues/34), [#29](https://github.com/onechiporenko/my-dungeons-book/issues/29), [#32](https://github.com/onechiporenko/my-dungeons-book/issues/32), [#33](https://github.com/onechiporenko/my-dungeons-book/issues/33), [#30](https://github.com/onechiporenko/my-dungeons-book/issues/30), [#31](https://github.com/onechiporenko/my-dungeons-book/issues/31), [#28](https://github.com/onechiporenko/my-dungeons-book/issues/28), [#27](https://github.com/onechiporenko/my-dungeons-book/issues/27))
 * [#102](https://github.com/onechiporenko/my-dungeons-book/issues/102) Group damage done to all units and highlight important units
 * [#101](https://github.com/onechiporenko/my-dungeons-book/issues/101) Show avoidable damage as part of all taken damage tab
+* [#93](https://github.com/onechiporenko/my-dungeons-book/issues/93) Add units to track taken damage for Necrotic Wake
+* [#94](https://github.com/onechiporenko/my-dungeons-book/issues/94) Add units to track taken damage for Plaguefall
+* [#95](https://github.com/onechiporenko/my-dungeons-book/issues/95) Add units to track taken damage for De Other Side
+* [#96](https://github.com/onechiporenko/my-dungeons-book/issues/96) Add units to track taken damage for Halls of Atonement
+* [#97](https://github.com/onechiporenko/my-dungeons-book/issues/97) Add units to track taken damage for Spires of Ascension
+* [#98](https://github.com/onechiporenko/my-dungeons-book/issues/98) Add units to track taken damage for Theater of Pain
+* [#99](https://github.com/onechiporenko/my-dungeons-book/issues/99) Add units to track taken damage for Mists of Tirna Scithe
+* [#100](https://github.com/onechiporenko/my-dungeons-book/issues/100) Add units to track taken damage for Sanguine Depths
+* [#103](https://github.com/onechiporenko/my-dungeons-book/issues/103) Allow MDB to communicate with other party member
 
 ### v2.1.0
 

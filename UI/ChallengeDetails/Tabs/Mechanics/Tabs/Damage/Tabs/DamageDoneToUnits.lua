@@ -61,6 +61,11 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetHeadersForTable(challengeId)
 	end
 	return {
 		{
+			name = "|Tinterface\\scenarios\\scenarioicon-interact.blp:12|t",
+			width = 40,
+			align = "CENTER"
+		},
+		{
 			name = L["ID"],
 			width = 50,
 			align = "LEFT"
@@ -203,7 +208,7 @@ end
 @local
 ]]
 function MyDungeonsBook:DamageDoneToUnitsFrame_RowHover(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
-	if (realrow and column % 3 == 0) then
+	if (realrow and column % 3 == 1 and column > 3) then
 		local amount = self:FormatNumber(data[realrow].cols[column].value);
 		local overkill = self:FormatNumber(data[realrow].cols[column + 1].value);
 		local hits = data[realrow].cols[column + 2].value;
@@ -265,8 +270,24 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetDataForTable(challengeId, key)
 		if (not npcName) then
 			npcName = npcId;
 		end
+		local icon = "";
+		if (specialNpcs[npcId]) then
+			if (specialNpcs[npcId].type == "BOSS") then
+				icon = "|Tinterface\\scenarios\\scenarioicon-boss.blp:12|t"
+			end
+			if (specialNpcs[npcId].type == "ADD") then
+				icon = "|Tinterface\\scenarios\\scenarioicon-combat.blp:18|t"
+			end
+			if (specialNpcs[npcId].type == "MOB") then
+				icon = "|Tinterface\\scenarios\\scenarioicon-dash.blp:18|t"
+			end
+			if (specialNpcs[npcId].type == "AFFIX") then
+				icon = "|Tinterface\\characterframe\\deathknight-bloodrune.blp:18|t"
+			end
+		end
 		local remappedRow = {
 			cols = {
+				{value = icon},
 				{value = npcId},
 				{value = npcName}
 			}
@@ -276,12 +297,7 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetDataForTable(challengeId, key)
 				value = row[unitId .. "Amount"] or 0
 			};
 			if (specialNpcs[npcId]) then
-				amountCell.color = {
-					r = 0,
-					g = 100,
-					b = 0,
-					a = 1
-				}
+				amountCell.color = self:GetColorFor(specialNpcs[npcId].type);
 			end
 			tinsert(remappedRow.cols, amountCell);
 			tinsert(remappedRow.cols, {
@@ -291,14 +307,11 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetDataForTable(challengeId, key)
 				value = row[unitId .. "Hits"] or 0
 			});
 		end
-		local amountSumCell = {value = row["amount"]};
+		local amountSumCell = {
+			value = row["amount"]
+		};
 		if (specialNpcs[npcId]) then
-			amountSumCell.color = {
-				r = 0,
-				g = 100,
-				b = 0,
-				a = 1
-			}
+			amountSumCell.color = self:GetColorFor(specialNpcs[npcId].type);
 		end
 		tinsert(remappedRow.cols, amountSumCell);
 		tinsert(remappedRow.cols, {value = row["overkill"]});

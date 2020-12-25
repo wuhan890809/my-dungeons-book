@@ -475,29 +475,190 @@ local SLSpecificItemsUsedByPartyMembers = {
 };
 
 local SLDamageDoneToSpecificUnits = {
-    [120651] = {}, -- Explosive Orbs
+    [120651] = {
+        type = "AFFIX"
+    }, -- Explosive Orbs
+    [174773] = {
+        type = "AFFIX"
+    }, -- Spiteful Shade
+
     -- Plaguefall
-    [164362] = {}, -- Slimy Morsel (Globgrog adds)
-    [171887] = {}, -- Slimy Smorgasbord (Globgrog adds)
-    [163915] = {}, -- Hatchling Nest
-    [169159] = {}, -- Unstable Canister
-    [169498] = {}, -- Plague Bomb (Doctor Ickus adds)
-    [168837] = {}, -- Stealthling
-    [170474] = {}, -- Brood Assassin (Domina Venomblade adds)
-    [165430] = {}, -- Malignant Spawn (Margrave Stradama adds)
+    [164362] = {
+        type = "ADD"
+    }, -- Slimy Morsel (Globgrog adds)
+    [171887] = {
+        type = "ADD"
+    }, -- Slimy Smorgasbord (Globgrog adds)
+    [163915] = {
+        type = "MOB"
+    }, -- Hatchling Nest
+    [169159] = {
+        type = "MOB"
+    }, -- Unstable Canister
+    [169498] = {
+        type = "ADD"
+    }, -- Plague Bomb (Doctor Ickus adds)
+    [168837] = {
+        type = "MOB"
+    }, -- Stealthling
+    [170474] = {
+        type = "ADD"
+    }, -- Brood Assassin (Domina Venomblade adds)
+    [165430] = {
+        type = "ADD"
+    }, -- Malignant Spawn (Margrave Stradama adds)
+    [164255] = {
+        type = "BOSS"
+    }, -- Globgrog
+    [164967] = {
+        type = "BOSS"
+    }, -- Doctor Ickus
+    [164266] = {
+        type = "BOSS"
+    }, -- Domina Venomblade,
+    [164267] = {
+        type = "BOSS"
+    }, -- Margrave Stradama
+
     -- The Necrotic Wake
-    [163121] = {}, -- Stitched Vanguard
-    [164702] = {}, -- Carrion Worm (Blightbone adds)
-    [164414] = {}, -- Reanimated Mage (Amarth adds)
-    [164427] = {}, -- Reanimated Warrior (Amarth adds)
-    [168246] = {}, -- Reanimated Crossbowman (Amarth adds)
+    [163121] = {
+        type = "MOB"
+    }, -- Stitched Vanguard
+    [164702] = {
+        type = "ADD"
+    }, -- Carrion Worm (Blightbone adds)
+    [164414] = {
+        type = "ADD"
+    }, -- Reanimated Mage (Amarth adds)
+    [164427] = {
+        type = "ADD"
+    }, -- Reanimated Warrior (Amarth adds)
+    [168246] = {
+        type = "ADD"
+    }, -- Reanimated Crossbowman (Amarth adds)
+    [162691] = {
+        type = "BOSS"
+    }, -- Blightbone
+    [163157] = {
+        type = "BOSS"
+    }, -- Amarth
+    [162689] = {
+        type = "BOSS"
+    }, -- Surgeon Stitchflesh
+    [162693] = {
+        type = "BOSS"
+    }, -- Nalthor the Rimebinder
+
     -- Spires of Ascension
-    [163077] = {}, -- Azules
+    [163077] = {
+        type = "BOSS"
+    }, -- Azules
+    [162059] = {
+        type = "BOSS"
+    }, -- Kin-Tara
+    [162058] = {
+        type = "BOSS"
+    }, -- Ventunax
+    [162060] = {
+        type = "BOSS"
+    }, -- Oryphrion
+    [167410] = {
+        type = "BOSS"
+    }, -- Devos
+
     -- Sanguine Depths
-    [168882] = {}, -- Fleeting Manifestation
+    [168882] = {
+        type = "MOB"
+    }, -- Fleeting Manifestation
+    [162100] = {
+        type = "BOSS"
+    }, -- Kryxis the Voracious
+    [162103] = {
+        type = "BOSS"
+    }, -- Executor Tarvold
+    [162102] = {
+        type = "BOSS"
+    }, -- Grand Proctor Beryllia
+    [165318] = {
+        type = "BOSS"
+    }, -- General Kaal
+
     -- Mists of Tirna Scithe
-    [165251] = {}, -- Illusionary Vulpin
-    [165560] = {}, -- Gormling Larva
+    [165251] = {
+        type = "ADD"
+    }, -- Illusionary Vulpin
+    [165560] = {
+        type = "ADD"
+    }, -- Gormling Larva
+    [164567] = {
+        type = "BOSS"
+    }, -- Ingra Maloch
+    [164501] = {
+        type = "BOSS"
+    }, -- Mistcaller
+    [164517] = {
+        type = "BOSS"
+    }, -- Tred'ova
+    [164804] = {
+        type = "BOSS"
+    }, -- Droman Oulfarran
+
+    -- De Other Side
+    [165905] = {
+        type = "ADD"
+    }, -- Son of Hakkar (Hakkar adds),
+    [164450] = {
+        type = "BOSS",
+    }, -- Dealer Xy'exa
+    [164558] = {
+        type = "BOSS"
+    }, -- Hakkar the Soulflayer
+    [164555] = {
+        type = "BOSS"
+    }, -- Millificent Manastorm
+    [164556] = {
+        type = "BOSS"
+    }, -- Millhouse Manastorm
+    [166608] = {
+        type = "BOSS"
+    }, -- Mueh'zala
+
+    -- Halls of Atonement
+    [165408] = {
+        type = "BOSS"
+    }, -- Halkias
+    [164185] = {
+        type = "BOSS"
+    }, -- Echelon
+    [165410] = {
+        type = "BOSS"
+    }, -- High Adjudicator Aleez
+    [164218] = {
+        type = "BOSS"
+    }, -- Lord Chamberlain
+
+    -- Theater of Pain
+    [164451] = {
+        type = "BOSS"
+    }, -- Dessia the Decapitator
+    [164463] = {
+        type = "BOSS"
+    }, -- Paceran the Virulent
+    [164461] = {
+        type = "BOSS"
+    }, -- Sathel the Accursed
+    [162317] = {
+        type = "BOSS"
+    }, -- Gorechop
+    [162329] = {
+        type = "BOSS"
+    }, -- Xav the Unfallen
+    [162309] = {
+        type = "BOSS"
+    }, -- Kul'tharok
+    [165946] = {
+        type = "BOSS"
+    }, -- Mordretha, the Endless Empress
 };
 
 function MyDungeonsBook:GetSLDamageDoneToSpecificUnits()

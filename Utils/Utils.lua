@@ -515,3 +515,25 @@ function MyDungeonsBook:SafeNestedNumberModify(tbl, num, ...)
 		end
 	end
 end
+
+--[[--
+@param[type=string]
+@return[type=?string]
+]]
+function MyDungeonsBook:GetColorFor(key)
+	local colors = {
+		["BOSS"] = {
+			r = 255, g = 209, b = 0, a = 1
+		},
+		["MOB"] = {
+			r = 0, g = 132, b = 103, a = 1
+		},
+		["AFFIX"] = {
+			r = 64, g = 191, b = 64, a = 1
+		},
+		["ADD"] = {
+			r = 0, g = 100, b = 0, a = 1
+		}
+	};
+	return colors[key];
+end
