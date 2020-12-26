@@ -401,7 +401,17 @@ local SLSpecificCastsDoneByPartyMembers = {
     [328404] = true, -- Discharged Anima (use)
     [328351] = true, -- Bloody Javelin (use)
     [328128] = true, -- Forgotten Forgehammer (use)
-    [325189] = true, -- Discarded Shield (use) todo or 328050
+    [328050] = true, -- Discarded Shield (use)
+    -- De Other Side
+    [320140] = true, -- Disarming...
+    -- Mists of Tirna Scithe
+    [340162] = true, -- Savory Statshroom
+    [340158] = true, -- Tasty Toughshroom
+    -- Halls of Atonement
+    [342171] = true, -- Loyal Stoneborn
+    -- Sanguine Depths
+    [324089] = true, -- Z'rali's Essence
+    [324086] = true, -- Shining Radiance
 };
 
 local SLSpecificItemsUsedByPartyMembers = {

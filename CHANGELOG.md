@@ -1,4 +1,11 @@
-﻿### v2.2.0
+﻿### v2.3.0
+
+* [#57](https://github.com/onechiporenko/my-dungeons-book/issues/57) Add special casts in the De Other Side
+* [#61](https://github.com/onechiporenko/my-dungeons-book/issues/61) Add special casts in the Mists of Tirna Scithe
+* [#58](https://github.com/onechiporenko/my-dungeons-book/issues/58) Add special casts in the Halls of Atonement
+* [#62](https://github.com/onechiporenko/my-dungeons-book/issues/62) Add special casts in the Sanguine Depths
+
+### v2.2.0
 
 * Fix tracker for summoned units
 * Don't highlight 0 for avoidable damage
