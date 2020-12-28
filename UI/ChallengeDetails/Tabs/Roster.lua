@@ -139,7 +139,7 @@ function MyDungeonsBook:RosterFrame_PartyMemberFrame_Covenant_Create(parentFrame
 	local covenantIconFrame = AceGUI:Create("InteractiveLabel");
 	parentFrame:AddChild(covenantIconFrame);
 	local unitCovenantInfo = challenge.players[unitId] and challenge.players[unitId].covenant;
-	if (not unitCovenantInfo.id) then
+	if (not unitCovenantInfo or not unitCovenantInfo.id) then
 		return;
 	end
 	local id = unitCovenantInfo.id;
