@@ -537,3 +537,21 @@ function MyDungeonsBook:GetColorFor(key)
 	};
 	return colors[key];
 end
+
+local covenantIconsMap = {
+	[0] = 134400,
+	[1] = 3257748,
+	[2] = 3257751,
+	[3] = 3257750,
+	[4] = 3257749,
+};
+
+--[[--
+Get an icon for covenant with id `covenantId`
+
+@param[type=number] covenantId (0-4)
+@return[type=number]
+]]
+function MyDungeonsBook:GetCovenantIconId(covenantId)
+	return covenantIconsMap[covenantId];
+end

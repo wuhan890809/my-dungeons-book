@@ -6,6 +6,7 @@
 * [#62](https://github.com/onechiporenko/my-dungeons-book/issues/62) Add special casts in the Sanguine Depths
 * Save swing damage done by Spiteful Shade separately
 * Fix Absorb tracker
+* [#105](https://github.com/onechiporenko/my-dungeons-book/issues/105) Add Covenant blocks to Roster
 
 ### v2.2.0
 
