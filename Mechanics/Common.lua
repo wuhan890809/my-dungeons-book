@@ -244,6 +244,7 @@ function MyDungeonsBook:TrackInterrupt(unit, srcGUID, spellId, interruptedSpellI
 	if ((not petOwner) and (not UnitIsPlayer(unit))) then
 		self:DebugPrint(string.format("%s is not player or pet", unit));
 	end
+	unit = petOwner or unit;
 	local KEY = "COMMON-INTERRUPTS";
 	if (spellId == 240448) then
 		KEY = "COMMON-AFFIX-QUAKING-INTERRUPTS";
@@ -337,34 +338,16 @@ function MyDungeonsBook:TrackTryInterrupt(sourceName, sourceGUID, spellId)
 end
 
 --[[--
-Track gotten by players damage that could be avoided.
-
-Check events not related to `SPELL_AURA_APPLIED` and `SPELL_AURA_APPLIED_DOSE` (they are tracked in the method `MyDungeonsBook:TrackAvoidableAuras`).
-
-@param[type=string] key db key to save damage done by `spells` or `spellsNoTank`
-@param[type=table] spells table with keys equal to tracked spell ids
-@param[type=table] spellsNoTank table with keys equal to tracked spell ids allowed to hit tanks
-@param[type=string] unit unit name that got damage (usualy it's a destUnit from `CombatLogGetCurrentEventInfo`)
-@param[type=number] spellId spell that did damage to `unit`
-@param[type=number] amount amount of damage done to `unit` by `spellId`
-]]
-function MyDungeonsBook:TrackAvoidableSpells(key, spells, spellsNoTank, unit, spellId, amount)
-	if ((spells[spellId] or (spellsNoTank[spellId] and UnitGroupRolesAssigned(unit) ~= "TANK")) and UnitIsPlayer(unit)) then
-		self:SaveTrackedDamageToPartyMembers(key, unit, spellId, amount);
-	end
-end
-
---[[--
 Track all damage done to party members
 
 @param[type=string] unit unit name that got damage (usualy it's a destUnit from `CombatLogGetCurrentEventInfo`)
 @param[type=number] spellId spell that did damage to `unit`
 @param[type=number] amount amount of damage done to `unit` by `spellId`
 ]]
-function MyDungeonsBook:TrackAllDamageDoneToPartyMembers(unit, spellId, amount)
+function MyDungeonsBook:TrackAllDamageDoneToPartyMembers(targetUnit, sourceUnitGUID, spellId, amount)
 	local key = "ALL-DAMAGE-DONE-TO-PARTY-MEMBERS";
-	if (UnitIsPlayer(unit)) then
-		self:SaveTrackedDamageToPartyMembers(key, unit, spellId, amount);
+	if (UnitIsPlayer(targetUnit)) then
+		self:SaveTrackedDamageToPartyMembers(key, targetUnit, sourceUnitGUID, spellId, amount);
 	end
 end
 
@@ -514,13 +497,19 @@ end
 @local
 @param[type=string] key db key
 @param[type=string] unit unit name that got damage (usualy it's a destUnit from `CombatLogGetCurrentEventInfo`)
+@param[type=GUID] sourceUnitGUID damage source GUID
 @param[type=number] spellId spell that did damage to `unit`
 @param[type=number] amount amount of damage done to `unit` by `spellId`
 ]]
-function MyDungeonsBook:SaveTrackedDamageToPartyMembers(key, unit, spellId, amount)
-	--[[if (self:IsFriendlyFire(spellId)) then
+function MyDungeonsBook:SaveTrackedDamageToPartyMembers(key, unit, sourceUnitGUID, spellId, amount)
+	if (self:IsFriendlyFire(spellId)) then
 		return;
-	end]]
+	end
+	local sourceNpcId = self:GetNpcIdFromGuid(sourceUnitGUID);
+	-- Save swing damage for "special" npcs separately
+	if (spellId == -2 and self.db.global.meta.npcToTrackSwingDamage[sourceNpcId] ~= nil) then
+		spellId = -sourceNpcId;
+	end
 	local amountInPercents = amount and amount / UnitHealthMax(unit) * 100 or 0;
 	if (amountInPercents >= 40 and self.db.global.meta.mechanics[key].verbose) then
 		local spellLink = GetSpellLink(spellId);
@@ -960,16 +949,13 @@ function MyDungeonsBook:TrackAuraRemovedFromPartyMember(sourceUnitName, sourceUn
 	if (not UnitIsPlayer(sourceUnitName)) then
 		return;
 	end
-	if (not self.db.global.meta.spells[spellId]) then
-		self.db.global.meta.spells[spellId] = {};
-	end
+	local KEY = "PARTY-MEMBERS-AURAS";
+	self:InitMechanics4Lvl(KEY, sourceUnitName, spellId, "meta");
+	self:InitMechanics4Lvl(KEY, sourceUnitName, spellId, "timeline");
 	if (not self.db.global.meta.spells[spellId].auraType) then
 		self.db.global.meta.spells[spellId].auraType = auraType;
 	end
 	local id = self.db.char.activeChallengeId;
-	local KEY = "PARTY-MEMBERS-AURAS";
-	self:InitMechanics4Lvl(KEY, sourceUnitName, spellId, "meta");
-	self:InitMechanics4Lvl(KEY, sourceUnitName, spellId, "timeline");
 	local endTime = time();
 	if (amount == 0 and self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.lastStartTime) then
 		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.duration = self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.duration +

@@ -46,6 +46,10 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 	if (subEventName == "SPELL_ABSORBED") then
 		local unitGUID, unitName, unitFlags, _, spellId, _, _, amount = select(12, CombatLogGetCurrentEventInfo());
+		local N22 = select(22, CombatLogGetCurrentEventInfo());
+		if (N22 ~= nil) then
+			unitGUID, unitName, unitFlags, _, spellId, _, _, amount = select(15, CombatLogGetCurrentEventInfo());
+		end
 		self:TrackAllHealDoneByPartyMembersToEachOther(unitName, unitGUID, dstName, dstGUID, spellId, amount, -1);
 		self:TrackAllHealBySpellDoneByPartyMembers(unitName, unitGUID, unitFlags, dstName, dstGUID, dstFlags, spellId, amount, -1, false);
 	end
@@ -70,27 +74,25 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 	if ((subEventPrefix:match("^SPELL") or subEventPrefix:match("^RANGE")) and subEventSuffix == "DAMAGE") then
 		local spellId, _, _, amount, overkill, _, _, _, _, crit = select(12, CombatLogGetCurrentEventInfo());
-		self:TrackAllDamageDoneToPartyMembers(dstName, spellId, amount);
+		self:TrackAllDamageDoneToPartyMembers(dstName, srcGUID, spellId, amount);
 		self:TrackAllDamageDoneByPartyMembers(srcName, srcGUID, spellId, amount, overkill, crit);
-		self:TrackSLAvoidableSpells(dstName, spellId, amount);
 		self:TrackSLDamageDoneToSpecificUnits(srcName, srcGUID, spellId, amount, overkill, dstName, dstGUID);
 	end
 	if (subEventName == "SWING_DAMAGE") then
 		local amount, overkill, _, _, _, _, crit = select(12, CombatLogGetCurrentEventInfo());
-		self:TrackAllDamageDoneToPartyMembers(dstName, -2, amount);
+		self:TrackAllDamageDoneToPartyMembers(dstName, srcGUID, -2, amount);
 		self:TrackAllDamageDoneByPartyMembers(srcName, srcGUID, -2, amount, overkill, crit);
 		self:TrackSLDamageDoneToSpecificUnits(srcName, srcGUID, -2, amount, overkill, dstName, dstGUID);
 	end
 	if (subEventName == "SPELL_EXTRA_ATTACKS") then
 		local amount = select(12, CombatLogGetCurrentEventInfo());
-		self:TrackAllDamageDoneToPartyMembers(dstName, -2, amount);
+		self:TrackAllDamageDoneToPartyMembers(dstName, srcGUID, -2, amount);
 		self:TrackAllDamageDoneByPartyMembers(srcName, srcGUID, -2, amount, 0, false);
 	end
 	if (subEventPrefix:match("^SPELL") and
 		subEventSuffix == "MISSED") then
 		local spellId, _, _, _, _, amount = select(12, CombatLogGetCurrentEventInfo());
-		self:TrackSLAvoidableSpells(dstName, spellId, amount);
-		self:TrackAllDamageDoneToPartyMembers(dstName, spellId, amount);
+		self:TrackAllDamageDoneToPartyMembers(dstName, srcGUID, spellId, amount);
 	end
 	if (subEventName == "SPELL_AURA_APPLIED" or
 		subEventName == "SPELL_AURA_APPLIED_DOSE") then
@@ -286,7 +288,7 @@ function MyDungeonsBook:CHALLENGE_MODE_COMPLETED()
 	self:UnregisterEvent("PLAYER_REGEN_ENABLED");
 	self:Message_IdleTime_Send();
 	self:ScheduleTimer(function()
-		--self:Messages_StopTrack();
+		self:Messages_StopTrack();
 	end, 5);
 end
 
@@ -308,6 +310,7 @@ Its request is sent in the `MyDungeonsBook:CHALLENGE_MODE_START`
 @param[type=GUID] guid
 ]]
 function MyDungeonsBook:INSPECT_READY(_, guid)
+	self:Message_CovenantInfo_Send();
 	if (self:UpdateUnitInfo(guid)) then
 		ClearInspectPlayer(guid);
 	end

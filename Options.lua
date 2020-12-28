@@ -49,6 +49,11 @@ MyDungeonsBook.OptionsDefaults = {
 		meta = {
 			spells = {},
 			npcs = {},
+			npcToTrackSwingDamage = {
+				[174773] = {
+					icon = 135945
+				}
+			},
 			mechanics = {
 				["DEATHS"] = {
 					id = "DEATHS",

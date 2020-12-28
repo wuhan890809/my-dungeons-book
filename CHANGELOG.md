@@ -4,6 +4,8 @@
 * [#61](https://github.com/onechiporenko/my-dungeons-book/issues/61) Add special casts in the Mists of Tirna Scithe
 * [#58](https://github.com/onechiporenko/my-dungeons-book/issues/58) Add special casts in the Halls of Atonement
 * [#62](https://github.com/onechiporenko/my-dungeons-book/issues/62) Add special casts in the Sanguine Depths
+* Save swing damage done by Spiteful Shade separately
+* Fix Absorb tracker
 
 ### v2.2.0
 

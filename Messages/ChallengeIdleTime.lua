@@ -31,12 +31,12 @@ function MyDungeonsBook:Message_IdleTime_Send()
     local challenge = self:Challenge_GetById(id);
     local idleMechanics = challenge.mechanics["PARTY_MEMBERS_IDLE"];
     local player = challenge.players.player;
-    self:DebugPrint(string.format("Idle Time is sent"));
     self:SendMessage(MDB_CHALLENGE_IDLE_TIME, self:Serialize({
         idleTime = idleMechanics[player.name],
         name = player.name,
         realm = player.realm
     }));
+    self:DebugPrint(string.format("Idle Time is sent"));
 end
 
 --[[--

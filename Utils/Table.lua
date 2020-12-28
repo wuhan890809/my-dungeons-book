@@ -108,17 +108,25 @@ function MyDungeonsBook:Table_Cell_FormatAsSpellIcon(rowFrame, cellFrame, data, 
 	local spellId = data[realrow].cols[column].value;
 	local suffix = self:GetIconTextureSuffix(30);
 	if (spellId) then
-		if (spellId == -2) then
-			-- Hack to show "fist" icon for swing dmg
-			local itemIcon = "|T999951" .. suffix .. "|t";
-			(cellFrame.text or cellFrame):SetText(itemIcon);
+		if (spellId < -3) then
+			local npcId = math.abs(spellId);
+			if (self.db.global.meta.npcToTrackSwingDamage[npcId]) then
+				local icon = self.db.global.meta.npcToTrackSwingDamage[npcId].icon;
+				(cellFrame.text or cellFrame):SetText("|T".. icon .. suffix .. "|t");
+			end
 		else
-			if (spellId > 0) then
-				local _, _, icon = GetSpellInfo(spellId);
-				local spellIcon = "|T" .. (icon or "") .. suffix .. "|t";
+			if (spellId == -2) then
+				-- Hack to show "fist" icon for swing dmg
+				local spellIcon = "|T999951" .. suffix .. "|t";
 				(cellFrame.text or cellFrame):SetText(spellIcon);
 			else
-				(cellFrame.text or cellFrame):SetText("");
+				if (spellId > 0) then
+					local _, _, icon = GetSpellInfo(spellId);
+					local spellIcon = "|T" .. (icon or "") .. suffix .. "|t";
+					(cellFrame.text or cellFrame):SetText(spellIcon);
+				else
+					(cellFrame.text or cellFrame):SetText("");
+				end
 			end
 		end
 	else
@@ -137,27 +145,39 @@ Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/proje
 function MyDungeonsBook:Table_Cell_FormatAsSpellLink(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local spellId = data[realrow].cols[column].value;
 	if (spellId) then
-		if (spellId == -2) then
+		if (spellId < -3) then
+			local npcId = math.abs(spellId);
 			local cellText = L["Swing Damage"];
-			if (data[realrow].meta and data[realrow].meta.unitName) then
-				cellText = string.format("%s (%s)", cellText, data[realrow].meta.unitName);
+			if (self.db.global.meta.npcToTrackSwingDamage[npcId]) then
+				local unitName = (self.db.global.meta.npcs[npcId] and self.db.global.meta.npcs[npcId].name) or npcId;
+				cellText = string.format("%s (%s)", cellText, unitName);
+			else
+				cellText = string.format("%s (%s)", cellText, npcId);
 			end
 			(cellFrame.text or cellFrame):SetText(cellText);
 		else
-			if (spellId == -1) then
-				(cellFrame.text or cellFrame):SetText(L["Sum"]);
+			if (spellId == -2) then
+				local cellText = L["Swing Damage"];
+				if (data[realrow].meta and data[realrow].meta.unitName) then
+					cellText = string.format("%s (%s)", cellText, data[realrow].meta.unitName);
+				end
+				(cellFrame.text or cellFrame):SetText(cellText);
 			else
-				if (spellId == -3) then
-					(cellFrame.text or cellFrame):SetText(L["Avoidable"]);
+				if (spellId == -1) then
+					(cellFrame.text or cellFrame):SetText(L["Sum"]);
 				else
-					if (spellId > 0) then
-						local cellText = GetSpellLink(spellId);
-						if (data[realrow].meta and data[realrow].meta.unitName) then
-							cellText = string.format("%s (%s)", cellText, data[realrow].meta.unitName);
-						end
-						(cellFrame.text or cellFrame):SetText(cellText);
+					if (spellId == -3) then
+						(cellFrame.text or cellFrame):SetText(L["Avoidable"]);
 					else
-						(cellFrame.text or cellFrame):SetText("");
+						if (spellId > 0) then
+							local cellText = GetSpellLink(spellId);
+							if (data[realrow].meta and data[realrow].meta.unitName) then
+								cellText = string.format("%s (%s)", cellText, data[realrow].meta.unitName);
+							end
+							(cellFrame.text or cellFrame):SetText(cellText);
+						else
+							(cellFrame.text or cellFrame):SetText("");
+						end
 					end
 				end
 			end
