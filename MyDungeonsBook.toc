@@ -3,7 +3,7 @@
 ## Version: 2.2.0
 ## Author: GelioS
 ## Interface: 90002
-## OptionalDeps: LibStub, CallbackHandler-1.0, Ace3, LibCompress
+## OptionalDeps: LibStub, CallbackHandler-1.0, Ace3, LibCompress, LibGroupInSpecT-1.1
 ## SavedVariables: MyDungeonsBookDB
 ## SavedVariablesPerCharacter: MyDungeonsBookData
 ## LoadManagers: AddonLoader
@@ -54,8 +54,14 @@ UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal/Tabs/HealByPartyMember/Tabs/BySpell
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal/Tabs/HealByPartyMember/Tabs/ToEachPartyMember.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/UsedItems.lua
 UI/ChallengeDetails/Tabs/Roster.lua
+UI/ChallengeDetails/Tabs/Roster/Tabs.lua
+UI/ChallengeDetails/Tabs/Roster/Tabs/Covenant.lua
+UI/ChallengeDetails/Tabs/Roster/Tabs/Equipment.lua
+UI/ChallengeDetails/Tabs/Roster/Tabs/Info.lua
+UI/ChallengeDetails/Tabs/Roster/Tabs/Talents.lua
 UI/ChallengeDetails/Tabs/Summary.lua
 
+Widgets/NewLine.lua
 Widgets/Table.lua
 Widgets/Tabs.lua
 Widgets/TabContentWrapper.lua

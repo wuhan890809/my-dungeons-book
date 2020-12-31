@@ -110,6 +110,11 @@ L["Uptime, %"] = "Uptime, %";
 L["Max Stacks"] = "Max Stacks";
 L["Type"] = "Type";
 L["Avoidable"] = "Avoidable";
+L["Talents"] = "Talents";
+L["Covenant"] = "Covenant";
+L["Equipment"] = "Equipment";
+L["Info"] = "Info";
+L["Covenant info is available only about players with installed MyDungeonsBook."] = "Covenant info is available only about players with installed MyDungeonsBook.";
 -- UI end
 
 -- Help start

@@ -14,4 +14,5 @@
 	<Include file="Libs\AceSerializer-3.0\AceSerializer-3.0.xml"/>
 	<Include file="Libs\ScrollingTable-4.1\ScrollingTable-4.1.xml"/>
 	<Include file="Libs\LibCompress\lib.xml"/>
+	<Script file="Libs\LibGroupInSpecT-1.1\LibGroupInSpecT-1.1.lua"/>
 </Ui>

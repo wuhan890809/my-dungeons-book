@@ -8,6 +8,7 @@ Challenge
 ]]
 
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
+local LGIST = LibStub:GetLibrary("LibGroupInSpecT-1.1");
 
 --[[--
 Check if player is in challenge mode.
@@ -53,6 +54,7 @@ function MyDungeonsBook:ParseUnitInfoWithWowApi(unit)
 	if (not UnitExists(unit)) then
 		return {};
 	end
+	local unitInfoFromLGI = LGIST:GetCachedInfo(UnitGUID(unit));
 	local _, _, class = UnitClass(unit);
 	local name, realm = UnitFullName(unit);
 	local _, race = UnitRace(unit);
@@ -78,7 +80,8 @@ function MyDungeonsBook:ParseUnitInfoWithWowApi(unit)
 		spec = spec,
 		realm = realm,
 		items = items,
-		talents = {},
+		gender = unitInfoFromLGI.gender,
+		talents = self:CopyTable(unitInfoFromLGI.talents),
 		misc = {},
 		covenant = {}
 	};

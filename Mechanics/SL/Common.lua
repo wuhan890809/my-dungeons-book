@@ -14,6 +14,7 @@ local SLSpells = {
     [226512] = true, -- Sanguine Ichor (Environment)
     [240448] = true, -- Quaking (Environment)
     [342494] = true, -- Belligerent Boast(Season 1 Pridefull)
+    [-174773] = true, -- Spiteful Shade Melee Damage
     -- Plaguefall
     [319898] = true, -- Vile Spit (Slime Tentacle)
     [328501] = true, -- Plague Bomb (Rigged Plagueborer)
@@ -632,6 +633,10 @@ local SLDamageDoneToSpecificUnits = {
     [166608] = {
         type = "BOSS"
     }, -- Mueh'zala
+    [168326] = {
+        type = "ADD"
+    }, -- Shattered Visage
+
 
     -- Halls of Atonement
     [165408] = {

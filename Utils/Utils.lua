@@ -310,7 +310,7 @@ Get a string with unit role, name and realm colored with it's class.
 ]]
 function MyDungeonsBook:GetUnitNameRealmRoleStr(unitInfo)
 	if (unitInfo.name) then
-		return self:ClassColorTextByClassIndex(unitInfo.class, string.format("%s %s - %s", self:GetSmallRoleIcon(unitInfo.role), unitInfo.name, unitInfo.realm));
+		return self:ClassColorTextByClassIndex(unitInfo.class, string.format("%s %s - %s", self:GetSmallRoleIcon(unitInfo.role or ""), unitInfo.name or "", unitInfo.realm or ""));
 	end
 	return nil;
 end
@@ -554,4 +554,18 @@ Get an icon for covenant with id `covenantId`
 ]]
 function MyDungeonsBook:GetCovenantIconId(covenantId)
 	return covenantIconsMap[covenantId];
+end
+
+--[[--
+from https://gist.github.com/tylerneylon/81333721109155b2d244
+]]
+function MyDungeonsBook:CopyTable(obj)
+	if (type(obj) ~= "table") then
+		return obj;
+	end
+	local res = {};
+	for k, v in pairs(obj) do
+		res[self:CopyTable(k)] = self:CopyTable(v);
+	end
+	return res;
 end

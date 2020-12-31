@@ -7,6 +7,8 @@
 * Save swing damage done by Spiteful Shade separately
 * Fix Absorb tracker
 * [#105](https://github.com/onechiporenko/my-dungeons-book/issues/105) Add Covenant blocks to Roster
+* Track Spiteful Shade melee damage separately
+* [#14](https://github.com/onechiporenko/my-dungeons-book/issues/14) Track party members talents
 
 ### v2.2.0
 
