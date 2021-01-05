@@ -494,6 +494,9 @@ local SLDamageDoneToSpecificUnits = {
     [174773] = {
         type = "AFFIX"
     }, -- Spiteful Shade
+    [173729] = {
+        type = "AFFIX"
+    }, -- Manifestation of Pride
 
     -- Plaguefall
     [164362] = {

@@ -1007,6 +1007,9 @@ Used when party member dies or when challenge is completed.
 @param[type=string] sourceUnitGUID
 ]]
 function MyDungeonsBook:RemoveAurasFromPartyMember(sourceUnitName, sourceUnitGUID)
+    if (not UnitIsPlayer(sourceUnitName)) then
+        return;
+    end
 	local KEY = "PARTY-MEMBERS-AURAS";
 	self:InitMechanics2Lvl(KEY, sourceUnitName);
 	local id = self.db.char.activeChallengeId;

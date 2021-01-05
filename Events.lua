@@ -29,6 +29,7 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		self:TrackDeath(dstGUID, dstName);
 		self:TrackSummonByPartyMemberUnitDeath(dstGUID, dstName);
 		self:TrackEnemyUnitDied(dstName, dstGUID, dstFlags);
+		self:RemoveAurasFromPartyMember(dstName, dstGUID);
 	end
 	if (subEventName == "UNIT_DESTROYED") then
 		self:TrackSummonByPartyMemberUnitDeath(dstGUID, dstName);
@@ -175,14 +176,14 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 			if (not buffName) then
 				break;
 			end
-			self:TrackAuraAddedToPartyMember(nameToUse, UnitGUID(unitId), spellId, "BUFF", amount);
+			self:TrackAuraAddedToPartyMember(nameToUse, UnitGUID(unitId), spellId, "BUFF", (amount == 0 and 1) or amount);
 		end
 		for i = 1, 40 do
 			local debuffName, _, amount, _, _, _, _, _, _, spellId = UnitDebuff(unitId, i);
 			if (not debuffName) then
 				break;
 			end
-			self:TrackAuraAddedToPartyMember(nameToUse, UnitGUID(unitId), spellId, "DEBUFF", amount);
+			self:TrackAuraAddedToPartyMember(nameToUse, UnitGUID(unitId), spellId, "DEBUFF", (amount == 0 and 1) or amount);
 		end
         local petUnitId = unitId .. "pet";
         if (UnitExists(petUnitId)) then
