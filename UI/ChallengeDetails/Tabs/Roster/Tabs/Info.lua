@@ -117,7 +117,13 @@ function MyDungeonsBook:ShortInfoFrame_PartyMemberFrame_Race_Create(parentFrame,
     local raceFrame = AceGUI:Create("Label");
     parentFrame:AddChild(raceFrame);
     if (challenge.players[unitId]) then
-        raceFrame:SetText(string.format(L["Race: %s"], challenge.players[unitId].race or L["Not Found"]));
+        local race = challenge.players[unitId].race;
+        if (race and L[race]) then
+            race = L[race];
+        else
+            race = L["Not Found"];
+        end
+        raceFrame:SetText(string.format(L["Race: %s"], race));
     end
     raceFrame:SetWidth(150);
     return raceFrame;

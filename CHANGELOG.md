@@ -10,7 +10,10 @@
 * Track Spiteful Shade melee damage separately
 * [#14](https://github.com/onechiporenko/my-dungeons-book/issues/14) Track party members talents
 * Fix communication between party members
-* Track timeline for idle time 
+* Track timeline for idle time
+* Highlight Manifestation of Pride in the "Damage Done to Units" tab
+* Update aura trackers
+* [#107](https://github.com/onechiporenko/my-dungeons-book/issues/107) Add Chinese localization (thanks [wuhan890809](https://github.com/wuhan890809))
 
 ### v2.2.0
 

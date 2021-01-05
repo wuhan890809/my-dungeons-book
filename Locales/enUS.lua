@@ -2,6 +2,7 @@ local L = LibStub("AceLocale-3.0"):NewLocale("MyDungeonsBook", "enUS", true);
 
 -- UI start
 L["My Dungeons Book"] = true;
+L["Filters"] = "Filters";
 L["%s died"] = "%s died";
 L["%s got hit by %s for %s (%s)"] = "%s got hit by %s for %s (%s)";
 L["%s got debuff by %s"] = "%s got debuff by %s";
@@ -181,3 +182,29 @@ L["Mindrend Tentacle"] = "Mindrend Tentacle";
 -- NPCs start
 -- NPCs end
 -- SL end
+
+-- Race start
+L["Human"] = "Human";
+L["Orc"] = "Orc";
+L["Dwarf"] = "Dwarf";
+L["NightElf"] = "Night Elf";
+L["Scourge"] = "Scourge";
+L["Tauren"] = "Tauren";
+L["Gnome"] = "Gnome";
+L["Troll"] = "Troll";
+L["Goblin"] = "Goblin";
+L["BloodElf"] = "Blood Elf";
+L["Draenei"] = "Draenei";
+L["Worgen"] = "Worgen";
+L["Pandaren"] = "Pandaren";
+L["Nightborne"] = "Nightborne";
+L["HighmountainTauren"] = "Highmountain Tauren";
+L["VoidElf"] = "Void Elf";
+L["LightforgedDraenei"] = "Lightforged Draenei";
+L["ZandalariTroll"] = "Zandalari Troll";
+L["KulTiran"] = "Kul Tiran";
+L["DarkIronDwarf"] = "Dark Iron Dwarf";
+L["MagharOrc"] = "Maghar Orc";
+L["Mechagnome"] = "Mechagnome";
+L["Vulpera"] = "Vulpera";
+-- Race end
