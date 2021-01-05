@@ -122,6 +122,7 @@ L["alias for previous word"] = "alias for previous word";
 L["save info from Details addon. It's done automatically when challenge is completed (in time or not), however it's not done if challenge is abandonned. Use this command right before leave the party."] = "save info from Details addon. It's done automatically when challenge is completed (in time or not), however it's not done if challenge is abandonned. Use this command right before leave the party.";
 L["update info about party member for current challenge. unitId must be 'player' or 'party1..4'."] = "update info about party member for current challenge. unitId must be 'player' or 'party1..4'.";
 L["print this text."] = "print this text.";
+L["send some message via comm to other MDB user. unitId must be 'party1..4'."] = "send some message via comm to other MDB user. unitId must be 'party1..4'.";
 -- Help end
 
 -- Settings start

@@ -7,23 +7,14 @@ Event Handlers
 @section EventHandlers
 ]]
 
-local MDB_CHALLENGE_IDLE_TIME = "MDB_CHALLENGE_IDLE_TIME";
-
 --[[--
-]]
-function MyDungeonsBook:Message_IdleTime_StartTrack()
-    self:RegisterMessage(MDB_CHALLENGE_IDLE_TIME);
-end
+Send info about player's idle time to other party members.
 
---[[--
-]]
-function MyDungeonsBook:Message_IdleTime_StopTrack()
-    self:UnregisterMessage(MDB_CHALLENGE_IDLE_TIME);
-end
+It's used to keep challenge data up to date for each party member.
 
---[[--
+@param[type=unitId] target
 ]]
-function MyDungeonsBook:Message_IdleTime_Send()
+function MyDungeonsBook:Message_IdleTime_Send(target)
     local id = self.db.char.activeChallengeId;
     if (not id) then
         return;
@@ -31,21 +22,23 @@ function MyDungeonsBook:Message_IdleTime_Send()
     local challenge = self:Challenge_GetById(id);
     local idleMechanics = challenge.mechanics["PARTY_MEMBERS_IDLE"];
     local player = challenge.players.player;
-    self:SendMessage(MDB_CHALLENGE_IDLE_TIME, self:Serialize({
-        idleTime = idleMechanics[player.name],
-        name = player.name,
-        realm = player.realm
-    }));
-    self:DebugPrint(string.format("Idle Time is sent"));
+    self:SendCommMessage(
+        MyDungeonsBook.COMM_PREFIX,
+        self:Message_CommData_Prepare(MyDungeonsBook.CommSubPrefixes.PLAYER_IDLE_TIME, player.name, player.realm, idleMechanics[player.name]),
+        "WHISPER",
+        self:Message_CommTarget_Prepare(target)
+    );
+    self:DebugPrint(string.format("Idle Time is sent to %s", target));
 end
 
 --[[--
+Receive info about idle time for some party member sent by `Message_IdleTime_Send`.
+
+@param[type=string] senderName
+@param[type=string] senderRealm
+@param[type=table] senderData
 ]]
-function MyDungeonsBook:MDB_CHALLENGE_IDLE_TIME(_, msg)
-    local success, data = self:Deserialize(msg);
-    if (not success) then
-        return;
-    end
+function MyDungeonsBook:Message_IdleTime_Receive(senderName, senderRealm, senderIdleTime)
     local id = self.db.char.activeChallengeId;
     if (not id) then
         return;
@@ -54,12 +47,12 @@ function MyDungeonsBook:MDB_CHALLENGE_IDLE_TIME(_, msg)
     for _, unitId in pairs(self:GetPartyRoster()) do
         local unitName = challenge.players[unitId].name;
         local unitRealm = challenge.players[unitId].realm;
-        if (unitName == data.name and unitRealm == data.realm) then
-            local mechanicPartyMemberKey = data.name;
-            if (challenge.players.player.realm ~= data.realm) then
-                mechanicPartyMemberKey = string.format("%s-%s", data.name. data.realm);
+        if (unitName == senderName and unitRealm == senderRealm) then
+            local mechanicPartyMemberKey = senderName;
+            if (challenge.players.player.realm ~= senderRealm) then
+                mechanicPartyMemberKey = string.format("%s-%s", senderName, senderRealm);
             end
-            challenge.mechanics["PARTY_MEMBERS_IDLE"][mechanicPartyMemberKey] = data.idleTime;
+            challenge.mechanics["PARTY_MEMBERS_IDLE"][mechanicPartyMemberKey] = senderIdleTime;
             self:DebugPrint(string.format("Idle Time is saved for %s (%s)", unitName, unitId));
             break;
         end

@@ -223,7 +223,6 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 	if (self.challengesTable) then
 		self.challengesTable:SetData(self:ChallengesFrame_GetDataForTable());
 	end
-	self:Messages_StartTrack();
 	self:LogPrint(string.format(L["%s +%s is started"], zoneName, cmLevel));
 end
 
@@ -234,7 +233,6 @@ function MyDungeonsBook:CHALLENGE_MODE_RESET()
 	self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 	self:UnregisterEvent("PLAYER_REGEN_DISABLED");
 	self:UnregisterEvent("PLAYER_REGEN_ENABLED");
-    self:Messages_StopTrack();
 	local id = self.db.char.activeChallengeId;
 	if (self.db.char.challenges[id]) then
 		self.db.char.challenges[id].endTime = time();
@@ -281,15 +279,18 @@ function MyDungeonsBook:CHALLENGE_MODE_COMPLETED()
 			end
 			self:RemoveAurasFromPartyMember(nameToUse, UnitGUID(unitId));
 		end
+		for i = 1, 4 do
+			local target = "party" .. i;
+			self:Message_CharacterData_Send(target);
+			self:Message_IdleTime_Send(target);
+		end
+		self:ScheduleTimer(function()
+			self.db.char.activeChallengeId = nil;
+		end, 5);
 		self.db.char.challenges[id].mechanics = self:Compress(self.db.char.challenges[id].mechanics); -- must be last!
 	end
-	self.db.char.activeChallengeId = nil;
 	self:UnregisterEvent("PLAYER_REGEN_DISABLED");
 	self:UnregisterEvent("PLAYER_REGEN_ENABLED");
-	self:Message_IdleTime_Send();
-	self:ScheduleTimer(function()
-		self:Messages_StopTrack();
-	end, 5);
 end
 
 --[[--
@@ -310,7 +311,6 @@ Its request is sent in the `MyDungeonsBook:CHALLENGE_MODE_START`
 @param[type=GUID] guid
 ]]
 function MyDungeonsBook:INSPECT_READY(_, guid)
-	self:Message_CovenantInfo_Send();
 	if (self:UpdateUnitInfo(guid)) then
 		ClearInspectPlayer(guid);
 	end
@@ -399,7 +399,10 @@ function MyDungeonsBook:PLAYER_REGEN_ENABLED()
 	local name = UnitName("player");
 	self:InitMechanics3Lvl(KEY, name, "meta");
 	self:InitMechanics4Lvl(KEY, name, "meta", "duration", true);
-	self.db.char.challenges[id].mechanics[KEY][name].meta.lastStartTime = time();
+	self:InitMechanics3Lvl(KEY, name, "timeline");
+	local timestamp = time();
+	self.db.char.challenges[id].mechanics[KEY][name].meta.lastStartTime = timestamp;
+	tinsert(self.db.char.challenges[id].mechanics[KEY][name].timeline, {timestamp, 0});
 	self:DebugPrint("Combat is finished.");
 end
 
@@ -418,9 +421,12 @@ function MyDungeonsBook:PLAYER_REGEN_DISABLED()
 	local now = time();
 	self:InitMechanics3Lvl(KEY, name, "meta");
 	self:InitMechanics4Lvl(KEY, name, "meta", "duration", true);
+	self:InitMechanics3Lvl(KEY, name, "timeline");
 	local currentIdle = time() - (self.db.char.challenges[id].mechanics[KEY][name].meta.lastStartTime or now);
 	local overallIdle = self.db.char.challenges[id].mechanics[KEY][name].meta.duration + currentIdle;
 	self.db.char.challenges[id].mechanics[KEY][name].meta.duration = overallIdle;
 	self.db.char.challenges[id].mechanics[KEY][name].meta.lastStartTime = nil;
 	self:DebugPrint(string.format("Combat is started. Idle time - %s, overall - %s", self:FormatTime(currentIdle * 1000), self:FormatTime(overallIdle * 1000)));
+	local timestamp = time();
+	tinsert(self.db.char.challenges[id].mechanics[KEY][name].timeline, {timestamp, 1});
 end

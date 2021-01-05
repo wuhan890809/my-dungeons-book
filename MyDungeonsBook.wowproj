@@ -58,7 +58,7 @@
     <Content Include="Messages\ChallengeIdleTime.lua">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Messages\CovenantInfo.lua">
+    <Content Include="Messages\CharactersData.lua">
       <SubType>Code</SubType>
     </Content>
     <Content Include="MyDungeonsBook.toc">

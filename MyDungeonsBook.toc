@@ -70,7 +70,7 @@ Events.lua
 Challenge.lua
 Messages.lua
 Messages/ChallengeIdleTime.lua
-Messages/CovenantInfo.lua
+Messages/CharactersData.lua
 Mechanics/Common.lua
 Mechanics/Common/OwnCastsDoneByPartyMembers.lua
 Mechanics/BfA/Common.lua

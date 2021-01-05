@@ -96,6 +96,7 @@ local SLSpells = {
     [340300] = true, -- Tongue Lashing (Mistveil Gorgegullet)
     [340304] = true, -- Poisonous Secretions (Mistveil Gorgegullet)
     [331743] = true, -- Bucking Rampage (Mistveil Guardian)
+    [326263] = true, -- Anima Shedding (Tred'ova)
     -- Theater of Pain
     [320180] = true, -- Noxious Spores (Paceran the Virulent)
     [339415] = true, -- Deafening Crash (Xav the Unfallen)
@@ -145,6 +146,7 @@ local SLSpells = {
     [320830] = true, -- Mechanical Bomb Squirrel
     [327427] = true, -- Shattered Dominion (Mueh'zala)
     [335000] = true, -- Stellar cloud (Mueh'zala)
+    [334961] = true, -- Crush (Mueh'zala)
     -- Sanguine Depths
     [320999] = true, -- Echoing Thrust (Regal Mistdancer)
     [320991] = true, -- Echoing Thrust (Regal Mistdancer)

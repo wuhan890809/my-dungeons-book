@@ -19,10 +19,15 @@ function MyDungeonsBook:ParseChatCommand(msg)
 	if (type == "challenge" or type == "c") then
 		return self:ParseChallengeChatCommand(challengeId, resource, subResourceOrAction, actionOrNothing);
 	end
+	if (type == "testcomm" or type == "tc") then
+		local _, target, message = self:GetArgs(msg, 10);
+		return self:ParseTestCommChatCommand(target, message);
+	end
 	if (type == "help" or type == "h") then
 		local tpl = "|c0070DE00%s|r - %s";
 		self:Print(string.format(tpl, "[..]", L["alias for previous word"]));
 		self:Print(string.format(tpl, "/mdb challenge[c] active[a] roster[r] {{unitId}} update[u]", L["update info about party member for current challenge. unitId must be 'player' or 'party1..4'."]));
+		self:Print(string.format(tpl, "/mdb testcomm[tc] {{unitId}} {{message}}", L["send some message via comm to other MDB user. unitId must be 'party1..4'."]));
 		self:Print(string.format(tpl, "/mdb help[h]", L["print this text."]));
 		return;
 	end
@@ -63,4 +68,18 @@ function MyDungeonsBook:ParseRosterChatCommand(challengeId, _, subResource, acti
 			end
 		end
 	end
+end
+
+--[[--
+Send some message via comm
+
+@param[type=unitId] target
+@param[type=string] message
+]]
+function MyDungeonsBook:ParseTestCommChatCommand(target, message)
+	if (not UnitExists(target)) then
+		self:DebugPrint(string.format("Unit '%s' does not exists", target));
+		return;
+	end
+	self:Message_TestMessage_Send(target, message);
 end

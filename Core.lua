@@ -8,7 +8,7 @@ Core
 ]]
 
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
-MyDungeonsBook = LibStub("AceAddon-3.0"):NewAddon("MyDungeonsBook", "AceEvent-3.0", "AceTimer-3.0", "AceHook-3.0", "AceConsole-3.0", "AceSerializer-3.0");
+MyDungeonsBook = LibStub("AceAddon-3.0"):NewAddon("MyDungeonsBook", "AceEvent-3.0", "AceTimer-3.0", "AceHook-3.0", "AceConsole-3.0", "AceSerializer-3.0", "AceComm-3.0");
 
 --[[--
 Initial ACE-addon setup.
@@ -47,7 +47,7 @@ Next events are handled:
 * `ENCOUNTER_END`
 * `ENCOUNTER_START`
 
-Event `COMBAT_LOG_EVENT_UNFILTERED` is handled while challenge is active. E.g. from `CHALLENGE_MODE_START` to `CHALLENGE_MODE_COMPLETED` or `CHALLENGE_MODE_RESET`.
+Events `COMBAT_LOG_EVENT_UNFILTERED`, `PLAYER_REGEN_DISABLED` and `PLAYER_REGEN_ENABLED` are handled while challenge is active. E.g. from `CHALLENGE_MODE_START` to `CHALLENGE_MODE_COMPLETED` or `CHALLENGE_MODE_RESET`.
 
 Check methods with the same names to get more info about handlers.
 ]]
@@ -59,5 +59,6 @@ function MyDungeonsBook:OnEnable()
 	self:RegisterEvent("INSPECT_READY");
 	self:RegisterEvent("ENCOUNTER_END");
 	self:RegisterEvent("ENCOUNTER_START");
+	self:Messages_StartTrack();
 	self:DebugPrint("Enabled");
 end
