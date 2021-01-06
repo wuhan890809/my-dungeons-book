@@ -1,4 +1,9 @@
-﻿### v2.3.0
+﻿### v2.4.0
+
+* [#13](https://github.com/onechiporenko/my-dungeons-book/issues/13) Track average items level for party members
+* Dark Stride is not avoidable
+
+### v2.3.0
 
 * [#57](https://github.com/onechiporenko/my-dungeons-book/issues/57) Add special casts in the De Other Side
 * [#61](https://github.com/onechiporenko/my-dungeons-book/issues/61) Add special casts in the Mists of Tirna Scithe

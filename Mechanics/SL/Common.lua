@@ -76,7 +76,6 @@ local SLSpells = {
     [336420] = true, -- Diminuendo (Klotos / Lakesis)
     [321034] = true, -- Charged Spear (Kin-Tara)
     [324141] = true, -- Dark Bolt (Ventunax)
-    [324154] = true, -- Dark Stride (Venturax)
     [323943] = true, -- Run Through (Devos)
     [334625] = true, -- Seed of the Abyss (Devos)
     -- Mists of Tirna Scithe

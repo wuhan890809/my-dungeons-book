@@ -19,7 +19,7 @@ Creates a frame for Equipment tab
 ]]
 function MyDungeonsBook:EquipmentFrame_Create(parentFrame, challengeId)
     local equipmentFrame = self:TabContentWrapperWidget_Create(parentFrame);
-    local challenge = self.db.char.challenges[challengeId];
+    local challenge = self:Challenge_GetById(challengeId);
     if (not challenge) then
         return;
     end
@@ -30,7 +30,8 @@ function MyDungeonsBook:EquipmentFrame_Create(parentFrame, challengeId)
         equipmentFrame:AddChild(partyMemberFrame);
         local challenge = self.db.char.challenges[challengeId];
         partyMemberFrame:SetTitle(self:GetUnitNameRealmRoleStr(challenge.players[unit]) or L["Not Found"]);
-        self:EquipmentFrame_PartyMember_Create(partyMemberFrame, unit, challengeId);
+        self:EquipmentFrame_PartyMember_Ilvl_Create(partyMemberFrame, challengeId, unit);
+        self:EquipmentFrame_PartyMember_Create(partyMemberFrame, challengeId, unit);
     end
     return equipmentFrame;
 end
@@ -39,10 +40,10 @@ end
 Creates a frame with equipment for `unitId`.
 
 @param[type=Frame] parentFrame
-@param[type=unitId] unitId
 @param[type=number] challengeId
+@param[type=unitId] unitId
 ]]
-function MyDungeonsBook:EquipmentFrame_PartyMember_Create(parentFrame, unitId, challengeId)
+function MyDungeonsBook:EquipmentFrame_PartyMember_Create(parentFrame, challengeId, unitId)
     local challenge = self.db.char.challenges[challengeId];
     for i = 1, 16 do
         local itemFrame = AceGUI:Create("InteractiveLabel");
@@ -71,7 +72,6 @@ function MyDungeonsBook:EquipmentFrame_PartyMember_Create(parentFrame, unitId, c
     end;
 end
 
-
 --[[--
 Mouse-hover handler for equiped item.
 
@@ -93,5 +93,37 @@ function MyDungeonsBook:EquipmentFrame_TableItemHover(itemFrame, unitId, itemInd
         GameTooltip:SetPoint("BOTTOMLEFT", itemFrame.frame, "BOTTOMRIGHT");
         GameTooltip:SetHyperlink(self.db.char.challenges[self.activeChallengeId].players[unitId].items[realItemIndex]);
         GameTooltip:Show();
+    end
+end
+
+--[[--
+Update average items level for party member (`unit`) in the `challenge`.
+
+@param[type=Frame] parentFrame
+@param[type=number] challengeId
+@param[type=unitId] unit
+]]
+function MyDungeonsBook:EquipmentFrame_PartyMember_Ilvl_Create(parentFrame, challengeId, unit)
+    local sum = 0;
+    local itemsCount = 0;
+    local challenge = self:Challenge_GetById(challengeId);
+    for i = 1, 17 do
+        if (i ~= 4) then
+            local itemLink = challenge.players[unit].items and challenge.players[unit].items[i] or nil;
+            if (itemLink) then
+                local itemLevel = self:GetItemLevelFromTooltip(itemLink);
+                if (itemLevel) then
+                    sum = sum + itemLevel;
+                    itemsCount = itemsCount + 1;
+                end
+            end
+        end
+    end
+    if (itemsCount ~= 0) then
+        local ilvlFrame = AceGUI:Create("Label");
+        ilvlFrame:SetText(string.format("%.2f", sum / itemsCount));
+        ilvlFrame:SetWidth(60);
+        parentFrame:AddChild(ilvlFrame);
+        return ilvlFrame;
     end
 end

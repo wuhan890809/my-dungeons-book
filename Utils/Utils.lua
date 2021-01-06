@@ -7,6 +7,8 @@ Utils
 @section Utils
 ]]
 
+local itemTooltipFrame = CreateFrame("GameTooltip", "MyDungeonsBookItemTooltip", nil, "GameTooltipTemplate");
+
 local affixesMap = {
 	[1] = 463570, -- Overflowing
 	[2] = 135994, -- Skittish
@@ -568,4 +570,33 @@ function MyDungeonsBook:CopyTable(obj)
 		res[self:CopyTable(k)] = self:CopyTable(v);
 	end
 	return res;
+end
+
+--[[--
+Get item level using game tooltip
+
+`GetItemInfo` sometimes return invalid item level
+
+@param[type=string] itemStringOrLink
+@return[type=?number] item level
+]]
+function MyDungeonsBook:GetItemLevelFromTooltip(itemStringOrLink)
+	itemTooltipFrame:SetOwner(WorldFrame, "ANCHOR_NONE");
+	itemTooltipFrame:SetHyperlink(itemStringOrLink);
+	local line2 = _G["MyDungeonsBookItemTooltipTextLeft2"]:GetText();
+	local line2Number = line2 and string.match(line2, "%d+");
+	local line3 = _G["MyDungeonsBookItemTooltipTextLeft3"]:GetText();
+	local line3Number = line3 and string.match(line3, "%d+");
+	if (line2Number ~= nil) then
+		line2Number = tonumber(line2Number);
+		if (line2Number > 35) then
+			return line2Number;
+		end
+	end
+	if (line3Number ~= nil) then
+		line3Number = tonumber(line3Number);
+		if (line3Number > 35) then
+			return line3Number;
+		end
+	end
 end

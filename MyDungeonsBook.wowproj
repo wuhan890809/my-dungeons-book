@@ -40,6 +40,9 @@
     <Content Include="ldoc\ldoc.css">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Locales\znCN.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Mechanics\BfA\Common.lua">
       <SubType>Code</SubType>
     </Content>
