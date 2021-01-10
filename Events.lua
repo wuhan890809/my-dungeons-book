@@ -312,9 +312,7 @@ Its request is sent in the `MyDungeonsBook:CHALLENGE_MODE_START`
 @param[type=GUID] guid
 ]]
 function MyDungeonsBook:INSPECT_READY(_, guid)
-	if (self:UpdateUnitInfo(guid)) then
-		ClearInspectPlayer(guid);
-	end
+	self:UpdateUnitInfo(guid);
 end
 
 --[[--

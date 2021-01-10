@@ -2,6 +2,7 @@
 
 * [#13](https://github.com/onechiporenko/my-dungeons-book/issues/13) Track average items level for party members
 * Dark Stride is not avoidable
+* Add more NPC to track and update id for some bosses
 
 ### v2.3.0
 

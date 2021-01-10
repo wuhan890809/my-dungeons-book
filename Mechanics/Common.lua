@@ -288,7 +288,7 @@ end
 --[[--
 Track casts that should interrupt enemies.
 
-This mechanic is used together with `COMMON-INTERRUPTS` to get number of failed "interrrupt"-casts (e.g. when 2+ party member tried to interrupt the same cast together).
+This mechanic is used together with `COMMON-INTERRUPTS` to get number of failed "interrupt"-casts (e.g. when 2+ party member tried to interrupt the same cast together).
 
 @param[type=string] sourceName 5th param for `SPELL_CAST_SUCCESS`
 @param[type=string] sourceGUID 4th param for `SPELL_CAST_SUCCESS`

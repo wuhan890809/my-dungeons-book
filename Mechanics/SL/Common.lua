@@ -577,7 +577,7 @@ local SLDamageDoneToSpecificUnits = {
     [162060] = {
         type = "BOSS"
     }, -- Oryphrion
-    [167410] = {
+    [162061] = {
         type = "BOSS"
     }, -- Devos
 
@@ -594,9 +594,15 @@ local SLDamageDoneToSpecificUnits = {
     [162102] = {
         type = "BOSS"
     }, -- Grand Proctor Beryllia
-    [165318] = {
+    [162133] = {
+        type = "ADD"
+    }, -- General Kaal
+    [162099] = {
         type = "BOSS"
     }, -- General Kaal
+    [165556] = {
+        type = "ADD"
+    }, -- Fleeting Manifestation
 
     -- Mists of Tirna Scithe
     [165251] = {
@@ -641,7 +647,6 @@ local SLDamageDoneToSpecificUnits = {
         type = "ADD"
     }, -- Shattered Visage
 
-
     -- Halls of Atonement
     [165408] = {
         type = "BOSS"
@@ -678,6 +683,9 @@ local SLDamageDoneToSpecificUnits = {
     [165946] = {
         type = "BOSS"
     }, -- Mordretha, the Endless Empress
+    [170234] = {
+        type = "ADD"
+    }, -- Oppressive Banner
 };
 
 function MyDungeonsBook:GetSLDamageDoneToSpecificUnits()
