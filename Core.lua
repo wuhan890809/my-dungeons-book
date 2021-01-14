@@ -24,13 +24,23 @@ function MyDungeonsBook:OnInitialize()
 		button1 = L["Yes"],
 		button2 = L["No"],
 		OnAccept = function(data)
-			self:Challenge_Delete(data.data)
+			self:Challenge_Delete(data.data);
 		end,
 		timeout = 0,
 		whileDead = true,
 		hideOnEscape = true,
-		preferredIndex = 3,  -- avoid some UI taint, see http://www.wowace.com/announcements/how-to-avoid-some-ui-taint/
-	}
+		preferredIndex = 3
+	};
+	StaticPopupDialogs["MDB_FILLED_WOWHEAD_LINK_INPUT"] = {
+		text = L["WowHead Link for %s"],
+		OnShow = function (self, linkToShow)
+			self.editBox:SetText(linkToShow);
+			self.editBox:HighlightText();
+		end,
+		hideOnEscape = true,
+		hasEditBox = true,
+		button1 = L["Close"],
+	};
 	self:DebugPrint("Loaded");
 end
 

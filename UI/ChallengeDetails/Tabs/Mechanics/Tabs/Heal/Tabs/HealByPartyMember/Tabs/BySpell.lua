@@ -9,6 +9,12 @@ UI
 
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
+local function getHealBySpellMenu(spellId)
+    return {
+        MyDungeonsBook:WowHead_Menu_Spell(spellId)
+    };
+end
+
 --[[--
 @param[type=Frame] parentFrame
 @param[type=number] challengeId
@@ -22,6 +28,11 @@ function MyDungeonsBook:HealByPartyMemberBySpellFrame_Create(parentFrame, challe
     local table = self:TableWidget_Create(columns, 10, 40, nil, healByPartyMemberBySpellFrame, "all-heal-done-by-" .. unitId);
     table:SetData(data);
     table:RegisterEvents({
+        OnClick = function(_, _, data, _, _, realrow, _, _, button)
+            if (button == "RightButton" and realrow) then
+                EasyMenu(getHealBySpellMenu(data[realrow].cols[1].value), self.menuFrame, "cursor", 0 , 0, "MENU");
+            end
+        end,
         OnEnter = function (_, cellFrame, data, _, _, realrow, column)
             if (realrow) then
                 if (column == 2 or column == 3) then

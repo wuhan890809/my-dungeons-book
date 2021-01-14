@@ -9,6 +9,15 @@ UI
 
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
+local function getUsedItemMenu(rows, index, cols)
+	local itemId = rows[index].cols[1].value;
+	local report = MyDungeonsBook:UsedItemsFrame_Report_Create(rows, index, cols);
+	return {
+		MyDungeonsBook:WowHead_Menu_Item(itemId),
+		MyDungeonsBook:Report_Menu(report)
+	};
+end
+
 --[[--
 Create a frame for Used Items tab (data is taken from `mechanics[**-ITEM-USED-BY-PARTY-MEMBERS]`).
 
@@ -24,6 +33,11 @@ function MyDungeonsBook:UsedItemsFrame_Create(parentFrame, challengeId)
 	local table = self:TableWidget_Create(columns, 12, 40, nil, usedItemsFrame, "used-items");
 	table:SetData(data);
 	table:RegisterEvents({
+		OnClick = function(_, _, data, _, _, realrow, _, _, button)
+			if (button == "RightButton" and realrow) then
+				EasyMenu(getUsedItemMenu(data, realrow, table.cols), self.menuFrame, "cursor", 0 , 0, "MENU");
+			end
+		end,
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
 				if (column == 2 or column == 3) then
@@ -40,6 +54,18 @@ function MyDungeonsBook:UsedItemsFrame_Create(parentFrame, challengeId)
 		end
 	});
 	return usedItemsFrame;
+end
+
+--[[--
+@param[type=table] row
+@param[type=table] cols
+@return[type=table]
+]]
+function MyDungeonsBook:UsedItemsFrame_Report_Create(rows, index, cols)
+    local row = rows[index];
+	local _, itemLink = GetItemInfo(row.cols[1].value);
+	local title = string.format(L["MyDungeonsBook %s Usage:"], itemLink);
+	return self:Table_PlayersRow_Report_Create(row, cols, {4, 5, 6, 7, 8, 9}, title);
 end
 
 --[[--

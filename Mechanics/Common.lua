@@ -317,6 +317,7 @@ function MyDungeonsBook:TrackTryInterrupt(sourceName, sourceGUID, spellId)
 		[93985] = true,  --Skull Bash
 		[97547] = true,  --Solar Beam
 		[91807] = true,  --Shambling Rush
+		[32747] = true,  --Arcane Torrent
 	};
 	if (not interrupts[spellId]) then
 		return;

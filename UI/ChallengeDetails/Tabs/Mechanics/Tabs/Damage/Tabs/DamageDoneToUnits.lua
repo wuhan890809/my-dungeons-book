@@ -8,6 +8,15 @@ UI
 ]]
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
+local function getDamageToNpcMenu(rows, index, cols)
+	local spellId = rows[index].cols[1].value;
+	local report = MyDungeonsBook:DamageDoneToUnitsFrame_Report_Create(rows[index], cols);
+	return {
+		MyDungeonsBook:WowHead_Menu_Npc(spellId),
+		MyDungeonsBook:Report_Menu(report)
+	};
+end
+
 --[[--
 Create a frame for Damage Done To Units tab (data is taken from `mechanics[**-DAMAGE-DONE-TO-UNITS]`).
 
@@ -24,6 +33,11 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_Create(parentFrame, challengeId)
 	local table = self:TableWidget_Create(columns, 11, 40, nil, damageDoneToUnitsFrame, "damage-done-to-units");
 	table:SetData(data);
 	table:RegisterEvents({
+		OnClick = function(_, _, data, _, _, realrow, _, _, button)
+			if (button == "RightButton" and realrow) then
+				EasyMenu(getDamageToNpcMenu(data, realrow, table.cols), self.menuFrame, "cursor", 0 , 0, "MENU");
+			end
+		end,
 		OnEnter = function (...)
 			self:DamageDoneToUnitsFrame_RowHover(...);
 		end,
@@ -60,6 +74,11 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetHeadersForTable(challengeId)
 		party4 = (players.party4.name and self:ClassColorTextByClassIndex(players.party4.class, players.party4.name)) or L["Not Found"];
 	end
 	return {
+		{
+			name = " ",
+			width = 1,
+			align = "LEFT"
+		},
 		{
 			name = "|Tinterface\\scenarios\\scenarioicon-interact.blp:12|t",
 			width = 40,
@@ -208,7 +227,7 @@ end
 @local
 ]]
 function MyDungeonsBook:DamageDoneToUnitsFrame_RowHover(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
-	if (realrow and column % 3 == 1 and column > 3) then
+	if (realrow and column % 3 == 2 and column > 3) then
 		local amount = self:FormatNumber(data[realrow].cols[column].value);
 		local overkill = self:FormatNumber(data[realrow].cols[column + 1].value);
 		local hits = data[realrow].cols[column + 2].value;
@@ -287,6 +306,7 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetDataForTable(challengeId, key)
 		end
 		local remappedRow = {
 			cols = {
+				{value = npcId},
 				{value = icon},
 				{value = npcId},
 				{value = npcName}
@@ -319,4 +339,13 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetDataForTable(challengeId, key)
 		tinsert(tableData, remappedRow);
 	end
 	return tableData;
+end
+
+--[[--
+]]
+function MyDungeonsBook:DamageDoneToUnitsFrame_Report_Create(row, cols)
+	local npcId = row.cols[1].value;
+	local npcName = (self.db.global.meta.npcs[npcId] and self.db.global.meta.npcs[npcId].name) or npcId;
+	local title = string.format(L["MyDungeonsBook Damage done by party to %s:"], npcName);
+	return self:Table_PlayersRow_Report_Create(row, cols, {5, 8, 11, 14, 17, 20}, title);
 end

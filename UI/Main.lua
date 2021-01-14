@@ -51,6 +51,8 @@ function MyDungeonsBook:MainFrame_Show()
 		self.challengeDetailsFrame = self:ChallengeDetailsFrame_Create(grid);
 		self.frame = frame;
 		frame:ResumeLayout();
+		local menuFrame = CreateFrame("Frame", "MDBMenuFrame", UIParent, "UIDropDownMenuTemplate")
+		self.menuFrame = menuFrame;
 		_G["MyDungeonsBookMainFrame"] = frame.frame;
 		tinsert(UISpecialFrames, "MyDungeonsBookMainFrame");
     end

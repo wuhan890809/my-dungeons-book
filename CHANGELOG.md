@@ -3,6 +3,8 @@
 * [#13](https://github.com/onechiporenko/my-dungeons-book/issues/13) Track average items level for party members
 * Dark Stride is not avoidable
 * Add more NPC to track and update id for some bosses
+* [#109](https://github.com/onechiporenko/my-dungeons-book/issues/109) Add Links to Wowhead
+* [#75](https://github.com/onechiporenko/my-dungeons-book/issues/75) Add ability to post table row to the chat (group or wisper)
 
 ### v2.3.0
 

@@ -10,6 +10,12 @@ UI
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 local AceGUI = LibStub("AceGUI-3.0");
 
+local function getOwnCastsSpellMenu(spellId)
+    return {
+        MyDungeonsBook:WowHead_Menu_Spell(spellId)
+    };
+end
+
 --[[--
 @param[type=Frame] parentFrame
 @param[type=number] challengeId
@@ -119,6 +125,11 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_Table_Create(parentFrame, cha
     table:SetData(data);
     table.frame:SetPoint("TOPLEFT", 260, -80);
     table:RegisterEvents({
+        OnClick = function(_, _, data, _, _, realrow, _, _, button)
+            if (button == "RightButton" and realrow) then
+                EasyMenu(getOwnCastsSpellMenu(data[realrow].cols[1].value), self.menuFrame, "cursor", 0 , 0, "MENU");
+            end
+        end,
         OnEnter = function (_, cellFrame, data, _, _, realrow, column)
             if (realrow) then
                 if (column == 2 or column == 3) then
@@ -175,6 +186,9 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_SummaryTable_Create(parentFra
             end
         end,
         OnClick = function(_, _, data, _, _, realrow, _, _, button)
+            if (button == "RightButton" and realrow) then
+                EasyMenu(getOwnCastsSpellMenu(data[realrow].cols[1].value), self.menuFrame, "cursor", 0 , 0, "MENU");
+            end
             if (button == "LeftButton" and realrow) then
                 local spellId = data[realrow].cols[1].value;
                 self.ownCastsByPartyMemberFrame.userdata.filterBySpellId:SetValue(spellId);

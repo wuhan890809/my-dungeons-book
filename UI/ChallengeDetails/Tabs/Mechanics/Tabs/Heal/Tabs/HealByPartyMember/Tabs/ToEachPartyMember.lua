@@ -9,6 +9,15 @@ UI
 
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
+local function getHealToEachPartyMemberSpellMenu(rows, index, cols, challengeId, unitId)
+    local spellId = rows[index].cols[1].value;
+    local report = MyDungeonsBook:HealByPartyMemberToEachPartyMemberFrame_Report_Create(rows[index], cols, challengeId, unitId);
+    return {
+        MyDungeonsBook:WowHead_Menu_Spell(spellId),
+        MyDungeonsBook:Report_Menu(report)
+    };
+end
+
 --[[--
 @param[type=Frame] parentFrame
 @param[type=number] challengeId
@@ -22,6 +31,13 @@ function MyDungeonsBook:HealByPartyMemberToEachPartyMemberFrame_Create(parentFra
     local table = self:TableWidget_Create(columns, 10, 40, nil, healByPartyMemberFrame, "heal-by-" .. unitId .. "-to-party");
     table:SetData(data);
     table:RegisterEvents({
+        OnClick = function(_, _, data, _, _, realrow, _, _, button)
+            if (button == "RightButton" and realrow) then
+                if (data[realrow].cols[1].value > 0) then
+                    EasyMenu(getHealToEachPartyMemberSpellMenu(data, realrow, table.cols, challengeId, unitId), self.menuFrame, "cursor", 0 , 0, "MENU");
+                end
+            end
+        end,
         OnEnter = function (rowFrame, cellFrame, data, cols, row, realrow, column)
             if (realrow) then
                 if (column == 2 or column == 3) then
@@ -63,7 +79,7 @@ end
 @param[type=number] challengeId
 ]]
 function MyDungeonsBook:HealByPartyMemberToEachPartyMemberFrame_GetColumnsForTable(challengeId)
-    local challenge = self.db.char.challenges[challengeId];
+    local challenge = self:Challenge_GetById(challengeId);
     local player = "Player";
     local party1 = "Party1";
     local party2 = "Party2";
@@ -287,4 +303,16 @@ function MyDungeonsBook:HealByPartyMemberToEachPartyMemberFrame_GetDataForTable(
     end
     tinsert(tableData, sumRow);
     return tableData;
+end
+
+--[[--
+@param[type=table] row
+@param[type=table] cols
+@return[type=table]
+]]
+function MyDungeonsBook:HealByPartyMemberToEachPartyMemberFrame_Report_Create(row, cols, challengeId, unitId)
+    local spellLink = GetSpellLink(row.cols[1].value);
+    local challenge = self:Challenge_GetById(challengeId);
+    local title = string.format(L["MyDungeonsBook Heal done by %s with %s:"], challenge.players[unitId].name or "", spellLink);
+    return self:Table_PlayersRow_Report_Create(row, cols, {4, 7, 10, 13, 16, 19}, title);
 end

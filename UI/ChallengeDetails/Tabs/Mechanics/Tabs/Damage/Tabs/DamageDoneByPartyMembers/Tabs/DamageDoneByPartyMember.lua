@@ -9,6 +9,13 @@ UI
 
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
+
+local function getDamageByPartyMemberSpellMenu(spellId)
+    return {
+        MyDungeonsBook:WowHead_Menu_Spell(spellId)
+    };
+end
+
 --[[--
 @param[type=Frame] parentFrame
 @param[type=number] challengeId
@@ -22,6 +29,14 @@ function MyDungeonsBook:DamageDoneByPartyMemberFrame_Create(parentFrame, challen
     local table = self:TableWidget_Create(columns, 10, 40, nil, ownCastsByPartyMemberFrame, "all-damage-done-by-" .. unitId);
     table:SetData(data);
     table:RegisterEvents({
+        OnClick = function(_, _, data, _, _, realrow, _, _, button)
+            if (button == "RightButton" and realrow) then
+                local spellId = data[realrow].cols[1].value;
+                if (spellId > 0) then
+                    EasyMenu(getDamageByPartyMemberSpellMenu(spellId), self.menuFrame, "cursor", 0 , 0, "MENU");
+                end
+            end
+        end,
         OnEnter = function (_, cellFrame, data, _, _, realrow, column)
             if (realrow) then
                 if (column == 2 or column == 3) then

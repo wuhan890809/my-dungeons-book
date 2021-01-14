@@ -7,6 +7,12 @@ UI
 @section UI
 ]]
 
+local function getBuffsAndDebuffsOnPartyMembersSpellMenu(spellId)
+	return {
+		MyDungeonsBook:WowHead_Menu_Spell(spellId)
+	};
+end
+
 --[[--
 Create a frame for Buff Or Debuffs On Party Members tab (data is taken from `mechanics[**-BUFFS-OR-DEBUFFS-ON-PARTY-MEMBERS]`).
 
@@ -25,6 +31,11 @@ function MyDungeonsBook:BuffsOrDebuffsOnPartyMembersFrame_Create(parentFrame, ch
 		local table = self:TableWidget_Create(columns, 11, 40, nil, buffsOrDebuffsOnPartyMembersFrame, "buffs-or-debuffs-on-party-members");
 		table:SetData(data);
 		table:RegisterEvents({
+			OnClick = function(_, _, data, _, _, realrow, _, _, button)
+				if (button == "RightButton" and realrow) then
+					EasyMenu(getBuffsAndDebuffsOnPartyMembersSpellMenu(data[realrow].cols[1].value), self.menuFrame, "cursor", 0 , 0, "MENU");
+				end
+			end,
 			OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 				if (realrow) then
 					if (column == 2 or column == 3) then

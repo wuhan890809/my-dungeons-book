@@ -223,10 +223,16 @@
     <Content Include="Utils\JSON.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Utils\Report.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Utils\Table.lua">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Utils\Utils.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Utils\WowHead.lua">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Widgets\NewLine.lua">

@@ -8,6 +8,22 @@ UI
 ]]
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
+local function getDispellSpellMenu(rows, index, cols)
+	local spellId = rows[index].cols[1].value;
+	local report = MyDungeonsBook:DispelsFrame_SpellDispelledReport_Create(rows[index], cols);
+	return {
+		MyDungeonsBook:WowHead_Menu_Spell(spellId),
+		MyDungeonsBook:Report_Menu(report)
+	};
+end
+
+local function getDispellSummarySpellMenu(rows, index, cols)
+	local spellId = rows[index].cols[1].value;
+	return {
+		MyDungeonsBook:WowHead_Menu_Spell(spellId)
+	};
+end
+
 --[[--
 Creates a frame for Dispels tab.
 
@@ -22,6 +38,11 @@ function MyDungeonsBook:DispelsFrame_Create(parentFrame, challengeId)
 	local table = self:TableWidget_Create(columns, 5, 40, nil, dispelsFrame, "dispels");
 	table:SetData(data);
 	table:RegisterEvents({
+		OnClick = function(_, _, data, _, _, realrow, _, _, button)
+			if (button == "RightButton" and realrow) then
+				EasyMenu(getDispellSpellMenu(data, realrow, table.cols), self.menuFrame, "cursor", 0 , 0, "MENU");
+			end
+		end,
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
 				if (column == 2 or column == 3) then
@@ -43,6 +64,11 @@ function MyDungeonsBook:DispelsFrame_Create(parentFrame, challengeId)
 	summaryTable:SetData(summaryData);
 	summaryTable.frame:SetPoint("TOPLEFT", 0, -280);
 	summaryTable:RegisterEvents({
+		OnClick = function(_, _, data, _, _, realrow, _, _, button)
+			if (button == "RightButton" and realrow) then
+				EasyMenu(getDispellSummarySpellMenu(data, realrow, summaryTable.cols), self.menuFrame, "cursor", 0 , 0, "MENU");
+			end
+		end,
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
 				if (column == 3 or column == 4) then
@@ -213,4 +239,15 @@ function MyDungeonsBook:DispelsFrame_GetDataForSummaryTable(challengeId)
 		end
 	end
 	return tableData;
+end
+
+--[[--
+@param[type=table] row
+@param[type=table] cols
+@return[type=table]
+]]
+function MyDungeonsBook:DispelsFrame_SpellDispelledReport_Create(row, cols)
+	local spellLink = GetSpellLink(row.cols[1].value);
+	local title = string.format(L["MyDungeonsBook %s Dispelled:"], spellLink);
+	return self:Table_PlayersRow_Report_Create(row, cols, {4, 5, 6, 7, 8, 9}, title);
 end

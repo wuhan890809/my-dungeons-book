@@ -9,6 +9,12 @@ UI
 
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
+local function getBuffsAndDebuffsOnUnitsSpellMenu(spellId)
+	return {
+		MyDungeonsBook:WowHead_Menu_Spell(spellId)
+	};
+end
+
 --[[--
 Create a frame for Buff Or Debuffs On Units tab (data is taken from `mechanics[**-BUFFS-OR-DEBUFFS-ON-UNIT]`).
 
@@ -26,6 +32,11 @@ function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_Create(parentFrame, challenge
 	local table = self:TableWidget_Create(columns, 11, 40, nil, buffsOrDebuffsOnUnitsFrame, "enemy-auras");
 	table:SetData(data);
 	table:RegisterEvents({
+		OnClick = function(_, _, data, _, _, realrow, _, _, button)
+			if (button == "RightButton" and realrow) then
+				EasyMenu(getBuffsAndDebuffsOnUnitsSpellMenu(data[realrow].cols[1].value), self.menuFrame, "cursor", 0 , 0, "MENU");
+			end
+		end,
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
 				if (column == 3 or column == 4) then

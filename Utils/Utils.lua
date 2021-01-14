@@ -190,6 +190,23 @@ function MyDungeonsBook:ClassColorTextByClassIndex(classIndex, text)
 end
 
 --[[--
+Replace color-wrapper from string
+
+Input: `|caabbcc00test|r`
+Output: `test`
+
+@param[type=string]
+@return[type=string]
+]]
+function MyDungeonsBook:DecolorizeString(str)
+	if (type(str) ~= "string") then
+		return str;
+	end
+	local msgWithColor = str:match("|c(.*)|r");
+	return (msgWithColor and msgWithColor:sub(9)) or str;
+end
+
+--[[--
 Get unitId for GUID that may be in the party or is current player
 
 @param[type=GUID] guid GUID to check

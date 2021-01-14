@@ -483,3 +483,50 @@ function MyDungeonsBook:Table_Columns_GetForDamageOrHealToPartyMembers(challenge
 		}
 	};
 end
+
+--[[--
+@param[type=table] row
+@param[type=table] cols
+@param[type=table] columnIndexes
+@param[type=string] title
+@param[type=?string] msgFormat
+@return[type=table]
+]]
+function MyDungeonsBook:Table_PlayersRow_Report_Create(row, cols, columnIndexes, title, msgFormat)
+	local report = {};
+    msgFormat = msgFormat or "%s: %s";
+	tinsert(report, title);
+	for i = 1, #columnIndexes do
+		local index = columnIndexes[i];
+		local val = row.cols[index].value;
+		if (type(val) == "number") then
+			val = self:FormatNumber(val);
+		end
+		tinsert(report, string.format(msgFormat, self:DecolorizeString(cols[index].name), val));
+	end
+	return report;
+end
+
+--[[--
+@param[type=table] tbl
+@param[type=table] cols
+@param[type=table] columnIndexes
+@param[type=string] title
+@param[type=?string] msgFormat
+@return[type=table]
+]]
+function MyDungeonsBook:Table_AllRows_Report_Create(tbl, cols, columnIndexes, title, msgFormat)
+    local report = {};
+    tinsert(report, title);
+    for _, row in pairs(tbl) do
+        local vals = {};
+        local msg = "";
+        for i = 1, #columnIndexes do
+            local index = columnIndexes[i];
+            tinsert(vals, row.cols[index].value);
+        end
+        msgFormat = msgFormat or (string.rep("%s ", #vals));
+        tinsert(report, string.format(msgFormat, unpack(vals)));
+    end
+    return report;
+end

@@ -8,6 +8,29 @@ UI
 ]]
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
+local function getIterruptedSpellMenu(rows, index, cols)
+	local spellId = rows[index].cols[1].value;
+	local report = MyDungeonsBook:InterruptsFrame_SpellInterruptedReport_Create(rows[index], cols);
+	return {
+		MyDungeonsBook:WowHead_Menu_Spell(spellId),
+		MyDungeonsBook:Report_Menu(report)
+	};
+end
+
+local function getIterruptsSummaryMenu(rows, index)
+	local spellId = rows[index].cols[1].value;
+	return {
+		MyDungeonsBook:WowHead_Menu_Spell(spellId)
+	};
+end
+
+local function getIterruptsQuakingMenu(rows, index)
+	local spellId = rows[index].cols[2].value;
+	return {
+		MyDungeonsBook:WowHead_Menu_Spell(spellId)
+	};
+end
+
 --[[--
 Creates a frame for Interrupts tab.
 
@@ -22,6 +45,11 @@ function MyDungeonsBook:InterruptsFrame_Create(parentFrame, challengeId)
 	local table = self:TableWidget_Create(columns, 5, 40, nil, interruptsFrame, "interrupts");
 	table:SetData(data);
 	table:RegisterEvents({
+		OnClick = function(_, _, data, _, _, realrow, _, _, button)
+			if (button == "RightButton" and realrow) then
+				EasyMenu(getIterruptedSpellMenu(data, realrow, table.cols), self.menuFrame, "cursor", 0 , 0, "MENU");
+			end
+		end,
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
 				if (column == 2 or column == 3) then
@@ -43,6 +71,11 @@ function MyDungeonsBook:InterruptsFrame_Create(parentFrame, challengeId)
 	summaryTable.frame:SetPoint("TOPLEFT", 0, -290);
 	summaryTable:SetData(summaryData);
 	summaryTable:RegisterEvents({
+		OnClick = function(_, _, data, _, _, realrow, _, _, button)
+			if (button == "RightButton" and realrow) then
+				EasyMenu(getIterruptsSummaryMenu(data, realrow, summaryTable.cols), self.menuFrame, "cursor", 0 , 0, "MENU");
+			end
+		end,
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
 				if (column == 3 or column == 4) then
@@ -64,6 +97,11 @@ function MyDungeonsBook:InterruptsFrame_Create(parentFrame, challengeId)
 	quakingTable.frame:SetPoint("TOPLEFT", 320, -290);
 	quakingTable:SetData(quakingData);
 	quakingTable:RegisterEvents({
+		OnClick = function(_, _, data, _, _, realrow, _, _, button)
+			if (button == "RightButton" and realrow) then
+				EasyMenu(getIterruptsQuakingMenu(data, realrow, quakingTable.cols), self.menuFrame, "cursor", 0 , 0, "MENU");
+			end
+		end,
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
 				if (column == 2 or column == 3) then
@@ -451,4 +489,15 @@ function MyDungeonsBook:InterruptsFrame_GetDataForSummaryTable(challengeId)
 		end
 	end
 	return tableData;
+end
+
+--[[--
+@param[type=table] row
+@param[type=table] cols
+@return[type=table]
+]]
+function MyDungeonsBook:InterruptsFrame_SpellInterruptedReport_Create(row, cols)
+	local spellLink = GetSpellLink(row.cols[1].value);
+	local title = string.format(L["MyDungeonsBook %s Interrupted:"], spellLink);
+	return self:Table_PlayersRow_Report_Create(row, cols, {4, 5, 6, 7, 8, 9, 10}, title);
 end

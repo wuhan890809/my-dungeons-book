@@ -11,6 +11,7 @@ L["%s +%s is completed"] = "%s +%s is completed";
 L["%s +%s is reset"] = "%s +%s is reset";
 L["%s +%s is started"] = "%s +%s is started";
 L["%s's cast %s is passed"] = "%s's cast %s is passed";
+L["Close"] = "Close";
 L["Date"] = "Date";
 L["Time"] = "Time";
 L["Version"] = "Version";
@@ -116,6 +117,20 @@ L["Covenant"] = "Covenant";
 L["Equipment"] = "Equipment";
 L["Info"] = "Info";
 L["Covenant info is available only about players with installed MyDungeonsBook."] = "Covenant info is available only about players with installed MyDungeonsBook.";
+L["WowHead"] = "WowHead";
+L["WowHead Link for %s"] = "WowHead Link for %s";
+L["Report"] = "Report";
+L["To Self"] = "To Self";
+L["To Target"] = "To Target";
+L["To Group/Raid"] = "To Group/Raid";
+L["MyDungeonsBook %s Usage:"] = "MyDungeonsBook %s Usage:";
+L["MyDungeonsBook %s Interrupted:"] = "MyDungeonsBook %s Interrupted:";
+L["MyDungeonsBook %s Casts:"] = "MyDungeonsBook %s Casts:";
+L["MyDungeonsBook Damage taken by party from %s:"] = "MyDungeonsBook Damage taken by party from %s:";
+L["MyDungeonsBook Heal done by %s with %s:"] = "MyDungeonsBook Heal done by %s with %s:";
+L["MyDungeonsBook Damage done by party to %s:"] = "MyDungeonsBook Damage done by party to %s:";
+L["MyDungeonsBook %s Dispelled:"] = "MyDungeonsBook %s Dispelled:";
+L["MyDungeonsBook Debuff %s hits:"] = "MyDungeonsBook Debuff %s hits:";
 -- UI end
 
 -- Help start

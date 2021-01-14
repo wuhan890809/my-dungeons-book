@@ -7,6 +7,17 @@ UI
 @section UI
 ]]
 
+local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
+
+local function getOwnSpellMenu(rows, index, cols)
+	local spellId = rows[index].cols[1].value;
+	local report = MyDungeonsBook:SpecialCastsFrame_Report_Create(rows[index], cols);
+	return {
+		MyDungeonsBook:WowHead_Menu_Spell(spellId),
+		MyDungeonsBook:Report_Menu(report)
+	};
+end
+
 --[[--
 Create a frame for Special Casts tab (data is taken from `mechanics[**-CASTS-DONE-BY-PARTY-MEMBERS]`).
 
@@ -23,6 +34,11 @@ function MyDungeonsBook:SpecialCastsFrame_Create(parentFrame, challengeId)
 	local table = self:TableWidget_Create(columns, 11, 40, nil, specialCastsFrame, "special-casts-by-party-members");
 	table:SetData(data);
 	table:RegisterEvents({
+		OnClick = function(_, _, data, _, _, realrow, _, _, button)
+			if (button == "RightButton" and realrow) then
+				EasyMenu(getOwnSpellMenu(data, realrow, table.cols), self.menuFrame, "cursor", 0 , 0, "MENU");
+			end
+		end,
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
 			if (realrow) then
 				if (column == 2 or column == 3) then
@@ -88,4 +104,15 @@ function MyDungeonsBook:SpecialCastsFrame_GetDataForTable(challengeId, key)
 		tinsert(tableData, remappedRow);
 	end
 	return tableData;
+end
+
+--[[--
+@param[type=table] row
+@param[type=table] cols
+@return[type=table]
+]]
+function MyDungeonsBook:SpecialCastsFrame_Report_Create(row, cols)
+	local spellLink = GetSpellLink(row.cols[1].value);
+	local title = string.format(L["MyDungeonsBook %s Casts:"], spellLink);
+	return self:Table_PlayersRow_Report_Create(row, cols, {4, 5, 6, 7, 8, 9}, title);
 end
