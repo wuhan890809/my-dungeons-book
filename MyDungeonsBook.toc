@@ -1,6 +1,6 @@
 ## Title: MyDungeonsBook
 ## Notes: Addon to collect and store specific information about your myth+ challenges.
-## Version: 2.3.0
+## Version: 2.4.0
 ## Author: GelioS
 ## Interface: 90002
 ## OptionalDeps: LibStub, CallbackHandler-1.0, Ace3, LibCompress, LibGroupInSpecT-1.1
