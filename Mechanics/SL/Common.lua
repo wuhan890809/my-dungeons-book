@@ -13,8 +13,9 @@ local SLSpells = {
     [343520] = true, -- Storming
     [226512] = true, -- Sanguine Ichor (Environment)
     [240448] = true, -- Quaking (Environment)
-    [342494] = true, -- Belligerent Boast(Season 1 Pridefull)
+    [342494] = true, -- Belligerent Boast (Season 1 Pridefull)
     [-174773] = true, -- Spiteful Shade Melee Damage
+    [240446] = true, -- Explosion
     -- Plaguefall
     [319898] = true, -- Vile Spit (Slime Tentacle)
     [328501] = true, -- Plague Bomb (Rigged Plagueborer)

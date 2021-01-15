@@ -5,6 +5,7 @@
 * Add more NPC to track and update id for some bosses
 * [#109](https://github.com/onechiporenko/my-dungeons-book/issues/109) Add Links to Wowhead
 * [#75](https://github.com/onechiporenko/my-dungeons-book/issues/75) Add ability to post table row to the chat (group or wisper)
+* Add Explosion to avoidable spells
 
 ### v2.3.0
 
