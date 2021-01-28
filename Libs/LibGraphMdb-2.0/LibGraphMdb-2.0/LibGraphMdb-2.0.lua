@@ -1424,7 +1424,7 @@ function GraphFunctions:CreateGridlines()
 				F:SetFontObject("GameFontHighlightSmall")
 				F:SetTextColor(1, 1, 1)
 				F:ClearAllPoints()
-				F:SetPoint("BOTTOM", T, "BOTTOM", 0, -10)
+				F:SetPoint("BOTTOM", T, "BOTTOM", 0, -14)
 				F:SetText(self:FormatXAxis(i * self.XGridInterval))
 				F:Show()
 			end
