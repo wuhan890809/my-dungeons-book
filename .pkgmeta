@@ -18,7 +18,7 @@ externals:
   Libs/LibGroupInSpecT-1.1: svn://svn.wowace.com/wow/libgroupinspect/mainline/trunk
 
 ignore:
-    - MyDungeonsBook.wowproj
+  - MyDungeonsBook.wowproj
 	- .gitignore
 	- config.ld
 	- db.t.lua

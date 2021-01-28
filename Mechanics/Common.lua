@@ -847,6 +847,9 @@ function MyDungeonsBook:TrackAuraAddedToPartyMember(sourceUnitName, sourceUnitGU
 		};
 	end
 	local timestamp = time();
+	if (not self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.hits) then
+		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.hits = 0;
+	end
 	self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.hits = self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.hits + 1;
 	if (amount > self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.maxAmount) then
 		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.maxAmount = amount;

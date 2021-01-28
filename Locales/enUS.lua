@@ -131,6 +131,10 @@ L["MyDungeonsBook Heal done by %s with %s:"] = "MyDungeonsBook Heal done by %s w
 L["MyDungeonsBook Damage done by party to %s:"] = "MyDungeonsBook Damage done by party to %s:";
 L["MyDungeonsBook %s Dispelled:"] = "MyDungeonsBook %s Dispelled:";
 L["MyDungeonsBook Debuff %s hits:"] = "MyDungeonsBook Debuff %s hits:";
+L["Combat Time"] = "Combat Time";
+L["Scale"] = "Scale";
+L["Timeline"] = "Timeline";
+L["Overall Idle Time - %s"] = "Overall Idle Time - %s";
 -- UI end
 
 -- Help start

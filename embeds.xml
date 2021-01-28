@@ -16,4 +16,5 @@
 	<Include file="Libs\LibCompress\lib.xml"/>
 	<Script file="Libs\LibGroupInSpecT-1.1\LibGroupInSpecT-1.1.lua"/>
 	<Include file="Libs\AceComm-3.0\AceComm-3.0.xml"/>
+	<Script file="Libs\LibGraphMdb-2.0\LibGraphMdb-2.0\LibGraphMdb-2.0.lua"/>
 </Ui>

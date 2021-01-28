@@ -3,7 +3,7 @@
 ## Version: 2.4.0
 ## Author: GelioS
 ## Interface: 90002
-## OptionalDeps: LibStub, CallbackHandler-1.0, Ace3, LibCompress, LibGroupInSpecT-1.1
+## OptionalDeps: LibStub, CallbackHandler-1.0, Ace3, LibCompress, LibGroupInSpecT-1.1, LibGraphMdb-2.0
 ## SavedVariables: MyDungeonsBookDB
 ## SavedVariablesPerCharacter: MyDungeonsBookData
 ## LoadManagers: AddonLoader
@@ -19,6 +19,7 @@ UI/Main.lua
 UI/Challenges.lua
 UI/ChallengeDetails.lua
 UI/ChallengeDetails/Tabs.lua
+UI/ChallengeDetails/Tabs/CombatTime.lua
 UI/ChallengeDetails/Tabs/DEV.lua
 UI/ChallengeDetails/Tabs/Encounters.lua
 UI/ChallengeDetails/Tabs/Mechanics.lua
@@ -61,6 +62,7 @@ UI/ChallengeDetails/Tabs/Roster/Tabs/Info.lua
 UI/ChallengeDetails/Tabs/Roster/Tabs/Talents.lua
 UI/ChallengeDetails/Tabs/Summary.lua
 
+Widgets/Graph.lua
 Widgets/NewLine.lua
 Widgets/Table.lua
 Widgets/Tabs.lua

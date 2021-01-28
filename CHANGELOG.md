@@ -1,4 +1,8 @@
-﻿### v2.4.0
+﻿### v2.5.0
+
+* [#111](https://github.com/onechiporenko/my-dungeons-book/issues/111) Add Graph with combat/idle time
+
+### v2.4.0
 
 * [#13](https://github.com/onechiporenko/my-dungeons-book/issues/13) Track average items level for party members
 * Dark Stride is not avoidable

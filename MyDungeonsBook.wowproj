@@ -88,6 +88,9 @@
     <Content Include="UI\ChallengeDetails\Tabs.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\CombatTime.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Roster\Tabs.lua">
       <SubType>Code</SubType>
     </Content>
@@ -233,6 +236,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Utils\WowHead.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Widgets\Graph.lua">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Widgets\NewLine.lua">
