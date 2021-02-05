@@ -112,6 +112,25 @@ L["Uptime, %"] = "覆盖率, %";
 L["Max Stacks"] = "最大层数";
 L["Type"] = "类型";
 L["Avoidable"] = "可规避";
+L["Talents"] = "天赋";
+L["Covenant"] = "盟约";
+L["Equipment"] = "装备";
+L["Info"] = "信息";
+L["Covenant info is available only about players with installed MyDungeonsBook."] = "只能显示安装了MyDungeonsBook的玩家的盟约信息。";
+L["WowHead"] = "WowHead";
+L["WowHead Link for %s"] = "%s的WowHead链接";
+L["Report"] = "报告";
+L["To Self"] = "向自己";
+L["To Target"] = "向目标";
+L["To Group/Raid"] = "向小队/团队";
+L["MyDungeonsBook %s Usage:"] = "MyDungeonsBook %s 使用:";
+L["MyDungeonsBook %s Interrupted:"] = "MyDungeonsBook %s 打断:";
+L["MyDungeonsBook %s Casts:"] = "MyDungeonsBook %s 施法:";
+L["MyDungeonsBook Damage taken by party from %s:"] = "MyDungeonsBook 小队承受来自 %s 的伤害:";
+L["MyDungeonsBook Heal done by %s with %s:"] = "MyDungeonsBook 来自 %s 的治疗，通过 %s:";
+L["MyDungeonsBook Damage done by party to %s:"] = "MyDungeonsBook 小队向 %s 输出的伤害:";
+L["MyDungeonsBook %s Dispelled:"] = "MyDungeonsBook %s 驱散:";
+L["MyDungeonsBook Debuff %s hits:"] = "MyDungeonsBook Debuff %s 命中:";
 -- UI end
 
 -- Help start
@@ -119,6 +138,7 @@ L["alias for previous word"] = "前面单词的缩写";
 L["save info from Details addon. It's done automatically when challenge is completed (in time or not), however it's not done if challenge is abandonned. Use this command right before leave the party."] = "从Details插件保存信息。这一操作会在大秘境完成（不论是否限时）时自动完成。但是如果你们放弃打通大秘境则此操作不会执行。请在离队前使用这个命令。";
 L["update info about party member for current challenge. unitId must be 'player' or 'party1..4'."] = "更新本次挑战成员的信息. 单位ID(unitId)必须是'player'或者'party1..4'这种形式";
 L["print this text."] = "显示这段文字。";
+L["send some message via comm to other MDB user. unitId must be 'party1..4'."] = "通过聊天向其他MDB用户发送信息。单位ID(unitId)必须是'party1..4'这种形式";
 -- Help end
 
 -- Settings start
@@ -130,7 +150,7 @@ L["Show DEBUG messages"] = "显示故障排查(DEBUG)信息";
 L["Show LOG messages"] = "显示日志(LOG)信息";
 L["UI"] = "用户界面";
 L["Main Window Scale"] = "主窗口缩放";
-L["Date Format"] = "数据格式";
+L["Date Format"] = "日期格式";
 L["Time Format"] = "时间格式";
 L["Icons"] = "图标";
 L["Time Format"] = "时间格式";

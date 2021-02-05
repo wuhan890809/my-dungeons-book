@@ -2,6 +2,7 @@
 
 * [#111](https://github.com/onechiporenko/my-dungeons-book/issues/111) Add Graph with combat/idle time
 * [#112](https://github.com/onechiporenko/my-dungeons-book/issues/112) Show items level for each equiped item in the Roster/Equipment
+* [#110](https://github.com/onechiporenko/my-dungeons-book/issues/110) New CN localizations
 
 ### v2.4.0
 
