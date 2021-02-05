@@ -615,6 +615,33 @@ function MyDungeonsBook:TrackAllEnemiesPassedCasts(unitName, unitGUID, spellId)
 end
 
 --[[--
+Save meta info about casts and casters
+
+@param[type=string] unitName caster's name
+@param[type=GUID] unitGUID caster's GUID
+@param[type=number] spellId casted spell ID
+]]
+function MyDungeonsBook:TrackSpellsCaster(unitName, unitGUID, spellId)
+	local isPlayer = strfind(unitGUID, "Player");
+	local isPet = strfind(unitGUID, "Pet");
+	if (isPlayer or isPet) then
+		return;
+	end
+	if (not self.db.global.meta.spells[spellId]) then
+		self.db.global.meta.spells[spellId] = {};
+	end
+	local npcId = self:GetNpcIdFromGuid(unitGUID);
+	self.db.global.meta.spells[spellId].casters = self.db.global.meta.spells[spellId].casters or {};
+	self.db.global.meta.spells[spellId].casters[npcId] = true;
+	self.db.global.meta.npcs[npcId] = self.db.global.meta.npcs[npcId] or {};
+	self.db.global.meta.npcs[npcId].name = unitName;
+	self.db.global.meta.npcs[npcId].spells = self.db.global.meta.npcs[npcId].spells or {};
+	self.db.global.meta.npcs[npcId].spells[spellId] = self.db.global.meta.npcs[npcId].spells[spellId] or {
+		spellId = spellId
+	};
+end
+
+--[[--
 Track damage done by party members (and pets) for all units.
 
 @param[type=string] key mechanic unique identifier
@@ -849,6 +876,7 @@ function MyDungeonsBook:TrackAuraAddedToPartyMember(sourceUnitName, sourceUnitGU
 	local timestamp = time();
 	if (not self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.hits) then
 		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.hits = 0;
+		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.maxAmount = 0;
 	end
 	self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.hits = self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.hits + 1;
 	if (amount > self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.maxAmount) then

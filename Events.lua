@@ -68,6 +68,7 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		self:TrackTryInterrupt(srcName, srcGUID, spellId);
 		self:TrackSLPassedCasts(srcName, spellId);
 		self:TrackAllEnemiesPassedCasts(srcName, srcGUID, spellId);
+		self:TrackSpellsCaster(srcName, srcGUID, spellId);
 		self:TrackSLSpecificCastDoneByPartyMembers(srcName, spellId);
 		self:TrackAllCastsDoneByPartyMembers(srcName, srcGUID, spellId);
 		self:TrackSLSpecificItemUsedByPartyMembers(srcName, spellId);
