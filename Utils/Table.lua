@@ -508,6 +508,27 @@ function MyDungeonsBook:Table_PlayersRow_Report_Create(row, cols, columnIndexes,
 end
 
 --[[--
+@param[type=table] row
+@param[type=table] cols
+@param[type=string] title
+@param[type=?string] msgFormat
+@return[type=table]
+]]
+function MyDungeonsBook:Table_PlayersRowBySpell_Report_Create(row, cols, title, msgFormat)
+	local report = {};
+	local msgFormat = msgFormat or L["Amount - %s (%s%%), over - %s, crit - %s%%, max - %s (%s)"];
+	tinsert(report, title);
+	local amount = self:FormatNumber(row.cols[5].value);
+	local percentage = self:FormatPercents(row.cols[6].value);
+	local over = self:FormatNumber(row.cols[7].value);
+	local crit = self:FormatPercents(row.cols[8].value);
+	local maxCrit = self:FormatNumber(row.cols[10].value);
+	local maxNotCrit = self:FormatNumber(row.cols[12].value);
+	tinsert(report, string.format(msgFormat, amount, percentage, over, crit, maxCrit, maxNotCrit));
+	return report;
+end
+
+--[[--
 @param[type=table] tbl
 @param[type=table] cols
 @param[type=table] columnIndexes

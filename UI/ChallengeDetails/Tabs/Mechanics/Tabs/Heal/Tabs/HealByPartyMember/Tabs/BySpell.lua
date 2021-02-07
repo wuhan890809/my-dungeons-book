@@ -9,9 +9,12 @@ UI
 
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
-local function getHealBySpellMenu(spellId)
+local function getHealBySpellMenu(rows, index, cols, challengeId, unitId)
+    local spellId = rows[index].cols[1].value;
+    local report = MyDungeonsBook:HealByPartyMemberBySpellFrame_Report_Create(rows[index], cols, challengeId, unitId);
     return {
-        MyDungeonsBook:WowHead_Menu_Spell(spellId)
+        MyDungeonsBook:WowHead_Menu_Spell(spellId),
+        MyDungeonsBook:Report_Menu(report)
     };
 end
 
@@ -30,7 +33,7 @@ function MyDungeonsBook:HealByPartyMemberBySpellFrame_Create(parentFrame, challe
     table:RegisterEvents({
         OnClick = function(_, _, data, _, _, realrow, _, _, button)
             if (button == "RightButton" and realrow) then
-                EasyMenu(getHealBySpellMenu(data[realrow].cols[1].value), self.menuFrame, "cursor", 0 , 0, "MENU");
+                EasyMenu(getHealBySpellMenu(data, realrow, table.cols, challengeId, unitId), self.menuFrame, "cursor", 0 , 0, "MENU");
             end
         end,
         OnEnter = function (_, cellFrame, data, _, _, realrow, column)
@@ -285,4 +288,18 @@ function MyDungeonsBook:HealByPartyMemberBySpellFrame_GetDataForTable(challengeI
     end
     tinsert(tableData, summaryRow);
     return tableData, summaryRow;
+end
+
+--[[--
+@param[type=table] row
+@param[type=table] cols
+@param[type=number] challengeId
+@param[type=unitId] unitId
+@return[type=table]
+]]
+function MyDungeonsBook:HealByPartyMemberBySpellFrame_Report_Create(row, cols, challengeId, unitId)
+    local spellLink = GetSpellLink(row.cols[1].value);
+    local challenge = self:Challenge_GetById(challengeId);
+    local title = string.format(L["MyDungeonsBook Heal stats by %s with %s:"], challenge.players[unitId].name or "", spellLink);
+    return self:Table_PlayersRowBySpell_Report_Create(row, cols, title);
 end

@@ -308,6 +308,8 @@ end
 --[[--
 @param[type=table] row
 @param[type=table] cols
+@param[type=number] challengeId
+@param[type=unitId] unitId
 @return[type=table]
 ]]
 function MyDungeonsBook:HealByPartyMemberToEachPartyMemberFrame_Report_Create(row, cols, challengeId, unitId)
