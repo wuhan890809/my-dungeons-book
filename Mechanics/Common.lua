@@ -631,6 +631,9 @@ function MyDungeonsBook:TrackSpellsCaster(unitName, unitGUID, spellId)
 		self.db.global.meta.spells[spellId] = {};
 	end
 	local npcId = self:GetNpcIdFromGuid(unitGUID);
+	if (not npcId) then
+		return;
+	end
 	self.db.global.meta.spells[spellId].casters = self.db.global.meta.spells[spellId].casters or {};
 	self.db.global.meta.spells[spellId].casters[npcId] = true;
 	self.db.global.meta.npcs[npcId] = self.db.global.meta.npcs[npcId] or {};

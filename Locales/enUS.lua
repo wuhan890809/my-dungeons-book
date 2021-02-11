@@ -138,6 +138,8 @@ L["Combat Time"] = "Combat Time";
 L["Scale"] = "Scale";
 L["Timeline"] = "Timeline";
 L["Overall Idle Time - %s"] = "Overall Idle Time - %s";
+L["Delete"] = "Delete";
+L["MyDungeonsBook Challenge summary for %s:"] = "MyDungeonsBook Challenge summary for %s:";
 -- UI end
 
 -- Help start

@@ -11,6 +11,15 @@ local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 local ScrollingTable = LibStub("ScrollingTable");
 local AceGUI = LibStub("AceGUI-3.0");
 
+local function getChallengesMenu(rows, index, cols)
+	local challengeId = rows[index].cols[1].value;
+	local report = MyDungeonsBook:ChallengesFrame_Challenge_Menu_Summary(rows[index], cols);
+	return {
+		MyDungeonsBook:ChallengesFrame_Challenge_Menu_Delete(challengeId),
+		MyDungeonsBook:Report_Menu(report)
+	};
+end
+
 --[[--
 Create a frame with table containing challenges with current char.
 
@@ -41,18 +50,13 @@ function MyDungeonsBook:ChallengesFrame_Table_Create(parentFrame)
 	table:SortData();
 	table:RegisterEvents({
 		OnClick = function (_, _, data, _, _, realrow, column, _, button)
+			if (button == "RightButton" and realrow) then
+				EasyMenu(getChallengesMenu(data, realrow, table.cols), self.menuFrame, "cursor", 0 , 0, "MENU");
+			end
 			if (button == "LeftButton" and realrow) then
 				local challengeId = data[realrow].cols[1].value;
-				if (column == 11) then
-					-- Show confirmation modal to delete info about selected challenge
-					local dialog = StaticPopup_Show("MDB_CONFIRM_DELETE_CHALLENGE", challengeId);
-					if (dialog) then
-						dialog.data = challengeId;
-					end
-				else
-					-- Show challenge details
-					self:ChallengeDetailsFrame_Show(challengeId);
-				end
+				-- Show challenge details
+				self:ChallengeDetailsFrame_Show(challengeId);
 			end
 		end,
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
@@ -348,9 +352,6 @@ function MyDungeonsBook:ChallengesFrame_GetDataForTable()
 					},
 					{
 						value = self:GetChallengeAffixesIconsStr(id, 20)
-					},
-					{
-						value = "|Tinterface\\raidframe\\readycheck-notready.blp" .. self:GetIconTextureSuffix(16) .. "|t"
 					}
 				}
 			};
@@ -437,13 +438,8 @@ function MyDungeonsBook:ChallengesFrame_GetColumnsForTable()
 		},
 		{
 			name = "  " .. L["Affixes"],
-			width = 100,
+			width = 130,
 			align = "LEFT"
-		},
-		{
-			name = " ",
-			width = 30,
-			align = "CENTER"
 		}
 	};
 end
@@ -455,4 +451,40 @@ function MyDungeonsBook:FormatCellAsChallengeKeyStatus(_, cellFrame, data, _, _,
 	local val = data[realrow].cols[column].value;
 	local text = (val > 0 and string.format("|cff1eff00+%s|r", val)) or "|cffcc3333-1|r";
     cellFrame.text:SetText(text);
+end
+
+--[[--
+@param[type=number] challengeId
+@return[type=table]
+]]
+function MyDungeonsBook:ChallengesFrame_Challenge_Menu_Delete(challengeId)
+	return {
+		text = L["Delete"],
+		func = function()
+			-- Show confirmation modal to delete info about selected challenge
+			local dialog = StaticPopup_Show("MDB_CONFIRM_DELETE_CHALLENGE", challengeId);
+			if (dialog) then
+				dialog.data = challengeId;
+			end
+		end
+	};
+end
+
+--[[--
+@param[type=table] row
+@param[type=table] cols
+@param[type=number] challengeId
+@param[type=unitId] unitId
+@return[type=table]
+]]
+function MyDungeonsBook:ChallengesFrame_Challenge_Menu_Summary(row, cols)
+	local report = {};
+	local msgFormat = "%s: %s";
+	tinsert(report, string.format(L["MyDungeonsBook Challenge summary for %s:"], row.cols[4].value));
+	tinsert(report, string.format(msgFormat, cols[2].name, string.gsub(self:FormatDate(row.cols[2].value), "\n", " ")));
+	tinsert(report, string.format(msgFormat, cols[5].name, self:FormatTime(row.cols[5].value)));
+	local result = row.cols[7].value;
+	tinsert(report, string.format("%s: %s (%s)", cols[6].name, row.cols[6].value, (result > 0 and "+" .. result) or result));
+	tinsert(report, string.format(msgFormat, cols[8].name, row.cols[8].value));
+	return report;
 end

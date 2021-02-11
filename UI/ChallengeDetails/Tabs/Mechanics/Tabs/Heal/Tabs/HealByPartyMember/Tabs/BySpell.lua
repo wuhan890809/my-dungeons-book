@@ -33,7 +33,10 @@ function MyDungeonsBook:HealByPartyMemberBySpellFrame_Create(parentFrame, challe
     table:RegisterEvents({
         OnClick = function(_, _, data, _, _, realrow, _, _, button)
             if (button == "RightButton" and realrow) then
-                EasyMenu(getHealBySpellMenu(data, realrow, table.cols, challengeId, unitId), self.menuFrame, "cursor", 0 , 0, "MENU");
+                local spellId = data[realrow].cols[1].value;
+                if (spellId > 0) then
+                    EasyMenu(getHealBySpellMenu(data, realrow, table.cols, challengeId, unitId), self.menuFrame, "cursor", 0 , 0, "MENU");
+                end
             end
         end,
         OnEnter = function (_, cellFrame, data, _, _, realrow, column)
