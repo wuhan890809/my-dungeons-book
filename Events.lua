@@ -20,7 +20,8 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 	local timestamp, subEventName, hideCaster, srcGUID, srcName, srcFlags, srcFlags2, dstGUID, dstName, dstFlags, dstFlags2 = CombatLogGetCurrentEventInfo();
 	local subEventPrefix, subEventSuffix = subEventName:match("^(.-)_?([^_]*)$");
-	self:TrackSLUnitsAppearsInCombat(srcGUID, dstGUID);
+	self:TrackEnemyUnitAppearsInCombat(srcName, srcGUID, srcFlags, dstName, dstGUID, dstFlags);
+	self:TrackSLUnitsAppearsInCombat(srcGUID, dstGUID); -- TODO remove later
 	if (subEventSuffix == "SUMMON" or
 		subEventSuffix == "CREATE") then
 		self:TrackSummonnedByPartyMembersUnit(srcName, srcGUID, dstName, dstGUID);

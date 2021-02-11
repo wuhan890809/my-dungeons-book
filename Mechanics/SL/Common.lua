@@ -393,10 +393,19 @@ local SLSpecificBuffOrDebuffOnPartyMembers = {
 };
 
 local SLSpecificBuffOrDebuffOnUnit = {
+    -- De Other Side
+    [322773] = true, -- Blood Barrier (Blood Barrier)
     -- Plaguefall
     [332397] = true, -- Shroudweb (Domina Venomblade adds)
     -- Mists of Tirna Scithe
     [336499] = true, -- Guessing Game (Mistcaller)
+    [323149] = true, -- Embrace Darkness (Ingra Maloch)
+    [322527] = true, -- Gorging Shield (Tred'ova)
+    -- Necrotic Wake
+    [321754] = true, -- Icebound Aegis (Nalthor the Rimebinder)
+    [326629] = true, -- Noxious Fog (Surgeon Stitchflesh)
+    -- Sanguine Depths
+    [319657] = true, -- Essence Surge (Kryxis the Voracious)
 };
 
 local SLSpecificCastsDoneByPartyMembers = {

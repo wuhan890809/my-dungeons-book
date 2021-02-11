@@ -1117,4 +1117,32 @@ function MyDungeonsBook:TrackEnemyUnitDied(sourceUnitName, sourceUnitGUID, sourc
 			end
 		end
 	end
+	local KEY = "UNIT-APPEARS-IN-COMBAT";
+	self:InitMechanics2Lvl(KEY, sourceUnitGUID);
+	self.db.char.challenges[id].mechanics[KEY][sourceUnitGUID].died = time();
+end
+
+--[[--
+Track when enemy unit appears in combat with party members (players or pets)
+
+@param[type=string] sourceUnitName
+@param[type=GUID] sourceUnitGUID
+@param[type=number] sourceUnitFlags
+@param[type=string] targetUnitName
+@param[type=GUID] targetUnitGIUD
+@param[type=number] targetUnitFlags
+]]
+function MyDungeonsBook:TrackEnemyUnitAppearsInCombat(sourceUnitName, sourceUnitGUID, sourceUnitFlags, targetUnitName, targetUnitGIUD, targetUnitFlags)
+	local sourceIsEnemy = bit.band(sourceUnitFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0;
+	if (not sourceIsEnemy) then
+		return;
+	end
+	local type = strsplit("-", targetUnitGIUD);
+	if ((type ~= "Pet") and (type ~= "Player")) then
+		return;
+	end
+	local id = self.db.char.activeChallengeId;
+	local KEY = "UNIT-APPEARS-IN-COMBAT";
+	self:InitMechanics2Lvl(KEY, sourceUnitGUID);
+	self.db.char.challenges[id].mechanics[KEY][sourceUnitGUID].firstHit = time();
 end

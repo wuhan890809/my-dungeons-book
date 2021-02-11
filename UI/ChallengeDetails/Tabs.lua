@@ -46,7 +46,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 			self.mechanicsFrame = self:MechanicsFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "combatTime") then
-			self.mechanicsFrame = self:CombatTimeFrame_Create(container, self.activeChallengeId);
+			self.combatTimeFrame = self:CombatTimeFrame_Create(container, self.activeChallengeId);
 		end
 	end);
 	tabs:SetHeight(618);

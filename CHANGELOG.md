@@ -5,6 +5,8 @@
 * [#110](https://github.com/onechiporenko/my-dungeons-book/issues/110) New CN localizations
 * Add report-menu for heal and damage done by each spell
 * [#113](https://github.com/onechiporenko/my-dungeons-book/issues/113) Add context menu for Challenges table
+* Add more auras to track for enemy units
+* Track all unit combat start/end
 
 ### v2.4.0
 
