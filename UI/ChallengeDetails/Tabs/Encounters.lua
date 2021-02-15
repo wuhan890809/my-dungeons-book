@@ -1,11 +1,19 @@
 --[[--
 @module MyDungeonsBook
 ]]
-local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 --[[--
 UI
 @section UI
 ]]
+
+local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
+
+local function getEncounterMenu(rows, index, cols, challengeId)
+	local report = MyDungeonsBook:EncountersFrame_EncounterReport_Create(rows[index], cols, challengeId);
+	return {
+		MyDungeonsBook:Report_Menu(report)
+	};
+end
 
 --[[--
 Creates a frame for Encounters tab
@@ -20,7 +28,25 @@ function MyDungeonsBook:EncountersFrame_Create(parentFrame, challengeId)
 	local columns = self:EncountersFrame_GetColumnsForTable();
 	local table = self:TableWidget_Create(columns, 13, 40, nil, encountersFrame, "encounters");
 	table:SetData(data);
+	table:RegisterEvents({
+		OnClick = function(_, _, data, _, _, realrow, _, _, button)
+			if (button == "RightButton" and realrow) then
+				EasyMenu(getEncounterMenu(data, realrow, table.cols, challengeId), self.menuFrame, "cursor", 0 , 0, "MENU");
+			end
+		end
+	});
 	return encountersFrame;
+end
+
+function getSuccessFailIcon(success)
+	local icon;
+	if (success == 1) then
+		icon = "interface\\raidframe\\readycheck-ready.blp";
+	else
+		icon = "interface\\raidframe\\readycheck-notready.blp";
+	end
+	local suffix = MyDungeonsBook:GetIconTextureSuffix(16);
+	return "|T" .. (icon or "") .. suffix .. "|t"
 end
 
 --[[--
@@ -86,14 +112,7 @@ function MyDungeonsBook:EncountersFrame_GetColumnsForTable()
 			align = "CENTER",
 			DoCellUpdate = function(_, cellFrame, data, _, _, realrow, column)
 				local success = data[realrow].cols[column].value;
-				local icon;
-				if (success == 1) then
-					icon = "interface\\raidframe\\readycheck-ready.blp";
-				else
-					icon = "interface\\raidframe\\readycheck-notready.blp";
-				end
-				local suffix = self:GetIconTextureSuffix(16);
-				(cellFrame.text or cellFrame):SetText("|T" .. (icon or "") .. suffix .. "|t");
+				(cellFrame.text or cellFrame):SetText(getSuccessFailIcon(success));
 			end
 		}
 	}
@@ -135,4 +154,27 @@ function MyDungeonsBook:EncountersFrame_GetDataForTable(challengeId)
 		});
 	end
 	return tableData;
+end
+
+--[[--
+@param[type=table] row
+@param[type=table] cols
+@param[type=number] challengeId
+@return[type=table]
+]]
+function MyDungeonsBook:EncountersFrame_EncounterReport_Create(row, cols, challengeId)
+	local challenge = self:Challenge_GetById(challengeId);
+	local challengeName = challenge.challengeInfo.zoneName or "";
+	local encounterName = row.cols[2].value;
+	local key = challenge.challengeInfo.cmLevel;
+	local challengeDate = string.gsub(self:FormatDate(challenge.challengeInfo.startTime), "\n", " ");
+	local title = string.format(L["MyDungeonsBook Encounter %s (%s) for %s (%s) at %s:"], encounterName, getSuccessFailIcon(row.cols[9].value), challengeName, key, challengeDate);
+	local msgFormat = "%s: %s";
+	local report = {};
+	tinsert(report, title);
+	tinsert(report, string.format(msgFormat, cols[3].name, self:FormatTime(row.cols[3].value)));
+	tinsert(report, string.format(msgFormat, cols[4].name, self:FormatTime(row.cols[4].value)));
+	tinsert(report, string.format(msgFormat, cols[5].name, self:FormatTime(row.cols[5].value)));
+	tinsert(report, string.format(msgFormat, cols[7].name, row.cols[7].value));
+	return report;
 end

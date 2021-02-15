@@ -8,6 +8,7 @@
 * Add more auras to track for enemy units
 * Track all units combat start/end
 * Add UI-tab for all units combat start/end
+* Add context menu for encounters-tab
 
 ### v2.4.0
 

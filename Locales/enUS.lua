@@ -144,6 +144,7 @@ L["Units"] = "Units";
 L["Combat Start"] = "Combat Start";
 L["Combat End"] = "Combat End";
 L["Combat Duration"] = "Combat Duration";
+L["MyDungeonsBook Encounter %s (%s) for %s (%s) at %s:"] = "MyDungeonsBook Encounter %s (%s) for %s (%s) at %s:";
 -- UI end
 
 -- Help start
