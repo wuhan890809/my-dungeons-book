@@ -214,6 +214,9 @@
     <Content Include="UI\ChallengeDetails\Tabs\Roster.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Units.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="UI\Challenges.lua">
       <SubType>Code</SubType>
     </Content>

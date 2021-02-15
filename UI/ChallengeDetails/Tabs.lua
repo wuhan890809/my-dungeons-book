@@ -20,6 +20,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 	local tabsConfig = {
 		{value = "roster", text = L["Roster"]},
 		{value = "summary", text = L["Summary"]},
+		{value = "units", text = L["Units"]},
 		{value = "combatTime", text = L["Combat Time"]},
 		{value = "encounters", text = L["Encounters"]},
 		{value = "mechanics", text = L["Mechanics"]}
@@ -47,6 +48,9 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 		end
 		if (tabId == "combatTime") then
 			self.combatTimeFrame = self:CombatTimeFrame_Create(container, self.activeChallengeId);
+		end
+		if (tabId == "units") then
+			self.unitsFrame = self:UnitsFrame_Create(container, self.activeChallengeId);
 		end
 	end);
 	tabs:SetHeight(618);

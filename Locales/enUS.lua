@@ -140,6 +140,10 @@ L["Timeline"] = "Timeline";
 L["Overall Idle Time - %s"] = "Overall Idle Time - %s";
 L["Delete"] = "Delete";
 L["MyDungeonsBook Challenge summary for %s:"] = "MyDungeonsBook Challenge summary for %s:";
+L["Units"] = "Units";
+L["Combat Start"] = "Combat Start";
+L["Combat End"] = "Combat End";
+L["Combat Duration"] = "Combat Duration";
 -- UI end
 
 -- Help start

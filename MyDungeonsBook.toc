@@ -61,6 +61,7 @@ UI/ChallengeDetails/Tabs/Roster/Tabs/Equipment.lua
 UI/ChallengeDetails/Tabs/Roster/Tabs/Info.lua
 UI/ChallengeDetails/Tabs/Roster/Tabs/Talents.lua
 UI/ChallengeDetails/Tabs/Summary.lua
+UI/ChallengeDetails/Tabs/Units.lua
 
 Widgets/Graph.lua
 Widgets/NewLine.lua

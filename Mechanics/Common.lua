@@ -891,6 +891,58 @@ function MyDungeonsBook:TrackAuraAddedToPartyMember(sourceUnitName, sourceUnitGU
 	tinsert(self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].timeline, {timestamp, amount});
 end
 
+
+--[[--
+@param[type=string] sourceUnitName
+@param[type=string] sourceUnitGUID
+@param[type=string] sourceUniFlags
+@param[type=string] targetUnitName
+@param[type=string] targetUnitGUID
+@param[type=string] targetUnitFlags
+@param[type=number] spellId
+@param[type=string] auraType
+@param[type=number] amount
+]]
+function MyDungeonsBook:TrackAuraAddedToEnemyUnit(sourceUnitName, sourceUnitGUID, sourceUnitFlags, targetUnitName, targetUnitGUID, targetUnitFlags, spellId, auraType, amount)
+	local targetIsEnemy = bit.band(targetUnitFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0;
+	if (not targetIsEnemy) then
+		return;
+	end
+	local type = strsplit("-", sourceUnitGUID);
+	if ((type == "Pet") or (type == "Player")) then
+		return;
+	end
+	if (not self.db.global.meta.spells[spellId]) then
+		self.db.global.meta.spells[spellId] = {};
+	end
+	self.db.global.meta.spells[spellId].auraType = auraType;
+	local id = self.db.char.activeChallengeId;
+	local KEY = "ENEMY-UNITS-AURAS";
+	self:InitMechanics3Lvl(KEY, targetUnitGUID, spellId);
+	self:InitMechanics4Lvl(KEY, targetUnitGUID, spellId, "timeline");
+	if (not self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].meta) then
+		self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].meta = {
+			hits = 0,
+			duration = 0,
+			lastStartTime = nil,
+			maxAmount = 0
+		};
+	end
+	local timestamp = time();
+	if (not self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].meta.hits) then
+		self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].meta.hits = 0;
+		self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].meta.maxAmount = 0;
+	end
+	self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].meta.hits = self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].meta.hits + 1;
+	if (amount > self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].meta.maxAmount) then
+		self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].meta.maxAmount = amount;
+	end
+	if (not self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].meta.lastStartTime) then
+		self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].meta.lastStartTime = timestamp;
+	end
+	tinsert(self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].timeline, {timestamp, amount});
+end
+
 --[[--
 Track all buffs or debuffs got by any enemy unit.
 
@@ -998,6 +1050,35 @@ function MyDungeonsBook:TrackAuraRemovedFromPartyMember(sourceUnitName, sourceUn
 		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.lastStartTime = nil;
 	end
 	tinsert(self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].timeline, {endTime, amount});
+end
+
+--[[--
+Track when buff or debuff is removed from party member (triggers for stacks changing too)
+
+@param[type=string] sourceUnitName
+@param[type=string] sourceUnitGUID
+@param[type=number] spellId
+@param[type=string] auraType
+@param[type=number] amount
+]]
+function MyDungeonsBook:TrackAuraRemovedFromEnemyUnit(targetUnitName, targetUnitGUID, spellId, auraType, amount)
+	local KEY = "ENEMY-UNITS-AURAS";
+	local id = self.db.char.activeChallengeId;
+	if (not self:SafeNestedGet(self.db.char.challenges[id].mechanics, KEY, targetUnitGUID, spellId)) then
+		return;
+	end
+	self:InitMechanics4Lvl(KEY, targetUnitGUID, spellId, "meta");
+	self:InitMechanics4Lvl(KEY, targetUnitGUID, spellId, "timeline");
+	if (not self.db.global.meta.spells[spellId].auraType) then
+		self.db.global.meta.spells[spellId].auraType = auraType;
+	end
+	local endTime = time();
+	if (amount == 0 and self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].meta.lastStartTime) then
+		self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].meta.duration = self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].meta.duration +
+			(endTime - self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].meta.lastStartTime);
+		self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].meta.lastStartTime = nil;
+	end
+	tinsert(self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].timeline, {endTime, amount});
 end
 
 --[[--
@@ -1134,15 +1215,23 @@ Track when enemy unit appears in combat with party members (players or pets)
 ]]
 function MyDungeonsBook:TrackEnemyUnitAppearsInCombat(sourceUnitName, sourceUnitGUID, sourceUnitFlags, targetUnitName, targetUnitGIUD, targetUnitFlags)
 	local sourceIsEnemy = bit.band(sourceUnitFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0;
-	if (not sourceIsEnemy) then
+	local targetIsEnemy = bit.band(targetUnitFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0;
+	local sourceType = strsplit("-", sourceUnitGUID);
+	local sourceIsPlayerOrPet = (sourceType == "Pet") or (sourceType == "Player");
+	local targetType = strsplit("-", targetUnitGIUD);
+	local targetIsPlayerOrPet = (targetType == "Pet") or (targetType == "Player");
+	if (not (sourceIsEnemy or targetIsEnemy)) then
 		return;
 	end
-	local type = strsplit("-", targetUnitGIUD);
-	if ((type ~= "Pet") and (type ~= "Player")) then
+	if (not ((sourceIsEnemy and targetIsPlayerOrPet) or (targetIsEnemy and sourceIsPlayerOrPet))) then
 		return;
 	end
 	local id = self.db.char.activeChallengeId;
 	local KEY = "UNIT-APPEARS-IN-COMBAT";
-	self:InitMechanics2Lvl(KEY, sourceUnitGUID);
-	self.db.char.challenges[id].mechanics[KEY][sourceUnitGUID].firstHit = time();
+	local unitGUID = (sourceIsEnemy and sourceUnitGUID) or targetUnitGIUD;
+	if (self:SafeNestedGet(self.db.char.challenges[id].mechanics, KEY, unitGUID)) then
+		return;
+	end
+	self:InitMechanics2Lvl(KEY, unitGUID);
+	self.db.char.challenges[id].mechanics[KEY][unitGUID].firstHit = time();
 end

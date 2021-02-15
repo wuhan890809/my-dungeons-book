@@ -11,7 +11,6 @@ UI
 Creates a frame for Roster tab
 
 @param[type=Frame] parentFrame
-@param[type=number] challengeId
 @return[type=Frame] rosterFrame
 ]]
 function MyDungeonsBook:RosterFrame_Create(parentFrame)

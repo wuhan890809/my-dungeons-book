@@ -105,6 +105,7 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		self:TrackSLSpecificBuffOrDebuffOnUnit(dstName, dstGUID, dstFlags, spellId, auraType, amount or 1);
 		self:TrackAllBuffOrDebuffOnUnit(dstName, dstGUID, dstFlags, spellId, auraType, amount or 1);
 		self:TrackAuraAddedToPartyMember(dstName, dstGUID, spellId, auraType, amount or 1);
+		self:TrackAuraAddedToEnemyUnit(srcName, srcGUID, srcFlags, dstName, dstGUID, dstFlags, spellId, auraType, amount or 1);
 	end
 	if (subEventName == "SPELL_AURA_REMOVED" or
 		subEventName == "SPELL_AURA_REMOVED_DOSE" or
@@ -112,6 +113,7 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		subEventName == "SPELL_AURA_BROKEN_SPELL") then
 		local spellId, _, _, auraType, amount = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackAuraRemovedFromPartyMember(dstName, dstGUID, spellId, auraType, amount or 0);
+		self:TrackAuraRemovedFromEnemyUnit(dstName, dstGUID, spellId, auraType, amount or 0);
 		self:TrackSLSpecificBuffOrDebuffRemovedFromUnit(dstName, dstGUID, dstFlags, spellId, auraType, amount or 0);
 	end
 end
