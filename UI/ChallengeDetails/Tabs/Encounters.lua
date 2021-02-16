@@ -168,13 +168,13 @@ function MyDungeonsBook:EncountersFrame_EncounterReport_Create(row, cols, challe
 	local encounterName = row.cols[2].value;
 	local key = challenge.challengeInfo.cmLevel;
 	local challengeDate = string.gsub(self:FormatDate(challenge.challengeInfo.startTime), "\n", " ");
-	local title = string.format(L["MyDungeonsBook Encounter %s (%s) for %s (%s) at %s:"], encounterName, getSuccessFailIcon(row.cols[9].value), challengeName, key, challengeDate);
+	local title = string.format(L["MyDungeonsBook Encounter %s (%s) for %s (%s) at %s:"], encounterName, (row.cols[9].value == 1 and "+" or "-"), challengeName, key, challengeDate);
 	local msgFormat = "%s: %s";
 	local report = {};
 	tinsert(report, title);
 	tinsert(report, string.format(msgFormat, cols[3].name, self:FormatTime(row.cols[3].value)));
 	tinsert(report, string.format(msgFormat, cols[4].name, self:FormatTime(row.cols[4].value)));
 	tinsert(report, string.format(msgFormat, cols[5].name, self:FormatTime(row.cols[5].value)));
-	tinsert(report, string.format(msgFormat, cols[7].name, row.cols[7].value));
+	tinsert(report, string.format(msgFormat, L["Deaths"], row.cols[7].value));
 	return report;
 end

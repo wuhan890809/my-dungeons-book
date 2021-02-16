@@ -485,6 +485,6 @@ function MyDungeonsBook:ChallengesFrame_Challenge_Menu_Summary(row, cols)
 	tinsert(report, string.format(msgFormat, cols[5].name, self:FormatTime(row.cols[5].value)));
 	local result = row.cols[7].value;
 	tinsert(report, string.format("%s: %s (%s)", cols[6].name, row.cols[6].value, (result > 0 and "+" .. result) or result));
-	tinsert(report, string.format(msgFormat, cols[8].name, row.cols[8].value));
+	tinsert(report, string.format(msgFormat, L["Deaths"], row.cols[8].value));
 	return report;
 end

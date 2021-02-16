@@ -94,7 +94,7 @@ function MyDungeonsBook:UnitsFrame_GetDataForTable(challengeId)
         local npcId = self:GetNpcIdFromGuid(npcGUID);
         local npcName = (self.db.global.meta.npcs[npcId] and self.db.global.meta.npcs[npcId].name) or npcId;
         local combatStart = npcData.firstHit;
-        local combatEnd = npcData.died;
+        local combatEnd = npcData.died or npcData.lastCast;
         if (combatStart and combatEnd) then
             tinsert(tableData, {
                 cols = {

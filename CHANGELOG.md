@@ -1,4 +1,9 @@
-﻿### v2.5.0
+﻿### v2.6.0
+
+* Fix reports for encounters and challenges - don't post icons to target/party
+* Save `lastCast` for units appear in combat
+
+### v2.5.0
 
 * [#111](https://github.com/onechiporenko/my-dungeons-book/issues/111) Add Graph with combat/idle time
 * [#112](https://github.com/onechiporenko/my-dungeons-book/issues/112) Show items level for each equiped item in the Roster/Equipment

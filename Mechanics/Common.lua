@@ -1230,8 +1230,9 @@ function MyDungeonsBook:TrackEnemyUnitAppearsInCombat(sourceUnitName, sourceUnit
 	local KEY = "UNIT-APPEARS-IN-COMBAT";
 	local unitGUID = (sourceIsEnemy and sourceUnitGUID) or targetUnitGIUD;
 	if (self:SafeNestedGet(self.db.char.challenges[id].mechanics, KEY, unitGUID)) then
-		return;
+		self.db.char.challenges[id].mechanics[KEY][unitGUID].lastCast = time();
+	else
+		self:InitMechanics2Lvl(KEY, unitGUID);
+		self.db.char.challenges[id].mechanics[KEY][unitGUID].firstHit = time();
 	end
-	self:InitMechanics2Lvl(KEY, unitGUID);
-	self.db.char.challenges[id].mechanics[KEY][unitGUID].firstHit = time();
 end
