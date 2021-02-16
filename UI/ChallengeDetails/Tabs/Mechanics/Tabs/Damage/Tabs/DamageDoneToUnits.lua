@@ -9,11 +9,11 @@ UI
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
 local function getDamageToNpcMenu(rows, index, cols)
-	local spellId = rows[index].cols[1].value;
+	local npcId = rows[index].cols[1].value;
 	local report = MyDungeonsBook:DamageDoneToUnitsFrame_Report_Create(rows[index], cols);
 	return {
-		MyDungeonsBook:WowHead_Menu_Npc(spellId),
-		MyDungeonsBook:Report_Menu(report)
+		MyDungeonsBook:WowHead_Menu_NpcComplex(npcId),
+		MyDungeonsBook:Report_Menu(report),
 	};
 end
 

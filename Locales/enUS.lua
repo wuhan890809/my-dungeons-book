@@ -31,6 +31,7 @@ L["All"] = "All";
 L["Race: %s"] = "Race: %s";
 L["Hits"] = "Hits";
 L["Spell"] = "Spell";
+L["Spells"] = "Spells";
 L["DEV"] = "DEV";
 L["Dev"] = "Dev";
 L["Mechanics"] = "Mechanics";
@@ -145,6 +146,7 @@ L["Combat Start"] = "Combat Start";
 L["Combat End"] = "Combat End";
 L["Combat Duration"] = "Combat Duration";
 L["MyDungeonsBook Encounter %s (%s) for %s (%s) at %s:"] = "MyDungeonsBook Encounter %s (%s) for %s (%s) at %s:";
+L["Casters"] = "Casters";
 -- UI end
 
 -- Help start

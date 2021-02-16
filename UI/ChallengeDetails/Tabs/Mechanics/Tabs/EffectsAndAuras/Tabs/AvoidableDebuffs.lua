@@ -13,7 +13,7 @@ local function getAvoidableDebuffsSpellMenu(rows, index, cols)
 	local spellId = rows[index].cols[1].value;
 	local report = MyDungeonsBook:AvoidableDebuffsFrame_Report_Create(rows[index], cols);
 	return {
-		MyDungeonsBook:WowHead_Menu_Spell(spellId),
+		MyDungeonsBook:WowHead_Menu_SpellComplex(spellId),
 		MyDungeonsBook:Report_Menu(report)
 	};
 end

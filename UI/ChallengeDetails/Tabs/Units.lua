@@ -9,6 +9,13 @@ UI
 
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
+local function getUnitMenu(rows, index)
+    local npcId = rows[index].cols[1].value;
+    return {
+        MyDungeonsBook:WowHead_Menu_NpcComplex(npcId),
+    };
+end
+
 --[[--
 Creates a frame for Units tab
 
@@ -22,6 +29,13 @@ function MyDungeonsBook:UnitsFrame_Create(parentFrame, challengeId)
     local columns = self:UnitsFrame_GetHeadersForTable(challengeId);
     local table = self:TableWidget_Create(columns, 13, 40, nil, unitsFrame, "units");
     table:SetData(data);
+    table:RegisterEvents({
+        OnClick = function (_, _, data, _, _, realrow, _, _, button)
+            if (button == "RightButton" and realrow) then
+                EasyMenu(getUnitMenu(data, realrow, table.cols), self.menuFrame, "cursor", 0 , 0, "MENU");
+            end
+        end
+    });
     table:SortData();
     return unitsFrame;
 end

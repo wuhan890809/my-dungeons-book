@@ -66,7 +66,7 @@ end
 --[[--
 Generates the context menu-item for item with id `itemId`
 
-@param[type=number]
+@param[type=number] itemId
 @return[type=table]
 ]]
 function MyDungeonsBook:WowHead_Menu_Item(itemId)
@@ -82,7 +82,7 @@ end
 --[[--
 Generates the context menu-item for spell with id `spellId`
 
-@param[type=number]
+@param[type=number] spellId
 @return[type=table]
 ]]
 function MyDungeonsBook:WowHead_Menu_Spell(spellId)
@@ -96,9 +96,54 @@ function MyDungeonsBook:WowHead_Menu_Spell(spellId)
 end
 
 --[[--
+Generates the context menu-item for spell's casters
+
+@param[type=number] spellId
+@return[type=table]
+]]
+function MyDungeonsBook:WowHead_Menu_SpellCasters(spellId)
+    local npcs = (self.db.global.meta.spells[spellId] and self.db.global.meta.spells[spellId].casters) or nil;
+    local npcsSubMenu = {};
+    if (not npcs) then
+        return nil;
+    end
+    for npcId, _ in pairs(npcs) do
+        local npcSubMenu = self:WowHead_Menu_Npc(npcId);
+        npcSubMenu.text = (self.db.global.meta.npcs[npcId] and self.db.global.meta.npcs[npcId].name) or npcId;
+        tinsert(npcsSubMenu, npcSubMenu);
+    end
+    return {
+        text = L["Casters"],
+        hasArrow = true,
+        menuList = npcsSubMenu
+    };
+end
+
+--[[--
+Generates the complex context menu-item for spell and it's casters
+
+@param[type=number] npcId
+@return[type=table]
+]]
+function MyDungeonsBook:WowHead_Menu_SpellComplex(npcId)
+    local spellWowHeadMenuItem = self:WowHead_Menu_Spell(npcId);
+    spellWowHeadMenuItem.text = L["Spell"];
+    local spellCastersWowHeadMenuItem = self:WowHead_Menu_SpellCasters(npcId);
+    return {
+        text = L["WowHead"],
+        hasArrow = true,
+        menuList = {
+            spellWowHeadMenuItem,
+            spellCastersWowHeadMenuItem
+        }
+    }
+end
+
+
+--[[--
 Generates the context menu-item for NPC with id `npcId`
 
-@param[type=number]
+@param[type=number] npcId
 @return[type=table]
 ]]
 function MyDungeonsBook:WowHead_Menu_Npc(npcId)
@@ -109,4 +154,48 @@ function MyDungeonsBook:WowHead_Menu_Npc(npcId)
             StaticPopup_Show("MDB_FILLED_WOWHEAD_LINK_INPUT", npcName, "", self:WowHead_NpcLink(npcId));
         end
     };
+end
+
+--[[--
+Generates the context menu-item for NPC's spells
+
+@param[type=number] npcId
+@return[type=table]
+]]
+function MyDungeonsBook:WowHead_Menu_NpcSpells(npcId)
+    local spells = (self.db.global.meta.npcs[npcId] and self.db.global.meta.npcs[npcId].spells) or nil;
+    local spellsSubMenu = {};
+    if (not spells) then
+        return nil;
+    end
+    for spellId, _ in pairs(spells) do
+        local spellSubMenu = self:WowHead_Menu_Spell(spellId);
+        spellSubMenu.text = GetSpellInfo(spellId);
+        tinsert(spellsSubMenu, spellSubMenu);
+    end
+    return {
+        text = L["Spells"],
+        hasArrow = true,
+        menuList = spellsSubMenu
+    };
+end
+
+--[[--
+Generates the complex context menu-item for NPC and it's spells
+
+@param[type=number] npcId
+@return[type=table]
+]]
+function MyDungeonsBook:WowHead_Menu_NpcComplex(npcId)
+    local npcWowHeadMenuItem = self:WowHead_Menu_Npc(npcId);
+    npcWowHeadMenuItem.text = L["NPC"];
+    local npcspellsWowHeadMenuItem = self:WowHead_Menu_NpcSpells(npcId);
+    return {
+        text = L["WowHead"],
+        hasArrow = true,
+        menuList = {
+            npcWowHeadMenuItem,
+            npcspellsWowHeadMenuItem
+        }
+    }
 end

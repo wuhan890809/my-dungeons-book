@@ -11,7 +11,7 @@ local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
 local function getAllBuffsAndDebuffsSpellMenu(spellId)
     return {
-        MyDungeonsBook:WowHead_Menu_Spell(spellId)
+        MyDungeonsBook:WowHead_Menu_SpellComplex(spellId)
     };
 end
 

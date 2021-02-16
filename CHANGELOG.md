@@ -2,6 +2,7 @@
 
 * Fix reports for encounters and challenges - don't post icons to target/party
 * Save `lastCast` for units appear in combat
+* [#114](https://github.com/onechiporenko/my-dungeons-book/issues/114) Improve context menu for spells and npcs
 
 ### v2.5.0
 

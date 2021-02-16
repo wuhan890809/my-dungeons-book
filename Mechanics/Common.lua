@@ -1039,9 +1039,10 @@ function MyDungeonsBook:TrackAuraRemovedFromPartyMember(sourceUnitName, sourceUn
 	local KEY = "PARTY-MEMBERS-AURAS";
 	self:InitMechanics4Lvl(KEY, sourceUnitName, spellId, "meta");
 	self:InitMechanics4Lvl(KEY, sourceUnitName, spellId, "timeline");
-	if (not self.db.global.meta.spells[spellId].auraType) then
-		self.db.global.meta.spells[spellId].auraType = auraType;
+	if (not self.db.global.meta.spells[spellId]) then
+		self.db.global.meta.spells[spellId] = {};
 	end
+	self.db.global.meta.spells[spellId].auraType = auraType;
 	local id = self.db.char.activeChallengeId;
 	local endTime = time();
 	if (amount == 0 and self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.lastStartTime) then
@@ -1069,9 +1070,10 @@ function MyDungeonsBook:TrackAuraRemovedFromEnemyUnit(targetUnitName, targetUnit
 	end
 	self:InitMechanics4Lvl(KEY, targetUnitGUID, spellId, "meta");
 	self:InitMechanics4Lvl(KEY, targetUnitGUID, spellId, "timeline");
-	if (not self.db.global.meta.spells[spellId].auraType) then
-		self.db.global.meta.spells[spellId].auraType = auraType;
+	if (not self.db.global.meta.spells[spellId]) then
+		self.db.global.meta.spells[spellId] = {};
 	end
+	self.db.global.meta.spells[spellId].auraType = auraType;
 	local endTime = time();
 	if (amount == 0 and self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].meta.lastStartTime) then
 		self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].meta.duration = self.db.char.challenges[id].mechanics[KEY][targetUnitGUID][spellId].meta.duration +
