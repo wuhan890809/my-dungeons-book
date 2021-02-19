@@ -73,6 +73,35 @@ function MyDungeonsBook:FormatNumber(n)
 end
 
 --[[--
+Format Creature/Vehicle GUID
+
+Param `format` determines format of GUID to display:
+ * "SHORT" - only last part is shown
+ * "MED" - NPC id and last part are shown
+ * "FULL" - GUID is shown "as is"
+
+@param[type=GUID] guid
+@param[type=string] format
+@return[type=string]
+]]
+function MyDungeonsBook:FormatGuid(guid, format)
+	if (not guid) then
+		return "";
+	end
+	local _, _, _, _, _, npcId, indx = strsplit("-", guid);
+	if (not npcId) then
+		return "";
+	end
+	if (format == "MED") then
+		return string.format("%s-%s", npcId, indx);
+	end
+	if (format == "SHORT") then
+		return indx;
+	end
+	return guid;
+end
+
+--[[--
 Type-safe function to round (floor) a number.
 
 @param[type=number] n

@@ -16,6 +16,11 @@ MyDungeonsBook.OptionsDefaults = {
 				affixes = "ALL",
 				deaths = "ALL",
 			},
+			unitAuras = {
+				npc = "ALL",
+				aura = "ALL",
+				guid = "ALL"
+			},
 			ownCasts = {
 				spellId = "ALL"
 			}

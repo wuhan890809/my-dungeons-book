@@ -98,6 +98,24 @@ function MyDungeonsBook:Table_Cell_FormatAsTime(rowFrame, cellFrame, data, cols,
 end
 
 --[[--
+Wrapper for cells with formatted time (time should be in milliseconds!).
+
+Original value (GUID) is left "as is" for sorting purposes.
+
+Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
+First param `format` determines format of GUID to display:
+ * "SHORT" - only last part is shown
+ * "MED" - NPC id and last part are shown
+ * "FULL" - GUID is shown "as is"
+]]
+function MyDungeonsBook:Table_Cell_FormatAsGuid(format, rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
+	local val = data[realrow].cols[column].value;
+	val = self:FormatGuid(val, format);
+	(cellFrame.text or cellFrame):SetText(val);
+	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
+end
+
+--[[--
 Wrapper for cells with spell icon.
 
 Original value (spell ID) is left "as is" for sorting purposes.

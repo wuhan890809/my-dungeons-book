@@ -3,6 +3,7 @@
 * Fix reports for encounters and challenges - don't post icons to target/party
 * Save `lastCast` for units appear in combat
 * [#114](https://github.com/onechiporenko/my-dungeons-book/issues/114) Improve context menu for spells and npcs
+* [#115](https://github.com/onechiporenko/my-dungeons-book/issues/115) Improve Tab for Buff and debuffs on units
 
 ### v2.5.0
 
