@@ -13,7 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-local MAJOR, MINOR = "ScrollingTable", tonumber("1598736624") or 40300;
+local MAJOR, MINOR = "ScrollingTableMdb", tonumber("1598736624") or 40300;
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR);
 if not lib then
 	return; -- Already loaded and no upgrade necessary.
@@ -503,6 +503,15 @@ do
 	end
 
 	--- API for a ScrollingTable table
+	-- @name SetSummaryVisible
+	-- @description deternmines if summary for table should be shown
+	-- @usage st:SetSummaryVisible(true);
+	local function SetSummaryVisible(self, isSummaryVisible)
+		self.isSummaryVisible = isSummaryVisible;
+		self:Refresh();
+	end
+
+	--- API for a ScrollingTable table
 	-- @name GetSelection
 	-- @description Gets the currently selected to row.  Return will be the unaltered index of the data row that is selected.
 	-- @usage st:GetSelection()
@@ -666,6 +675,7 @@ do
 		st.DoCellUpdate = DoCellUpdate;
 		st.IsRowVisible = IsRowVisible;
 		st.RowIsVisible = IsRowVisible; -- Old name for backwards compatibility.
+		st.SetSummaryVisible = SetSummaryVisible;
 
 		st.SetFilter = SetFilter;
 		st.DoFilter = DoFilter;
@@ -676,6 +686,7 @@ do
 
 		st.displayRows = numRows or 12;
 		st.rowHeight = rowHeight or 15;
+		st.isSummaryVisible = false;
 		st.cols = cols;
 		st.DefaultEvents = {
 			["OnEnter"] = function (rowFrame, cellFrame, data, cols, row, realrow, column, table, ...)
@@ -745,6 +756,18 @@ do
 		scrollframe:SetPoint("TOPLEFT", f, "TOPLEFT", 0, -4);
 		scrollframe:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", -26, 3);
 
+		local summaryLabelFrame = CreateFrame("Frame", nil, scrollframe, BackdropTemplateMixin and "BackdropTemplate");
+		local summaryLabel = summaryLabelFrame:CreateFontString(nil, "BACKGROUND", "GameFontHighlightSmall");
+		summaryLabelFrame:SetWidth(50);
+		summaryLabelFrame:SetHeight(20);
+		summaryLabelFrame:Show();
+		summaryLabelFrame:SetPoint("TOPRIGHT", scrollframe, "BOTTOMRIGHT", 0, -10);
+		summaryLabel:SetPoint("TOPLEFT");
+		summaryLabel:SetWidth(50);
+		summaryLabel:Show();
+		st.summaryLabel = summaryLabel;
+		st.summaryLabelFrame = summaryLabelFrame;
+
 		local scrolltrough = CreateFrame("Frame", f:GetName().."ScrollTrough", scrollframe);
 		scrolltrough:SetWidth(17);
 		scrolltrough:SetPoint("TOPRIGHT", f, "TOPRIGHT", -4, -3);
@@ -793,6 +816,13 @@ do
 					end
 				end
 			end
+			if (st.isSummaryVisible) then
+				st.summaryLabelFrame:Show();
+				st.summaryLabel:SetText(string.format("%s / %s", #st.filtered, #st.data));
+			else
+				st.summaryLabelFrame:Hide();
+			end
+
 		end
 
 		scrollframe:SetScript("OnVerticalScroll", function(self, offset)

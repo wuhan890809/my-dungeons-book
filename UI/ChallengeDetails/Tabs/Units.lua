@@ -106,19 +106,21 @@ function MyDungeonsBook:UnitsFrame_GetDataForTable(challengeId)
     local tableData = {};
     for npcGUID, npcData in pairs(mechanic) do
         local npcId = self:GetNpcIdFromGuid(npcGUID);
-        local npcName = (self.db.global.meta.npcs[npcId] and self.db.global.meta.npcs[npcId].name) or npcId;
-        local combatStart = npcData.firstHit;
-        local combatEnd = npcData.died or npcData.lastCast;
-        if (combatStart and combatEnd) then
-            tinsert(tableData, {
-                cols = {
-                    {value = npcId},
-                    {value = npcName},
-                    {value = (combatStart - challengeStartTime) * 1000},
-                    {value = (combatEnd - challengeStartTime) * 1000},
-                    {value = (combatEnd - combatStart) * 1000}
-                }
-            });
+        if (npcId) then
+            local npcName = (self.db.global.meta.npcs[npcId] and self.db.global.meta.npcs[npcId].name) or npcId;
+            local combatStart = npcData.firstHit;
+            local combatEnd = npcData.died or npcData.lastCast;
+            if (combatStart and combatEnd) then
+                tinsert(tableData, {
+                    cols = {
+                        {value = npcId},
+                        {value = npcName},
+                        {value = (combatStart - challengeStartTime) * 1000},
+                        {value = (combatEnd - challengeStartTime) * 1000},
+                        {value = (combatEnd - combatStart) * 1000}
+                    }
+                });
+            end
         end
     end
     return tableData;

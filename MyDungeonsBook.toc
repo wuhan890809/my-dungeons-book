@@ -3,7 +3,7 @@
 ## Version: 2.4.0
 ## Author: GelioS
 ## Interface: 90002
-## OptionalDeps: LibStub, CallbackHandler-1.0, Ace3, LibCompress, LibGroupInSpecT-1.1, LibGraphMdb-2.0
+## OptionalDeps: LibStub, CallbackHandler-1.0, Ace3, LibCompress, LibGroupInSpecT-1.1
 ## SavedVariables: MyDungeonsBookDB
 ## SavedVariablesPerCharacter: MyDungeonsBookData
 ## LoadManagers: AddonLoader

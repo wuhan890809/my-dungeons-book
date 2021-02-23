@@ -8,7 +8,7 @@ UI
 ]]
 
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
-local ScrollingTable = LibStub("ScrollingTable");
+local ScrollingTableMdb = LibStub("ScrollingTableMdb");
 local AceGUI = LibStub("AceGUI-3.0");
 
 local function getChallengesMenu(rows, index, cols)
@@ -44,9 +44,10 @@ Create a table with Challenges.
 @return[type=Frame]
 ]]
 function MyDungeonsBook:ChallengesFrame_Table_Create(parentFrame)
-	local table = ScrollingTable:CreateST(self:ChallengesFrame_GetColumnsForTable(), 11, 40, {r = 1.0, g = 0.9, b = 0.0, a = 0.5}, parentFrame.frame);
+	local table = ScrollingTableMdb:CreateST(self:ChallengesFrame_GetColumnsForTable(), 11, 40, {r = 1.0, g = 0.9, b = 0.0, a = 0.5}, parentFrame.frame);
 	table:EnableSelection(true);
 	table:SetData(self:ChallengesFrame_GetDataForTable());
+	table:SetSummaryVisible(true);
 	table:SortData();
 	table:RegisterEvents({
 		OnClick = function (_, _, data, _, _, realrow, column, _, button)

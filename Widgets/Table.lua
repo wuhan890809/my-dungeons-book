@@ -7,7 +7,7 @@ UI
 @section Widgets
 ]]
 
-local ScrollingTable = LibStub("ScrollingTable");
+local ScrollingTableMdb = LibStub("ScrollingTableMdb");
 
 local tables = {};
 
@@ -19,7 +19,7 @@ function MyDungeonsBook:TableWidget_Create(cols, numRows, rowHeight, highlight, 
         table:SetDisplayRows(numRows, rowHeight);
         table:SetDisplayCols(cols);
     else
-        table = ScrollingTable:CreateST(cols, numRows, rowHeight, highlight, parentFrame.frame);
+        table = ScrollingTableMdb:CreateST(cols, numRows, rowHeight, highlight, parentFrame.frame);
         tables[id] = table;
     end
     table.frame:SetPoint("TOPLEFT", 0, -40);

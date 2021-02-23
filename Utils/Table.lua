@@ -43,7 +43,7 @@ Wrapper for cells with formatted numbers. Uses `MyDungeonsBook:FormatNumber` to 
 
 Original value (number) is left "as is" for sorting purposes.
 
-Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
+Params are similar to [ScrollingTableMdb:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
 ]]
 function MyDungeonsBook:Table_Cell_FormatAsNumber(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local val = data[realrow].cols[column].value;
@@ -56,7 +56,7 @@ Wrapper for cells with formatted percents. Uses `MyDungeonsBook:FormatPercents` 
 
 Original value (number) is left "as is" for sorting purposes.
 
-Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
+Params are similar to [ScrollingTableMdb:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
 ]]
 function MyDungeonsBook:Table_Cell_FormatAsPercents(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local val = data[realrow].cols[column].value;
@@ -69,7 +69,7 @@ Wrapper for cells with formatted date.
 
 Original value (timestamp) is left "as is" for sorting purposes.
 
-Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
+Params are similar to [ScrollingTableMdb:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
 ]]
 function MyDungeonsBook:Table_Cell_FormatAsDate(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local val = data[realrow].cols[column].value;
@@ -83,7 +83,7 @@ Wrapper for cells with formatted time (time should be in milliseconds!).
 
 Original value (number) is left "as is" for sorting purposes.
 
-Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
+Params are similar to [ScrollingTableMdb:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
 ]]
 function MyDungeonsBook:Table_Cell_FormatAsTime(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local val = data[realrow].cols[column].value;
@@ -102,7 +102,7 @@ Wrapper for cells with formatted time (time should be in milliseconds!).
 
 Original value (GUID) is left "as is" for sorting purposes.
 
-Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
+Params are similar to [ScrollingTableMdb:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
 First param `format` determines format of GUID to display:
  * "SHORT" - only last part is shown
  * "MED" - NPC id and last part are shown
@@ -120,7 +120,7 @@ Wrapper for cells with spell icon.
 
 Original value (spell ID) is left "as is" for sorting purposes.
 
-Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
+Params are similar to [ScrollingTableMdb:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
 ]]
 function MyDungeonsBook:Table_Cell_FormatAsSpellIcon(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local spellId = data[realrow].cols[column].value;
@@ -158,7 +158,7 @@ Wrapper for cells with spell link.
 
 Original value (spell ID) is left "as is" for sorting purposes.
 
-Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
+Params are similar to [ScrollingTableMdb:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
 ]]
 function MyDungeonsBook:Table_Cell_FormatAsSpellLink(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local spellId = data[realrow].cols[column].value;
@@ -211,7 +211,7 @@ Wrapper for cells with spell icon.
 
 Original value (spell ID) is left "as is" for sorting purposes.
 
-Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
+Params are similar to [ScrollingTableMdb:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
 ]]
 function MyDungeonsBook:Table_Cell_FormatAsItemIcon(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local itemId = data[realrow].cols[column].value;
@@ -231,7 +231,7 @@ Wrapper for cells with spell link.
 
 Original value (spell ID) is left "as is" for sorting purposes.
 
-Params are similar to [ScrollingTable:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
+Params are similar to [ScrollingTableMdb:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
 ]]
 function MyDungeonsBook:Table_Cell_FormatAsItemLink(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local itemId = data[realrow].cols[column].value;
