@@ -4,6 +4,7 @@
 * Save `lastCast` for units appear in combat
 * [#114](https://github.com/onechiporenko/my-dungeons-book/issues/114) Improve context menu for spells and npcs
 * [#115](https://github.com/onechiporenko/my-dungeons-book/issues/115) Improve Tab for Buff and debuffs on units
+* Add summary for some tables
 
 ### v2.5.0
 
