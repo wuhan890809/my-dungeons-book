@@ -1,4 +1,8 @@
-﻿### v2.6.0
+﻿### v2.7.0
+
+* [#116](https://github.com/onechiporenko/my-dungeons-book/issues/116) Add filters for Units tab
+
+### v2.6.0
 
 * Fix reports for encounters and challenges - don't post icons to target/party
 * Save `lastCast` for units appear in combat

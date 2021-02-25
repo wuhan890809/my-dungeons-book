@@ -16,6 +16,9 @@ MyDungeonsBook.OptionsDefaults = {
 				affixes = "ALL",
 				deaths = "ALL",
 			},
+			units = {
+				npc = "ALL",
+			},
 			unitAuras = {
 				npc = "ALL",
 				aura = "ALL",
