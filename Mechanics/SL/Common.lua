@@ -40,6 +40,7 @@ local SLSpells = {
     [324667] = true, -- Slime Wave (Globgrog)
     [626242] = true, -- Slime Wave (Globgrog)
     [333808] = true, -- Oozing Outbreak (Doctor Ickus)
+    [322492] = true, -- Plague Rot (Margrave Stradama)
     -- The Necrotic Wake
     [345625] = true, -- Death Burst (Nar'zudah <Servant of Amarth>)
     [320574] = true, -- Shadow Well
@@ -56,6 +57,7 @@ local SLSpells = {
     [333477] = true, -- Gut Slice (Goregrind)
     [320365] = true, -- Embalming Ichor (Surgeon Stitchflesh)
     [320366] = true, -- Embalming Ichor (Surgeon Stitchflesh)
+    [338353] = true, -- Goresplatter (Corpse Collector)
     -- Spires of Ascension
     [327413] = true, -- Rebellious Fist (Forsworn Goliath)
     [336444] = true, -- Crescendo
@@ -97,6 +99,7 @@ local SLSpells = {
     [340304] = true, -- Poisonous Secretions (Mistveil Gorgegullet)
     [331743] = true, -- Bucking Rampage (Mistveil Guardian)
     [326263] = true, -- Anima Shedding (Tred'ova)
+    [325027] = true, -- Bramble Burst (Drust Boughbreaker)
     -- Theater of Pain
     [320180] = true, -- Noxious Spores (Paceran the Virulent)
     [339415] = true, -- Deafening Crash (Xav the Unfallen)
@@ -113,6 +116,9 @@ local SLSpells = {
     [323681] = true, -- Dark Devastation (Mordretha)
     [339573] = true, -- Echos of Carnage (Mordretha)
     [339759] = true, -- Echos of Carnage (Mordretha)
+    [339751] = true, -- Ghostly Charge (Mordretha)
+    [341969] = true, -- Withering Discharge (Blighted Sludge-Spewer)
+    [317367] = true, -- Necrotic Volley
     -- Halls of Atonement
     [323001] = true, -- Glass Shards (Halkias)
     [324044] = true, -- Refracted Sinlight
@@ -124,6 +130,7 @@ local SLSpells = {
     [319702] = true, -- Blood Torrent (Echelon)
     [329113] = true, -- Telekinteic Onslaught (Lord Chamberlain)
     [327885] = true, -- Erupting Torment (Lord Chamberlain)
+    [323414] = true, -- Ritual of Woe (Lord Chamberlain)
     -- De Other Side
     [342961] = true, -- Localized Explosive Contrivance (Dealer Xy'exa)
     [320232] = true, -- Explosive Contrivance (Dealer Xy'exa)
