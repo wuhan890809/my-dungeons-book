@@ -231,6 +231,7 @@ local function SetupGraphLineFunctions(graph)
 	graph.SetYAxis = GraphFunctions.SetYAxis
 	graph.AddDataSeries = GraphFunctions.AddDataSeries
 	graph.AddFilledDataSeries = GraphFunctions.AddFilledDataSeries
+	graph.AddIconSeries = GraphFunctions.AddIconSeries;
 	graph.ResetData = GraphFunctions.ResetData
 	graph.RefreshGraph = GraphFunctions.RefreshLineGraph
 	graph.CreateGridlines = GraphFunctions.CreateGridlines
@@ -261,6 +262,8 @@ local function SetupGraphLineFunctions(graph)
 	graph.HideLines = self.HideLines
 	graph.DrawBar = self.DrawBar
 	graph.HideBars = self.HideBars
+	graph.DrawIcon = self.DrawIcon;
+	graph.HideIcons = self.HideIcons;
 	graph.HideFontStrings = GraphFunctions.HideFontStrings
 	graph.FindFontString = GraphFunctions.FindFontString
 
@@ -304,10 +307,12 @@ function lib:CreateGraphLine(name, parent, relative, relativeTo, offsetX, offset
 	graph.LockOnXMax = false
 	graph.LockOnYMin = false
 	graph.LockOnYMax = false
+	graph.Icons = {};
 	graph.Data = {}
 	graph.FilledData = {}
 	graph.Textures = {}
 	graph.TexturesUsed = {}
+	graph.CustomYLabels = nil;
 	graph.TextFrame = CreateFrame("Frame", nil, graph)
 	graph.TextFrame:SetAllPoints(graph)
 
@@ -740,12 +745,34 @@ function GraphFunctions:AddFilledDataSeries(points, color, n2)
 	self.NeedsUpdate = true
 end
 
+function GraphFunctions:AddIconSeries(points, size, icon)
+	local data;
+	--Make sure there is data points
+	if (not points or #points == 0) then
+		return;
+	end
+	data = points;
+	if (table.getn(points) == 2 and table.getn(points[1]) ~= 2) then
+		data = {}
+		for k, v in ipairs(points[1]) do
+			tinsert(data, {v, points[2][k]});
+		end
+	end
+	tinsert(self.Icons, {Points = data, Size = size, Icon = icon});
+
+	self.NeedsUpdate = true;
+end
+
 
 function GraphFunctions:ResetData()
 	self.Data = {}
 
 	if self.FilledData then
 		self.FilledData = {}
+	end
+
+	if (self.Icons) then
+		self.Icons = {};
 	end
 
 	self.NeedsUpdate = true
@@ -1378,13 +1405,14 @@ function GraphFunctions:CreateGridlines()
 				end
 
 				if ((i ~= UpperYGridLine) or (TopSpace > 12)) and (NoSecondary or math_fmod(i, self.GridSecondaryY) == 0) then
+					local yLabelText = (self.CustomYLabels and self.CustomYLabels[i + 1]) or i * self.YGridInterval;
 					if self.YLabelsLeft then
 						F = self:FindFontString()
 						F:SetFontObject("GameFontHighlightSmall")
 						F:SetTextColor(1, 1, 1)
 						F:ClearAllPoints()
 						F:SetPoint("BOTTOMLEFT", T, "LEFT", 2, 2)
-						F:SetText(i * self.YGridInterval)
+						F:SetText(yLabelText);
 						F:Show()
 					end
 
@@ -1394,7 +1422,7 @@ function GraphFunctions:CreateGridlines()
 						F:SetTextColor(1, 1, 1)
 						F:ClearAllPoints()
 						F:SetPoint("BOTTOMRIGHT", T, "RIGHT", -2, 2)
-						F:SetText(i * self.YGridInterval)
+						F:SetText(yLabelText);
 						F:Show()
 					end
 				end
@@ -1437,13 +1465,14 @@ function GraphFunctions:CreateGridlines()
 		YPos = Height * (-self.YMin) / (self.YMax - self.YMin)
 		T = self:DrawLine(self, 0, YPos, Width, YPos, 24, self.AxisColor, "BACKGROUND")
 
+		local yLabelText = (self.CustomYLabels and self.CustomYLabels[1]) or 0;
 		if self.YLabelsLeft then
 			F = self:FindFontString()
 			F:SetFontObject("GameFontHighlightSmall")
 			F:SetTextColor(1, 1, 1)
 			F:ClearAllPoints()
 			F:SetPoint("BOTTOMLEFT", T, "LEFT", 2, 2)
-			F:SetText(0)
+			F:SetText(yLabelText)
 			F:Show()
 		end
 		if self.YLabelsRight then
@@ -1452,7 +1481,7 @@ function GraphFunctions:CreateGridlines()
 			F:SetTextColor(1, 1, 1)
 			F:ClearAllPoints()
 			F:SetPoint("BOTTOMRIGHT", T, "RIGHT", -2, 2)
-			F:SetText(0)
+			F:SetText(yLabelText)
 			F:Show()
 		end
 	end
@@ -1710,6 +1739,7 @@ end
 function GraphFunctions:RefreshLineGraph()
 	self:HideLines(self)
 	self:HideBars(self)
+	self:HideIcons(self)
 
 	if self.AutoScale and self.Data then
 		local MinX, MaxX, MinY, MaxY = math_huge, -math_huge, math_huge, -math_huge
@@ -1730,6 +1760,15 @@ function GraphFunctions:RefreshLineGraph()
 				MaxX = math_max(point[1], MaxX)
 				MinY = math_min(point[2], MinY)
 				MaxY = math_max(point[2], MaxY)
+			end
+		end
+
+		for k1, series in pairs(self.Icons) do
+			for k2, point in pairs(series.Points) do
+				MinX = math_min(point[1], MinX);
+				MaxX = math_max(point[1], MaxX);
+				MinY = math_min(point[2], MinY);
+				MaxY = math_max(point[2], MaxY);
 			end
 		end
 
@@ -1819,6 +1858,29 @@ function GraphFunctions:RefreshLineGraph()
 				LastPoint = {x = point[1]; y = point[2]}
 				LastPoint.x = Width * (LastPoint.x - self.XMin) / (self.XMax - self.XMin)
 				LastPoint.y = Height * (LastPoint.y - self.YMin) / (self.YMax - self.YMin)
+			end
+		end
+	end
+
+	-- Icons
+	for k1, series in pairs(self.Icons) do
+		local LastPoint;
+		LastPoint = nil;
+
+		for k2, point in pairs(series.Points) do
+			if LastPoint then
+				local TPoint = {x = point[1]; y = point[2]};
+
+				TPoint.x = Width * (TPoint.x - self.XMin) / (self.XMax - self.XMin);
+				TPoint.y = Height * (TPoint.y - self.YMin ) /(self.YMax - self.YMin);
+
+				self:DrawIcon(self, LastPoint.x, LastPoint.y, TPoint.x, TPoint.y, series.Color, k1, series.Icon, series.Size);
+
+				LastPoint = TPoint;
+			else
+				LastPoint = {x = point[1]; y = point[2]};
+				LastPoint.x = Width * (LastPoint.x - self.XMin) / (self.XMax - self.XMin);
+				LastPoint.y = Height * (LastPoint.y - self.YMin) / (self.YMax - self.YMin);
 			end
 		end
 	end
@@ -2028,6 +2090,29 @@ function lib:DrawVLine(C, x, sy, ey, w, color, layer)
 	T:SetPoint("TOPRIGHT", C, relPoint, x + w / 2, ey)
 	T:Show()
 	return T
+end
+
+function lib:DrawIcon(C, x, sy, ey, w, color, layer, icon, size)
+	local F = self:FindFontString();
+	F:SetFontObject("GameFontHighlightSmall");
+	F:SetTextColor(1, 1, 1);
+	F:ClearAllPoints();
+	if (sy > ey) then
+		sy, ey = ey, sy;
+	end
+	F:SetPoint("BOTTOMLEFT", C, "BOTTOMLEFT", x - w / 2, sy);
+	F:SetText(string.format("|T%s:%s|t", icon, size));
+	F:Show();
+	return F;
+end
+
+function lib:HideIcons(C)
+	if (C.GraphLib_Icons) then
+		for i = #C.GraphLib_Icons_Used, 1, -1 do
+			C.GraphLib_Icons_Used[i]:Hide();
+			tinsert(C.GraphLib_Icons, tremove(C.GraphLib_Icons_Used));
+		end
+	end
 end
 
 function lib:DrawHLine(C, sx, ex, y, w, color, layer)

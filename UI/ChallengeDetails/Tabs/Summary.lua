@@ -8,6 +8,7 @@ UI
 ]]
 
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
+local AceGUI = LibStub("AceGUI-3.0");
 
 --[[--
 Creates a frame for Summary tab.
@@ -19,11 +20,36 @@ Creates a frame for Summary tab.
 function MyDungeonsBook:SummaryFrame_Create(parentFrame, challengeId)
 	local summaryFrame = self:TabContentWrapperWidget_Create(parentFrame);
 	local cols = self:SummaryFrame_GetColumnsForTable();
+	local challenge = self:Challenge_GetById(challengeId);
+	local deathMechanics = self:Challenge_Mechanic_GetById(challengeId, "DEATHS") or {};
+	local xLimit = (challenge.challengeInfo.duration and challenge.challengeInfo.duration / 1000) or nil;
+	local series = {timeline = {}, icon = "interface\\targetingframe\\ui-targetingframe-skull", size = 16};
+	local legend = {};
+	for i, unitId in pairs(self:GetPartyRoster()) do
+		local name, nameAndRealm = self:GetNameByPartyUnit(challengeId, unitId);
+		local unitDeaths = deathMechanics[name] or deathMechanics[nameAndRealm];
+		local unitIndex = 5 - i + 1;
+		local unitInfo = challenge.players[unitId];
+		legend[unitIndex] = self:ClassColorTextByClassIndex(unitInfo.class, unitInfo.name or "");
+		if (unitDeaths) then
+			for _, timestamp in pairs(unitDeaths) do
+				tinsert(series.timeline, {timestamp, unitIndex - 1});
+			end
+		end
+	end
+	local deathsGraph, scaleSlider, timelineSlider = self:SingleIconsGraph_Create(summaryFrame, "DeathsGraph", series, challenge.challengeInfo.startTime, xLimit, 150, legend);
+	scaleSlider.slider:Hide();
+	scaleSlider.label:Hide();
+	timelineSlider.slider:Hide();
+	summaryFrame:SetUserData("deathsGraph", deathsGraph);
+	summaryFrame:SetUserData("scaleSlider", scaleSlider);
+	summaryFrame:SetUserData("timelineSlider", timelineSlider);
 	local table = self:TableWidget_Create(cols, 5, 40, nil, summaryFrame, "summary");
+	summaryFrame:SetUserData("summaryTable", table);
 	table:SetData(self:SummaryFrame_GetDataForTable(challengeId));
 	table:RegisterEvents({
-		OnClick = function(_, _, data, _, _, realrow, column)
-			if (realrow) then
+		OnClick = function(_, _, data, _, _, realrow, column, _, button)
+			if (button == "LeftButton" and realrow) then
 				local unitId = data[realrow].cols[1].value;
 				if (column == 3 or column == 4 or column == 5) then
 					self.challengeDetailsFrame.tabButtonsFrame:SelectTab("mechanics");
@@ -50,6 +76,15 @@ function MyDungeonsBook:SummaryFrame_Create(parentFrame, challengeId)
 		end
 	});
 	table:SortData();
+	table.frame:SetPoint("TOPLEFT", 0, -350);
+	summaryFrame:SetCallback("OnRelease", function(frame)
+		frame:GetUserData("deathsGraph"):ResetData();
+		frame:GetUserData("deathsGraph"):Hide();
+		frame:GetUserData("scaleSlider").slider:Show();
+		frame:GetUserData("scaleSlider").label:Show();
+		frame:GetUserData("timelineSlider").slider:Show();
+		frame:GetUserData("summaryTable"):Hide();
+	end);
 	return summaryFrame;
 end
 

@@ -32,9 +32,10 @@ function MyDungeonsBook:CombatTimeFrame_Create(parentFrame, challengeId)
     combatTimeFrame:AddChild(idleLabel);
     local xLimit = (challenge.challengeInfo.duration and challenge.challengeInfo.duration / 1000) or nil;
     local idleTimeGraph = self:SingleFilledAreaGraph_Create(combatTimeFrame, "IdleTimeGraph", playerIdle, challenge.challengeInfo.startTime, xLimit, 150);
-    combatTimeFrame:SetCallback("OnRelease", function()
-        idleTimeGraph:ResetData();
-        idleTimeGraph:Hide();
+    combatTimeFrame:SetUserData("idleTimeGraph", idleTimeGraph);
+    combatTimeFrame:SetCallback("OnRelease", function(frame)
+        frame:GetUserData("idleTimeGraph"):ResetData();
+        frame:GetUserData("idleTimeGraph"):Hide();
     end);
     return combatTimeFrame;
 end
