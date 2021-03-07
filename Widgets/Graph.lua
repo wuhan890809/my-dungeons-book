@@ -115,15 +115,10 @@ end
 
 local function IconsGraphData_Setup(series, zeroDelay, xLimit)
     local remappedTimeline = {};
-    local yMax = -1;
-    local lastValue = 0;
     local maxTimeLineValue = 0;
     for _, v in pairs(series.timeline) do
         local x = v[1] - zeroDelay - 10;
         tinsert(remappedTimeline, {x, v[2]});
-        if (v[2] > yMax) then
-            yMax = v[2];
-        end
         if (x > maxTimeLineValue) then
             maxTimeLineValue = x;
         end
@@ -133,9 +128,7 @@ local function IconsGraphData_Setup(series, zeroDelay, xLimit)
     local xMax = xLimit or maxTimeLineValue;
     local gxMax = xMax;
     local xMin = 0;
-
-    tinsert(remappedTimeline, {xMax, lastValue});
-    return remappedTimeline, remappedTimelineScaled, yMax, gxMax, xMin, xMax;
+    return remappedTimeline, remappedTimelineScaled, 4, gxMax, xMin, xMax;
 end
 
 local function IconsGraph_Update(g, xMin, xMax, remappedTimelineScaled, remappedTimeline, series)
@@ -223,7 +216,7 @@ function MyDungeonsBook:SingleFilledAreaGraph_Create(parentFrame, name, series, 
         SingleFilledAreaGraph_Update(g, xMin, xMax, remappedTimelineScaled, remappedTimeline);
     end);
     wrapper:AddChild(timeLineSlider);
-    wrapper:SetHeight(300);
+    wrapper:SetHeight(250);
     return g, scaleSlider, timeLineSlider;
 end
 

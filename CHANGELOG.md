@@ -1,7 +1,8 @@
 ﻿### v2.7.0
 
 * [#116](https://github.com/onechiporenko/my-dungeons-book/issues/116) Add filters for Units tab
-* Add timeline with deaths to Summary tab (experimental)
+* Add timeline with deaths to Summary tab
+* Add controls for timeline with deaths
 
 ### v2.6.0
 

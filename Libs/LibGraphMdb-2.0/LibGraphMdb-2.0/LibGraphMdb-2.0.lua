@@ -1863,25 +1863,12 @@ function GraphFunctions:RefreshLineGraph()
 	end
 
 	-- Icons
-	for k1, series in pairs(self.Icons) do
-		local LastPoint;
-		LastPoint = nil;
-
-		for k2, point in pairs(series.Points) do
-			if LastPoint then
-				local TPoint = {x = point[1]; y = point[2]};
-
-				TPoint.x = Width * (TPoint.x - self.XMin) / (self.XMax - self.XMin);
-				TPoint.y = Height * (TPoint.y - self.YMin ) /(self.YMax - self.YMin);
-
-				self:DrawIcon(self, LastPoint.x, LastPoint.y, TPoint.x, TPoint.y, series.Color, k1, series.Icon, series.Size);
-
-				LastPoint = TPoint;
-			else
-				LastPoint = {x = point[1]; y = point[2]};
-				LastPoint.x = Width * (LastPoint.x - self.XMin) / (self.XMax - self.XMin);
-				LastPoint.y = Height * (LastPoint.y - self.YMin) / (self.YMax - self.YMin);
-			end
+	for _, series in pairs(self.Icons) do
+		for _, point in pairs(series.Points) do
+			local TPoint = {x = point[1]; y = point[2]};
+			TPoint.x = Width * (TPoint.x - self.XMin) / (self.XMax - self.XMin);
+			TPoint.y = Height * (TPoint.y - self.YMin ) /(self.YMax - self.YMin);
+			self:DrawIcon(self, TPoint.x, TPoint.y, series.Color, series.Icon, series.Size);
 		end
 	end
 end
@@ -2092,15 +2079,12 @@ function lib:DrawVLine(C, x, sy, ey, w, color, layer)
 	return T
 end
 
-function lib:DrawIcon(C, x, sy, ey, w, color, layer, icon, size)
+function lib:DrawIcon(C, x, y, color, icon, size)
 	local F = self:FindFontString();
 	F:SetFontObject("GameFontHighlightSmall");
 	F:SetTextColor(1, 1, 1);
 	F:ClearAllPoints();
-	if (sy > ey) then
-		sy, ey = ey, sy;
-	end
-	F:SetPoint("BOTTOMLEFT", C, "BOTTOMLEFT", x - w / 2, sy);
+	F:SetPoint("BOTTOMLEFT", C, "BOTTOMLEFT", x, y);
 	F:SetText(string.format("|T%s:%s|t", icon, size));
 	F:Show();
 	return F;
