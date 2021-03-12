@@ -1,4 +1,8 @@
-﻿### v2.7.0
+﻿### v2.8.0
+
+* Fix buffs/debuffs uptime calculation
+
+### v2.7.0
 
 * [#116](https://github.com/onechiporenko/my-dungeons-book/issues/116) Add filters for Units tab
 * Add timeline with deaths to Summary tab

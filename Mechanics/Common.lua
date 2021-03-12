@@ -1132,7 +1132,7 @@ function MyDungeonsBook:RemoveAurasFromPartyMember(sourceUnitName, sourceUnitGUI
 	self:InitMechanics2Lvl(KEY, sourceUnitName);
 	local id = self.db.char.activeChallengeId;
 	for spellId, info in pairs(self.db.char.challenges[id].mechanics[KEY][sourceUnitName]) do
-		if (info and info.lastStartTime) then
+		if (info and info.meta.lastStartTime) then
 			self:TrackAuraRemovedFromPartyMember(sourceUnitName, sourceUnitGUID, spellId, self.db.global.meta.spells[spellId].auraType, 0);
 		end
 	end
