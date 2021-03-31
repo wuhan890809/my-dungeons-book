@@ -1,6 +1,8 @@
 ﻿### v2.8.0
 
 * Fix buffs/debuffs uptime calculation
+* Add Encounter blocks for Deaths graph
+* Track death time for all party members
 
 ### v2.7.0
 

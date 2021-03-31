@@ -135,6 +135,10 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 	self:RegisterEvent("PLAYER_REGEN_DISABLED");
 	self:RegisterEvent("PLAYER_REGEN_ENABLED");
     self:DebugPrint("CHALLENGE_MODE_START");
+	if (self.partyAliveStatusCheckTimer) then
+		self:CancelTimer(self.partyAliveStatusCheckTimer);
+	end
+	self.partyAliveStatusCheckTimer = self:ScheduleRepeatingTimer("PartyAliveStatusCheck", 1);
 	if (self.db.char.activeChallengeId) then
 		self:DebugPrint(string.format("Challenge already exists with id %s", self.db.char.activeChallengeId));
 		return;
@@ -175,21 +179,8 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 		if (playersRealm ~= self.db.char.challenges[id].players[unitId].realm) then
 			nameToUse = nameAndRealm;
 		end
-		for i = 1, 40 do
-			local buffName, _, amount, _, _, _, _, _, _, spellId = UnitBuff(unitId, i);
-			if (not buffName) then
-				break;
-			end
-			self:TrackAuraAddedToPartyMember(nameToUse, UnitGUID(unitId), spellId, "BUFF", (amount == 0 and 1) or amount);
-		end
-		for i = 1, 40 do
-			local debuffName, _, amount, _, _, _, _, _, _, spellId = UnitDebuff(unitId, i);
-			if (not debuffName) then
-				break;
-			end
-			self:TrackAuraAddedToPartyMember(nameToUse, UnitGUID(unitId), spellId, "DEBUFF", (amount == 0 and 1) or amount);
-		end
-        local petUnitId = unitId .. "pet";
+		self:AddAurasToPartyMember(nameToUse, unitId);
+		local petUnitId = unitId .. "pet";
         if (UnitExists(petUnitId)) then
 			self:TrackSummonnedByPartyMembersUnit(nameToUse, UnitGUID(unitId), UnitName(petUnitId), UnitGUID(petUnitId));
         end
@@ -238,6 +229,9 @@ function MyDungeonsBook:CHALLENGE_MODE_RESET()
 	self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 	self:UnregisterEvent("PLAYER_REGEN_DISABLED");
 	self:UnregisterEvent("PLAYER_REGEN_ENABLED");
+	if (self.partyAliveStatusCheckTimer) then
+		self:CancelTimer(self.partyAliveStatusCheckTimer);
+	end
 	local id = self.db.char.activeChallengeId;
 	if (self.db.char.challenges[id]) then
 		self.db.char.challenges[id].endTime = time();
@@ -258,6 +252,9 @@ Next information is saved:
 ]]
 function MyDungeonsBook:CHALLENGE_MODE_COMPLETED()
 	self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+	if (self.partyAliveStatusCheckTimer) then
+		self:CancelTimer(self.partyAliveStatusCheckTimer);
+	end
 	local id = self.db.char.activeChallengeId;
 	if (self.db.char.challenges[id]) then
 		self.db.char.challenges[id].challengeInfo.endTime = time();

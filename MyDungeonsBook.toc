@@ -38,6 +38,7 @@ UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/DamageDoneByPartyMembers/Tab
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/DamageDoneByPartyMembers/Tabs/DamageDoneByPartyMember.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/DamageDoneToPartyMembers.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/DamageDoneToUnits.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/Deaths.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs/AvoidableDebuffs.lua

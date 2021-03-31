@@ -156,11 +156,11 @@ function MyDungeonsBook:AllBuffsAndDebuffsOnPartyMemberFrame_GetDataForTable(cha
         self:DebugPrint(string.format("No Party Members Auras for %s or %s", name, nameAndRealm));
         return tableData;
     end
-    local challengeDuration = challenge.challengeInfo.duration;
+    local challengeDurationCalc = challenge.challengeInfo.endTime - challenge.challengeInfo.startTime;
     for spellId, spellInfo in pairs(mechanicsData) do
         if (self.db.global.meta.spells[spellId] and self.db.global.meta.spells[spellId].auraType == auraType) then
             local durationCellValue = (spellInfo.meta.duration and spellInfo.meta.duration * 1000) or "-";
-            local uptimeCellValue = (challengeDuration and spellInfo.meta.duration and spellInfo.meta.duration / (challengeDuration / 1000) * 100) or "-";
+            local uptimeCellValue = (challengeDurationCalc and spellInfo.meta.duration and spellInfo.meta.duration / challengeDurationCalc * 100) or "-";
             tinsert(tableData, {
                 cols = {
                     {value = spellId},

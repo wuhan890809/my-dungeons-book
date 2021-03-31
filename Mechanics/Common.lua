@@ -1238,3 +1238,52 @@ function MyDungeonsBook:TrackEnemyUnitAppearsInCombat(sourceUnitName, sourceUnit
 		self.db.char.challenges[id].mechanics[KEY][unitGUID].firstHit = time();
 	end
 end
+
+--[[
+Track alive/dead state for each party member
+]]
+function MyDungeonsBook:PartyAliveStatusCheck()
+	local KEY = "PARTY-MEMBERS-DEATHS-TIMER";
+	local id = self.db.char.activeChallengeId;
+	for _, unitId in pairs(self:GetPartyRoster()) do
+		local name, nameAndRealm = self:GetNameByPartyUnit(id, unitId);
+		local nameToUse = name;
+		if (not self.db.char.challenges[id].players[name]) then
+			nameToUse = nameAndRealm;
+		end
+		self:InitMechanics4Lvl(KEY, nameToUse, "meta", "duration", true);
+		self:InitMechanics3Lvl(KEY, nameToUse, "timeline");
+		local lastStatus = self.db.char.challenges[id].mechanics[KEY][nameToUse].meta.lastStatus;
+		local currentStatus = (UnitIsDead(unitId) and 1) or 0; -- 1 for DEAD, 0 for ALIVE
+		if (currentStatus ~= lastStatus) then
+			tinsert(self.db.char.challenges[id].mechanics[KEY][nameToUse].timeline, {time(), currentStatus});
+			self.db.char.challenges[id].mechanics[KEY][nameToUse].meta.lastStatus = currentStatus;
+			if (currentStatus == 0) then -- unit become alive
+				self:AddAurasToPartyMember(nameToUse, unitId);
+			end
+		end
+	end
+end
+
+--[[
+Track all buffs and debuffs on unit
+
+@param[type=string] sourceUnitName
+@param[type=unitId] unitId
+]]
+function MyDungeonsBook:AddAurasToPartyMember(sourceUnitName, unitId)
+	for i = 1, 40 do
+		local buffName, _, amount, _, _, _, _, _, _, spellId = UnitBuff(unitId, i);
+		if (not buffName) then
+			break;
+		end
+		self:TrackAuraAddedToPartyMember(sourceUnitName, UnitGUID(unitId), spellId, "BUFF", (amount == 0 and 1) or amount);
+	end
+	for i = 1, 40 do
+		local debuffName, _, amount, _, _, _, _, _, _, spellId = UnitDebuff(unitId, i);
+		if (not debuffName) then
+			break;
+		end
+		self:TrackAuraAddedToPartyMember(sourceUnitName, UnitGUID(unitId), spellId, "DEBUFF", (amount == 0 and 1) or amount);
+	end
+end

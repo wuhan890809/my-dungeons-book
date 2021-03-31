@@ -91,6 +91,9 @@
     <Content Include="UI\ChallengeDetails\Tabs\CombatTime.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Deaths.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Roster\Tabs.lua">
       <SubType>Code</SubType>
     </Content>

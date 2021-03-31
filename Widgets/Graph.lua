@@ -131,7 +131,7 @@ local function IconsGraphData_Setup(series, zeroDelay, xLimit)
     return remappedTimeline, remappedTimelineScaled, 4, gxMax, xMin, xMax;
 end
 
-local function IconsGraph_Update(g, xMin, xMax, remappedTimelineScaled, remappedTimeline, series)
+local function IconsGraph_Update(g, xMin, xMax, remappedTimelineScaled, remappedTimeline, encounterSeries, series)
     g:SetXAxis(xMin, xMax);
     g:SetGridSpacing((xMax - xMin) / 5, 1);
     g:ResetData();
@@ -142,7 +142,20 @@ local function IconsGraph_Update(g, xMin, xMax, remappedTimelineScaled, remapped
             tinsert(remappedTimelineScaled, v);
         end
     end
+    local encounterSeriesScaled = {};
+    for i = 1, #encounterSeries do
+        local v = encounterSeries[i];
+        if (v[1] <= xMax and v[1] >= xMin) then
+            tinsert(encounterSeriesScaled, v);
+        end
+    end
+    if (#encounterSeriesScaled > 0) then
+        tinsert(encounterSeriesScaled, 1, { xMin, encounterSeriesScaled[1][2] });
+        local last = encounterSeriesScaled[#encounterSeriesScaled];
+        tinsert(encounterSeriesScaled, { xMax, last[2] });
+    end
     g:AddIconSeries(remappedTimelineScaled, series.size, series.icon);
+    g:AddFilledDataSeries(encounterSeriesScaled, defaultColor);
 end
 
 local function SingleFilledAreaGraph_Update(g, xMin, xMax, remappedTimelineScaled, remappedTimeline)
@@ -230,7 +243,7 @@ end
 @param[type=table] legend
 @return[type=Frame]
 ]]
-function MyDungeonsBook:SingleIconsGraph_Create(parentFrame, name, series, zeroDelay, xLimit, graphHeight, legend)
+function MyDungeonsBook:SingleIconsGraph_Create(parentFrame, name, series, encounterSeries, zeroDelay, xLimit, graphHeight, legend)
     local wrapper = Wrapper_Create(parentFrame);
     local graphWidth = parentFrame.frame.width - 40;
     local graphWrapper = GraphWrapper_Create();
@@ -239,6 +252,7 @@ function MyDungeonsBook:SingleIconsGraph_Create(parentFrame, name, series, zeroD
     g.CustomYLabels = legend;
     local remappedTimeline, remappedTimelineScaled, yMax, gxMax, xMin, xMax = IconsGraphData_Setup(series, zeroDelay, xLimit);
     BaseGraph_Setup(g, xMin, xMax, 0, yMax);
+    g:AddFilledDataSeries(encounterSeries, defaultColor);
     g:AddIconSeries(remappedTimelineScaled, series.size, series.icon);
 
     local scaleValue = 0;
@@ -258,7 +272,7 @@ function MyDungeonsBook:SingleIconsGraph_Create(parentFrame, name, series, zeroD
         timeLineSlider:SetSliderValues(0, xMaxForTimeline, 5);
         xMax = getNewXMax(scaleValue, xMin, gxMax);
         xMin = getNewXMin(scaleValue, xMax, gxMax);
-        IconsGraph_Update(g, xMin, xMax, remappedTimelineScaled, remappedTimeline, series);
+        IconsGraph_Update(g, xMin, xMax, remappedTimelineScaled, remappedTimeline, encounterSeries, series);
     end);
     wrapper:AddChild(scaleSlider);
 
@@ -269,7 +283,7 @@ function MyDungeonsBook:SingleIconsGraph_Create(parentFrame, name, series, zeroD
     timeLineSlider:SetCallback("OnValueChanged", function(_, _, newXMin)
         xMin = newXMin;
         xMax = getNewXMax(scaleValue, xMin, gxMax);
-        IconsGraph_Update(g, xMin, xMax, remappedTimelineScaled, remappedTimeline, series);
+        IconsGraph_Update(g, xMin, xMax, remappedTimelineScaled, remappedTimeline, encounterSeries, series);
     end);
     wrapper:AddChild(timeLineSlider);
     wrapper:SetHeight(300);

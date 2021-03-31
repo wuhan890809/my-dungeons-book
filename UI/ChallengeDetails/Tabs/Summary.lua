@@ -8,7 +8,6 @@ UI
 ]]
 
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
-local AceGUI = LibStub("AceGUI-3.0");
 
 --[[--
 Creates a frame for Summary tab.
@@ -37,7 +36,23 @@ function MyDungeonsBook:SummaryFrame_Create(parentFrame, challengeId)
 			end
 		end
 	end
-	local deathsGraph = self:SingleIconsGraph_Create(summaryFrame, "DeathsGraph", series, challenge.challengeInfo.startTime, xLimit, 150, legend);
+	local encounterSeries = {};
+	local encountersCopy = {};
+	for _, encounterData in pairs(challenge.encounters) do
+		tinsert(encountersCopy, encounterData);
+	end
+	table.sort(encountersCopy, function (a, b)
+		return a.startTime < b.startTime;
+	end);
+	for _, encounterData in pairs(encountersCopy) do
+		local st = encounterData.startTime - challenge.challengeInfo.startTime - 10;
+		local et = encounterData.endTime - challenge.challengeInfo.startTime - 10;
+		tinsert(encounterSeries, {st, 0});
+		tinsert(encounterSeries, {st, 5}); -- 5 because graph contains five "rows" - 1 for each party member
+		tinsert(encounterSeries, {et, 5});
+		tinsert(encounterSeries, {et, 0});
+	end
+	local deathsGraph = self:SingleIconsGraph_Create(summaryFrame, "DeathsGraph", series, encounterSeries, challenge.challengeInfo.startTime, xLimit, 150, legend);
 	summaryFrame:SetUserData("deathsGraph", deathsGraph);
 	local table = self:TableWidget_Create(cols, 5, 40, nil, summaryFrame, "summary");
 	summaryFrame:SetUserData("summaryTable", table);
