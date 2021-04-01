@@ -69,8 +69,6 @@ function MyDungeonsBook:UsedItemsFrame_Report_Create(rows, index, cols)
 end
 
 --[[--
-Generate columns for special casts table.
-
 Depending on `challengeId` real player names will be used or simple placeholders like `player` or `party1..4`.
 
 @param[type=number] challengeId

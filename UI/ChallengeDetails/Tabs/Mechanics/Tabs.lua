@@ -22,7 +22,8 @@ function MyDungeonsBook:MechanicsFrame_CreateTabButtonsFrame(parentFrame)
 		{value = "casts", text = L["Casts"]},
 		{value = "heal", text = L["Heal"]},
 		{value = "damage", text = L["Damage"]},
-		{value = "effectsAndAuras", text = L["Effects and Auras"]}
+		{value = "effectsAndAuras", text = L["Effects and Auras"]},
+		{value = "deaths", text = L["Deaths"]}
 	});
 	tabs:SetCallback("OnGroupSelected", function (container, _, tabId)
 		container:ReleaseChildren();
@@ -40,6 +41,9 @@ function MyDungeonsBook:MechanicsFrame_CreateTabButtonsFrame(parentFrame)
 		end
 		if (tabId == "effectsAndAuras") then
 			self.effectsAndAurasFrame = self:EffectsAndAurasFrame_Create(container, self.activeChallengeId);
+		end
+		if (tabId == "deaths") then
+			self.deathsFrame = self:DeathsFrame_Create(container, self.activeChallengeId);
 		end
 	end);
 	tabs:SetHeight(582);

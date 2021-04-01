@@ -82,6 +82,10 @@ function MyDungeonsBook:SummaryFrame_Create(parentFrame, challengeId)
 					self.mechanicsFrame.tabButtonsFrame:SelectTab("effectsAndAuras");
 					self.effectsAndAurasFrame.tabButtonsFrame:SelectTab("dispels");
 				end
+				if (column == 11) then
+					self.challengeDetailsFrame.tabButtonsFrame:SelectTab("mechanics");
+					self.mechanicsFrame.tabButtonsFrame:SelectTab("deaths");
+				end
 			end
 		end
 	});

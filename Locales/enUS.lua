@@ -185,6 +185,11 @@ L["There is a list of internal trackers. Their info is not used directly on the 
 L["Aura"] = "Aura";
 L["MyDungeonsBook %s %s for %s"] = "MyDungeonsBook %s %s for %s"
 L["GUID"] = "GUID";
+L["Death Time"] = "Death Time";
+L["Release Time"] = "Release Time";
+L["Time dead"] = "Time dead";
+L["%s (start)"] = "%s (start)";
+L["%s (end)"] = "%s (end)";
 -- Settings end
 
 -- BfA start
