@@ -316,7 +316,7 @@ function MyDungeonsBook:Table_Headers_GetForSpellsSummary(challengeId)
             align = "LEFT"
         },
         {
-            name = L["Spell"],
+            name = "",
             width = 40,
             align = "LEFT",
             DoCellUpdate = function(...)
@@ -324,7 +324,7 @@ function MyDungeonsBook:Table_Headers_GetForSpellsSummary(challengeId)
             end
         },
         {
-            name = "",
+            name = L["Spell"],
             width = 120,
             align = "LEFT",
             DoCellUpdate = function(...)
@@ -399,7 +399,7 @@ function MyDungeonsBook:Table_Columns_GetForDamageOrHealToPartyMembers(challenge
 			align = "LEFT"
 		},
 		{
-			name = L["Spell"],
+			name = "",
 			width = 40,
 			align = "LEFT",
 			DoCellUpdate = function(...)
@@ -407,7 +407,7 @@ function MyDungeonsBook:Table_Columns_GetForDamageOrHealToPartyMembers(challenge
 			end
 		},
 		{
-			name = " ",
+			name = L["Spell"],
 			width = 110,
 			align = "LEFT",
 			DoCellUpdate = function(...)

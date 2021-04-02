@@ -87,7 +87,7 @@ function MyDungeonsBook:AllBuffsAndDebuffsOnPartyMemberFrame_GetHeadersForTable(
             align = "LEFT"
         },
         {
-            name = L["Spell"],
+            name = "",
             width = 40,
             align = "LEFT",
             DoCellUpdate = function(...)
@@ -95,7 +95,7 @@ function MyDungeonsBook:AllBuffsAndDebuffsOnPartyMemberFrame_GetHeadersForTable(
             end
         },
         {
-            name = "",
+            name = L["Spell"],
             width = 90,
             align = "LEFT",
             DoCellUpdate = function(...)

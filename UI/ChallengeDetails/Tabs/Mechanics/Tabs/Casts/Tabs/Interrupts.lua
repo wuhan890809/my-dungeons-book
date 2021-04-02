@@ -173,7 +173,7 @@ function MyDungeonsBook:InterruptsFrame_GetHeadersForQuakingTable(challengeId)
 			align = "LEFT"
 		},
 		{
-			name = L["Spell"],
+			name = "",
 			width = 40,
 			align = "LEFT",
 			DoCellUpdate = function(...)
@@ -181,7 +181,7 @@ function MyDungeonsBook:InterruptsFrame_GetHeadersForQuakingTable(challengeId)
 			end
 		},
 		{
-			name = "",
+			name = L["Spell"],
 			width = 100,
 			align = "LEFT",
 			DoCellUpdate = function(...)
@@ -224,7 +224,7 @@ function MyDungeonsBook:InterruptsFrame_GetHeadersForTable(challengeId)
 			align = "LEFT"
 		},
 		{
-			name = L["Spell"],
+			name = "",
 			width = 40,
 			align = "LEFT",
 			DoCellUpdate = function(...)
@@ -232,7 +232,7 @@ function MyDungeonsBook:InterruptsFrame_GetHeadersForTable(challengeId)
 			end
 		},
 		{
-			name = "",
+			name = L["Spell"],
 			width = 105,
 			align = "LEFT",
 			DoCellUpdate = function(...)
@@ -402,7 +402,7 @@ function MyDungeonsBook:InterruptsFrame_GetHeadersForSummaryTable()
 			align = "LEFT"
 		},
 		{
-			name = L["Spell"],
+			name = "",
 			width = 40,
 			align = "LEFT",
 			DoCellUpdate = function(...)
@@ -410,7 +410,7 @@ function MyDungeonsBook:InterruptsFrame_GetHeadersForSummaryTable()
 			end
 		},
 		{
-			name = "",
+			name = L["Spell"],
 			width = 100,
 			align = "LEFT",
 			DoCellUpdate = function(...)
@@ -423,7 +423,7 @@ function MyDungeonsBook:InterruptsFrame_GetHeadersForSummaryTable()
 			align = "CENTER"
 		},
 		{
-			name = L["Casts"],
+			name = L["Casted"],
 			width = 35,
 			align = "CENTER"
 		},

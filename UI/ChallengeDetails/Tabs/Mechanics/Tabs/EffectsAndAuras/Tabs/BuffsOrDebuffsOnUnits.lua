@@ -248,7 +248,7 @@ function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_GetHeadersForTable()
 			align = "LEFT"
 		},
 		{
-			name = L["Spell"],
+			name = "",
 			width = 40,
 			align = "LEFT",
 			DoCellUpdate = function(...)
@@ -256,7 +256,7 @@ function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_GetHeadersForTable()
 			end
 		},
 		{
-			name = "",
+			name = L["Spell"],
 			width = 160,
 			align = "LEFT",
 			DoCellUpdate = function(...)

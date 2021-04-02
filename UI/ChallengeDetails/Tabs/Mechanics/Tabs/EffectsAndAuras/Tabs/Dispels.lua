@@ -168,7 +168,7 @@ function MyDungeonsBook:DispelsFrame_GetHeadersForSummaryTable()
 			align = "LEFT"
 		},
 		{
-			name = L["Spell"],
+			name = "",
 			width = 40,
 			align = "LEFT",
 			DoCellUpdate = function(...)
@@ -176,7 +176,7 @@ function MyDungeonsBook:DispelsFrame_GetHeadersForSummaryTable()
 			end
 		},
 		{
-			name = "",
+			name = L["Spell"],
 			width = 100,
 			align = "LEFT",
 			DoCellUpdate = function(...)
@@ -184,7 +184,7 @@ function MyDungeonsBook:DispelsFrame_GetHeadersForSummaryTable()
 			end
 		},
 		{
-			name = L["Casts"],
+			name = L["Casted"],
 			width = 35,
 			align = "CENTER"
 		},

@@ -210,7 +210,7 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetHeadersForTable()
             align = "LEFT"
         },
         {
-            name = L["Spell"],
+            name = "",
             width = 40,
             align = "LEFT",
             DoCellUpdate = function(...)
@@ -218,7 +218,7 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetHeadersForTable()
             end
         },
         {
-            name = "",
+            name = L["Spell"],
             width = 110,
             align = "LEFT",
             DoCellUpdate = function(...)
@@ -259,7 +259,7 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetHeadersForSummaryTable()
             align = "LEFT"
         },
         {
-            name = L["Spell"],
+            name = "",
             width = 40,
             align = "LEFT",
             DoCellUpdate = function(...)
@@ -267,7 +267,7 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetHeadersForSummaryTable()
             end
         },
         {
-            name = "",
+            name = L["Spell"],
             width = 110,
             align = "LEFT",
             DoCellUpdate = function(...)

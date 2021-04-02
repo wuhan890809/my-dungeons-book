@@ -194,7 +194,7 @@ function MyDungeonsBook:SummaryFrame_GetColumnsForTable()
 			},
 		},
 		{
-			name = L["Dispells"],
+			name = L["Dispels"],
 			width = 60,
 			align = "RIGHT",
 			bgcolor = {

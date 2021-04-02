@@ -4,6 +4,7 @@
 * Add Encounter blocks for Deaths graph
 * Track death time for all party members
 * Add Deaths tab
+* Add russian locale
 
 ### v2.7.0
 

@@ -96,7 +96,7 @@ function MyDungeonsBook:UsedItemsFrame_GetColumnsForTable(challengeId)
 			align = "LEFT"
 		},
 		{
-			name = L["Item"],
+			name = "",
 			width = 40,
 			align = "LEFT",
 			DoCellUpdate = function(...)
@@ -104,7 +104,7 @@ function MyDungeonsBook:UsedItemsFrame_GetColumnsForTable(challengeId)
 			end
 		},
 		{
-			name = "",
+			name = L["Item"],
 			width = 135,
 			align = "LEFT",
 			DoCellUpdate = function(...)

@@ -100,7 +100,7 @@ function MyDungeonsBook:HealByPartyMemberToEachPartyMemberFrame_GetColumnsForTab
             align = "LEFT"
         },
         {
-            name = L["Spell"],
+            name = "",
             width = 40,
             align = "LEFT",
             DoCellUpdate = function(...)
@@ -108,7 +108,7 @@ function MyDungeonsBook:HealByPartyMemberToEachPartyMemberFrame_GetColumnsForTab
             end
         },
         {
-            name = " ",
+            name = L["Spell"],
             width = 110,
             align = "LEFT",
             DoCellUpdate = function(...)

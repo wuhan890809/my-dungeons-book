@@ -160,7 +160,7 @@ Filters are next:
 function MyDungeonsBook:ChallengesFrame_Filters_Create(parentFrame)
 	local filtersFrame = AceGUI:Create("InlineGroup");
 	filtersFrame:SetWidth(500);
-	filtersFrame:SetTitle("Filters");
+	filtersFrame:SetTitle(L["Filters"]);
 	filtersFrame:SetLayout("Flow");
 	parentFrame:AddChild(filtersFrame);
 	-- In Time filter
