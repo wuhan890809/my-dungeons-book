@@ -82,7 +82,8 @@ MyDungeonsBook.OptionsDefaults = {
 					verbose = true
 				},
 				["ALL-DAMAGE-DONE-TO-PARTY-MEMBERS"] = {
-					id = "ALL-DAMAGE-DONE-TO-PARTY-MEMBERS"
+					id = "ALL-DAMAGE-DONE-TO-PARTY-MEMBERS",
+					verbose = true
 				},
 				["ALL-AURAS"] = {
 					id = "ALL-AURAS"

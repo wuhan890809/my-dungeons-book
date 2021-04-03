@@ -512,11 +512,17 @@ function MyDungeonsBook:SaveTrackedDamageToPartyMembers(key, unit, sourceUnitGUI
 		spellId = -sourceNpcId;
 	end
 	local amountInPercents = amount and amount / UnitHealthMax(unit) * 100 or 0;
+	local avoidableSpells = self:GetSLAvoidableSpells();
+	local avoidableSpellsNoTank = self:GetSLAvoidableSpellsNoTank();
+	local id = self.db.char.activeChallengeId;
+	local challenge = self:Challenge_GetById(id);
+	local unitId = self:GetPartyUnitByName(unit);
+	local role = (challenge.players[unitId] and challenge.players[unitId].role) or nil;
+	local amountIsAvoidable = role and (avoidableSpells[spellId] or (avoidableSpellsNoTank[spellId] and role ~= "TANK"));
 	if (amountInPercents >= 40 and self.db.global.meta.mechanics[key].verbose) then
 		local spellLink = GetSpellLink(spellId);
 		self:LogPrint(string.format(L["%s got hit by %s for %s (%s)"], unit, spellLink or spellId, self:FormatNumber(amount), string.format("%.1f%%", amountInPercents)));
 	end
-	local id = self.db.char.activeChallengeId;
 	self:InitMechanics2Lvl(key, unit);
 	if (not self.db.char.challenges[id].mechanics[key][unit][spellId]) then
 		self.db.char.challenges[id].mechanics[key][unit][spellId] = {

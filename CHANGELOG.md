@@ -5,6 +5,7 @@
 * Track death time for all party members
 * Add Deaths tab
 * Add russian locale
+* Output log-messages about taken avoidable damage
 
 ### v2.7.0
 
