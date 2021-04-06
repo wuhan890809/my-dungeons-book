@@ -7,6 +7,7 @@
 * Add russian locale
 * Output log-messages about taken avoidable damage
 * Add raid icons to messages about interrupts, dispels and passed casts
+* Add secondary stats for Equipment-tab (for RU and EN only)
 
 ### v2.7.0
 

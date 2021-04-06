@@ -7,7 +7,17 @@ Utils
 @section Utils
 ]]
 
+local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
+
 local itemTooltipFrame = CreateFrame("GameTooltip", "MyDungeonsBookItemTooltip", nil, "GameTooltipTemplate");
+itemTooltipFrame:SetOwner(WorldFrame, "ANCHOR_NONE");
+
+local statsMessages = {
+	crit = { L["%+(%d+) Critical Strike"], L["%+(%d+) Critical Strike (Gem)"] },
+	haste = { L["%+(%d+) Haste"], L["%+(%d+) Haste (Gem)"] },
+	mastery = { L["%+(%d+) Mastery"], L["%+(%d+) Mastery (Gem)"] },
+	vers = { L["%+(%d+) Versatility"], L["%+(%d+) Versatility (Gem)"] },
+};
 
 local affixesMap = {
 	[1] = 463570, -- Overflowing
@@ -638,7 +648,6 @@ Get item level using game tooltip
 @return[type=?number] item level
 ]]
 function MyDungeonsBook:GetItemLevelFromTooltip(itemStringOrLink)
-	itemTooltipFrame:SetOwner(WorldFrame, "ANCHOR_NONE");
 	itemTooltipFrame:SetHyperlink(itemStringOrLink);
 	local line2 = _G["MyDungeonsBookItemTooltipTextLeft2"]:GetText();
 	local line2Number = line2 and string.match(line2, "%d+");
@@ -668,4 +677,34 @@ Empty string for missing index
 ]]
 function MyDungeonsBook:GetTargetIconByIndex(index)
 	return targetIconsMap[index] or "";
+end
+
+--[[--
+Parse item string to get secondary stat bonuses
+
+@param[type=string]
+@return[type=table]
+]]
+function MyDungeonsBook:GetItemSecondaryStatsBonus(itemStringOrLink)
+	local stats = {
+		crit = 0,
+		haste = 0,
+		mastery = 0,
+		vers = 0
+	};
+	itemTooltipFrame:SetHyperlink(itemStringOrLink);
+	for i = 2, itemTooltipFrame:NumLines() do
+		local line = _G["MyDungeonsBookItemTooltipTextLeft" .. i]:GetText();
+		if line and line ~= "" then
+			for stat, messages in pairs(statsMessages) do
+				for _, message in pairs(messages) do
+					local foundStatBonus = line:match(message);
+					if (foundStatBonus) then
+						stats[stat] = stats[stat] + tonumber(foundStatBonus);
+					end
+				end
+			end
+		end
+	end
+	return stats;
 end

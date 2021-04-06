@@ -28,7 +28,7 @@ function MyDungeonsBook:BuffsOrDebuffsOnPartyMembersFrame_Create(parentFrame, ch
 	if (challenge) then
 		local data = self:BuffsOrDebuffsOnPartyMembersFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-BUFFS-OR-DEBUFFS-ON-PARTY-MEMBERS");
 		local columns = self:Table_Headers_GetForSpellsSummary(challengeId);
-		local table = self:TableWidget_Create(columns, 11, 40, nil, buffsOrDebuffsOnPartyMembersFrame, "buffs-or-debuffs-on-party-members");
+		local table = self:TableWidget_Create(columns, 12, 40, nil, buffsOrDebuffsOnPartyMembersFrame, "buffs-or-debuffs-on-party-members");
 		table:SetData(data);
 		table:RegisterEvents({
 			OnClick = function(_, _, data, _, _, realrow, _, _, button)

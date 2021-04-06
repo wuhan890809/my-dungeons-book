@@ -144,6 +144,11 @@ L["Combat End"] = "Combat End";
 L["Combat Duration"] = "Combat Duration";
 L["MyDungeonsBook Encounter %s (%s) for %s (%s) at %s:"] = "MyDungeonsBook Encounter %s (%s) for %s (%s) at %s:";
 L["Casters"] = "Casters";
+L["Secondary stats"] = "Secondary stats";
+L["Critical Strike"] = "Critical Strike";
+L["Haste"] = "Haste";
+L["Mastery"] = "Mastery";
+L["Versatility"] = "Versatility";
 -- UI end
 
 -- Help start
@@ -177,7 +182,7 @@ L["Show LOG messages about NOT INTERRUPTED casts"] = "Show LOG messages about NO
 L["Options below are global. However they are overridden by LOG-option above. E.g. when \"Show LOG messages\" is disabled, no log messages will be printed independently of settings below."] = "Options below are global. However they are overridden by LOG-option above. E.g. when \"Show LOG messages\" is disabled, no log messages will be printed independently of settings below.";
 L["There is a list of internal trackers. Their info is not used directly on the UI and is useful only for devs. No sense to enable it."] = "There is a list of internal trackers. Their info is not used directly on the UI and is useful only for devs. No sense to enable it.";
 L["Aura"] = "Aura";
-L["MyDungeonsBook %s %s for %s"] = "MyDungeonsBook %s %s for %s"
+L["MyDungeonsBook %s %s for %s"] = "MyDungeonsBook %s %s for %s";
 L["GUID"] = "GUID";
 L["Death Time"] = "Death Time";
 L["Release Time"] = "Release Time";
@@ -185,6 +190,17 @@ L["Time dead"] = "Time dead";
 L["%s (start)"] = "%s (start)";
 L["%s (end)"] = "%s (end)";
 -- Settings end
+
+-- Regex start (thanks to Exorsus Raid Tool)
+L["%+(%d+) Haste"] = "%+(%d+) Haste";
+L["%+(%d+) Haste (Gem)"] = "IS NOT NEEDED";
+L["%+(%d+) Mastery"] = "%+(%d+) Mastery";
+L["%+(%d+) Mastery (Gem)"] = "IS NOT NEEDED";
+L["%+(%d+) Critical Strike"] = "%+(%d+) Critical Strike";
+L["%+(%d+) Critical Strike (Gem)"] = "IS NOT NEEDED";
+L["%+(%d+) Versatility"] = "%+(%d+) Versatility";
+L["%+(%d+) Versatility (Gem)"] = "IS NOT NEEDED";
+-- Regex end
 
 -- BfA start
 -- NPCs start

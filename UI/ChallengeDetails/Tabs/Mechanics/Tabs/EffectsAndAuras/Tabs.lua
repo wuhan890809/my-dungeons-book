@@ -42,6 +42,6 @@ function MyDungeonsBook:EffectsAndAurasFrame_CreateTabButtonsFrame(parentFrame)
 			self.buffsOrDebuffsOnUnitsFrame = self:BuffsOrDebuffsOnUnitsFrame_Create(container, self.activeChallengeId);
 		end
 	end);
-	tabs:SetHeight(546);
+	tabs:SetHeight(586);
 	return tabs;
 end

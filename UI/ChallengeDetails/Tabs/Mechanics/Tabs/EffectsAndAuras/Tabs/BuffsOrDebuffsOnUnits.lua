@@ -83,7 +83,7 @@ function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_Create(parentFrame, challenge
 	self:BuffsOrDebuffsOnUnitsFrame_Filters_Create(buffsOrDebuffsOnUnitsFrame, challengeId);
 	local data = self:BuffsOrDebuffsOnUnitsFrame_GetDataForTable(challengeId);
 	local columns = self:BuffsOrDebuffsOnUnitsFrame_GetHeadersForTable();
-	local table = self:TableWidget_Create(columns, 8, 40, nil, buffsOrDebuffsOnUnitsFrame, "enemy-auras");
+	local table = self:TableWidget_Create(columns, 9, 40, nil, buffsOrDebuffsOnUnitsFrame, "enemy-auras");
 	buffsOrDebuffsOnUnitsFrame:SetUserData("buffsOrDebuffsOnUnitsTable", table);
 	buffsOrDebuffsOnUnitsFrame:GetUserData("resetFilters"):Fire("OnClick");
 	table:SetData(data);

@@ -47,7 +47,7 @@ function MyDungeonsBook:UnitsFrame_Create(parentFrame, challengeId)
     self:UnitsFrame_Filters_Create(unitsFrame, challengeId);
     local data = self:UnitsFrame_GetDataForTable(challengeId);
     local columns = self:UnitsFrame_GetHeadersForTable(challengeId);
-    local table = self:TableWidget_Create(columns, 10, 40, nil, unitsFrame, "units");
+    local table = self:TableWidget_Create(columns, 11, 40, nil, unitsFrame, "units");
     unitsFrame:SetUserData("unitsTable", table);
     unitsFrame:GetUserData("resetFilters"):Fire("OnClick");
     table:SetSummaryVisible(true);

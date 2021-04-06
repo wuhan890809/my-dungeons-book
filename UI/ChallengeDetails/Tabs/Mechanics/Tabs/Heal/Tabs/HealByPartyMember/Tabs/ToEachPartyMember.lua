@@ -28,7 +28,7 @@ function MyDungeonsBook:HealByPartyMemberToEachPartyMemberFrame_Create(parentFra
     local healByPartyMemberFrame = self:TabContentWrapperWidget_Create(parentFrame);
     local data = self:HealByPartyMemberToEachPartyMemberFrame_GetDataForTable(challengeId, "PARTY-MEMBERS-HEAL", unitId);
     local columns = self:HealByPartyMemberToEachPartyMemberFrame_GetColumnsForTable(challengeId);
-    local table = self:TableWidget_Create(columns, 10, 40, nil, healByPartyMemberFrame, "heal-by-" .. unitId .. "-to-party");
+    local table = self:TableWidget_Create(columns, 11, 40, nil, healByPartyMemberFrame, "heal-by-" .. unitId .. "-to-party");
     table:SetData(data);
     table:RegisterEvents({
         OnClick = function(_, _, data, _, _, realrow, _, _, button)

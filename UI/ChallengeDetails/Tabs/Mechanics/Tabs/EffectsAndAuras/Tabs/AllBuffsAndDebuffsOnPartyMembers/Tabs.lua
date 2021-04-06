@@ -25,6 +25,6 @@ function MyDungeonsBook:AllBuffsAndDebuffsOnPartyMembersFrame_CreateTabButtonsFr
         container:ReleaseChildren();
         self:AllBuffsAndDebuffsOnPartyMemberFrame_Create(container, self.activeChallengeId, tabId);
     end);
-    tabs:SetHeight(510);
+    tabs:SetHeight(550);
     return tabs;
 end

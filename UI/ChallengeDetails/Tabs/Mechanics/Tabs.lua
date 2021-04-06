@@ -46,6 +46,6 @@ function MyDungeonsBook:MechanicsFrame_CreateTabButtonsFrame(parentFrame)
 			self.deathsFrame = self:DeathsFrame_Create(container, self.activeChallengeId);
 		end
 	end);
-	tabs:SetHeight(582);
+	tabs:SetHeight(622);
 	return tabs;
 end

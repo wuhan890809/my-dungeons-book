@@ -121,7 +121,7 @@ end
 function MyDungeonsBook:OwnCastsByPartyMemberFrame_Table_Create(parentFrame, challengeId, key, unitId)
     local data = self:OwnCastsByPartyMemberFrame_GetDataForTable(challengeId, key, unitId);
     local columns = self:OwnCastsByPartyMemberFrame_GetHeadersForTable(challengeId, unitId);
-    local table = self:TableWidget_Create(columns, 9, 40, {r = 1.0, g = 0.9, b = 0.0, a = 0.5}, parentFrame, "own-casts-by-" .. unitId);
+    local table = self:TableWidget_Create(columns, 10, 40, {r = 1.0, g = 0.9, b = 0.0, a = 0.5}, parentFrame, "own-casts-by-" .. unitId);
     table:SetData(data);
     table.frame:SetPoint("TOPLEFT", 260, -80);
     table:RegisterEvents({
@@ -167,7 +167,7 @@ end
 function MyDungeonsBook:OwnCastsByPartyMemberFrame_SummaryTable_Create(parentFrame, challengeId, key, unitId)
     local summaryData = self:OwnCastsByPartyMemberFrame_GetImportantDataForSummaryTable(challengeId, key, unitId);
     local summaryColumns = self:OwnCastsByPartyMemberFrame_GetHeadersForSummaryTable();
-    local summaryTable = self:TableWidget_Create(summaryColumns, 9, 40, nil, parentFrame, "own-casts-by-" .. unitId .. "-summary");
+    local summaryTable = self:TableWidget_Create(summaryColumns, 10, 40, nil, parentFrame, "own-casts-by-" .. unitId .. "-summary");
     summaryTable:SetData(summaryData);
     summaryTable.frame:SetPoint("TOPLEFT", 0, -80);
     summaryTable:RegisterEvents({

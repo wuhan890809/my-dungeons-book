@@ -143,7 +143,12 @@ L["Combat Start"] = "Бой начат";
 L["Combat End"] = "Бой закончен";
 L["Combat Duration"] = "Время боя";
 L["MyDungeonsBook Encounter %s (%s) for %s (%s) at %s:"] = "MyDungeonsBook Босс %s (%s) в %s (%s) %s:";
-L["Casters"] = "Casters";
+L["Casters"] = "Кастеры";
+L["Secondary stats"] = "Вторичные навыки";
+L["Critical Strike"] = "Критический удар";
+L["Haste"] = "Скорость";
+L["Mastery"] = "Искусность";
+L["Versatility"] = "Универсальность";
 -- UI end
 
 -- Help start
@@ -177,7 +182,7 @@ L["Show LOG messages about NOT INTERRUPTED casts"] = "Выводить LOG-со�
 L["Options below are global. However they are overridden by LOG-option above. E.g. when \"Show LOG messages\" is disabled, no log messages will be printed independently of settings below."] = "Опции ниже являются глобальными. Однако, они зависят от LOG-опции выше. Другими словами, если \"Выводить LOG-сообщения\" выключено, то никакие LOG-сообщения выводиться не будут, независимо от значений опций выше.";
 L["There is a list of internal trackers. Their info is not used directly on the UI and is useful only for devs. No sense to enable it."] = "There is a list of internal trackers. Their info is not used directly on the UI and is useful only for devs. No sense to enable it.";
 L["Aura"] = "Аура";
-L["MyDungeonsBook %s %s for %s"] = "MyDungeonsBook %s %s на %s"
+L["MyDungeonsBook %s %s for %s"] = "MyDungeonsBook %s %s на %s";
 L["GUID"] = "GUID";
 L["Death Time"] = "Время смерти";
 L["Release Time"] = "Время воскрешения";
@@ -185,6 +190,17 @@ L["Time dead"] = "Время мертвым";
 L["%s (start)"] = "%s (начало)";
 L["%s (end)"] = "%s (конец)";
 -- Settings end
+
+-- Regex start (thanks to Exorsus Raid Tool)
+L["%+(%d+) Haste"] = "%+(%d+) к скорости$";
+L["%+(%d+) Haste (Gem)"] = "%+(%d+) к показателю скорости";
+L["%+(%d+) Mastery"] = "%+(%d+) к искусности";
+L["%+(%d+) Mastery (Gem)"] = "%+(%d+) к показателю искусности";
+L["%+(%d+) Critical Strike"] = "%+(%d+) к критическому удару";
+L["%+(%d+) Critical Strike (Gem)"] = "%+(%d+) к вероятности критического удара";
+L["%+(%d+) Versatility"] = "%+(%d+) к универсальности";
+L["%+(%d+) Versatility (Gem)"] = "%+(%d+) к показателю универсальности";
+-- Regex end
 
 -- BfA start
 -- NPCs start

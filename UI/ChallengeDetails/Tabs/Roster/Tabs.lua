@@ -38,6 +38,6 @@ function MyDungeonsBook:RosterFrame_CreateTabButtonsFrame(parentFrame)
             self.talentsFrame = self:TalentsFrame_Create(container, self.activeChallengeId);
         end
     end);
-    tabs:SetHeight(582);
+    tabs:SetHeight(622);
     return tabs;
 end

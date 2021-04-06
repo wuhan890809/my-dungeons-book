@@ -18,7 +18,7 @@ Creates a main frame for addon.
 function MyDungeonsBook:MainFrame_Create()
     local frame = AceGUI:Create("Frame");
 	frame:SetWidth(1234); -- IDK why it can't be just 1200 :/
-	frame:SetHeight(720);
+	frame:SetHeight(760);
 	frame:SetPoint("CENTER", UIParent, "CENTER", self.db.profile.display.x, self.db.profile.display.y);
 	frame:SetTitle(L["My Dungeons Book"]);
     frame:SetLayout("Fill");

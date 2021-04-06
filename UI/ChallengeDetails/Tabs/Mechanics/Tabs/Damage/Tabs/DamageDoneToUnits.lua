@@ -30,7 +30,7 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_Create(parentFrame, challengeId)
 	local damageDoneToUnitsFrame = self:TabContentWrapperWidget_Create(parentFrame);
 	local data = self:DamageDoneToUnitsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-DAMAGE-DONE-TO-UNITS");
 	local columns = self:DamageDoneToUnitsFrame_GetHeadersForTable(challengeId);
-	local table = self:TableWidget_Create(columns, 11, 40, nil, damageDoneToUnitsFrame, "damage-done-to-units");
+	local table = self:TableWidget_Create(columns, 12, 40, nil, damageDoneToUnitsFrame, "damage-done-to-units");
 	table:SetData(data);
 	table:RegisterEvents({
 		OnClick = function(_, _, data, _, _, realrow, _, _, button)

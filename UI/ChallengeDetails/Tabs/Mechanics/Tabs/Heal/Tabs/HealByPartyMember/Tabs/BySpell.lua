@@ -28,7 +28,7 @@ function MyDungeonsBook:HealByPartyMemberBySpellFrame_Create(parentFrame, challe
     local healByPartyMemberBySpellFrame = self:TabContentWrapperWidget_Create(parentFrame);
     local data = self:HealByPartyMemberBySpellFrame_GetDataForTable(challengeId, "ALL-HEAL-DONE-BY-PARTY-MEMBERS", unitId);
     local columns = self:HealByPartyMemberBySpellFrame_GetHeadersForTable(challengeId, unitId);
-    local table = self:TableWidget_Create(columns, 10, 40, nil, healByPartyMemberBySpellFrame, "all-heal-done-by-" .. unitId);
+    local table = self:TableWidget_Create(columns, 11, 40, nil, healByPartyMemberBySpellFrame, "all-heal-done-by-" .. unitId);
     table:SetData(data);
     table:RegisterEvents({
         OnClick = function(_, _, data, _, _, realrow, _, _, button)

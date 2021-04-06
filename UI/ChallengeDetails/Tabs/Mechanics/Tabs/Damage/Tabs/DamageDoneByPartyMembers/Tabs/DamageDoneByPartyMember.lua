@@ -28,7 +28,7 @@ function MyDungeonsBook:DamageDoneByPartyMemberFrame_Create(parentFrame, challen
     local ownCastsByPartyMemberFrame = self:TabContentWrapperWidget_Create(parentFrame);
     local data = self:DamageDoneByPartyMemberFrame_GetDataForTable(challengeId, "ALL-DAMAGE-DONE-BY-PARTY-MEMBERS", unitId);
     local columns = self:DamageDoneByPartyMemberFrame_GetHeadersForTable(challengeId, unitId);
-    local table = self:TableWidget_Create(columns, 10, 40, nil, ownCastsByPartyMemberFrame, "all-damage-done-by-" .. unitId);
+    local table = self:TableWidget_Create(columns, 11, 40, nil, ownCastsByPartyMemberFrame, "all-damage-done-by-" .. unitId);
     table:SetData(data);
     table:RegisterEvents({
         OnClick = function(_, _, data, _, _, realrow, _, _, button)

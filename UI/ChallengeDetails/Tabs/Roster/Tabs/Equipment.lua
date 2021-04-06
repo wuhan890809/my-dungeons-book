@@ -49,6 +49,12 @@ Creates a frame with equipment for `unitId`.
 ]]
 function MyDungeonsBook:EquipmentFrame_PartyMember_Create(parentFrame, challengeId, unitId)
     local challenge = self.db.char.challenges[challengeId];
+    local stats = {
+        crit = 0,
+        haste = 0,
+        mastery = 0,
+        vers = 0
+    };
     for i = 1, 16 do
         local itemFrame = AceGUI:Create("InteractiveLabel");
         parentFrame:AddChild(itemFrame);
@@ -61,6 +67,10 @@ function MyDungeonsBook:EquipmentFrame_PartyMember_Create(parentFrame, challenge
         end);
         local itemString = challenge.players[unitId] and challenge.players[unitId].items and challenge.players[unitId].items[getShiftedIndex(i)] or nil;
         if (itemString) then
+            local itemStats = self:GetItemSecondaryStatsBonus(itemString);
+            for statName, statValue in pairs(itemStats) do
+                stats[statName] = stats[statName] + statValue;
+            end
             local _, itemId = strsplit(":", itemString);
             if (itemId) then
                 local suffix = self:GetIconTextureSuffix(30);
@@ -69,8 +79,9 @@ function MyDungeonsBook:EquipmentFrame_PartyMember_Create(parentFrame, challenge
         end
     end;
     self:NewLine_Create(parentFrame);
+    -- item levels
     local placeholder = AceGUI:Create("Label");
-    placeholder:SetWidth(60);
+    placeholder:SetWidth(40);
     parentFrame:AddChild(placeholder);
     for i = 1, 16 do
         local itemLevelFrame = AceGUI:Create("Label");
@@ -86,6 +97,35 @@ function MyDungeonsBook:EquipmentFrame_PartyMember_Create(parentFrame, challenge
             end
         end
     end
+    self:NewLine_Create(parentFrame);
+    placeholder = AceGUI:Create("Label");
+    placeholder:SetWidth(40);
+    parentFrame:AddChild(placeholder);
+    local labelFormat = "%s: %s";
+    -- crit
+    local critLabel = AceGUI:Create("Label");
+    parentFrame:AddChild(critLabel);
+    critLabel:SetText(string.format(labelFormat, L["Critical Strike"], stats.crit));
+    critLabel:SetWidth(150);
+    critLabel:SetColor(249, 0, 0, 1);
+    -- haste
+    local hasteLabel = AceGUI:Create("Label");
+    parentFrame:AddChild(hasteLabel);
+    hasteLabel:SetText(string.format(labelFormat, L["Haste"], stats.haste));
+    hasteLabel:SetWidth(150);
+    hasteLabel:SetColor(0, 91, 255, 1);
+    -- mastery
+    local masteryLabel = AceGUI:Create("Label");
+    parentFrame:AddChild(masteryLabel);
+    masteryLabel:SetText(string.format(labelFormat, L["Mastery"], stats.mastery));
+    masteryLabel:SetWidth(150);
+    masteryLabel:SetColor(0, 183, 0, 1);
+    -- vers
+    local versLabel = AceGUI:Create("Label");
+    parentFrame:AddChild(versLabel);
+    versLabel:SetText(string.format(labelFormat, L["Versatility"], stats.vers));
+    versLabel:SetWidth(150);
+    versLabel:SetColor(190, 190, 0, 1);
 end
 
 --[[--
@@ -147,7 +187,7 @@ function MyDungeonsBook:EquipmentFrame_PartyMember_Ilvl_Create(parentFrame, chal
         end
     end
     local ilvlFrame = AceGUI:Create("Label");
-    ilvlFrame:SetWidth(60);
+    ilvlFrame:SetWidth(40);
     parentFrame:AddChild(ilvlFrame);
     if (itemsCount ~= 0) then
         ilvlFrame:SetText(string.format("%.2f", sum / itemsCount));

@@ -26,7 +26,7 @@ function MyDungeonsBook:AllBuffsAndDebuffsOnPartyMemberFrame_Create(parentFrame,
     local allBuffsAndDebuffsOnPartyMemberFrame = self:TabContentWrapperWidget_Create(parentFrame);
     local columns = self:AllBuffsAndDebuffsOnPartyMemberFrame_GetHeadersForTable();
     local buffsData = self:AllBuffsAndDebuffsOnPartyMemberFrame_GetDataForTable(challengeId, "PARTY-MEMBERS-AURAS", unitId, "BUFF");
-    local buffsTable = self:TableWidget_Create(columns, 10, 40, nil, allBuffsAndDebuffsOnPartyMemberFrame, "party-members-auras-on-" .. unitId .. "-buffs");
+    local buffsTable = self:TableWidget_Create(columns, 11, 40, nil, allBuffsAndDebuffsOnPartyMemberFrame, "party-members-auras-on-" .. unitId .. "-buffs");
     buffsTable:SetData(buffsData);
     buffsTable:RegisterEvents({
         OnClick = function(_, _, data, _, _, realrow, _, _, button)
@@ -49,7 +49,7 @@ function MyDungeonsBook:AllBuffsAndDebuffsOnPartyMemberFrame_Create(parentFrame,
             end
         end
     });
-    local debuffsTable = self:TableWidget_Create(columns, 10, 40, nil, allBuffsAndDebuffsOnPartyMemberFrame, "party-members-auras-on-" .. unitId .. "-debuffs");
+    local debuffsTable = self:TableWidget_Create(columns, 11, 40, nil, allBuffsAndDebuffsOnPartyMemberFrame, "party-members-auras-on-" .. unitId .. "-debuffs");
     local debuffsData = self:AllBuffsAndDebuffsOnPartyMemberFrame_GetDataForTable(challengeId, "PARTY-MEMBERS-AURAS", unitId, "DEBUFF");
     debuffsTable:SetData(debuffsData);
     debuffsTable:RegisterEvents({

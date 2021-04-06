@@ -19,7 +19,7 @@ function MyDungeonsBook:DeathsFrame_Create(parentFrame, challengeId)
     local deathsFrame = self:TabContentWrapperWidget_Create(parentFrame);
     local data = self:DeathsFrame_GetDataForTable(challengeId, "PARTY-MEMBERS-DEATHS-TIMER");
     local columns = self:DeathsFrame_GetColumnsForTable(challengeId);
-    local table = self:TableWidget_Create(columns, 12, 40, nil, deathsFrame, "party-deaths");
+    local table = self:TableWidget_Create(columns, 13, 40, nil, deathsFrame, "party-deaths");
     table:SetData(data);
     return deathsFrame;
 end

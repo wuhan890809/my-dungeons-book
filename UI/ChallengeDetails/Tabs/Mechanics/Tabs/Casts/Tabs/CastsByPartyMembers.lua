@@ -31,7 +31,7 @@ function MyDungeonsBook:SpecialCastsFrame_Create(parentFrame, challengeId)
 	local specialCastsFrame = self:TabContentWrapperWidget_Create(parentFrame);
 	local data = self:SpecialCastsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-CASTS-DONE-BY-PARTY-MEMBERS");
 	local columns = self:Table_Headers_GetForSpellsSummary(challengeId);
-	local table = self:TableWidget_Create(columns, 11, 40, nil, specialCastsFrame, "special-casts-by-party-members");
+	local table = self:TableWidget_Create(columns, 12, 40, nil, specialCastsFrame, "special-casts-by-party-members");
 	table:SetData(data);
 	table:RegisterEvents({
 		OnClick = function(_, _, data, _, _, realrow, _, _, button)

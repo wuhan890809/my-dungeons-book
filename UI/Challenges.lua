@@ -44,7 +44,7 @@ Create a table with Challenges.
 @return[type=Frame]
 ]]
 function MyDungeonsBook:ChallengesFrame_Table_Create(parentFrame)
-	local table = ScrollingTableMdb:CreateST(self:ChallengesFrame_GetColumnsForTable(), 11, 40, {r = 1.0, g = 0.9, b = 0.0, a = 0.5}, parentFrame.frame);
+	local table = ScrollingTableMdb:CreateST(self:ChallengesFrame_GetColumnsForTable(), 12, 40, {r = 1.0, g = 0.9, b = 0.0, a = 0.5}, parentFrame.frame);
 	table:EnableSelection(true);
 	table:SetData(self:ChallengesFrame_GetDataForTable());
 	table:SetSummaryVisible(true);
