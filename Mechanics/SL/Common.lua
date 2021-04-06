@@ -729,8 +729,8 @@ function MyDungeonsBook:TrackSLAvoidableAuras(damagedUnit, spellId)
 	self:TrackAvoidableAuras("SL-AVOIDABLE-AURAS", SLAuras, SLAurasNoTank, damagedUnit, spellId);
 end
 
-function MyDungeonsBook:TrackSLPassedCasts(caster, spellId)
-	self:TrackPassedCasts("SL-SPELLS-TO-INTERRUPT", SLSpellsToInterrupt, caster, spellId);
+function MyDungeonsBook:TrackSLPassedCasts(caster, spellId, raidFlags)
+	self:TrackPassedCasts("SL-SPELLS-TO-INTERRUPT", SLSpellsToInterrupt, caster, spellId, raidFlags);
 end
 
 function MyDungeonsBook:TrackSLUnitsAppearsInCombat(sourceUnitGUID, targetUnitGUID)

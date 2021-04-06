@@ -6,6 +6,7 @@
 * Add Deaths tab
 * Add russian locale
 * Output log-messages about taken avoidable damage
+* Add raid icons to messages about interrupts, dispels and passed casts
 
 ### v2.7.0
 

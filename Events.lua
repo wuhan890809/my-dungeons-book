@@ -57,17 +57,17 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 	if (subEventSuffix == "INTERRUPT") then
 		local spellId, _, _, extraSpellId = select(12, CombatLogGetCurrentEventInfo());
-		self:TrackInterrupt(srcName, srcGUID, spellId, extraSpellId);
+		self:TrackInterrupt(srcName, srcGUID, spellId, extraSpellId, dstFlags2);
 	end
 	if (subEventSuffix == "DISPEL" or
 		subEventName == "SPELL_STOLEN") then
 		local spellId, _, _, extraSpellId = select(12, CombatLogGetCurrentEventInfo());
-		self:TrackDispel(srcName, srcGUID, spellId, extraSpellId);
+		self:TrackDispel(srcName, srcGUID, spellId, extraSpellId, dstFlags2);
 	end
 	if (subEventName == "SPELL_CAST_SUCCESS") then
 		local spellId = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackTryInterrupt(srcName, srcGUID, spellId);
-		self:TrackSLPassedCasts(srcName, spellId);
+		self:TrackSLPassedCasts(srcName, spellId, srcFlags2);
 		self:TrackAllEnemiesPassedCasts(srcName, srcGUID, spellId);
 		self:TrackSpellsCaster(srcName, srcGUID, spellId);
 		self:TrackSLSpecificCastDoneByPartyMembers(srcName, spellId);

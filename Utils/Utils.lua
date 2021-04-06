@@ -35,6 +35,17 @@ local affixesMap = {
 	[121] = 3528307, -- Prideful
 };
 
+local targetIconsMap = {
+	[1] = "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_1.blp:0|t",
+	[2] = "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_2.blp:0|t",
+	[3] = "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_3.blp:0|t",
+	[4] = "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_4.blp:0|t",
+	[5] = "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_5.blp:0|t",
+	[6] = "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_6.blp:0|t",
+	[7] = "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_7.blp:0|t",
+	[8] = "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_8.blp:0|t",
+};
+
 --[[--
 Get texture for affix's icon (question mark is returned if no affix icon found).
 
@@ -645,4 +656,16 @@ function MyDungeonsBook:GetItemLevelFromTooltip(itemStringOrLink)
 			return line3Number;
 		end
 	end
+end
+
+--[[--
+Get raid-icon by index
+
+Empty string for missing index
+
+@param[type=number] index
+@return[type=string]
+]]
+function MyDungeonsBook:GetTargetIconByIndex(index)
+	return targetIconsMap[index] or "";
 end

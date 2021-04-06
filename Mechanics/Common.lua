@@ -233,7 +233,7 @@ Track interrupts done by party members.
 @param[type=number] spellId 12th result of `CombatLogGetCurrentEventInfo` call
 @param[type=number] interruptedSpellId 15th result of `CombatLogGetCurrentEventInfo` call
 ]]
-function MyDungeonsBook:TrackInterrupt(unit, srcGUID, spellId, interruptedSpellId)
+function MyDungeonsBook:TrackInterrupt(unit, srcGUID, spellId, interruptedSpellId, dstFlags2)
 	local id = self.db.char.activeChallengeId;
 	--Attribute Pet Spell's to its owner
     local type = strsplit("-", srcGUID);
@@ -251,7 +251,9 @@ function MyDungeonsBook:TrackInterrupt(unit, srcGUID, spellId, interruptedSpellI
 	end
 	spellId = mergeInterruptSpellId(spellId);
 	if (self.db.global.meta.mechanics[KEY].verbose) then
-		self:LogPrint(string.format(L["%s interrupted %s using %s"], self:ClassColorText(unit, unit), GetSpellLink(interruptedSpellId), GetSpellLink(spellId)));
+		local mark = math.log(dstFlags2) / math.log(2) + 1;
+		local raidIcon = self:GetTargetIconByIndex(mark);
+		self:LogPrint(string.format(L["%s interrupted %s %s using %s"], self:ClassColorText(unit, unit), GetSpellLink(interruptedSpellId), raidIcon, GetSpellLink(spellId)));
 	end
 	self:InitMechanics4Lvl(KEY, unit, spellId, interruptedSpellId, true);
 	self.db.char.challenges[id].mechanics[KEY][unit][spellId][interruptedSpellId] = self.db.char.challenges[id].mechanics[KEY][unit][spellId][interruptedSpellId] + 1;
@@ -265,7 +267,7 @@ Track dispels done by party members.
 @param[type=number] spellId 12th result of `CombatLogGetCurrentEventInfo` call
 @param[type=number] dispelledSpellId 15th result of `CombatLogGetCurrentEventInfo` call
 ]]
-function MyDungeonsBook:TrackDispel(unit, srcGUID, spellId, dispelledSpellId)
+function MyDungeonsBook:TrackDispel(unit, srcGUID, spellId, dispelledSpellId, dstFlags2)
 	local id = self.db.char.activeChallengeId;
 	--Attribute Pet Spell's to its owner
     local type = strsplit("-", srcGUID);
@@ -279,7 +281,9 @@ function MyDungeonsBook:TrackDispel(unit, srcGUID, spellId, dispelledSpellId)
 	end
 	local KEY = "COMMON-DISPEL";
 	if (self.db.global.meta.mechanics[KEY].verbose) then
-		self:LogPrint(string.format(L["%s dispelled %s using %s"], self:ClassColorText(unit, unit), GetSpellLink(dispelledSpellId), GetSpellLink(spellId)));
+		local mark = math.log(dstFlags2) / math.log(2) + 1;
+		local raidIcon = self:GetTargetIconByIndex(mark);
+		self:LogPrint(string.format(L["%s dispelled %s %s using %s"], self:ClassColorText(unit, unit), GetSpellLink(dispelledSpellId), raidIcon, GetSpellLink(spellId)));
 	end
 	self:InitMechanics4Lvl(KEY, unit, spellId, dispelledSpellId, true);
 	self.db.char.challenges[id].mechanics[KEY][unit][spellId][dispelledSpellId] = self.db.char.challenges[id].mechanics[KEY][unit][spellId][dispelledSpellId] + 1;
@@ -521,7 +525,7 @@ function MyDungeonsBook:SaveTrackedDamageToPartyMembers(key, unit, sourceUnitGUI
 	local amountIsAvoidable = role and (avoidableSpells[spellId] or (avoidableSpellsNoTank[spellId] and role ~= "TANK"));
 	if (amountInPercents >= 40 and self.db.global.meta.mechanics[key].verbose) then
 		local spellLink = GetSpellLink(spellId);
-		self:LogPrint(string.format(L["%s got hit by %s for %s (%s)"], unit, spellLink or spellId, self:FormatNumber(amount), string.format("%.1f%%", amountInPercents)));
+		self:LogPrint(string.format(L["%s got hit by %s for %s (%s)"], self:ClassColorText(unit, unit), spellLink or spellId, self:FormatNumber(amount), string.format("%.1f%%", amountInPercents)));
 	end
 	self:InitMechanics2Lvl(key, unit);
 	if (not self.db.char.challenges[id].mechanics[key][unit][spellId]) then
@@ -589,12 +593,14 @@ This mechanic is a subset of one from `TrackAllEnemyPassedCasts`.
 @param[type=string] unitName caster
 @param[type=number] spellId casted spell id
 ]]
-function MyDungeonsBook:TrackPassedCasts(key, spells, unitName, spellId)
+function MyDungeonsBook:TrackPassedCasts(key, spells, unitName, spellId, raidFlags)
 	if (not spells[spellId]) then
 		return;
 	end
 	if (self.db.global.meta.mechanics[key].verbose) then
-		self:LogPrint(string.format(L["%s's cast %s is passed"], unitName, GetSpellLink(spellId)));
+		local mark = math.log(raidFlags) / math.log(2) + 1;
+		local raidIcon = self:GetTargetIconByIndex(mark);
+		self:LogPrint(string.format(L["%s %s's cast %s is passed"], raidIcon, unitName, GetSpellLink(spellId)));
 	end
 	local id = self.db.char.activeChallengeId;
 	self:InitMechanics2Lvl(key, spellId, true);
@@ -830,6 +836,9 @@ Track when some party member summons some unit
 @param[type=GUID] targetUnitGUID
 ]]
 function MyDungeonsBook:TrackSummonnedByPartyMembersUnit(sourceUnitName, sourceUnitGUID, targetUnitName, targetUnitGUID)
+	if (not sourceUnitGUID) then
+		return;
+	end
 	local sourceIsPlayer = strfind(sourceUnitGUID, "Player");
 	if (not sourceIsPlayer) then
 		return;
@@ -1052,7 +1061,7 @@ function MyDungeonsBook:TrackAuraRemovedFromPartyMember(sourceUnitName, sourceUn
 	local id = self.db.char.activeChallengeId;
 	local endTime = time();
 	if (amount == 0 and self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.lastStartTime) then
-		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.duration = self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.duration +
+		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.duration = (self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.duration or 0) +
 			(endTime - self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.lastStartTime);
 		self.db.char.challenges[id].mechanics[KEY][sourceUnitName][spellId].meta.lastStartTime = nil;
 	end
