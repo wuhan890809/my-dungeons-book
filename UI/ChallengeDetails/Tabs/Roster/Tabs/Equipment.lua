@@ -177,7 +177,7 @@ function MyDungeonsBook:EquipmentFrame_PartyMember_Ilvl_Create(parentFrame, chal
                     local mainHand = challenge.players[unit].items and challenge.players[unit].items[16] or nil;
                     if (mainHand) then
                         local _, _, _, _, _, _, _, _, itemEquipLoc = GetItemInfo(mainHand);
-                        if (itemEquipLoc == "INVTYPE_2HWEAPON" or itemEquipLoc == "INVTYPE_RANGEDRIGHT") then
+                        if (itemEquipLoc == "INVTYPE_2HWEAPON" or itemEquipLoc == "INVTYPE_RANGEDRIGHT" or itemEquipLoc == "INVTYPE_RANGED") then
                             sum = sum + self:GetItemLevelFromTooltip(mainHand);
                         end
                     end

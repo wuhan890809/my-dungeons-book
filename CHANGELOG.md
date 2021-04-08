@@ -8,6 +8,8 @@
 * Output log-messages about taken avoidable damage
 * Add raid icons to messages about interrupts, dispels and passed casts
 * Add secondary stats for Equipment-tab (for RU and EN only)
+* Fix avg ilvl calculation (mostly for hunters)
+* Fix interrupts tracking for pets
 
 ### v2.7.0
 

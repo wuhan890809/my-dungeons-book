@@ -239,7 +239,7 @@ function MyDungeonsBook:TrackInterrupt(unit, srcGUID, spellId, interruptedSpellI
     local type = strsplit("-", srcGUID);
 	local petOwner;
     if (type == "Pet") then
-		local petOwner = self:GetSummonedUnitOwner(unit, srcGUID);
+		petOwner = self:GetSummonedUnitOwner(unit, srcGUID);
     end
 	if ((not petOwner) and (not UnitIsPlayer(unit))) then
 		self:DebugPrint(string.format("%s is not player or pet", unit));
@@ -330,10 +330,11 @@ function MyDungeonsBook:TrackTryInterrupt(sourceName, sourceGUID, spellId)
 	local KEY = "COMMON-TRY-INTERRUPT";
     --Attribute Pet Spell's to its owner
     local type = strsplit("-", sourceGUID);
-	local petOwnerId;
-    if (type == "Pet") then
-		petOwnerId = self:GetSummonedUnitOwner(sourceName, sourceGUID);
-		if (not petOwnerId) then
+	if (type == "Pet") then
+		local petOwnerName = self:GetSummonedUnitOwner(sourceName, sourceGUID);
+		if (petOwnerName) then
+			sourceName = petOwnerName;
+		else
 			return;
 		end
     end
