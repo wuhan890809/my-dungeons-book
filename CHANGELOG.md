@@ -10,6 +10,8 @@
 * Add secondary stats for Equipment-tab (for RU and EN only)
 * Fix avg ilvl calculation (mostly for hunters)
 * Fix interrupts tracking for pets
+* Separate swing damage taken by party member from enemies
+* Add Spiteful Shade Melee Damage (spell id 350163) as avoidable damage
 
 ### v2.7.0
 

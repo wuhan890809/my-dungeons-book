@@ -350,10 +350,10 @@ Track all damage done to party members
 @param[type=number] spellId spell that did damage to `unit`
 @param[type=number] amount amount of damage done to `unit` by `spellId`
 ]]
-function MyDungeonsBook:TrackAllDamageDoneToPartyMembers(targetUnit, sourceUnitGUID, spellId, amount)
+function MyDungeonsBook:TrackAllDamageDoneToPartyMembers(sourceUnit, targetUnit, sourceUnitGUID, spellId, amount)
 	local key = "ALL-DAMAGE-DONE-TO-PARTY-MEMBERS";
 	if (UnitIsPlayer(targetUnit)) then
-		self:SaveTrackedDamageToPartyMembers(key, targetUnit, sourceUnitGUID, spellId, amount);
+		self:SaveTrackedDamageToPartyMembers(key, sourceUnit, targetUnit, sourceUnitGUID, spellId, amount);
 	end
 end
 
@@ -507,40 +507,50 @@ end
 @param[type=number] spellId spell that did damage to `unit`
 @param[type=number] amount amount of damage done to `unit` by `spellId`
 ]]
-function MyDungeonsBook:SaveTrackedDamageToPartyMembers(key, unit, sourceUnitGUID, spellId, amount)
+function MyDungeonsBook:SaveTrackedDamageToPartyMembers(key, sourceUnit, targetUnit, sourceUnitGUID, spellId, amount)
 	if (self:IsFriendlyFire(spellId)) then
 		return;
 	end
 	local sourceNpcId = self:GetNpcIdFromGuid(sourceUnitGUID);
-	-- Save swing damage for "special" npcs separately
-	if (spellId == -2 and self.db.global.meta.npcToTrackSwingDamage[sourceNpcId] ~= nil) then
+	-- Save separately swing damage done by enemies
+	if (spellId == -2) then
 		spellId = -sourceNpcId;
 	end
-	local amountInPercents = amount and amount / UnitHealthMax(unit) * 100 or 0;
+	local amountInPercents = amount and amount / UnitHealthMax(targetUnit) * 100 or 0;
 	local avoidableSpells = self:GetSLAvoidableSpells();
 	local avoidableSpellsNoTank = self:GetSLAvoidableSpellsNoTank();
 	local id = self.db.char.activeChallengeId;
 	local challenge = self:Challenge_GetById(id);
-	local unitId = self:GetPartyUnitByName(unit);
+	local unitId = self:GetPartyUnitByName(targetUnit);
 	local role = (challenge.players[unitId] and challenge.players[unitId].role) or nil;
 	local amountIsAvoidable = role and (avoidableSpells[spellId] or (avoidableSpellsNoTank[spellId] and role ~= "TANK"));
-	if (amountInPercents >= 40 and self.db.global.meta.mechanics[key].verbose) then
-		local spellLink = GetSpellLink(spellId);
-		self:LogPrint(string.format(L["%s got hit by %s for %s (%s)"], self:ClassColorText(unit, unit), spellLink or spellId, self:FormatNumber(amount), string.format("%.1f%%", amountInPercents)));
+	local spellLink = GetSpellLink(spellId);
+	local spellOrUnit;
+	if (spellLink) then
+		spellOrUnit = spellLink;
+	else
+		if (spellId < 0) then
+			spellOrUnit = sourceUnit;
+		else
+			spellOrUnit = spellId;
+		end
 	end
-	self:InitMechanics2Lvl(key, unit);
-	if (not self.db.char.challenges[id].mechanics[key][unit][spellId]) then
-		self.db.char.challenges[id].mechanics[key][unit][spellId] = {
+	if (amountInPercents >= 40 and amountIsAvoidable and self.db.global.meta.mechanics[key].verbose) then
+		self:LogPrint(string.format(L["%s got hit by %s for %s (%s)"], self:ClassColorText(targetUnit, targetUnit), spellOrUnit, self:FormatNumber(amount), string.format("%.1f%%", amountInPercents)));
+	end
+	self:InitMechanics2Lvl(key, targetUnit);
+	if (not self.db.char.challenges[id].mechanics[key][targetUnit][spellId]) then
+		self.db.char.challenges[id].mechanics[key][targetUnit][spellId] = {
 			num = 0,
 			sum = 0
 		};
 	end
 	if (not amount) then
 		amount = 0;
-		self:DebugPrint(string.format("Cast of %s did `nil` amount of damage", GetSpellLink(spellId)));
+		self:DebugPrint(string.format("%s did `nil` amount of damage", spellOrUnit));
 	end
-	self.db.char.challenges[id].mechanics[key][unit][spellId].num = self.db.char.challenges[id].mechanics[key][unit][spellId].num + 1;
-	self.db.char.challenges[id].mechanics[key][unit][spellId].sum = self.db.char.challenges[id].mechanics[key][unit][spellId].sum + amount;
+	self.db.char.challenges[id].mechanics[key][targetUnit][spellId].num = self.db.char.challenges[id].mechanics[key][targetUnit][spellId].num + 1;
+	self.db.char.challenges[id].mechanics[key][targetUnit][spellId].sum = self.db.char.challenges[id].mechanics[key][targetUnit][spellId].sum + amount;
 end
 
 --[[--

@@ -15,6 +15,7 @@ local SLSpells = {
     [240448] = true, -- Quaking (Environment)
     [342494] = true, -- Belligerent Boast (Season 1 Pridefull)
     [-174773] = true, -- Spiteful Shade Melee Damage
+    [350163] = true, -- Spiteful Shade Melee Damage
     [240446] = true, -- Explosion
     -- Plaguefall
     [319898] = true, -- Vile Spit (Slime Tentacle)

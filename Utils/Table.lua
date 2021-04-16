@@ -128,10 +128,8 @@ function MyDungeonsBook:Table_Cell_FormatAsSpellIcon(rowFrame, cellFrame, data, 
 	if (spellId) then
 		if (spellId < -3) then
 			local npcId = math.abs(spellId);
-			if (self.db.global.meta.npcToTrackSwingDamage[npcId]) then
-				local icon = self.db.global.meta.npcToTrackSwingDamage[npcId].icon;
-				(cellFrame.text or cellFrame):SetText("|T".. icon .. suffix .. "|t");
-			end
+			local icon = (self.db.global.meta.npcToTrackSwingDamage[npcId] and self.db.global.meta.npcToTrackSwingDamage[npcId].icon) or "999951";
+			(cellFrame.text or cellFrame):SetText("|T".. icon .. suffix .. "|t");
 		else
 			if (spellId == -2) then
 				-- Hack to show "fist" icon for swing dmg
@@ -166,12 +164,8 @@ function MyDungeonsBook:Table_Cell_FormatAsSpellLink(rowFrame, cellFrame, data, 
 		if (spellId < -3) then
 			local npcId = math.abs(spellId);
 			local cellText = L["Swing Damage"];
-			if (self.db.global.meta.npcToTrackSwingDamage[npcId]) then
-				local unitName = (self.db.global.meta.npcs[npcId] and self.db.global.meta.npcs[npcId].name) or npcId;
-				cellText = string.format("%s (%s)", cellText, unitName);
-			else
-				cellText = string.format("%s (%s)", cellText, npcId);
-			end
+			local unitName = (self.db.global.meta.npcs[npcId] and self.db.global.meta.npcs[npcId].name) or npcId;
+			cellText = string.format("%s (%s)", cellText, unitName);
 			(cellFrame.text or cellFrame):SetText(cellText);
 		else
 			if (spellId == -2) then
