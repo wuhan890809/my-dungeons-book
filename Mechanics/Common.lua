@@ -513,7 +513,7 @@ function MyDungeonsBook:SaveTrackedDamageToPartyMembers(key, sourceUnit, targetU
 	end
 	local sourceNpcId = self:GetNpcIdFromGuid(sourceUnitGUID);
 	-- Save separately swing damage done by enemies
-	if (spellId == -2) then
+	if (spellId == -2 and sourceNpcId ~= nil) then
 		spellId = -sourceNpcId;
 	end
 	local amountInPercents = amount and amount / UnitHealthMax(targetUnit) * 100 or 0;
@@ -521,9 +521,9 @@ function MyDungeonsBook:SaveTrackedDamageToPartyMembers(key, sourceUnit, targetU
 	local avoidableSpellsNoTank = self:GetSLAvoidableSpellsNoTank();
 	local id = self.db.char.activeChallengeId;
 	local challenge = self:Challenge_GetById(id);
-	local unitId = self:GetPartyUnitByName(targetUnit);
+	local unitId = self:GetPartyUnitByName(id, targetUnit);
 	local role = (challenge.players[unitId] and challenge.players[unitId].role) or nil;
-	local amountIsAvoidable = role and (avoidableSpells[spellId] or (avoidableSpellsNoTank[spellId] and role ~= "TANK"));
+	local amountIsAvoidable = avoidableSpells[spellId] or (avoidableSpellsNoTank[spellId] and role ~= "TANK");
 	local spellLink = GetSpellLink(spellId);
 	local spellOrUnit;
 	if (spellLink) then
@@ -534,8 +534,8 @@ function MyDungeonsBook:SaveTrackedDamageToPartyMembers(key, sourceUnit, targetU
 		else
 			spellOrUnit = spellId;
 		end
-	end
-	if (amountInPercents >= 40 and amountIsAvoidable and self.db.global.meta.mechanics[key].verbose) then
+    end
+    if (amountInPercents >= 40 and amountIsAvoidable and self.db.global.meta.mechanics[key].verbose) then
 		self:LogPrint(string.format(L["%s got hit by %s for %s (%s)"], self:ClassColorText(targetUnit, targetUnit), spellOrUnit, self:FormatNumber(amount), string.format("%.1f%%", amountInPercents)));
 	end
 	self:InitMechanics2Lvl(key, targetUnit);
@@ -1271,6 +1271,9 @@ Track alive/dead state for each party member
 function MyDungeonsBook:PartyAliveStatusCheck()
 	local KEY = "PARTY-MEMBERS-DEATHS-TIMER";
 	local id = self.db.char.activeChallengeId;
+	if (not id) then
+		return;
+	end
 	for _, unitId in pairs(self:GetPartyRoster()) do
 		local name, nameAndRealm = self:GetNameByPartyUnit(id, unitId);
 		local nameToUse = name;

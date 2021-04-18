@@ -1866,8 +1866,8 @@ function GraphFunctions:RefreshLineGraph()
 	for _, series in pairs(self.Icons) do
 		for _, point in pairs(series.Points) do
 			local TPoint = {x = point[1]; y = point[2]};
-			TPoint.x = Width * (TPoint.x - self.XMin) / (self.XMax - self.XMin);
-			TPoint.y = Height * (TPoint.y - self.YMin ) /(self.YMax - self.YMin);
+			TPoint.x = Width * (TPoint.x - self.XMin) / (self.XMax - self.XMin) - series.Size / 2;
+			TPoint.y = Height * (TPoint.y - self.YMin) / (self.YMax - self.YMin);
 			self:DrawIcon(self, TPoint.x, TPoint.y, series.Color, series.Icon, series.Size);
 		end
 	end

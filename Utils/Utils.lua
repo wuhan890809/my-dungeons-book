@@ -242,6 +242,8 @@ end
 --[[--
 Replace color-wrapper from string
 
+String is returned "as is" if it's not colorized
+
 Input: `|caabbcc00test|r`
 Output: `test`
 
@@ -695,7 +697,8 @@ function MyDungeonsBook:GetItemSecondaryStatsBonus(itemStringOrLink)
 	itemTooltipFrame:SetHyperlink(itemStringOrLink);
 	for i = 2, itemTooltipFrame:NumLines() do
 		local line = _G["MyDungeonsBookItemTooltipTextLeft" .. i]:GetText();
-		if line and line ~= "" then
+		if (line and line ~= "") then
+			line = self:DecolorizeString(line);
 			for stat, messages in pairs(statsMessages) do
 				for _, message in pairs(messages) do
 					local foundStatBonus = line:match(message);

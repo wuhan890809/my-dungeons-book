@@ -179,7 +179,7 @@ L["Show LOG messages about INTERRUPTS"] = "Выводить LOG-сообщени
 L["Show LOG messages about DISPELS"] = "Выводить LOG-сообщения про DISPELS";
 L["Show LOG messages about DEATHS"] = "Выводить LOG-сообщения про СМЕРТИ";
 L["Show LOG messages about NOT INTERRUPTED casts"] = "Выводить LOG-сообщения про НЕ ПРЕРВАННЫЕ способности";
-L["Options below are global. However they are overridden by LOG-option above. E.g. when \"Show LOG messages\" is disabled, no log messages will be printed independently of settings below."] = "Опции ниже являются глобальными. Однако, они зависят от LOG-опции выше. Другими словами, если \"Выводить LOG-сообщения\" выключено, то никакие LOG-сообщения выводиться не будут, независимо от значений опций выше.";
+L["Options below are global. However they are overridden by LOG-option above. E.g. when \"Show LOG messages\" is disabled, no log messages will be printed independently of settings below."] = "Опции ниже являются глобальными. Однако, они зависят от LOG-опции выше. Другими словами, если \"Выводить LOG-сообщения\" выключено, то никакие LOG-сообщения выводиться не будут, независимо от значений опций ниже.";
 L["There is a list of internal trackers. Their info is not used directly on the UI and is useful only for devs. No sense to enable it."] = "There is a list of internal trackers. Their info is not used directly on the UI and is useful only for devs. No sense to enable it.";
 L["Aura"] = "Аура";
 L["MyDungeonsBook %s %s for %s"] = "MyDungeonsBook %s %s на %s";
@@ -191,15 +191,15 @@ L["%s (start)"] = "%s (начало)";
 L["%s (end)"] = "%s (конец)";
 -- Settings end
 
--- Regex start (thanks to Exorsus Raid Tool)
-L["%+(%d+) Haste"] = "%+(%d+) к скорости$";
-L["%+(%d+) Haste (Gem)"] = "%+(%d+) к показателю скорости";
+-- Regex start (thanks to Exorsus Raid Tools)
+L["%+(%d+) Haste"] = "%+(%d+)%s+к скорости%s*$";
+L["%+(%d+) Haste (Gem)"] = "НЕ НУЖЕН";
 L["%+(%d+) Mastery"] = "%+(%d+) к искусности";
-L["%+(%d+) Mastery (Gem)"] = "%+(%d+) к показателю искусности";
+L["%+(%d+) Mastery (Gem)"] = "НЕ НУЖЕН";
 L["%+(%d+) Critical Strike"] = "%+(%d+) к критическому удару";
 L["%+(%d+) Critical Strike (Gem)"] = "%+(%d+) к вероятности критического удара";
 L["%+(%d+) Versatility"] = "%+(%d+) к универсальности";
-L["%+(%d+) Versatility (Gem)"] = "%+(%d+) к показателю универсальности";
+L["%+(%d+) Versatility (Gem)"] = "НЕ НУЖЕН";
 -- Regex end
 
 -- BfA start

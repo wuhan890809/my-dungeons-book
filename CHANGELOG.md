@@ -1,4 +1,10 @@
-﻿### v2.8.0
+﻿### v2.8.1
+
+* Fix log-messages about taken avoidable damage (again)
+* Fix calculation for haste bonus from gems
+* Fix death-icons placing on the Death-graph
+
+### v2.8.0
 
 * Fix buffs/debuffs uptime calculation
 * Add Encounter blocks for Deaths graph
