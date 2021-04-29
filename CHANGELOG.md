@@ -5,6 +5,7 @@
 * Add more avoidable debuffs
 * Add report menu for swing damage done to party members
 * Add gems counter to the Equip tab
+* Add scale settings for UI
 
 ### v2.8.1
 
