@@ -51,11 +51,12 @@ function MyDungeonsBook:MainFrame_Show()
 		self.challengeDetailsFrame = self:ChallengeDetailsFrame_Create(grid);
 		self.frame = frame;
 		frame:ResumeLayout();
-		local menuFrame = CreateFrame("Frame", "MDBMenuFrame", UIParent, "UIDropDownMenuTemplate")
+		local menuFrame = CreateFrame("Frame", "MDBMenuFrame", UIParent, "UIDropDownMenuTemplate");
 		self.menuFrame = menuFrame;
 		_G["MyDungeonsBookMainFrame"] = frame.frame;
 		tinsert(UISpecialFrames, "MyDungeonsBookMainFrame");
-    end
+	end
+	self.frame.frame:SetScale(self.db.profile.display.scale);
 	self.frame:Show();
 	self.challengesTable:SetData(self:ChallengesFrame_GetDataForTable());
 end

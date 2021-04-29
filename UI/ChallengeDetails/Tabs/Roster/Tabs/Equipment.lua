@@ -55,26 +55,31 @@ function MyDungeonsBook:EquipmentFrame_PartyMember_Create(parentFrame, challenge
         mastery = 0,
         vers = 0
     };
-    for i = 1, 16 do
+    local itemsOrder = {1, 2, 3, 14, 4, 8, 9, 5, 6, 7, -1, 10, 11, -1, 12, 13, -1, 15, 16};
+    for _, i in pairs(itemsOrder) do
         local itemFrame = AceGUI:Create("InteractiveLabel");
         parentFrame:AddChild(itemFrame);
-        itemFrame:SetWidth(35);
-        itemFrame:SetCallback("OnEnter", function(frame)
-            self:EquipmentFrame_TableItemHover(frame, unitId, i);
-        end);
-        itemFrame:SetCallback("OnLeave", function()
-            self:Table_Cell_MouseOut();
-        end);
-        local itemString = challenge.players[unitId] and challenge.players[unitId].items and challenge.players[unitId].items[getShiftedIndex(i)] or nil;
-        if (itemString) then
-            local itemStats = self:GetItemSecondaryStatsBonus(itemString);
-            for statName, statValue in pairs(itemStats) do
-                stats[statName] = stats[statName] + statValue;
-            end
-            local _, itemId = strsplit(":", itemString);
-            if (itemId) then
-                local suffix = self:GetIconTextureSuffix(30);
-                itemFrame:SetText("|T" .. GetItemIcon(itemId) .. suffix .. "|t");
+        if (i == -1) then
+            itemFrame:SetWidth(20);
+        else
+            itemFrame:SetWidth(35);
+            itemFrame:SetCallback("OnEnter", function(frame)
+                self:EquipmentFrame_TableItemHover(frame, unitId, i);
+            end);
+            itemFrame:SetCallback("OnLeave", function()
+                self:Table_Cell_MouseOut();
+            end);
+            local itemString = challenge.players[unitId] and challenge.players[unitId].items and challenge.players[unitId].items[getShiftedIndex(i)] or nil;
+            if (itemString) then
+                local itemStats = self:GetItemSecondaryStatsBonus(itemString);
+                for statName, statValue in pairs(itemStats) do
+                    stats[statName] = stats[statName] + statValue;
+                end
+                local _, itemId = strsplit(":", itemString);
+                if (itemId) then
+                    local suffix = self:GetIconTextureSuffix(30);
+                    itemFrame:SetText("|T" .. GetItemIcon(itemId) .. suffix .. "|t");
+                end
             end
         end
     end;
@@ -83,24 +88,32 @@ function MyDungeonsBook:EquipmentFrame_PartyMember_Create(parentFrame, challenge
     local placeholder = AceGUI:Create("Label");
     placeholder:SetWidth(40);
     parentFrame:AddChild(placeholder);
-    for i = 1, 16 do
+    local gemsCount = 0;
+    for _, i in pairs(itemsOrder) do
         local itemLevelFrame = AceGUI:Create("Label");
         parentFrame:AddChild(itemLevelFrame);
-        itemLevelFrame:SetWidth(35);
-        itemLevelFrame:SetJustifyH("CENTER");
-        local itemString = challenge.players[unitId] and challenge.players[unitId].items and challenge.players[unitId].items[getShiftedIndex(i)] or nil;
-        if (itemString) then
-            local _, _, itemRarity = GetItemInfo(itemString);
-            if (itemRarity) then
-                itemLevelFrame:SetColor(GetItemQualityColor(itemRarity));
-                itemLevelFrame:SetText(self:GetItemLevelFromTooltip(itemString));
+        if (i == -1) then
+            itemLevelFrame:SetWidth(20);
+        else
+            itemLevelFrame:SetWidth(35);
+            itemLevelFrame:SetJustifyH("CENTER");
+            local itemString = challenge.players[unitId] and challenge.players[unitId].items and challenge.players[unitId].items[getShiftedIndex(i)] or nil;
+            if (itemString) then
+                local _, _, itemRarity = GetItemInfo(itemString);
+                gemsCount = gemsCount + self:GetItemGemsCount(itemString);
+                if (itemRarity) then
+                    itemLevelFrame:SetColor(GetItemQualityColor(itemRarity));
+                    itemLevelFrame:SetText(self:GetItemLevelFromTooltip(itemString));
+                end
             end
         end
     end
     self:NewLine_Create(parentFrame);
-    placeholder = AceGUI:Create("Label");
-    placeholder:SetWidth(40);
-    parentFrame:AddChild(placeholder);
+    local gems = AceGUI:Create("Label");
+    gems:SetWidth(40);
+    local suffix = MyDungeonsBook:GetIconTextureSuffix(16);
+    gems:SetText(string.format("%s |Tinterface\\icons\\inv_misc_gem_flamespessarite_02.blp" .. suffix .. "|t", gemsCount));
+    parentFrame:AddChild(gems);
     local labelFormat = "%s: %s";
     -- crit
     local critLabel = AceGUI:Create("Label");

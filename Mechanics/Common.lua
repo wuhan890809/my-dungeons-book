@@ -33,17 +33,6 @@ function MyDungeonsBook:FindNameDeclension(petTooltipText, partyMemberName)
 	return false;
 end
 
---[[
-@local
-@return[type=bool]
-]]
-function MyDungeonsBook:IsFriendlyFire(spellId)
-	if (spellId == 98021) then
-		return true;
-	end
-	return false;
-end
-
 --[[--
 Original idea is taken from Details addon
 
@@ -351,9 +340,12 @@ Track all damage done to party members
 @param[type=number] amount amount of damage done to `unit` by `spellId`
 ]]
 function MyDungeonsBook:TrackAllDamageDoneToPartyMembers(sourceUnit, targetUnit, sourceUnitGUID, spellId, amount)
-	local key = "ALL-DAMAGE-DONE-TO-PARTY-MEMBERS";
 	if (UnitIsPlayer(targetUnit)) then
-		self:SaveTrackedDamageToPartyMembers(key, sourceUnit, targetUnit, sourceUnitGUID, spellId, amount);
+		if (UnitIsPlayer(sourceUnit)) then
+			self:SaveTrackedFriendlyFireByPartyMembers("FRIENDLY-FIRE-BY-PARTY-MEMBERS", sourceUnit, targetUnit, sourceUnitGUID, spellId, amount);
+		else
+			self:SaveTrackedDamageToPartyMembers("ALL-DAMAGE-DONE-TO-PARTY-MEMBERS", sourceUnit, targetUnit, sourceUnitGUID, spellId, amount);
+		end
 	end
 end
 
@@ -367,7 +359,7 @@ Track all damage done by party members (including pets and other summonned units
 @param[type=number] overkill
 @param[type=bool] crit
 ]]
-function MyDungeonsBook:TrackAllDamageDoneByPartyMembers(sourceUnitName, sourceUnitGUID, spellId, amount, overkill, crit)
+function MyDungeonsBook:TrackAllDamageDoneByPartyMembers(sourceUnitName, sourceUnitGUID, sourceUnitFlags, targetUnitName, targetUnitGUID, targetUnitFlags, spellId, amount, overkill, crit)
 	local id = self.db.char.activeChallengeId;
 	local type = strsplit("-", sourceUnitGUID);
 	local summonedUnitOwner = self:GetSummonedUnitOwner(sourceUnitName, sourceUnitGUID);
@@ -502,15 +494,13 @@ end
 --[[--
 @local
 @param[type=string] key db key
+@param[type=string] unit unit name that did damage (usualy it's a srcUnit from `CombatLogGetCurrentEventInfo`)
 @param[type=string] unit unit name that got damage (usualy it's a destUnit from `CombatLogGetCurrentEventInfo`)
 @param[type=GUID] sourceUnitGUID damage source GUID
 @param[type=number] spellId spell that did damage to `unit`
 @param[type=number] amount amount of damage done to `unit` by `spellId`
 ]]
 function MyDungeonsBook:SaveTrackedDamageToPartyMembers(key, sourceUnit, targetUnit, sourceUnitGUID, spellId, amount)
-	if (self:IsFriendlyFire(spellId)) then
-		return;
-	end
 	local sourceNpcId = self:GetNpcIdFromGuid(sourceUnitGUID);
 	-- Save separately swing damage done by enemies
 	if (spellId == -2 and sourceNpcId ~= nil) then
@@ -551,6 +541,28 @@ function MyDungeonsBook:SaveTrackedDamageToPartyMembers(key, sourceUnit, targetU
 	end
 	self.db.char.challenges[id].mechanics[key][targetUnit][spellId].num = self.db.char.challenges[id].mechanics[key][targetUnit][spellId].num + 1;
 	self.db.char.challenges[id].mechanics[key][targetUnit][spellId].sum = self.db.char.challenges[id].mechanics[key][targetUnit][spellId].sum + amount;
+end
+
+--[[--
+@local
+@param[type=string] key db key
+@param[type=string] unit unit name that did damage (usualy it's a srcUnit from `CombatLogGetCurrentEventInfo`)
+@param[type=string] unit unit name that got damage (usualy it's a destUnit from `CombatLogGetCurrentEventInfo`)
+@param[type=GUID] sourceUnitGUID damage source GUID
+@param[type=number] spellId spell that did damage to `unit`
+@param[type=number] amount amount of damage done to `unit` by `spellId`
+]]
+function MyDungeonsBook:SaveTrackedFriendlyFireByPartyMembers(key, sourceUnit, targetUnit, sourceUnitGUID, spellId, amount)
+	local id = self.db.char.activeChallengeId;
+	self:InitMechanics3Lvl(key, sourceUnit, targetUnit);
+	if (not self.db.char.challenges[id].mechanics[key][sourceUnit][targetUnit][spellId]) then
+		self.db.char.challenges[id].mechanics[key][sourceUnit][targetUnit][spellId] = {
+			num = 0,
+			sum = 0
+		};
+	end
+	self:SafeNestedNumberModify(self.db.char.challenges[id].mechanics, 1, key, sourceUnit, targetUnit, spellId, "num");
+	self:SafeNestedNumberModify(self.db.char.challenges[id].mechanics, amount or 0, key, sourceUnit, targetUnit, spellId, "sum");
 end
 
 --[[--

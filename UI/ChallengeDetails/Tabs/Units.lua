@@ -91,6 +91,9 @@ function MyDungeonsBook:UnitsFrame_Filters_Create(parentFrame, challengeId)
 
     local npcFilterOptions = {["ALL"] = L["All"]};
     local mechanics = self:Challenge_Mechanic_GetById(challengeId, key);
+    if (not mechanics) then
+        return;
+    end
     for unitGUID, _ in pairs(mechanics) do
         local npcId = self:GetNpcIdFromGuid(unitGUID);
         if (npcId) then

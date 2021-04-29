@@ -582,7 +582,7 @@ function MyDungeonsBook:SafeNestedNumberModify(tbl, num, ...)
 	local lastTable = self:SafeNestedGet(tbl, unpack({...}, 1, n - 1));
 	if (lastTable) then
 		if (type(lastTable[lastKey]) == "number") then
-			lastTable[lastKey] = lastTable[lastKey] + num;
+			lastTable[lastKey] = lastTable[lastKey] + (num or 0);
 		end
 	end
 end
@@ -667,6 +667,28 @@ function MyDungeonsBook:GetItemLevelFromTooltip(itemStringOrLink)
 			return line3Number;
 		end
 	end
+end
+
+--[[--
+@param[type=string] itemStringOrLink
+@return[type=number] gemsCount
+]]
+function MyDungeonsBook:GetItemGemsCount(itemStringOrLink)
+	local _, _, _, gem1, gem2, gem3, gem4 = strsplit(":", itemStringOrLink, 15);
+	local gemsCount = 0;
+	if (gem1 and gem1 ~= "") then
+		gemsCount = gemsCount + 1;
+	end
+	if (gem2 and gem2 ~= "") then
+		gemsCount = gemsCount + 1;
+	end
+	if (gem3 and gem3 ~= "") then
+		gemsCount = gemsCount + 1;
+	end
+	if (gem4 and gem4 ~= "") then
+		gemsCount = gemsCount + 1;
+	end
+	return gemsCount;
 end
 
 --[[--

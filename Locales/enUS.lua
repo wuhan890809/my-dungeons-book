@@ -134,6 +134,7 @@ L["MyDungeonsBook Damage stats by %s with %s:"] = "MyDungeonsBook Damage stats b
 L["Amount - %s (%s%%), over - %s, crit - %s%%, max - %s (%s)"] = "Amount - %s (%s%%), over - %s, crit - %s%%, max - %s (%s)";
 L["Combat Time"] = "Combat Time";
 L["Scale"] = "Scale";
+L["Window scale"] = "Window scale";
 L["Timeline"] = "Timeline";
 L["Overall Idle Time - %s"] = "Overall Idle Time - %s";
 L["Delete"] = "Delete";

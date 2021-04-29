@@ -283,12 +283,13 @@ local SLSpellsNoTank = {
 };
 
 local SLAuras = {
+    -- Affixes
+    [342494] = true, -- Belligerent Boast (Manifestation of Pride)
     -- Plaguefall
     [336301] = true, -- Web Wrap (Domina Venomblade)
     [333406] = true, -- Assassinate (Domina Venomblade adds)
     [344001] = true, -- Slime Trail
     [322358] = true, -- Burning Strain (Doctor Ickus)
-    [327882] = true, -- Blightbeak (Plagueroc)
     [319898] = true, -- Vile Spit (Slime Tentacle)
     [319120] = true, -- Putrid Bile
     [328501] = true, -- Plague Bomb (Rigged Plagueborer)
@@ -315,6 +316,7 @@ local SLAuras = {
     [326017] = true, -- Decomposing Acid
     [321893] = true, -- Freezing Burst (Illusionary Vulpin)
     [323137] = true, -- Bewildering Pollen (Drohman Oulfarran)
+    [324859] = true, -- Bramblethorn Entanglement
     -- Halls of Atonement
     [319703] = true, -- Blood Torrent (Echelon)
     -- De Other Side
@@ -326,17 +328,21 @@ local SLAuras = {
     [321038] = true, -- Wrack Soul (Wicked Oppressor)
     [326836] = true, -- Curse of Suppression (Wicked Oppressor)
     [322212] = true, -- Growing Mistrust (Vestige of Doubt)
+    -- Theater of Pain
+    [341949] = true, -- Withering Blight
 };
 
 local SLAurasNoTank = {
     -- Plaguefall
     [325552] = true, -- Cytotoxic Slash (Domina Venomblade)
+    [327882] = true, -- Blightbeak (Plagueroc)
     -- The Necrotic Wake
     [338357] = true, -- Tenderize
     [321807] = true, -- Boneflay (Zolramus Bonecarver)
     [333477] = true, -- Gut Slice (Goregrind)
     -- Halls of Atonement
     [344993] = true, -- Jagged Swipe (Vicious Gargon)
+    [326632] = true, -- Stony Veins
     -- Sanguine Depths
     [322429] = true, -- Severing Slice (Chamber Sentinel)
 };

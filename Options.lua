@@ -35,7 +35,8 @@ MyDungeonsBook.OptionsDefaults = {
 			y = 0,
 			dateFormat = "%Y-%m-%d\n%H:%M",
 			timeFormat = "%M:%S",
-			flattenIcons = true
+			flattenIcons = true,
+			scale = 1
 		},
 		verbose = {
 			debug = false,
@@ -252,6 +253,29 @@ MyDungeonsBook.Options = {
 						}
 					}
 				},
+				scale = {
+					type = "group",
+					inline = true,
+					order = 3,
+					name = L["Scale"],
+					args = {
+						ui = {
+							order = 1,
+							name = L["Window scale"],
+							type = "range",
+							width = "normal",
+							min = 1,
+							max = 1.5,
+							step = 0.05,
+							get = function()
+								return MyDungeonsBook.db.profile.display.scale;
+							end,
+							set = function(_, v)
+								MyDungeonsBook.db.profile.display.scale = v;
+							end
+						}
+					}
+				}
 			}
 		},
 		verbose = {

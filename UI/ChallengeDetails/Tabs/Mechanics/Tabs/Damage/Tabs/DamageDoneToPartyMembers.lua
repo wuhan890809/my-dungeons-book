@@ -12,10 +12,13 @@ local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 local function getDamageToEachPartyMemberSpellMenu(rows, index, cols)
 	local spellId = rows[index].cols[1].value;
 	local report = MyDungeonsBook:DamageDoneToPartyMembersFrame_Report_Create(rows[index], cols);
-	return {
-		MyDungeonsBook:WowHead_Menu_SpellComplex(spellId),
+	local contextMenu = {
 		MyDungeonsBook:Report_Menu(report)
-	};
+	}
+	if (spellId > 0) then
+		tinsert(contextMenu, MyDungeonsBook:WowHead_Menu_SpellComplex(spellId));
+	end
+	return contextMenu;
 end
 
 --[[--
@@ -36,9 +39,7 @@ function MyDungeonsBook:DamageDoneToPartyMembersFrame_Create(parentFrame, challe
 	table:RegisterEvents({
 		OnClick = function(_, _, data, _, _, realrow, _, _, button)
 			if (button == "RightButton" and realrow) then
-				if (data[realrow].cols[1].value > 0) then
-					EasyMenu(getDamageToEachPartyMemberSpellMenu(data, realrow, table.cols), self.menuFrame, "cursor", 0 , 0, "MENU");
-				end
+				EasyMenu(getDamageToEachPartyMemberSpellMenu(data, realrow, table.cols), self.menuFrame, "cursor", 0 , 0, "MENU");
 			end
 		end,
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column, _)
@@ -241,7 +242,16 @@ end
 @return[type=table]
 ]]
 function MyDungeonsBook:DamageDoneToPartyMembersFrame_Report_Create(row, cols)
-	local spellLink = GetSpellLink(row.cols[1].value);
-	local title = string.format(L["MyDungeonsBook Damage taken by party from %s:"], spellLink);
+	local spellId = row.cols[1].value;
+	local spellLinkOrName = "";
+	if (spellId > 0) then
+		spellLinkOrName = GetSpellLink(row.cols[1].value);
+	else
+		local npcId = math.abs(spellId);
+		local cellText = L["Swing Damage"];
+		local unitName = (self.db.global.meta.npcs[npcId] and self.db.global.meta.npcs[npcId].name) or npcId;
+		spellLinkOrName = string.format("%s (%s)", cellText, unitName);
+	end
+	local title = string.format(L["MyDungeonsBook Damage taken by party from %s:"], spellLinkOrName);
 	return self:Table_PlayersRow_Report_Create(row, cols, {4, 6, 8, 10, 12, 14}, title);
 end

@@ -19,6 +19,16 @@ function MyDungeonsBook:ChallengeDetailsFrame_Show(challengeId)
 	self:DebugPrint("Show details for challenge #" .. challengeId);
 	self.activeChallengeId = challengeId;
 	self.activeChallengeMechanics = nil;
+	if (not self.challengeDetailsFrame.titleAffixes) then
+		local titleAffixes, titleText, dateText = self:ChallengeDetailsFrame_TitleFrame_Create(self.challengeDetailsFrame);
+		self.challengeDetailsFrame.titleAffixes = titleAffixes;
+		self.challengeDetailsFrame.titleText = titleText;
+		self.challengeDetailsFrame.dateText = dateText;
+	end
+	if (not self.challengeDetailsFrame.tabButtonsFrame) then
+		local tabButtonsFrame = self:ChallengeDetailsFrame_CreateTabButtonsFrame(self.challengeDetailsFrame);
+		self.challengeDetailsFrame.tabButtonsFrame = tabButtonsFrame;
+	end
 	self:ChallengeDetailsFrame_Update(challengeId);
 	self.challengeDetailsFrame.frame:Show();
 	self.challengeDetailsFrame.tabButtonsFrame:SelectTab("roster");
@@ -36,17 +46,6 @@ function MyDungeonsBook:ChallengeDetailsFrame_Create(parentFrame)
 	challengeDetailsFrame:SetFullHeight(true);
 	challengeDetailsFrame:SetWidth(700);
 	parentFrame:AddChild(challengeDetailsFrame);
-	local grid = AceGUI:Create("SimpleGroup");
-	grid:SetLayout("List");
-	grid:SetFullWidth(true);
-	challengeDetailsFrame:AddChild(grid);
-	local titleAffixes, titleText, dateText = self:ChallengeDetailsFrame_TitleFrame_Create(grid);
-	challengeDetailsFrame.titleAffixes = titleAffixes;
-	challengeDetailsFrame.titleText = titleText;
-	challengeDetailsFrame.dateText = dateText;
-	local tabButtonsFrame = self:ChallengeDetailsFrame_CreateTabButtonsFrame(grid);
-	challengeDetailsFrame.tabButtonsFrame = tabButtonsFrame;
-	challengeDetailsFrame.frame:Hide();
 	return challengeDetailsFrame;
 end
 
@@ -61,7 +60,6 @@ function MyDungeonsBook:ChallengeDetailsFrame_TitleFrame_Create(parentFrame)
 	grid:SetLayout("Flow");
 	grid:SetFullWidth(true);
 	parentFrame:AddChild(grid);
-	grid:SetFullHeight(true);
 	local titleAffixes = AceGUI:Create("Label");
 	titleAffixes:SetFontObject(GameFontNormal);
 	titleAffixes:SetWidth(200);
@@ -77,6 +75,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_TitleFrame_Create(parentFrame)
 	dateText:SetWidth(190);
 	dateText:SetJustifyH("RIGHT");
 	grid:AddChild(dateText);
+	grid:SetHeight(40);
 	return titleAffixes, titleText, dateText;
 end
 

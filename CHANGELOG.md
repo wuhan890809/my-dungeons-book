@@ -1,4 +1,12 @@
-﻿### v2.8.1
+﻿### v2.9.0
+
+* Track friendly fire damage separately
+* Improve Equip tab (show rings, trinkets and weapon separately)
+* Add more avoidable debuffs
+* Add report menu for swing damage done to party members
+* Add gems counter to the Equip tab
+
+### v2.8.1
 
 * Fix log-messages about taken avoidable damage (again)
 * Fix calculation for haste bonus from gems

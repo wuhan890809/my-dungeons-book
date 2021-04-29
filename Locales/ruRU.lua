@@ -134,6 +134,7 @@ L["MyDungeonsBook Damage stats by %s with %s:"] = "MyDungeonsBook Урон от 
 L["Amount - %s (%s%%), over - %s, crit - %s%%, max - %s (%s)"] = "Кол-во - %s (%s%%), сверх - %s, крит - %s%%, макс - %s (%s)";
 L["Combat Time"] = "Время в бою";
 L["Scale"] = "Масштаб";
+L["Window scale"] = "Масштаб окна";
 L["Timeline"] = "Время";
 L["Overall Idle Time - %s"] = "Всего времени вне боя - %s";
 L["Delete"] = "Удалить";
