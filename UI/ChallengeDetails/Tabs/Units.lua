@@ -136,6 +136,14 @@ function MyDungeonsBook:UnitsFrame_GetHeadersForTable()
             align = "LEFT"
         },
         {
+            name = "",
+            width = 40,
+            align = "LEFT",
+            DoCellUpdate = function(...)
+                self:Table_Cell_FormatAsTexture(...);
+            end
+        },
+        {
             name = L["NPC"],
             width = 200,
             align = "LEFT",
@@ -171,7 +179,6 @@ function MyDungeonsBook:UnitsFrame_GetHeadersForTable()
                 self:Table_Cell_FormatAsTime(...);
             end
         },
-
     };
 end
 
@@ -189,6 +196,8 @@ function MyDungeonsBook:UnitsFrame_GetDataForTable(challengeId)
         return {};
     end
     local challengeStartTime = challenge.challengeInfo.startTime;
+    local mdtEnemiesDb =  IsAddOnLoaded("MythicDungeonTools") and self:Mdt_GetInstanceEnemiesRemapped(challenge.challengeInfo.currentZoneId) or {};
+    local mdtOverrides = self.db.global.meta.addons.mythicDungeonTools;
     local tableData = {};
     for npcGUID, npcData in pairs(mechanic) do
         local npcId = self:GetNpcIdFromGuid(npcGUID);
@@ -197,9 +206,12 @@ function MyDungeonsBook:UnitsFrame_GetDataForTable(challengeId)
             local combatStart = npcData.firstHit;
             local combatEnd = npcData.died or npcData.lastCast;
             if (combatStart and combatEnd) then
+                local enemyInfo = mdtOverrides[npcId] or mdtEnemiesDb[npcId] or {};
+                local enemyPortraitDisplayId = enemyInfo.displayId or -1;
                 tinsert(tableData, {
                     cols = {
                         {value = npcId},
+                        {value = enemyPortraitDisplayId},
                         {value = npcName},
                         {value = (combatStart - challengeStartTime) * 1000},
                         {value = (combatEnd - challengeStartTime) * 1000},

@@ -1,4 +1,5 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("MyDungeonsBook", "ruRU");
+if not L then return end
 
 -- UI start
 L["My Dungeons Book"] = true;
@@ -62,6 +63,7 @@ L["Name"] = "Имя";
 L["Over"] = "Сверх";
 L["Amount"] = "Кол-во";
 L["Damage Done To Units"] = "Урон по врагам";
+L["Friendly Fire"] = "Урон по своим";
 L["Special Casts"] = "Особые способности"
 L["Own Casts"] = "Свои способности";
 L["Buffs Or Debuffs On Units"] = "Бафы и дебафы на врагах";

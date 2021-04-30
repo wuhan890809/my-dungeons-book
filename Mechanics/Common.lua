@@ -366,6 +366,10 @@ function MyDungeonsBook:TrackAllDamageDoneByPartyMembers(sourceUnitName, sourceU
 	if ((not summonedUnitOwner) and (type ~= "Pet") and (type ~= "Player")) then
 		return;
 	end
+	local targetUnitOwner = self:GetSummonedUnitOwner(targetUnitName, targetUnitGUID);
+	if (UnitIsPlayer(targetUnitName) or targetUnitOwner) then
+		return;
+	end
 	local key = "ALL-DAMAGE-DONE-BY-PARTY-MEMBERS";
 	self:InitMechanics4Lvl(key, sourceUnitName, "spells", spellId);
 	if (summonedUnitOwner) then

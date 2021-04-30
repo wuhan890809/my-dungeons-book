@@ -58,6 +58,15 @@ MyDungeonsBook.OptionsDefaults = {
 		meta = {
 			spells = {},
 			npcs = {},
+			addons = {
+				mythicDungeonTools = {
+					npcs = {
+						[162692] = {
+							displayId = 94926
+						}
+					},
+				}
+			},
 			npcToTrackSwingDamage = {
 				[174773] = {
 					icon = 135945

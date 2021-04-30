@@ -238,7 +238,7 @@ function MyDungeonsBook:SummaryFrame_GetDataForTable(challengeId)
 		local _, damageDoneSummaryRow = self:DamageDoneByPartyMemberFrame_GetDataForTable(challengeId, "ALL-DAMAGE-DONE-BY-PARTY-MEMBERS", unitId);
 		local allDamageDoneByPartyMember = damageDoneSummaryRow.cols[5].value;
 		local _, healDoneSummaryRow = self:HealByPartyMemberBySpellFrame_GetDataForTable(challengeId, "ALL-HEAL-DONE-BY-PARTY-MEMBERS", unitId);
-		local allHealDoneByPartyMember = healDoneSummaryRow.cols[5].value;
+		local allHealDoneByPartyMember = healDoneSummaryRow and healDoneSummaryRow.cols[5].value or 0;
 		local interruptsTableData = self:InterruptsFrame_GetDataForSummaryTable(challengeId);
 		local unitInterruptsSum = 0;
 		for _, v in pairs(interruptsTableData) do

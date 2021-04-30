@@ -21,6 +21,7 @@ function MyDungeonsBook:DamageFrame_CreateTabButtonsFrame(parentFrame)
 		{value = "damageDoneToPartyMembers", text = L["All damage taken"]},
 		{value = "damageDoneByPartyMembers", text = L["All damage done"]},
 		{value = "damageDoneToUnits", text = L["Damage Done To Units"]},
+		{value = "friendlyFire", text = L["Friendly Fire"]},
 	});
 	tabs:SetCallback("OnGroupSelected", function (container, _, tabId)
 		container:ReleaseChildren();
@@ -32,6 +33,9 @@ function MyDungeonsBook:DamageFrame_CreateTabButtonsFrame(parentFrame)
 		end
 		if (tabId == "damageDoneToUnits") then
 			self.damageDoneToUnitsFrame = self:DamageDoneToUnitsFrame_Create(container, self.activeChallengeId);
+		end
+		if (tabId == "friendlyFire") then
+			self.friendlyFireFrame = self:FriendlyFireFrame_Create(container, self.activeChallengeId);
 		end
 	end);
 	tabs:SetHeight(586);

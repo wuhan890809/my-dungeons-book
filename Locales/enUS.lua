@@ -62,6 +62,7 @@ L["Name"] = "Name";
 L["Over"] = "Over";
 L["Amount"] = "Amount";
 L["Damage Done To Units"] = "Damage Done To Units";
+L["Friendly Fire"] = "Friendly Fire";
 L["Special Casts"] = "Special Casts"
 L["Own Casts"] = "Own Casts";
 L["Buffs Or Debuffs On Units"] = "Buffs Or Debuffs On Units";

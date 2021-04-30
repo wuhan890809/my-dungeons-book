@@ -92,10 +92,10 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		self:TrackAllDamageDoneToPartyMembers(srcName, dstName, srcGUID, -2, amount);
 		self:TrackAllDamageDoneByPartyMembers(srcName, srcGUID, srcFlags, dstName, dstGUID, dstFlags, -2, amount, 0, false);
 	end
-	if (subEventPrefix:match("^SPELL") and
-		subEventSuffix == "MISSED") then
+	if ((subEventPrefix:match("^SPELL") or subEventPrefix:match("^RANGE")) and subEventSuffix == "MISSED") then
 		local spellId, _, _, _, _, amount = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackAllDamageDoneToPartyMembers(srcName, dstName, srcGUID, spellId, amount);
+		self:TrackAllDamageDoneByPartyMembers(srcName, srcGUID, srcFlags, dstName, dstGUID, dstFlags, spellId, amount, 0, false);
 	end
 	if (subEventName == "SPELL_AURA_APPLIED" or
 		subEventName == "SPELL_AURA_APPLIED_DOSE") then

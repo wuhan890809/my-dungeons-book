@@ -201,9 +201,31 @@ function MyDungeonsBook:Table_Cell_FormatAsSpellLink(rowFrame, cellFrame, data, 
 end
 
 --[[--
+Wrapper for cells with texture.
+
+Original value (display ID) is left "as is" for sorting purposes.
+
+Params are similar to [ScrollingTableMdb:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
+]]
+function MyDungeonsBook:Table_Cell_FormatAsTexture(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
+	local displayId = data[realrow].cols[column].value;
+	if (displayId < 0) then
+		if (cellFrame.texture) then
+			cellFrame.texture:SetTexture("interface\\inventoryitems\\wowunknownitem01.blp");
+		end
+		return;
+	end
+	local texture = cellFrame.texture or cellFrame:CreateTexture(nil, "BACKGROUND");
+	texture:SetPoint("TOPLEFT", cellFrame ,"TOPLEFT", 5, -5);
+	texture:SetPoint("BOTTOMRIGHT", cellFrame ,"BOTTOMRIGHT", -5, 5);
+	cellFrame.texture = texture;
+	SetPortraitTextureFromCreatureDisplayID(texture, displayId);
+end
+
+--[[--
 Wrapper for cells with spell icon.
 
-Original value (spell ID) is left "as is" for sorting purposes.
+Original value (item ID) is left "as is" for sorting purposes.
 
 Params are similar to [ScrollingTableMdb:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
 ]]

@@ -6,6 +6,10 @@
 * Add report menu for swing damage done to party members
 * Add gems counter to the Equip tab
 * Add scale settings for UI
+* [#117](https://github.com/onechiporenko/my-dungeons-book/issues/117) Can't see any details
+* Calculate damage done by players more accurate (track MISSED too)
+* Add UI-tabs for friendly-fire damage
+* Add enemy-units portraits to the Units-tab (data from MDT-addon is used if it's installed)
 
 ### v2.8.1
 

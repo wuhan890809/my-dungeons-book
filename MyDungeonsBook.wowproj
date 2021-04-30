@@ -94,6 +94,15 @@
     <Content Include="UI\ChallengeDetails\Tabs\CombatTime.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\FriendlyFire.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\FriendlyFire\Tabs.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\FriendlyFire\Tabs\FriendlyFireByPartyMember.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Deaths.lua">
       <SubType>Code</SubType>
     </Content>
@@ -235,6 +244,9 @@
     <Content Include="Utils\JSON.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Utils\MDT.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Utils\Report.lua">
       <SubType>Code</SubType>
     </Content>
@@ -280,6 +292,8 @@
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\DamageDoneByPartyMembers" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\DamageDoneByPartyMembers\Tabs\" />
+    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\FriendlyFire" />
+    <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\FriendlyFire\Tabs" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs" />
     <Folder Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Casts" />
