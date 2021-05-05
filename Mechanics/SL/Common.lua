@@ -728,6 +728,14 @@ function MyDungeonsBook:GetSLAvoidableSpellsNoTank()
     return SLSpellsNoTank;
 end
 
+function MyDungeonsBook:GetSLAvoidableAuras()
+    return SLAuras;
+end
+
+function MyDungeonsBook:GetSLAvoidableAurasNoTank()
+    return SLAurasNoTank;
+end
+
 function MyDungeonsBook:TrackSLAvoidableSpells(damagedUnit, spellId, amount)
 	self:TrackAvoidableSpells("SL-AVOIDABLE-SPELLS", SLSpells, SLSpellsNoTank, damagedUnit, spellId, amount);
 end

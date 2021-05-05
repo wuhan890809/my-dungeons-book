@@ -184,6 +184,10 @@ MyDungeonsBook.OptionsDefaults = {
 				},
 				["SL-DAMAGE-DONE-TO-UNITS"] = {
 					id = "SL-DAMAGE-DONE-TO-UNITS"
+				},
+				["PARTY-MEMBER-DEATH-LOGS"] = {
+					id = "PARTY-MEMBER-DEATH-LOGS",
+					timeBeforeDeathToTrack = 15
 				}
 			},
 		}
@@ -288,7 +292,7 @@ MyDungeonsBook.Options = {
 			}
 		},
 		verbose = {
-			order = 1,
+			order = 2,
 			name = L["Verbose"],
 			type = "group",
 			args = {
@@ -421,7 +425,7 @@ MyDungeonsBook.Options = {
 			}
 		},
 		performance = {
-			order = 2,
+			order = 3,
 			name = L["Performance"],
 			type = "group",
 			args = {
@@ -457,7 +461,7 @@ MyDungeonsBook.Options = {
 			type = "group",
 			args = {
 				mechanics = {
-					name = "Mechanics",
+					name = L["Mechanics"],
 					inline = true,
 					type = "group",
 					args = {
@@ -476,6 +480,34 @@ MyDungeonsBook.Options = {
 							end,
 							set = function(_, v)
 								MyDungeonsBook.db.profile.dev.mechanics["ALL-ENEMY-AURAS"].enabled = v;
+							end
+						}
+					}
+				}
+			}
+		},
+		mechanics = {
+			order = 5,
+			name = L["Mechanics"],
+			type = "group",
+			args = {
+				deathlogs = {
+					name = L["Death logs"],
+					type = "group",
+					args = {
+						timeBeforeDeathToTrack = {
+							order = 1,
+							name = L["Time before death to track"],
+							type = "range",
+							width = "full",
+							min = 5,
+							max = 15,
+							step = 1,
+							get = function()
+								return MyDungeonsBook.db.global.meta.mechanics["PARTY-MEMBER-DEATH-LOGS"].timeBeforeDeathToTrack;
+							end,
+							set = function(_, v)
+								MyDungeonsBook.db.global.meta.mechanics["PARTY-MEMBER-DEATH-LOGS"].timeBeforeDeathToTrack = v;
 							end
 						}
 					}

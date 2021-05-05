@@ -115,16 +115,9 @@ function MyDungeonsBook:Table_Cell_FormatAsGuid(format, rowFrame, cellFrame, dat
 	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
 end
 
---[[--
-Wrapper for cells with spell icon.
-
-Original value (spell ID) is left "as is" for sorting purposes.
-
-Params are similar to [ScrollingTableMdb:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
-]]
-function MyDungeonsBook:Table_Cell_FormatAsSpellIcon(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
+function MyDungeonsBook:Table_Cell_FormatAsSizedSpellIcon(size, rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local spellId = data[realrow].cols[column].value;
-	local suffix = self:GetIconTextureSuffix(30);
+	local suffix = self:GetIconTextureSuffix(size);
 	if (spellId) then
 		if (spellId < -3) then
 			local npcId = math.abs(spellId);
@@ -149,6 +142,21 @@ function MyDungeonsBook:Table_Cell_FormatAsSpellIcon(rowFrame, cellFrame, data, 
 		(cellFrame.text or cellFrame):SetText("");
 	end
 	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
+end
+
+function MyDungeonsBook:Table_Cell_FormatAsSmallSpellIcon(...)
+	return self:Table_Cell_FormatAsSizedSpellIcon(15, ...);
+end
+
+--[[--
+Wrapper for cells with spell icon.
+
+Original value (spell ID) is left "as is" for sorting purposes.
+
+Params are similar to [ScrollingTableMdb:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
+]]
+function MyDungeonsBook:Table_Cell_FormatAsSpellIcon(...)
+	return self:Table_Cell_FormatAsSizedSpellIcon(30, ...);
 end
 
 --[[--

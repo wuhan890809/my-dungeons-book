@@ -152,6 +152,9 @@ L["Critical Strike"] = "Критический удар";
 L["Haste"] = "Скорость";
 L["Mastery"] = "Искусность";
 L["Versatility"] = "Универсальность";
+L["Event"] = "Событие";
+L["Source"] = "Источник";
+L["HP"] = "Здоровье";
 -- UI end
 
 -- Help start
@@ -163,7 +166,7 @@ L["send some message via comm to other MDB user. unitId must be 'party1..4'."] =
 
 -- Settings start
 L["Performance"] = "Производительность";
-L["Run garbage collector on close"] = "Выполнять сборку мусору при закрытии MDB";
+L["Run garbage collector on close"] = "Выполнять сборку мусора при закрытии MDB";
 L["Show DEV Tab"] = "Выводить DEV-вкладку";
 L["Verbose"] = "Verbose";
 L["Show DEBUG messages"] = "Выводить DEBUG-сообщения";
@@ -192,6 +195,8 @@ L["Release Time"] = "Время воскрешения";
 L["Time dead"] = "Время мертвым";
 L["%s (start)"] = "%s (начало)";
 L["%s (end)"] = "%s (конец)";
+L["Death logs"] = "Логи смертей";
+L["Time before death to track"] = "Сколько записывать времени перед смертью";
 -- Settings end
 
 -- Regex start (thanks to Exorsus Raid Tools)

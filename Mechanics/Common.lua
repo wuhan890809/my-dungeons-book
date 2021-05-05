@@ -13,6 +13,8 @@ local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
 local petTooltipFrame = CreateFrame("GameTooltip", "MyDungeonsBookPetTooltip", nil, "GameTooltipTemplate");
 
+local allPartyMemberLogs = {};
+
 --[[--
 Original idea is taken from Details addon
 
@@ -180,38 +182,39 @@ end
 --[[--
 Track each player's death.
 
-@param[type=GUID] deadUnitGUID 8th result of `CombatLogGetCurrentEventInfo` call
+@param[type=number] timestamp 1st result of `CombatLogGetCurrentEventInfo` call
 @param[type=string] unit 9th result of `CombatLogGetCurrentEventInfo` call
+@param[type=GUID] deadUnitGUID 8th result of `CombatLogGetCurrentEventInfo` call
 ]]
-function MyDungeonsBook:TrackDeath(deadUnitGUID, unit)
+function MyDungeonsBook:TrackDeath(timestamp, deadUnitName, deadUnitGUID)
 	local id = self.db.char.activeChallengeId;
-	local isPlayer = strfind(deadUnitGUID, "Player"); -- needed GUID is something like "Player-......"
-	if (not isPlayer) then
+	if (not UnitIsPlayer(deadUnitName)) then
 		return;
 	end
-	if (UnitIsFeignDeath(unit)) then
-		self:DebugPrint(string.format("%s is feign death", unit));
+	if (UnitIsFeignDeath(deadUnitName)) then
+		self:DebugPrint(string.format("%s is feign death", deadUnitName));
 	    return;
 	end
 	local surrenderedSoul = GetSpellInfo(212570);
 	for i = 1, 40 do
-		local debuffName = UnitDebuff(unit, i);
+		local debuffName = UnitDebuff(deadUnitName, i);
 		if (debuffName == nil) then
 			break;
 		end
 		if (debuffName == surrenderedSoul) then
-			self:DebugPrint(string.format("%s is on Surrendered Soul debuff", unit));
+			self:DebugPrint(string.format("%s is on Surrendered Soul debuff", deadUnitName));
 			return;
 		end
 	end
 	local key = "DEATHS";
-	self:InitMechanics2Lvl(key, unit);
-	tinsert(self.db.char.challenges[id].mechanics[key][unit], time());
+	self:InitMechanics2Lvl(key, deadUnitName);
+	tinsert(self.db.char.challenges[id].mechanics[key][deadUnitName], {original = timestamp, rounded = floor(timestamp), ["local"] = time()});
 	self.db.char.challenges[id].challengeInfo.numDeaths = self.db.char.challenges[id].challengeInfo.numDeaths + 1;
 	if (self.db.global.meta.mechanics[key].verbose) then
-		self:LogPrint(string.format(L["%s died"], self:ClassColorText(unit, unit)));
+		self:LogPrint(string.format(L["%s died"], self:ClassColorText(deadUnitName, deadUnitName)));
 	end
-	self:RemoveAurasFromPartyMember(unit, deadUnitGUID);
+	-- Force to update internal death timers
+	self:PartyAliveStatusCheck();
 end
 
 --[[--
@@ -1331,4 +1334,65 @@ function MyDungeonsBook:AddAurasToPartyMember(sourceUnitName, unitId)
 		end
 		self:TrackAuraAddedToPartyMember(sourceUnitName, UnitGUID(unitId), spellId, "DEBUFF", (amount == 0 and 1) or amount);
 	end
+end
+
+--[[--
+Track all combat logs related to party members
+
+@param[type=timestamp] number
+@param[type=string] unitName
+]]
+function MyDungeonsBook:TrackCombatEventWithPartyMember(timestamp, unitName, unitGUID)
+	if (not UnitIsPlayer(unitName)) then
+		return;
+	end
+	local ts = floor(timestamp);
+	local id = self.db.char.activeChallengeId;
+	self.allPartyMemberLogs = self.allPartyMemberLogs or {};
+	self.allPartyMemberLogs[unitName] = self.allPartyMemberLogs[unitName] or {};
+	self.allPartyMemberLogs[unitName][ts] = self.allPartyMemberLogs[unitName][ts] or {};
+	local unitId = self:GetPartyUnitByName(id, unitName);
+	local meta = {
+		hp = {
+			max = UnitHealthMax(unitId),
+			current = UnitHealth(unitId)
+		}
+	};
+	local log = {CombatLogGetCurrentEventInfo()};
+	tinsert(log, 1, meta);
+	tinsert(self.allPartyMemberLogs[unitName][ts], log);
+end
+
+--[[--
+Save separately combat logs related for party member (last N seconds before death)
+
+@param[type=timestamp] number
+@param[type=string] unitName
+]]
+function MyDungeonsBook:SaveDeathLogsForPartyMember(timestamp, unitName)
+	if (not UnitIsPlayer(unitName)) then
+		return;
+	end
+	if (UnitIsFeignDeath(unitName)) then
+		return;
+	end
+	local logs = self.allPartyMemberLogs[unitName];
+	if (not logs) then
+		return;
+	end
+	local ts = floor(timestamp);
+	local KEY = "PARTY-MEMBER-DEATH-LOGS";
+	local id = self.db.char.activeChallengeId;
+	if (not id) then
+		return;
+	end
+	self:InitMechanics3Lvl(KEY, unitName, ts);
+	for i = ts - self.db.global.meta.mechanics["PARTY-MEMBER-DEATH-LOGS"].timeBeforeDeathToTrack, ts + 1 do
+		if (logs[i]) then
+			for _, log in pairs(logs[i]) do
+				tinsert(self.db.char.challenges[id].mechanics[KEY][unitName][ts], self:CopyTable(log));
+			end
+		end
+	end
+	wipe(self.allPartyMemberLogs[unitName]);
 end

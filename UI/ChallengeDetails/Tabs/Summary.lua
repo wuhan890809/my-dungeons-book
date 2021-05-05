@@ -31,7 +31,11 @@ function MyDungeonsBook:SummaryFrame_Create(parentFrame, challengeId)
 		local unitInfo = challenge.players[unitId];
 		legend[unitIndex] = self:ClassColorTextByClassIndex(unitInfo.class, unitInfo.name or "");
 		if (unitDeaths) then
-			for _, timestamp in pairs(unitDeaths) do
+			for _, timestampOrTable in pairs(unitDeaths) do
+				local timestamp = timestampOrTable;
+				if (type(timestampOrTable) ~= "number") then
+					timestamp = timestampOrTable.rounded;
+				end
 				tinsert(series.timeline, {timestamp, unitIndex - 1});
 			end
 		end

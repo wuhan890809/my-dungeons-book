@@ -46,7 +46,7 @@ function getSuccessFailIcon(success)
 		icon = "interface\\raidframe\\readycheck-notready.blp";
 	end
 	local suffix = MyDungeonsBook:GetIconTextureSuffix(16);
-	return "|T" .. (icon or "") .. suffix .. "|t"
+	return "|T" .. (icon or "") .. suffix .. "|t";
 end
 
 --[[--

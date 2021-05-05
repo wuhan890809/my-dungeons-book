@@ -151,6 +151,9 @@ L["Critical Strike"] = "Critical Strike";
 L["Haste"] = "Haste";
 L["Mastery"] = "Mastery";
 L["Versatility"] = "Versatility";
+L["Event"] = "Event";
+L["Source"] = "Source";
+L["HP"] = "HP";
 -- UI end
 
 -- Help start
@@ -191,6 +194,8 @@ L["Release Time"] = "Release Time";
 L["Time dead"] = "Time dead";
 L["%s (start)"] = "%s (start)";
 L["%s (end)"] = "%s (end)";
+L["Death logs"] = "Death logs";
+L["Time before death to track"] = "Time before death to track";
 -- Settings end
 
 -- Regex start (thanks to Exorsus Raid Tool)

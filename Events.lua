@@ -27,24 +27,27 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		self:TrackSummonnedByPartyMembersUnit(srcName, srcGUID, dstName, dstGUID);
 	end
 	if (subEventName == "UNIT_DIED") then
-		self:TrackDeath(dstGUID, dstName);
-		self:TrackSummonByPartyMemberUnitDeath(dstGUID, dstName);
+		self:TrackDeath(timestamp, dstName, dstGUID);
+		self:TrackSummonByPartyMemberUnitDeath(dstName, dstGUID);
 		self:TrackEnemyUnitDied(dstName, dstGUID, dstFlags);
 		self:RemoveAurasFromPartyMember(dstName, dstGUID);
+		self:SaveDeathLogsForPartyMember(timestamp, dstName);
 	end
 	if (subEventName == "UNIT_DESTROYED") then
-		self:TrackSummonByPartyMemberUnitDeath(dstGUID, dstName);
+		self:TrackSummonByPartyMemberUnitDeath(dstName, dstGUID);
 	end
 	if (subEventSuffix == "HEAL") then
 		local spellId, _, _, amount, overheal, _, crit = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackAllHealDoneByPartyMembersToEachOther(srcName, srcGUID, dstName, dstGUID, spellId, amount, overheal);
 		self:TrackAllHealBySpellDoneByPartyMembers(srcName, srcGUID, srcFlags, dstName, dstGUID, dstFlags, spellId, amount, overheal, crit);
+		self:TrackCombatEventWithPartyMember(timestamp, dstName, dstGUID);
 	end
 	if (subEventName == "DAMAGE_SPLIT" or
 		subEventName == "DAMAGE_SHIELD") then
 		local spellId, _, _, amount, overheal = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackAllHealDoneByPartyMembersToEachOther(srcName, srcGUID, dstName, dstGUID, spellId, amount, overheal);
 		self:TrackAllHealBySpellDoneByPartyMembers(srcName, srcGUID, srcFlags, dstName, dstGUID, dstFlags, spellId, amount, overheal, false);
+		self:TrackCombatEventWithPartyMember(timestamp, dstName, dstGUID);
 	end
 	if (subEventName == "SPELL_ABSORBED") then
 		local unitGUID, unitName, unitFlags, _, spellId, _, _, amount = select(12, CombatLogGetCurrentEventInfo());
@@ -54,6 +57,7 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		end
 		self:TrackAllHealDoneByPartyMembersToEachOther(unitName, unitGUID, dstName, dstGUID, spellId, amount, -1);
 		self:TrackAllHealBySpellDoneByPartyMembers(unitName, unitGUID, unitFlags, dstName, dstGUID, dstFlags, spellId, amount, -1, false);
+		self:TrackCombatEventWithPartyMember(timestamp, dstName, dstGUID);
 	end
 	if (subEventSuffix == "INTERRUPT") then
 		local spellId, _, _, extraSpellId = select(12, CombatLogGetCurrentEventInfo());
@@ -63,6 +67,7 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		subEventName == "SPELL_STOLEN") then
 		local spellId, _, _, extraSpellId = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackDispel(srcName, srcGUID, spellId, extraSpellId, dstFlags2);
+		self:TrackCombatEventWithPartyMember(timestamp, dstName, dstGUID);
 	end
 	if (subEventName == "SPELL_CAST_SUCCESS") then
 		local spellId = select(12, CombatLogGetCurrentEventInfo());
@@ -80,12 +85,14 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		self:TrackAllDamageDoneToPartyMembers(srcName, dstName, srcGUID, spellId, amount);
 		self:TrackAllDamageDoneByPartyMembers(srcName, srcGUID, srcFlags, dstName, dstGUID, dstFlags, spellId, amount, overkill, crit);
 		self:TrackSLDamageDoneToSpecificUnits(srcName, srcGUID, spellId, amount, overkill, dstName, dstGUID);
+		self:TrackCombatEventWithPartyMember(timestamp, dstName, dstGUID);
 	end
 	if (subEventName == "SWING_DAMAGE") then
 		local amount, overkill, _, _, _, _, crit = select(12, CombatLogGetCurrentEventInfo());
 		self:TrackAllDamageDoneToPartyMembers(srcName, dstName, srcGUID, -2, amount);
 		self:TrackAllDamageDoneByPartyMembers(srcName, srcGUID, srcFlags, dstName, dstGUID, dstFlags, -2, amount, overkill, crit);
 		self:TrackSLDamageDoneToSpecificUnits(srcName, srcGUID, -2, amount, overkill, dstName, dstGUID);
+		self:TrackCombatEventWithPartyMember(timestamp, dstName, dstGUID);
 	end
 	if (subEventName == "SPELL_EXTRA_ATTACKS") then
 		local amount = select(12, CombatLogGetCurrentEventInfo());
@@ -106,6 +113,7 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		self:TrackAllBuffOrDebuffOnUnit(dstName, dstGUID, dstFlags, spellId, auraType, amount or 1);
 		self:TrackAuraAddedToPartyMember(dstName, dstGUID, spellId, auraType, amount or 1);
 		self:TrackAuraAddedToEnemyUnit(srcName, srcGUID, srcFlags, dstName, dstGUID, dstFlags, spellId, auraType, amount or 1);
+		self:TrackCombatEventWithPartyMember(timestamp, dstName, dstGUID);
 	end
 	if (subEventName == "SPELL_AURA_REMOVED" or
 		subEventName == "SPELL_AURA_REMOVED_DOSE" or
@@ -115,6 +123,7 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		self:TrackAuraRemovedFromPartyMember(dstName, dstGUID, spellId, auraType, amount or 0);
 		self:TrackAuraRemovedFromEnemyUnit(dstName, dstGUID, spellId, auraType, amount or 0);
 		self:TrackSLSpecificBuffOrDebuffRemovedFromUnit(dstName, dstGUID, dstFlags, spellId, auraType, amount or 0);
+		self:TrackCombatEventWithPartyMember(timestamp, dstName, dstGUID);
 	end
 end
 
@@ -135,6 +144,7 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 	self:RegisterEvent("PLAYER_REGEN_DISABLED");
 	self:RegisterEvent("PLAYER_REGEN_ENABLED");
     self:DebugPrint("CHALLENGE_MODE_START");
+	wipe(self.allPartyMemberLogs or {});
 	if (self.partyAliveStatusCheckTimer) then
 		self:CancelTimer(self.partyAliveStatusCheckTimer);
 	end
@@ -293,6 +303,7 @@ function MyDungeonsBook:CHALLENGE_MODE_COMPLETED()
 	end
 	self:UnregisterEvent("PLAYER_REGEN_DISABLED");
 	self:UnregisterEvent("PLAYER_REGEN_ENABLED");
+	wipe(self.allPartyMemberLogs or {});
 end
 
 --[[--

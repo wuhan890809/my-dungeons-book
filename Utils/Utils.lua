@@ -90,7 +90,8 @@ function MyDungeonsBook:FormatNumber(n)
         return string.format("%.1fK", n / 10^3);
     else
         return string.format("%.0f", n);
-    end
+	end
+	return n;
 end
 
 --[[--
@@ -286,6 +287,9 @@ Get unitId for player with name `name` in the challenge with id `challengeId`
 function MyDungeonsBook:GetPartyUnitByName(challengeId, name)
 	local challenge = self.db.char.challenges[challengeId];
 	if (not challenge) then
+		return nil;
+	end
+	if (not name) then
 		return nil;
 	end
 	for _, unit in pairs(self:GetPartyRoster()) do
@@ -732,4 +736,26 @@ function MyDungeonsBook:GetItemSecondaryStatsBonus(itemStringOrLink)
 		end
 	end
 	return stats;
+end
+
+--[[--
+Can be used for both spells and auras
+]]
+function MyDungeonsBook:IsSpellAvoidableForPartyMember(challengeId, unitId, spellId)
+	local challenge = self:Challenge_GetById(challengeId);
+	if (not challenge) then
+		return nil;
+	end
+	local role = challenge.players[unitId].role;
+	local avoidableSpells = self:GetSLAvoidableSpells();
+	local avoidableAuras = self:GetSLAvoidableAuras();
+	local avoidableSpellsNoTank = self:GetSLAvoidableSpellsNoTank();
+	local avoidableAurasNoTank = self:GetSLAvoidableAurasNoTank();
+	if (avoidableSpells[spellId] or (avoidableSpellsNoTank[spellId] and role ~= "TANK")) then
+		return true;
+	end
+	if (avoidableAuras[spellId] or (avoidableAurasNoTank[spellId] and role ~= "TANK")) then
+		return true;
+	end
+	return false;
 end

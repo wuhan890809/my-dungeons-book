@@ -1,4 +1,8 @@
-﻿### v2.9.0
+﻿### v2.10.0
+
+* [#118](https://github.com/onechiporenko/my-dungeons-book/issues/118) Save logs related to party member before its death
+
+### v2.9.0
 
 * Track friendly fire damage separately
 * Improve Equip tab (show rings, trinkets and weapon separately)

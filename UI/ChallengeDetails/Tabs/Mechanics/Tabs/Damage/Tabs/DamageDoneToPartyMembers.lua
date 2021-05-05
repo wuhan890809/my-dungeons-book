@@ -248,7 +248,7 @@ function MyDungeonsBook:DamageDoneToPartyMembersFrame_Report_Create(row, cols)
 		spellLinkOrName = GetSpellLink(row.cols[1].value);
 	else
 		local npcId = math.abs(spellId);
-		local cellText = L["Swing Damage"];
+		local cellText = (spellId == -3 and L["Avoidable"]) or L["Swing Damage"];
 		local unitName = (self.db.global.meta.npcs[npcId] and self.db.global.meta.npcs[npcId].name) or npcId;
 		spellLinkOrName = string.format("%s (%s)", cellText, unitName);
 	end
