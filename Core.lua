@@ -69,6 +69,7 @@ function MyDungeonsBook:OnEnable()
 	self:RegisterEvent("INSPECT_READY");
 	self:RegisterEvent("ENCOUNTER_END");
 	self:RegisterEvent("ENCOUNTER_START");
+	self:RegisterEvent("SCENARIO_CRITERIA_UPDATE");
 	self:Messages_StartTrack();
 	self:DebugPrint("Enabled");
 end

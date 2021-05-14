@@ -655,9 +655,9 @@ Get item level using game tooltip
 ]]
 function MyDungeonsBook:GetItemLevelFromTooltip(itemStringOrLink)
 	itemTooltipFrame:SetHyperlink(itemStringOrLink);
-	local line2 = _G["MyDungeonsBookItemTooltipTextLeft2"]:GetText();
+	local line2 = _G["MyDungeonsBookItemTooltipTextLeft2"] and _G["MyDungeonsBookItemTooltipTextLeft2"]:GetText() or "";
 	local line2Number = line2 and string.match(line2, "%d+");
-	local line3 = _G["MyDungeonsBookItemTooltipTextLeft3"]:GetText();
+	local line3 = _G["MyDungeonsBookItemTooltipTextLeft3"] and _G["MyDungeonsBookItemTooltipTextLeft3"]:GetText() or "";
 	local line3Number = line3 and string.match(line3, "%d+");
 	if (line2Number ~= nil) then
 		line2Number = tonumber(line2Number);
@@ -758,4 +758,29 @@ function MyDungeonsBook:IsSpellAvoidableForPartyMember(challengeId, unitId, spel
 		return true;
 	end
 	return false;
+end
+
+--[[--
+Parse steps for active challenge to get number of needed enemy forces
+@return[type=?number]
+]]
+function MyDungeonsBook:GetNeededEnemyForcesForActiveChallenge()
+    local _, _, steps = C_Scenario.GetStepInfo();
+    if (steps and steps > 0) then
+        for i = 1, steps do
+            local name, _, completed, curValue, finalValue, _, _, quantity, criteriaId = C_Scenario.GetCriteriaInfo(i);
+            if (criteriaId == 0) then
+                return finalValue;
+            end
+        end
+    end
+    return nil;
+end
+
+--[[--
+@return[type=string]
+]]
+function MyDungeonsBook:GetCurrentAffixesKey()
+    local affixes = C_MythicPlus.GetCurrentAffixes();
+    return string.format("%s-%s-%s-%s", affixes[1].id, affixes[2].id, affixes[3].id, affixes[4].id);
 end

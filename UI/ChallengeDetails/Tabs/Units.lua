@@ -47,7 +47,7 @@ function MyDungeonsBook:UnitsFrame_Create(parentFrame, challengeId)
     self:UnitsFrame_Filters_Create(unitsFrame, challengeId);
     local data = self:UnitsFrame_GetDataForTable(challengeId);
     local columns = self:UnitsFrame_GetHeadersForTable(challengeId);
-    local table = self:TableWidget_Create(columns, 11, 40, nil, unitsFrame, "units");
+    local table = self:TableWidget_Create(columns, 18, 25, nil, unitsFrame, "units");
     unitsFrame:SetUserData("unitsTable", table);
     unitsFrame:GetUserData("resetFilters"):Fire("OnClick");
     table:SetSummaryVisible(true);
@@ -137,7 +137,7 @@ function MyDungeonsBook:UnitsFrame_GetHeadersForTable()
         },
         {
             name = "",
-            width = 40,
+            width = 25,
             align = "LEFT",
             DoCellUpdate = function(...)
                 self:Table_Cell_FormatAsTexture(...);
@@ -156,7 +156,7 @@ function MyDungeonsBook:UnitsFrame_GetHeadersForTable()
         },
         {
             name = L["Combat Start"],
-            width = 120,
+            width = 100,
             align = "LEFT",
             sort = "dsc",
             DoCellUpdate = function(...)
@@ -165,7 +165,7 @@ function MyDungeonsBook:UnitsFrame_GetHeadersForTable()
         },
         {
             name = L["Combat End"],
-            width = 120,
+            width = 100,
             align = "LEFT",
             DoCellUpdate = function(...)
                 self:Table_Cell_FormatAsTime(...);
@@ -173,12 +173,20 @@ function MyDungeonsBook:UnitsFrame_GetHeadersForTable()
         },
         {
             name = L["Combat Duration"],
-            width = 120,
+            width = 100,
             align = "LEFT",
             DoCellUpdate = function(...)
                 self:Table_Cell_FormatAsTime(...);
             end
         },
+        {
+            name = L["Enemy Progress"],
+            width = 60,
+            align = "RIGHT",
+            DoCellUpdate = function(...)
+                self:Table_Cell_FormatAsEnemiesNeededCount(...);
+            end
+        }
     };
 end
 
@@ -197,6 +205,9 @@ function MyDungeonsBook:UnitsFrame_GetDataForTable(challengeId)
     end
     local challengeStartTime = challenge.challengeInfo.startTime;
     local mdtEnemiesDb =  IsAddOnLoaded("MythicDungeonTools") and self:Mdt_GetInstanceEnemiesRemapped(challenge.challengeInfo.currentZoneId) or {};
+    local mdtEnemiesNeededCount = IsAddOnLoaded("MythicDungeonTools") and self:Mdt_GetInstanceNeededEnemiesTotalCount(challenge.challengeInfo.currentZoneId) or "";
+    local neededEnemiesCountFromDb = challenge.challengeInfo.neededEnemyForces;
+    local neededEnemiesCount = neededEnemiesCountFromDb or mdtEnemiesNeededCount;
     local mdtOverrides = self.db.global.meta.addons.mythicDungeonTools;
     local tableData = {};
     for npcGUID, npcData in pairs(mechanic) do
@@ -208,6 +219,7 @@ function MyDungeonsBook:UnitsFrame_GetDataForTable(challengeId)
             if (combatStart and combatEnd) then
                 local enemyInfo = mdtOverrides[npcId] or mdtEnemiesDb[npcId] or {};
                 local enemyPortraitDisplayId = enemyInfo.displayId or -1;
+                local enemyPower = enemyInfo.count or "";
                 tinsert(tableData, {
                     cols = {
                         {value = npcId},
@@ -215,11 +227,32 @@ function MyDungeonsBook:UnitsFrame_GetDataForTable(challengeId)
                         {value = npcName},
                         {value = (combatStart - challengeStartTime) * 1000},
                         {value = (combatEnd - challengeStartTime) * 1000},
-                        {value = (combatEnd - combatStart) * 1000}
+                        {value = (combatEnd - combatStart) * 1000},
+                        {value = enemyPower .. "=" .. (neededEnemiesCount or "")}
                     }
                 });
             end
         end
     end
     return tableData;
+end
+
+--[[--
+@local
+]]
+function MyDungeonsBook:Table_Cell_FormatAsEnemiesNeededCount(_, cellFrame, data, _, _, realrow, column)
+    local val = data[realrow].cols[column].value or "";
+    if (val == "=") then
+        cellFrame.text:SetText("");
+        return;
+    end
+    local count, needed = strsplit("=", val);
+    count = tonumber(count);
+    needed = tonumber(needed);
+    if (count and needed) then
+        local text = string.format("%s (%s%%)", count, string.format("%.2f", count / needed * 100));
+        cellFrame.text:SetText(text);
+        return;
+    end
+    cellFrame.text:SetText("");
 end

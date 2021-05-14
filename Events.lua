@@ -82,26 +82,26 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 	if ((subEventPrefix:match("^SPELL") or subEventPrefix:match("^RANGE")) and subEventSuffix == "DAMAGE") then
 		local spellId, _, _, amount, overkill, _, _, _, _, crit = select(12, CombatLogGetCurrentEventInfo());
-		self:TrackAllDamageDoneToPartyMembers(srcName, dstName, srcGUID, spellId, amount);
+		self:TrackAllDamageDoneToPartyMembers(srcName, dstName, srcGUID, srcFlags, spellId, amount);
 		self:TrackAllDamageDoneByPartyMembers(srcName, srcGUID, srcFlags, dstName, dstGUID, dstFlags, spellId, amount, overkill, crit);
 		self:TrackSLDamageDoneToSpecificUnits(srcName, srcGUID, spellId, amount, overkill, dstName, dstGUID);
 		self:TrackCombatEventWithPartyMember(timestamp, dstName, dstGUID);
 	end
 	if (subEventName == "SWING_DAMAGE") then
 		local amount, overkill, _, _, _, _, crit = select(12, CombatLogGetCurrentEventInfo());
-		self:TrackAllDamageDoneToPartyMembers(srcName, dstName, srcGUID, -2, amount);
+		self:TrackAllDamageDoneToPartyMembers(srcName, dstName, srcGUID, srcFlags, -2, amount);
 		self:TrackAllDamageDoneByPartyMembers(srcName, srcGUID, srcFlags, dstName, dstGUID, dstFlags, -2, amount, overkill, crit);
 		self:TrackSLDamageDoneToSpecificUnits(srcName, srcGUID, -2, amount, overkill, dstName, dstGUID);
 		self:TrackCombatEventWithPartyMember(timestamp, dstName, dstGUID);
 	end
 	if (subEventName == "SPELL_EXTRA_ATTACKS") then
 		local amount = select(12, CombatLogGetCurrentEventInfo());
-		self:TrackAllDamageDoneToPartyMembers(srcName, dstName, srcGUID, -2, amount);
+		self:TrackAllDamageDoneToPartyMembers(srcName, dstName, srcGUID, srcFlags, -2, amount);
 		self:TrackAllDamageDoneByPartyMembers(srcName, srcGUID, srcFlags, dstName, dstGUID, dstFlags, -2, amount, 0, false);
 	end
 	if ((subEventPrefix:match("^SPELL") or subEventPrefix:match("^RANGE")) and subEventSuffix == "MISSED") then
 		local spellId, _, _, _, _, amount = select(12, CombatLogGetCurrentEventInfo());
-		self:TrackAllDamageDoneToPartyMembers(srcName, dstName, srcGUID, spellId, amount);
+		self:TrackAllDamageDoneToPartyMembers(srcName, dstName, srcGUID, srcFlags, spellId, amount);
 		self:TrackAllDamageDoneByPartyMembers(srcName, srcGUID, srcFlags, dstName, dstGUID, dstFlags, spellId, amount, 0, false);
 	end
 	if (subEventName == "SPELL_AURA_APPLIED" or
@@ -224,7 +224,8 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 		startTime = startTimestamp,
 		damageMod = damageMod,
 		healthMod = healthMod,
-		numDeaths = 0
+		numDeaths = 0,
+		neededEnemyForces = self:GetNeededEnemyForcesForActiveChallenge()
 	};
 	if (self.challengesTable) then
 		self.challengesTable:SetData(self:ChallengesFrame_GetDataForTable());
@@ -299,7 +300,10 @@ function MyDungeonsBook:CHALLENGE_MODE_COMPLETED()
 		self:ScheduleTimer(function()
 			self.db.char.activeChallengeId = nil;
 		end, 5);
-		self.db.char.challenges[id].mechanics = self:Compress(self.db.char.challenges[id].mechanics); -- must be last!
+		-- must be last!
+		if (self.db.profile.performance.compress) then
+			self.db.char.challenges[id].mechanics = self:Compress(self.db.char.challenges[id].mechanics);
+		end
 	end
 	self:UnregisterEvent("PLAYER_REGEN_DISABLED");
 	self:UnregisterEvent("PLAYER_REGEN_ENABLED");
@@ -355,13 +359,19 @@ function MyDungeonsBook:ENCOUNTER_START(_, encounterId, encounterName, ...)
 	if (not self.db.char.challenges[id]) then
 		return;
 	end
-	local lastEncounterId = time();
-	self.db.char.challenges[id].misc.lastEncounterId = lastEncounterId;
-	self.db.char.challenges[id].encounters[lastEncounterId] = {
+	local ts = time();
+	self.db.char.challenges[id].misc.lastEncounterId = ts;
+	local enemyForcesProgressMechanic = self:SafeNestedGet(self.db.char.challenges[id].mechanics, "ENEMY-FORCES-PROGRESS");
+	local enemyForcesOnStart;
+	if (enemyForcesProgressMechanic) then
+		enemyForcesOnStart = (enemyForcesProgressMechanic[#enemyForcesProgressMechanic] or {})[2];
+	end
+	self.db.char.challenges[id].encounters[ts] = {
 		id = encounterId,
 		name = encounterName,
-		startTime = time(),
-		deathCountOnStart = C_ChallengeMode.GetDeathCount()
+		startTime = ts,
+		deathCountOnStart = C_ChallengeMode.GetDeathCount(),
+		enemyForcesOnStart = enemyForcesOnStart
 	};
 	self:DebugPrint("ENCOUNTER_START", encounterId, encounterName);
 end
@@ -389,9 +399,15 @@ function MyDungeonsBook:ENCOUNTER_END(_, encounterId, encounterName, difficultyI
 		-- is it possible???
 		return;
 	end
+	local enemyForcesProgressMechanic = self:SafeNestedGet(self.db.char.challenges[id].mechanics, "ENEMY-FORCES-PROGRESS");
+	local enemyForcesOnEnd;
+	if (enemyForcesProgressMechanic) then
+		enemyForcesOnEnd = (enemyForcesProgressMechanic[#enemyForcesProgressMechanic] or {})[2];
+	end
 	self.db.char.challenges[id].encounters[lastEncounterId].endTime = time();
 	self.db.char.challenges[id].encounters[lastEncounterId].success = success;
 	self.db.char.challenges[id].encounters[lastEncounterId].deathCountOnEnd = C_ChallengeMode.GetDeathCount();
+	self.db.char.challenges[id].encounters[lastEncounterId].enemyForcesOnEnd = enemyForcesOnEnd;
 	self.db.char.challenges[id].misc.lastEncounterId = nil;
 	self:DebugPrint("ENCOUNTER_END", encounterId, encounterName, difficultyId, groupSize, success);
 end
@@ -440,4 +456,30 @@ function MyDungeonsBook:PLAYER_REGEN_DISABLED()
 	self:DebugPrint(string.format("Combat is started. Idle time - %s, overall - %s", self:FormatTime(currentIdle * 1000), self:FormatTime(overallIdle * 1000)));
 	local timestamp = time();
 	tinsert(self.db.char.challenges[id].mechanics[KEY][name].timeline, {timestamp, 1});
+end
+
+--[[--
+Track enemy forces progress
+]]
+function MyDungeonsBook:SCENARIO_CRITERIA_UPDATE()
+	local id = self.db.char.activeChallengeId;
+	if (not id) then
+		return;
+	end
+	local KEY = "ENEMY-FORCES-PROGRESS";
+	self:InitMechanics1Lvl(KEY);
+	local _, _, steps = C_Scenario.GetStepInfo();
+	if (steps and steps > 0) then
+		for i = 1, steps do
+			local name, _, completed, curValue, finalValue, _, _, quantity, criteriaId = C_Scenario.GetCriteriaInfo(i);
+			if (criteriaId == 0) then
+				local quantityNumber = string.sub(quantity, 1, string.len(quantity) - 1);
+				local quantityPercent = tonumber(quantityNumber) / finalValue;
+				if (completed) then
+					quantityPercent = 1;
+				end
+				tinsert(self.db.char.challenges[id].mechanics[KEY], {time(), quantityPercent});
+			end
+		end
+	end
 end

@@ -23,10 +23,13 @@ function MyDungeonsBook:TableWidget_Create(cols, numRows, rowHeight, highlight, 
         tables[id] = table;
     end
     table.frame:SetPoint("TOPLEFT", 0, -40);
+    local tables = parentFrame:GetUserData("tables") or {};
     parentFrame.userdata.tables = parentFrame.userdata.tables or {};
-    tinsert(parentFrame.userdata.tables, id);
-    parentFrame:SetCallback("OnRelease", function()
-        for _, tableId in pairs(parentFrame.userdata.tables) do
+    tinsert(tables, id);
+    parentFrame:SetUserData("tables", tables);
+    parentFrame:SetCallback("OnRelease", function(frame)
+        local tbls = frame:GetUserData("tables");
+        for _, tableId in pairs(tbls) do
             self:TableWidget_Release(tableId);
         end
     end);

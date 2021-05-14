@@ -155,6 +155,7 @@ local SLSpells = {
     [327427] = true, -- Shattered Dominion (Mueh'zala)
     [335000] = true, -- Stellar cloud (Mueh'zala)
     [334961] = true, -- Crush (Mueh'zala)
+    [324010] = true, -- Eruption (Manastorm)
     -- Sanguine Depths
     [320999] = true, -- Echoing Thrust (Regal Mistdancer)
     [320991] = true, -- Echoing Thrust (Regal Mistdancer)
@@ -348,6 +349,8 @@ local SLAurasNoTank = {
 };
 
 local SLSpellsToInterrupt = {
+    -- Affix
+    [240446] = true, -- Explosive. It's not interruptable, but npcs should be killed before cast is passed
     -- Plaguefall
     [319070] = true, -- Corrosive Gunk (Rotmarrow Slime)
     [321999] = true, -- Viral Globs (Pestilence Slime)

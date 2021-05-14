@@ -241,10 +241,10 @@
     <Content Include="Utils\Compress.lua">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Utils\JSON.lua">
+    <Content Include="Utils\Integrations\MDT.lua">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Utils\MDT.lua">
+    <Content Include="Utils\JSON.lua">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Utils\Report.lua">
@@ -309,6 +309,7 @@
     <Folder Include="UI" />
     <Folder Include="UI\ChallengeDetails" />
     <Folder Include="UI\ChallengeDetails\Tabs" />
+    <Folder Include="Utils\Integrations" />
     <Folder Include="Widgets" />
   </ItemGroup>
   <Import Project="$(DevEnvDir)\Extensions\Tools\MSBuild\AddonStudio\Wow\3.0\WowAddonStudio.targets" />

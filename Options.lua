@@ -15,6 +15,7 @@ MyDungeonsBook.OptionsDefaults = {
 				dungeon = "ALL",
 				affixes = "ALL",
 				deaths = "ALL",
+				currentWeek = false
 			},
 			units = {
 				npc = "ALL",
@@ -44,7 +45,8 @@ MyDungeonsBook.OptionsDefaults = {
 		},
 		performance = {
 			collectgarbage = true,
-			showdevtab = false
+			showdevtab = false,
+			compress = true
 		},
 		dev = {
 			mechanics = {
@@ -441,8 +443,21 @@ MyDungeonsBook.Options = {
 						MyDungeonsBook.db.profile.performance.collectgarbage = v;
 					end
 				},
-				showdevtab = {
+				compress = {
 					order = 2,
+					name = L["Compress saved data after challenge is completed"],
+					desc = L["May cause small lag on challenge end"],
+					type = "toggle",
+					width = "full",
+					get = function()
+						return MyDungeonsBook.db.profile.performance.compress;
+					end,
+					set = function(_, v)
+						MyDungeonsBook.db.profile.performance.compress = v;
+					end
+				},
+				showdevtab = {
+					order = 3,
 					name = L["Show DEV Tab"],
 					type = "toggle",
 					width = "full",

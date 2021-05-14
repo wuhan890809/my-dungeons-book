@@ -177,6 +177,43 @@ local function SingleFilledAreaGraph_Update(g, xMin, xMax, remappedTimelineScale
     g:AddFilledDataSeries(remappedTimelineScaled, defaultColor);
 end
 
+local function SingleLineGraphData_Setup(series, zeroDelay, xLimit)
+    local remappedTimeline = {};
+    local yMax = -1;
+    local maxTimeLineValue = 0;
+    for _, v in pairs(series.timeline) do
+        local x = v[1] - zeroDelay - 10;
+        tinsert(remappedTimeline, {x, v[2]});
+        if (v[2] > yMax) then
+            yMax = v[2];
+        end
+        if (x > maxTimeLineValue) then
+            maxTimeLineValue = x;
+        end
+    end
+
+    local remappedTimelineScaled = remappedTimeline;
+    local xMax = xLimit or maxTimeLineValue;
+    local gxMax = xMax;
+    local xMin = 0;
+
+    return remappedTimeline, remappedTimelineScaled, yMax, gxMax, xMin, xMax;
+end
+
+local function SingleLineGraph_Update(g, xMin, xMax, yMin, yMax, remappedTimelineScaled, remappedTimeline)
+    g:SetXAxis(xMin, xMax);
+    g:SetGridSpacing((xMax - xMin) / 5, yMax / 5);
+    g:ResetData();
+    remappedTimelineScaled = {};
+    for i = 1, #remappedTimeline do
+        local v = remappedTimeline[i];
+        if (v[1] <= xMax and v[1] >= xMin) then
+            tinsert(remappedTimelineScaled, v);
+        end
+    end
+    g:AddDataSeries(remappedTimelineScaled, defaultColor);
+end
+
 --[[--
 @param[type=Frame] parentFrame
 @param[type=string] name
@@ -230,7 +267,7 @@ function MyDungeonsBook:SingleFilledAreaGraph_Create(parentFrame, name, series, 
     end);
     wrapper:AddChild(timeLineSlider);
     wrapper:SetHeight(250);
-    return g, scaleSlider, timeLineSlider;
+    return g, scaleSlider, timeLineSlider, wrapper;
 end
 
 --[[--
@@ -287,5 +324,64 @@ function MyDungeonsBook:SingleIconsGraph_Create(parentFrame, name, series, encou
     end);
     wrapper:AddChild(timeLineSlider);
     wrapper:SetHeight(300);
+    return g, scaleSlider, timeLineSlider, wrapper;
+end
+
+--[[--
+@param[type=Frame] parentFrame
+@param[type=string] name
+@param[type=table] series
+@param[type=number] zeroDelay
+@param[type=number] xLimit
+@param[type=number] graphHeight
+@return[type=Frame]
+]]
+function MyDungeonsBook:SingleLineGraph_Create(parentFrame, name, series, zeroDelay, xLimit, graphHeight)
+    local wrapper = Wrapper_Create(parentFrame);
+    local graphWidth = parentFrame.frame.width - 40;
+    local graphWrapper = GraphWrapper_Create();
+    local g = LibGraph:CreateGraphLine(name, graphWrapper.frame, "TOPLEFT", "TOPLEFT", 5, 0, graphWidth, graphHeight);
+
+    local remappedTimeline, remappedTimelineScaled, yMax, gxMax, xMin, xMax = SingleLineGraphData_Setup(series, zeroDelay, xLimit);
+
+    BaseGraph_Setup(g, xMin, xMax, 0, yMax);
+    print(xMax, yMax);
+    g:SetGridSpacing(xMax / 5, yMax / 5);
+    g:SetYLabels(true, false);
+    g:AddDataSeries(series.timeline, defaultColor);
+
+    local scaleValue = 0;
+
+    local timeLineSlider = TimelineSlider_Create();
+    local scaleSlider = ScaleSlider_Create();
+
+    scaleSlider:SetCallback("OnValueChanged", function(_, _, newScaleValue)
+        scaleValue = newScaleValue;
+        local xMaxForTimeline = gxMax * scaleValue / 100;
+        local currentTimeLineValue = timeLineSlider:GetValue();
+        if (currentTimeLineValue > xMaxForTimeline) then
+            timeLineSlider:SetValue(xMaxForTimeline);
+        end
+        if (currentTimeLineValue < 0) then
+            timeLineSlider:SetValue(0);
+        end
+        timeLineSlider:SetSliderValues(0, xMaxForTimeline, 5);
+        xMax = getNewXMax(scaleValue, xMin, gxMax);
+        xMin = getNewXMin(scaleValue, xMax, gxMax);
+        SingleLineGraph_Update(g, xMin, xMax, 0, yMax, remappedTimelineScaled, remappedTimeline);
+    end);
+    wrapper:AddChild(scaleSlider);
+
+    wrapper:AddChild(graphWrapper);
+
+    timeLineSlider:SetSliderValues(xMin, 0, 5);
+    timeLineSlider:SetValue(xMin);
+    timeLineSlider:SetCallback("OnValueChanged", function(_, _, newXMin)
+        xMin = newXMin;
+        xMax = getNewXMax(scaleValue, xMin, gxMax);
+        SingleLineGraph_Update(g, xMin, xMax, 0, yMax, remappedTimelineScaled, remappedTimeline);
+    end);
+    wrapper:AddChild(timeLineSlider);
+    wrapper:SetHeight(250);
     return g, scaleSlider, timeLineSlider, wrapper;
 end

@@ -154,6 +154,8 @@ L["Versatility"] = "Versatility";
 L["Event"] = "Event";
 L["Source"] = "Source";
 L["HP"] = "HP";
+L["Enemy Progress"] = "Enemy Progress";
+L["This week"] = "This week";
 -- UI end
 
 -- Help start
@@ -196,6 +198,8 @@ L["%s (start)"] = "%s (start)";
 L["%s (end)"] = "%s (end)";
 L["Death logs"] = "Death logs";
 L["Time before death to track"] = "Time before death to track";
+L["Compress saved data after challenge is completed"] = "Compress saved data after challenge is completed";
+L["May cause small lag on challenge end"] = "May cause small lag on challenge end";
 -- Settings end
 
 -- Regex start (thanks to Exorsus Raid Tool)

@@ -137,6 +137,20 @@ function MyDungeonsBook:ChallengesFrame_Table_Create(parentFrame)
 				return false;
 			end
 		end
+		-- Current Week
+		local currentWeekFilter = self.db.char.filters.challenges.currentWeek;
+		if (currentWeekFilter) then
+			local affixes = row.cols[9].value;
+			local startTime = row.cols[2].value;
+			local currentWeekaffixes = C_MythicPlus.GetCurrentAffixes();
+			if (affixes[1] ~= currentWeekaffixes[1].id or
+				affixes[2] ~= currentWeekaffixes[2].id or
+				affixes[3] ~= currentWeekaffixes[3].id or
+				affixes[4] ~= currentWeekaffixes[4].id or
+				time() - startTime > 7 * 24 * 60 * 60) then
+				return false;
+			end
+		end
 		return true;
 	end);
 	table.frame:SetPoint("TOPLEFT", 5, -180);
@@ -224,7 +238,7 @@ function MyDungeonsBook:ChallengesFrame_Filters_Create(parentFrame)
 	filtersFrame:AddChild(dungeonFilter);
 	-- Affixes filter
 	local affixesFilter = AceGUI:Create("Dropdown");
-	affixesFilter:SetWidth(180);
+	affixesFilter:SetWidth(130);
 	affixesFilter:SetList({
 		[9] = L["Tyrannical"],
 		[10] = L["Fortified"],
@@ -257,6 +271,16 @@ function MyDungeonsBook:ChallengesFrame_Filters_Create(parentFrame)
 		self.challengesTable:SortData();
 	end);
 	filtersFrame:AddChild(deathsFilter);
+	-- Current Week
+	local currentWeekFilter = AceGUI:Create("CheckBox");
+	currentWeekFilter:SetLabel(L["This week"]);
+	currentWeekFilter:SetWidth(100);
+	currentWeekFilter:SetValue(self.db.char.filters.challenges.currentWeek);
+	currentWeekFilter:SetCallback("OnValueChanged", function(_, _, newValue)
+		self.db.char.filters.challenges.currentWeek = newValue;
+		self.challengesTable:SortData();
+	end);
+	filtersFrame:AddChild(currentWeekFilter);
 	-- Reset filters
 	local resetFilters = AceGUI:Create("Button");
 	resetFilters:SetText(L["Reset"]);
@@ -267,11 +291,13 @@ function MyDungeonsBook:ChallengesFrame_Filters_Create(parentFrame)
 		self.db.char.filters.challenges.inTime = "ALL";
 		self.db.char.filters.challenges.affixes = "ALL";
 		self.db.char.filters.challenges.deaths = "ALL";
+		self.db.char.filters.challenges.currentWeek = false;
 		dungeonFilter:SetValue("ALL");
 		keyFilter:SetValue("ALL");
 		inTimeFilter:SetValue("ALL");
 		affixesFilter:SetValue("ALL");
 		deathsFilter:SetValue("ALL");
+        currentWeekFilter:SetValue(false);
 		self.challengesTable:SortData();
 	end);
 	filtersFrame:AddChild(resetFilters);

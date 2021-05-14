@@ -57,11 +57,6 @@ Generate columns for Encounters table.
 function MyDungeonsBook:EncountersFrame_GetColumnsForTable()
 	return {
 		{
-			name = L["ID"],
-			width = 50,
-			align = "LEFT"
-		},
-		{
 			name = L["Name"],
 			width = 150,
 			align = "LEFT"
@@ -92,8 +87,36 @@ function MyDungeonsBook:EncountersFrame_GetColumnsForTable()
 			end
 		},
 		{
+			name = "% " .. L["Before"],
+			width = 50,
+			align = "RIGHT",
+			bgcolor = {
+				r = 0,
+				g = 0,
+				b = 0,
+				a = 0.4
+			},
+			DoCellUpdate = function(...)
+				self:Table_Cell_FormatAsPercents(...);
+			end
+		},
+		{
+			name = "% " .. L["After"],
+			width = 50,
+			align = "RIGHT",
+			bgcolor = {
+				r = 0,
+				g = 0,
+				b = 0,
+				a = 0.4
+			},
+			DoCellUpdate = function(...)
+				self:Table_Cell_FormatAsPercents(...);
+			end
+		},
+		{
 			name = "|Tinterface\\targetingframe\\ui-raidtargetingicon_8:12|t" .. L["Before"],
-			width = 75,
+			width = 50,
 			align = "RIGHT"
 		},
 		{
@@ -103,7 +126,7 @@ function MyDungeonsBook:EncountersFrame_GetColumnsForTable()
 		},
 		{
 			name = "|Tinterface\\targetingframe\\ui-raidtargetingicon_8:12|t" .. L["After"],
-			width = 75,
+			width = 50,
 			align = "RIGHT"
 		},
 		{
@@ -141,11 +164,12 @@ function MyDungeonsBook:EncountersFrame_GetDataForTable(challengeId)
 		local deathCountWhile = deathCountOnEnd - deathCountOnStart;
 		tinsert(tableData, {
 			cols = {
-				{value = encounterData.id},
 				{value = encounterData.name},
 				{value = (encounterData.startTime - challenge.challengeInfo.startTime - countDownDelay) * 1000},
 				{value = (encounterData.endTime - challenge.challengeInfo.startTime - countDownDelay  + deathCountWhile * 5) * 1000},  -- +5s for each death
 				{value = (encounterData.endTime - encounterData.startTime) * 1000},
+				{value = encounterData.enemyForcesOnStart},
+				{value = encounterData.enemyForcesOnEnd},
 				{value = deathCountOnStart},
 				{value = deathCountOnEnd - deathCountOnStart},
 				{value = deathCountOnEnd},

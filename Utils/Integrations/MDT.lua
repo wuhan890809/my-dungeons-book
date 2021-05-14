@@ -39,7 +39,7 @@ end
 
 --[[--
 @param[type=number] mdtOrWowInstanceIndex
-@return[type=?table]
+@return[type=table]
 ]]
 function MyDungeonsBook:Mdt_GetInstanceEnemiesRemapped(mdtOrWowInstanceIndex)
     local instanceEnemies = self:Mdt_GetInstanceEnemiesByInstanceIndex(mdtOrWowInstanceIndex);
@@ -50,4 +50,15 @@ function MyDungeonsBook:Mdt_GetInstanceEnemiesRemapped(mdtOrWowInstanceIndex)
         end
     end
     return remappedInstanceEnemies;
+end
+
+--[[--
+@param[type=number] mdtOrWowInstanceIndex
+@return[type=?number]
+]]
+function MyDungeonsBook:Mdt_GetInstanceNeededEnemiesTotalCount(mdtOrWowInstanceIndex)
+    local mdtInstanceIndex = self:Mdt_GetInstanceIndexByWowInstanceIndex(mdtOrWowInstanceIndex);
+    local indexToUse = mdtInstanceIndex or mdtOrWowInstanceIndex;
+    local dungeonTotalCount = MDT.dungeonTotalCount[indexToUse];
+    return (dungeonTotalCount and dungeonTotalCount.normal) or nil;
 end

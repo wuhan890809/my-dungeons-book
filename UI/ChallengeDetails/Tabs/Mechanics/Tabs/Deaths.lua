@@ -40,6 +40,7 @@ function MyDungeonsBook:DeathsFrame_Create(parentFrame, challengeId)
     deathLogTable:SetData({});
     deathLogTable.frame:SetPoint("TOPLEFT", 0, -340);
     deathsFrame:SetUserData("deathLogTable", deathLogTable);
+    deathsFrame:SetUserData("deathLogsTable", table);
     deathLogTable:RegisterEvents({
         OnEnter = function (_, cellFrame, data, _, _, realrow, column)
             if (realrow) then
@@ -62,9 +63,6 @@ function MyDungeonsBook:DeathsFrame_Create(parentFrame, challengeId)
             end
         end
     });
-    deathsFrame:SetCallback("OnClose", function (frame)
-        frame:GetUserData("deathLogTable"):ClearSelection();
-    end);
     return deathsFrame;
 end
 

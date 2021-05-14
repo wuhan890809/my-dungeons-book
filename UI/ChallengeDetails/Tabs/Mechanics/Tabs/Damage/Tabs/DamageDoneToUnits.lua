@@ -117,7 +117,7 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetHeadersForTable(challengeId)
 			end
 		},
 		{
-			name = "",
+			name = L["Hits"],
 			width = 1,
 			align = "RIGHT"
 		},
@@ -138,7 +138,7 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetHeadersForTable(challengeId)
 			end
 		},
 		{
-			name = "",
+			name = L["Hits"],
 			width = 1,
 			align = "RIGHT"
 		},
@@ -159,7 +159,7 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetHeadersForTable(challengeId)
 			end
 		},
 		{
-			name = "",
+			name = L["Hits"],
 			width = 1,
 			align = "RIGHT"
 		},
@@ -180,7 +180,7 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetHeadersForTable(challengeId)
 			end
 		},
 		{
-			name = "",
+			name = L["Hits"],
 			width = 1,
 			align = "RIGHT"
 		},
@@ -198,7 +198,7 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetHeadersForTable(challengeId)
 			align = "RIGHT"
 		},
 		{
-			name = "",
+			name = L["Hits"],
 			width = 1,
 			align = "RIGHT"
 		},
@@ -216,7 +216,7 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_GetHeadersForTable(challengeId)
 			align = "RIGHT"
 		},
 		{
-			name = "",
+			name = L["Hits"],
 			width = 1,
 			align = "RIGHT"
 		},
@@ -347,5 +347,5 @@ function MyDungeonsBook:DamageDoneToUnitsFrame_Report_Create(row, cols)
 	local npcId = row.cols[1].value;
 	local npcName = (self.db.global.meta.npcs[npcId] and self.db.global.meta.npcs[npcId].name) or npcId;
 	local title = string.format(L["MyDungeonsBook Damage done by party to %s:"], npcName);
-	return self:Table_PlayersRow_Report_Create(row, cols, {5, 8, 11, 14, 17, 20}, title);
+	return self:Table_PlayersRow_Report_Create(row, cols, {5, 7, 8, 10, 11, 13, 14, 16, 17, 19, 20, 22}, title);
 end

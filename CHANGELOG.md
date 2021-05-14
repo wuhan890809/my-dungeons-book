@@ -1,6 +1,9 @@
 ﻿### v2.10.0
 
 * [#118](https://github.com/onechiporenko/my-dungeons-book/issues/118) Save logs related to party member before its death
+* Track progress for enemy forces (both units and encounters tabs are updated)
+* Compressing now is optional (check Performance-settings)
+* Add "Current Week" filter for challenges
 
 ### v2.9.0
 

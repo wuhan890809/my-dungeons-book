@@ -342,7 +342,7 @@ Track all damage done to party members
 @param[type=number] spellId spell that did damage to `unit`
 @param[type=number] amount amount of damage done to `unit` by `spellId`
 ]]
-function MyDungeonsBook:TrackAllDamageDoneToPartyMembers(sourceUnit, targetUnit, sourceUnitGUID, spellId, amount)
+function MyDungeonsBook:TrackAllDamageDoneToPartyMembers(sourceUnit, targetUnit, sourceUnitGUID, sourceUnitFlags, spellId, amount)
 	if (UnitIsPlayer(targetUnit)) then
 		if (UnitIsPlayer(sourceUnit)) then
 			self:SaveTrackedFriendlyFireByPartyMembers("FRIENDLY-FIRE-BY-PARTY-MEMBERS", sourceUnit, targetUnit, sourceUnitGUID, spellId, amount);
@@ -630,7 +630,7 @@ function MyDungeonsBook:TrackPassedCasts(key, spells, unitName, spellId, raidFla
 	if (self.db.global.meta.mechanics[key].verbose) then
 		local mark = math.log(raidFlags) / math.log(2) + 1;
 		local raidIcon = self:GetTargetIconByIndex(mark);
-		self:LogPrint(string.format(L["%s %s's cast %s is passed"], raidIcon, unitName, GetSpellLink(spellId)));
+		self:LogPrint(string.format(L["%s %s's cast %s is passed"], raidIcon, unitName or "", GetSpellLink(spellId) or ""));
 	end
 	local id = self.db.char.activeChallengeId;
 	self:InitMechanics2Lvl(key, spellId, true);

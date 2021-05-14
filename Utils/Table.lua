@@ -60,6 +60,11 @@ Params are similar to [ScrollingTableMdb:DoCellUpdate](https://www.wowace.com/pr
 ]]
 function MyDungeonsBook:Table_Cell_FormatAsPercents(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local val = data[realrow].cols[column].value;
+	if (type(val) == "number") then
+		if (val <= 1) then
+			val = val * 100;
+		end
+	end
 	(cellFrame.text or cellFrame):SetText((val and self:FormatPercents(val)) or "-");
 	updateCellTextColor(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table);
 end
@@ -224,8 +229,8 @@ function MyDungeonsBook:Table_Cell_FormatAsTexture(rowFrame, cellFrame, data, co
 		return;
 	end
 	local texture = cellFrame.texture or cellFrame:CreateTexture(nil, "BACKGROUND");
-	texture:SetPoint("TOPLEFT", cellFrame ,"TOPLEFT", 5, -5);
-	texture:SetPoint("BOTTOMRIGHT", cellFrame ,"BOTTOMRIGHT", -5, 5);
+	texture:SetPoint("TOPLEFT", cellFrame ,"TOPLEFT", 3, -3);
+	texture:SetPoint("BOTTOMRIGHT", cellFrame ,"BOTTOMRIGHT", -3, 3);
 	cellFrame.texture = texture;
 	SetPortraitTextureFromCreatureDisplayID(texture, displayId);
 end

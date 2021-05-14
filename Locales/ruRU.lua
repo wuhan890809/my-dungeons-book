@@ -155,6 +155,8 @@ L["Versatility"] = "Универсальность";
 L["Event"] = "Событие";
 L["Source"] = "Источник";
 L["HP"] = "Здоровье";
+L["Enemy Progress"] = "Прогресс";
+L["This week"] = "Эта неделя";
 -- UI end
 
 -- Help start
@@ -197,6 +199,8 @@ L["%s (start)"] = "%s (начало)";
 L["%s (end)"] = "%s (конец)";
 L["Death logs"] = "Логи смертей";
 L["Time before death to track"] = "Сколько записывать времени перед смертью";
+L["Compress saved data after challenge is completed"] = "Ужимать сохраненные после прохождения данные";
+L["May cause small lag on challenge end"] = "Может вызывать небольшой пролаг по завершению прохождения";
 -- Settings end
 
 -- Regex start (thanks to Exorsus Raid Tools)

@@ -84,8 +84,8 @@ Mechanics/BfA/Common.lua
 Mechanics/SL/Common.lua
 Utils/Compress.lua
 Utils/JSON.lua
-Utils/MDT.lua
 Utils/Report.lua
 Utils/Table.lua
 Utils/Utils.lua
 Utils/WoWHead.lua
+Utils/Integrations/MDT.lua
