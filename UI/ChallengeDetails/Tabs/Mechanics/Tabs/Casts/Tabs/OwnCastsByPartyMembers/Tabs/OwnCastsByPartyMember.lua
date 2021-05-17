@@ -26,10 +26,9 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_Create(parentFrame, challenge
     local ownCastsByPartyMemberFrame = self:TabContentWrapperWidget_Create(parentFrame);
     local key = self:GetMechanicsPrefixForChallenge(challengeId) .. "-OWN-CASTS-DONE-BY-PARTY-MEMBERS";
     self.db.char.filters.ownCasts.spellId = "ALL";
-    ownCastsByPartyMemberFrame.userdata.table = self:OwnCastsByPartyMemberFrame_Table_Create(ownCastsByPartyMemberFrame, challengeId, key, unitId);
-    ownCastsByPartyMemberFrame.userdata.summaryTable = self:OwnCastsByPartyMemberFrame_SummaryTable_Create(ownCastsByPartyMemberFrame, challengeId, key, unitId);
-    ownCastsByPartyMemberFrame.userdata.allImportantCastsToggle = self:OwnCastsByPartyMemberFrame_AllImportantCastsToggle_Create(ownCastsByPartyMemberFrame, challengeId, key, unitId);
-    ownCastsByPartyMemberFrame.userdata.filterBySpellId = self:OwnCastsByPartyMemberFrame_FilterBySpellId_Create(ownCastsByPartyMemberFrame, challengeId, key, unitId);
+    ownCastsByPartyMemberFrame:SetUserData("table", self:OwnCastsByPartyMemberFrame_Table_Create(ownCastsByPartyMemberFrame, challengeId, key, unitId));
+    ownCastsByPartyMemberFrame:SetUserData("summaryTable", self:OwnCastsByPartyMemberFrame_SummaryTable_Create(ownCastsByPartyMemberFrame, challengeId, key, unitId));
+    ownCastsByPartyMemberFrame:SetUserData("filterBySpellId", self:OwnCastsByPartyMemberFrame_FilterBySpellId_Create(ownCastsByPartyMemberFrame, challengeId, key, unitId));
     self.ownCastsByPartyMemberFrame = ownCastsByPartyMemberFrame;
     return ownCastsByPartyMemberFrame;
 end
@@ -76,39 +75,7 @@ end
 ]]
 function MyDungeonsBook:OwnCastsByPartyMemberFrame_FilterBySpellId_Update(newSpellId)
     self.db.char.filters.ownCasts.spellId = newSpellId;
-    self.ownCastsByPartyMemberFrame.userdata.table:SortData();
-end
-
---[[--
-@param[type=Frame] parentFrame
-@param[type=number] challengeId
-@param[type=string] key
-@param[type=unitId] unitId
-@param[type=Frame] allImportantCastsToggle
-]]
-function MyDungeonsBook:OwnCastsByPartyMemberFrame_AllImportantCastsToggle_Create(parentFrame, challengeId, key, unitId)
-    local allImportantCastsToggle = AceGUI:Create("CheckBox");
-    allImportantCastsToggle:SetLabel(L["Show All Casts"]);
-    allImportantCastsToggle:SetWidth(260);
-    allImportantCastsToggle:SetValue(false);
-    allImportantCastsToggle:SetCallback("OnValueChanged", function(_, _, newValue)
-        if (newValue) then
-            self.ownCastsByPartyMemberFrame.userdata.summaryTable:SetData(self:OwnCastsByPartyMemberFrame_GetAllDataForSummaryTable(challengeId, unitId));
-        else
-            self.ownCastsByPartyMemberFrame.userdata.summaryTable:SetData(self:OwnCastsByPartyMemberFrame_GetImportantDataForSummaryTable(challengeId, key, unitId));
-        end
-    end);
-    allImportantCastsToggle:SetCallback("OnEnter", function(container)
-        GameTooltip:SetOwner(container.frame, "ANCHOR_NONE");
-        GameTooltip:SetPoint("TOPLEFT", container.frame, "TOPLEFT", 0, -20);
-        GameTooltip:AddLine(L["Not all spells have usage timestamps"]);
-        GameTooltip:Show();
-    end);
-    allImportantCastsToggle:SetCallback("OnLeave", function()
-        self:Table_Cell_MouseOut(); -- just hide a tooltip
-    end);
-    parentFrame:AddChild(allImportantCastsToggle);
-    return allImportantCastsToggle;
+    self.ownCastsByPartyMemberFrame:GetUserData("table"):SortData();
 end
 
 --[[--
@@ -165,7 +132,7 @@ end
 @param[type=table]
 ]]
 function MyDungeonsBook:OwnCastsByPartyMemberFrame_SummaryTable_Create(parentFrame, challengeId, key, unitId)
-    local summaryData = self:OwnCastsByPartyMemberFrame_GetImportantDataForSummaryTable(challengeId, key, unitId);
+    local summaryData = self:OwnCastsByPartyMemberFrame_GetAllDataForSummaryTable(challengeId, key, unitId);
     local summaryColumns = self:OwnCastsByPartyMemberFrame_GetHeadersForSummaryTable();
     local summaryTable = self:TableWidget_Create(summaryColumns, 10, 40, nil, parentFrame, "own-casts-by-" .. unitId .. "-summary");
     summaryTable:SetData(summaryData);
@@ -315,7 +282,7 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetDataForTable(challengeId, 
                     {value = spellId},
                     {value = spellId},
                     {value = spellId},
-                    {value = (singleSpellUse.time - challenge.challengeInfo.startTime) * 1000},
+                    {value = (singleSpellUse.time - challenge.challengeInfo.startTime - 10) * 1000}, -- first 10 seconds are countdown
                     {value = ""},
                     {value = singleSpellUse.target or ""}
                 }
@@ -373,7 +340,7 @@ Map summary data about all own casts by party member `unitId` for challenge with
 @param[type=unitId] unitId
 @return[type=table]
 ]]
-function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetAllDataForSummaryTable(challengeId, unitId)
+function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetAllDataForSummaryTable(challengeId, key, unitId)
     local tableData = {};
     if (not challengeId) then
         return nil;

@@ -344,7 +344,13 @@ Track all damage done to party members
 ]]
 function MyDungeonsBook:TrackAllDamageDoneToPartyMembers(sourceUnit, targetUnit, sourceUnitGUID, sourceUnitFlags, spellId, amount)
 	if (UnitIsPlayer(targetUnit)) then
-		if (UnitIsPlayer(sourceUnit)) then
+		local friendlyFire;
+		if (sourceUnitFlags) then
+			friendlyFire = bit.band(sourceUnitFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) == 0;
+		else
+			friendlyFire = false;
+		end
+		if (friendlyFire) then
 			self:SaveTrackedFriendlyFireByPartyMembers("FRIENDLY-FIRE-BY-PARTY-MEMBERS", sourceUnit, targetUnit, sourceUnitGUID, spellId, amount);
 		else
 			self:SaveTrackedDamageToPartyMembers("ALL-DAMAGE-DONE-TO-PARTY-MEMBERS", sourceUnit, targetUnit, sourceUnitGUID, spellId, amount);
@@ -561,6 +567,9 @@ end
 ]]
 function MyDungeonsBook:SaveTrackedFriendlyFireByPartyMembers(key, sourceUnit, targetUnit, sourceUnitGUID, spellId, amount)
 	local id = self.db.char.activeChallengeId;
+    local sourceUnitOwner = self:GetSummonedUnitOwner(sourceUnit, sourceUnitGUID);
+	sourceUnit = sourceUnitOwner or sourceUnit or "UNKNOWN_SOURCE";
+	targetUnit = targetUnit or "UNKNOWN_TARGET";
 	self:InitMechanics3Lvl(key, sourceUnit, targetUnit);
 	if (not self.db.char.challenges[id].mechanics[key][sourceUnit][targetUnit][spellId]) then
 		self.db.char.challenges[id].mechanics[key][sourceUnit][targetUnit][spellId] = {

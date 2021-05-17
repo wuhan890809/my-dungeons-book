@@ -436,16 +436,16 @@ Track cast done by any party member.
 
 It should be used for player's own spells.
 
+@param[type=number] timestamp
 @param[type=string] sourceUnitName name of unit that casted a spell
 @param[type=number] spellId casted spell id
 @param[type=?string] targetUnitName name of unit that is spell's target (only for single target spells)
 ]]
-function MyDungeonsBook:TrackOwnCastDoneByPartyMembers(sourceUnitName, spellId, targetUnitName)
-    if (OwnCastsDoneByPartyMembers[spellId] and UnitIsPlayer(sourceUnitName)) then
+function MyDungeonsBook:TrackOwnCastDoneByPartyMembers(timestamp, sourceUnitName, spellId, targetUnitName)
+    if (UnitIsPlayer(sourceUnitName)) then
         local id = self.db.char.activeChallengeId;
         local key = "OWN-CASTS-DONE-BY-PARTY-MEMBERS";
         self:InitMechanics3Lvl(key, sourceUnitName, spellId);
-        local timestamp = time();
         self.db.char.challenges[id].mechanics[key][sourceUnitName][spellId][timestamp] = {
             time = timestamp,
             target = targetUnitName

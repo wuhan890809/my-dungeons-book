@@ -78,7 +78,7 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		self:TrackSLSpecificCastDoneByPartyMembers(srcName, spellId);
 		self:TrackAllCastsDoneByPartyMembers(srcName, srcGUID, spellId);
 		self:TrackSLSpecificItemUsedByPartyMembers(srcName, spellId);
-		self:TrackOwnCastDoneByPartyMembers(srcName, spellId, dstName);
+		self:TrackOwnCastDoneByPartyMembers(timestamp, srcName, spellId, dstName);
 	end
 	if ((subEventPrefix:match("^SPELL") or subEventPrefix:match("^RANGE")) and subEventSuffix == "DAMAGE") then
 		local spellId, _, _, amount, overkill, _, _, _, _, crit = select(12, CombatLogGetCurrentEventInfo());

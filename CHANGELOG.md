@@ -1,4 +1,8 @@
-﻿### v2.10.0
+﻿### v2.11.0
+
+* Track all own casts with timestamp and targets
+
+### v2.10.0
 
 * [#118](https://github.com/onechiporenko/my-dungeons-book/issues/118) Save logs related to party member before its death
 * Track progress for enemy forces (both units and encounters tabs are updated)
