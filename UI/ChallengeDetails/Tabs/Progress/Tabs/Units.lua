@@ -47,7 +47,7 @@ function MyDungeonsBook:UnitsFrame_Create(parentFrame, challengeId)
     self:UnitsFrame_Filters_Create(unitsFrame, challengeId);
     local data = self:UnitsFrame_GetDataForTable(challengeId);
     local columns = self:UnitsFrame_GetHeadersForTable(challengeId);
-    local table = self:TableWidget_Create(columns, 18, 25, nil, unitsFrame, "units");
+    local table = self:TableWidget_Create(columns, 17, 25, nil, unitsFrame, "units");
     unitsFrame:SetUserData("unitsTable", table);
     unitsFrame:GetUserData("resetFilters"):Fire("OnClick");
     table:SetSummaryVisible(true);
@@ -84,7 +84,6 @@ end
 function MyDungeonsBook:UnitsFrame_Filters_Create(parentFrame, challengeId)
     local filtersFrame = AceGUI:Create("InlineGroup");
     filtersFrame:SetFullWidth(true);
-    filtersFrame:SetWidth(500);
     filtersFrame:SetTitle(L["Filters"]);
     filtersFrame:SetLayout("Flow");
     parentFrame:AddChild(filtersFrame);
@@ -156,7 +155,15 @@ function MyDungeonsBook:UnitsFrame_GetHeadersForTable()
         },
         {
             name = L["Combat Start"],
-            width = 100,
+            width = 70,
+            align = "LEFT",
+            DoCellUpdate = function(...)
+                self:Table_Cell_FormatAsTime(...);
+            end
+        },
+        {
+            name = L["Combat End"],
+            width = 70,
             align = "LEFT",
             sort = "dsc",
             DoCellUpdate = function(...)
@@ -164,24 +171,24 @@ function MyDungeonsBook:UnitsFrame_GetHeadersForTable()
             end
         },
         {
-            name = L["Combat End"],
-            width = 100,
-            align = "LEFT",
-            DoCellUpdate = function(...)
-                self:Table_Cell_FormatAsTime(...);
-            end
-        },
-        {
             name = L["Combat Duration"],
-            width = 100,
+            width = 70,
             align = "LEFT",
             DoCellUpdate = function(...)
                 self:Table_Cell_FormatAsTime(...);
             end
         },
         {
-            name = L["Enemy Progress"],
+            name = L["Enemy Forces"],
             width = 60,
+            align = "RIGHT",
+            DoCellUpdate = function(...)
+                self:Table_Cell_FormatAsEnemiesNeededCount(...);
+            end
+        },
+        {
+            name = L["Sum"],
+            width = 100,
             align = "RIGHT",
             DoCellUpdate = function(...)
                 self:Table_Cell_FormatAsEnemiesNeededCount(...);
@@ -217,7 +224,7 @@ function MyDungeonsBook:UnitsFrame_GetDataForTable(challengeId)
             local combatStart = npcData.firstHit;
             local combatEnd = npcData.died or npcData.lastCast;
             if (combatStart and combatEnd) then
-                local enemyInfo = mdtOverrides[npcId] or mdtEnemiesDb[npcId] or {};
+                local enemyInfo = mdtOverrides.npcs[npcId] or mdtEnemiesDb[npcId] or {};
                 local enemyPortraitDisplayId = enemyInfo.displayId or -1;
                 local enemyPower = enemyInfo.count or "";
                 tinsert(tableData, {
@@ -233,6 +240,16 @@ function MyDungeonsBook:UnitsFrame_GetDataForTable(challengeId)
                 });
             end
         end
+    end
+    table.sort(tableData, function(row1, row2)
+        return row1.cols[5].value < row2.cols[5].value;
+    end);
+    local sum = 0;
+    for _, row in pairs(tableData) do
+        local npcId = row.cols[1].value;
+        local enemyInfo = mdtOverrides.npcs[npcId] or mdtEnemiesDb[npcId] or {};
+        sum = sum + (enemyInfo.count or 0);
+        tinsert(row.cols, {value = (enemyInfo.count and sum or "") .. "=" .. (neededEnemiesCount or "")});
     end
     return tableData;
 end

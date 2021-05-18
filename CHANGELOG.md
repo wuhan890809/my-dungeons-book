@@ -1,6 +1,7 @@
 ﻿### v2.11.0
 
 * Track all own casts with timestamp and targets
+* Add top-level tab "Progress" contains Units, Encounters and Combat Time
 
 ### v2.10.0
 

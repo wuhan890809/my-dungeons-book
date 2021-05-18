@@ -155,8 +155,9 @@ L["Versatility"] = "Универсальность";
 L["Event"] = "Событие";
 L["Source"] = "Источник";
 L["HP"] = "Здоровье";
-L["Enemy Progress"] = "Прогресс";
+L["Enemy Forces"] = "Войска противника";
 L["This week"] = "Эта неделя";
+L["Progress"] = "Прогресс";
 -- UI end
 
 -- Help start

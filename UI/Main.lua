@@ -22,7 +22,7 @@ function MyDungeonsBook:MainFrame_Create()
 	frame:SetPoint("CENTER", UIParent, "CENTER", self.db.profile.display.x, self.db.profile.display.y);
 	frame:SetTitle(L["My Dungeons Book"]);
     frame:SetLayout("Fill");
-	frame:EnableResize(false)
+	frame:EnableResize(false);
     frame:SetCallback("OnClose", function ()
 		self.activeChallengeId = nil;
 		self.activeChallengeMechanics = nil;

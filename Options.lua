@@ -64,7 +64,23 @@ MyDungeonsBook.OptionsDefaults = {
 				mythicDungeonTools = {
 					npcs = {
 						[162692] = {
+							id = 162692,
 							displayId = 94926
+						},
+						[171805] = {
+							id = 171805,
+							count = 4,
+							displayId = 97622
+						},
+						[168393] = {
+							id = 168393,
+							count = 12,
+							displayId = 96244
+						},
+						[168396] = {
+							id = 168396,
+							count = 12,
+							displayId = 96244
 						}
 					},
 				}

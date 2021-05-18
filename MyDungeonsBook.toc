@@ -19,9 +19,8 @@ UI/Main.lua
 UI/Challenges.lua
 UI/ChallengeDetails.lua
 UI/ChallengeDetails/Tabs.lua
-UI/ChallengeDetails/Tabs/CombatTime.lua
 UI/ChallengeDetails/Tabs/DEV.lua
-UI/ChallengeDetails/Tabs/Encounters.lua
+
 UI/ChallengeDetails/Tabs/Mechanics.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Casts.lua
@@ -58,14 +57,21 @@ UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal/Tabs/HealByPartyMember/Tabs.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal/Tabs/HealByPartyMember/Tabs/BySpell.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Heal/Tabs/HealByPartyMember/Tabs/ToEachPartyMember.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/UsedItems.lua
+
+UI/ChallengeDetails/Tabs/Progress.lua
+UI/ChallengeDetails/Tabs/Progress/Tabs.lua
+UI/ChallengeDetails/Tabs/Progress/Tabs/CombatTime.lua
+UI/ChallengeDetails/Tabs/Progress/Tabs/Encounters.lua
+UI/ChallengeDetails/Tabs/Progress/Tabs/Units.lua
+
 UI/ChallengeDetails/Tabs/Roster.lua
 UI/ChallengeDetails/Tabs/Roster/Tabs.lua
 UI/ChallengeDetails/Tabs/Roster/Tabs/Covenant.lua
 UI/ChallengeDetails/Tabs/Roster/Tabs/Equipment.lua
 UI/ChallengeDetails/Tabs/Roster/Tabs/Info.lua
 UI/ChallengeDetails/Tabs/Roster/Tabs/Talents.lua
+
 UI/ChallengeDetails/Tabs/Summary.lua
-UI/ChallengeDetails/Tabs/Units.lua
 
 Widgets/Graph.lua
 Widgets/NewLine.lua

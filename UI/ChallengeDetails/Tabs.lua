@@ -20,9 +20,7 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 	local tabsConfig = {
 		{value = "roster", text = L["Roster"]},
 		{value = "summary", text = L["Summary"]},
-		{value = "units", text = L["Units"]},
-		{value = "combatTime", text = L["Combat Time"]},
-		{value = "encounters", text = L["Encounters"]},
+		{value = "progress", text = L["Progress"]},
 		{value = "mechanics", text = L["Mechanics"]}
 	};
 	if (self.db.profile.performance.showdevtab) then
@@ -34,23 +32,17 @@ function MyDungeonsBook:ChallengeDetailsFrame_CreateTabButtonsFrame(parentFrame)
 		if (tabId == "roster") then
 			self.rosterFrame = self:RosterFrame_Create(container, self.activeChallengeId);
 		end
+		if (tabId == "progress") then
+			self.progressFrame = self:ProgressFrame_Create(container, self.activeChallengeId);
+		end
 		if (tabId == "summary") then
 			self.summaryFrame = self:SummaryFrame_Create(container, self.activeChallengeId);
-		end
-		if (tabId == "encounters") then
-			self.encountersFrame = self:EncountersFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "dev") then
 			self.devFrame = self:DevFrame_Create(container, self.activeChallengeId);
 		end
 		if (tabId == "mechanics") then
 			self.mechanicsFrame = self:MechanicsFrame_Create(container, self.activeChallengeId);
-		end
-		if (tabId == "combatTime") then
-			self.combatTimeFrame = self:CombatTimeFrame_Create(container, self.activeChallengeId);
-		end
-		if (tabId == "units") then
-			self.unitsFrame = self:UnitsFrame_Create(container, self.activeChallengeId);
 		end
 	end);
 	tabs:SetHeight(658);

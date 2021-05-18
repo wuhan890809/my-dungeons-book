@@ -1231,7 +1231,7 @@ Used to stop timers for buffs and debuffs for dead unit
 @param[type=number] sourceUnitFlags
 ]]
 function MyDungeonsBook:TrackEnemyUnitDied(sourceUnitName, sourceUnitGUID, sourceUnitFlags)
-	local targetIsEnemy = bit.band(sourceUnitFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0;
+	local targetIsEnemy = bit.band(sourceUnitFlags, COMBATLOG_OBJECT_REACTION_FRIENDLY) == 0;
 	if (not targetIsEnemy) then
 		return;
 	end

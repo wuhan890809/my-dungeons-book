@@ -224,6 +224,7 @@ local SLSpellsNoTank = {
     [322557] = true, -- Soul Split
     [323057] = true, -- Spirit Bolt (Ingra Maloch)
     [331721] = true, -- Spear Flurry (Mistveil Defender)
+    [331748] = true, -- Back Kick
     -- Theater of Pain
     [326835] = true, -- Cruel Slash (Ossified Conscript)
     [324079] = true, -- Reaping Scythe (Mordretha, the Endless Empress)

@@ -154,8 +154,9 @@ L["Versatility"] = "Versatility";
 L["Event"] = "Event";
 L["Source"] = "Source";
 L["HP"] = "HP";
-L["Enemy Progress"] = "Enemy Progress";
+L["Enemy Forces"] = "Enemy Forces";
 L["This week"] = "This week";
+L["Progress"] = "Progress";
 -- UI end
 
 -- Help start
