@@ -5,6 +5,7 @@
 * Fix for deaths-tab. Deaths without releases until challenge ends now parsed and shown correctly.
 * Fix overall enemy progress calculation
 * Highlight players in the OwnCasts-tab
+* Highlight amount columns for damage and heal tabs by spell
 
 ### v2.10.0
 

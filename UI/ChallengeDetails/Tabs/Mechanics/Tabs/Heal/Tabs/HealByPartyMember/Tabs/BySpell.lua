@@ -93,6 +93,12 @@ function MyDungeonsBook:HealByPartyMemberBySpellFrame_GetHeadersForTable()
             width = 60,
             align = "RIGHT",
             sort = "asc",
+            bgcolor = {
+                r = 0,
+                g = 0,
+                b = 0,
+                a = 0.4
+            },
             DoCellUpdate = function(...)
                 self:Table_Cell_FormatAsNumber(...);
             end

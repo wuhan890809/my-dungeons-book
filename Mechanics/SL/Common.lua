@@ -81,7 +81,6 @@ local SLSpells = {
     [321034] = true, -- Charged Spear (Kin-Tara)
     [324141] = true, -- Dark Bolt (Ventunax)
     [323943] = true, -- Run Through (Devos)
-    [334625] = true, -- Seed of the Abyss (Devos)
     -- Mists of Tirna Scithe
     [326309] = true, -- Decomposing Acid
     [326017] = true, -- Decomposing Acid
