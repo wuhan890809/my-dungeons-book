@@ -2,6 +2,8 @@
 
 * Track all own casts with timestamp and targets
 * Add top-level tab "Progress" contains Units, Encounters and Combat Time
+* Fix for deaths-tab. Deaths without releases until challenge ends now parsed and shown correctly.
+* Fix overall enemy progress calculation 
 
 ### v2.10.0
 

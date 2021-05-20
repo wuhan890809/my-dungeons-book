@@ -187,6 +187,11 @@ function MyDungeonsBook:UnitsFrame_GetHeadersForTable()
             end
         },
         {
+            name = "",
+            width = 1,
+            align = "LEFT"
+        },
+        {
             name = L["Sum"],
             width = 100,
             align = "RIGHT",
@@ -222,7 +227,7 @@ function MyDungeonsBook:UnitsFrame_GetDataForTable(challengeId)
         if (npcId) then
             local npcName = (self.db.global.meta.npcs[npcId] and self.db.global.meta.npcs[npcId].name) or npcId;
             local combatStart = npcData.firstHit;
-            local combatEnd = npcData.died or npcData.lastCast;
+            local combatEnd = npcData.died; -- or npcData.lastCast;
             if (combatStart and combatEnd) then
                 local enemyInfo = mdtOverrides.npcs[npcId] or mdtEnemiesDb[npcId] or {};
                 local enemyPortraitDisplayId = enemyInfo.displayId or -1;
@@ -235,7 +240,8 @@ function MyDungeonsBook:UnitsFrame_GetDataForTable(challengeId)
                         {value = (combatStart - challengeStartTime) * 1000},
                         {value = (combatEnd - challengeStartTime) * 1000},
                         {value = (combatEnd - combatStart) * 1000},
-                        {value = enemyPower .. "=" .. (neededEnemiesCount or "")}
+                        {value = enemyPower .. "=" .. (neededEnemiesCount or "") },
+                        {value = npcData.died},
                     }
                 });
             end
@@ -248,7 +254,16 @@ function MyDungeonsBook:UnitsFrame_GetDataForTable(challengeId)
     for _, row in pairs(tableData) do
         local npcId = row.cols[1].value;
         local enemyInfo = mdtOverrides.npcs[npcId] or mdtEnemiesDb[npcId] or {};
-        sum = sum + (enemyInfo.count or 0);
+        local mustDieToCount = (mdtOverrides.npcs[npcId] and mdtOverrides.npcs[npcId].mustDieToCount) or false;
+        local died = row.cols[8].value;
+        local count = enemyInfo.count or 0;
+        if (mustDieToCount) then
+            if (died) then
+                sum = sum + count;
+            end
+        else
+            sum = sum + count;
+        end
         tinsert(row.cols, {value = (enemyInfo.count and sum or "") .. "=" .. (neededEnemiesCount or "")});
     end
     return tableData;

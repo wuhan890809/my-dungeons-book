@@ -134,7 +134,7 @@ function MyDungeonsBook:DeathsFrame_GetDataForTable(challengeId, key)
         if (unitMechanic and unitMechanic.timeline) then
             local prevStatus = -1;
             local lastTimestamp = -1;
-            for _, timelineItem in pairs(unitMechanic.timeline) do
+            for indx, timelineItem in pairs(unitMechanic.timeline) do
                 local currentStatus = timelineItem[2];
                 local currentTimestamp = timelineItem[1];
                 if (prevStatus == 1 and currentStatus == 0) then
@@ -147,6 +147,20 @@ function MyDungeonsBook:DeathsFrame_GetDataForTable(challengeId, key)
                             {value = deathTime * 1000},
                             {value = releaseTime * 1000},
                             {value = (currentTimestamp - lastTimestamp) * 1000},
+                        }
+                    });
+                end
+                -- Party member is dead until challenge end (e.g. died and not released until challenge ends)
+                if (currentStatus == 1 and #unitMechanic.timeline == indx) then
+                    local deathTime = currentTimestamp - challenge.challengeInfo.startTime - 10;
+                    local releaseTime = challenge.challengeInfo.duration / 1000;
+                    tinsert(tableData, {
+                        cols = {
+                            {value = currentTimestamp .. "=" .. unitId},
+                            {value = self:GetUnitNameRealmRoleStr(challenge.players[unitId])},
+                            {value = deathTime * 1000},
+                            {value = releaseTime * 1000},
+                            {value = (releaseTime - deathTime) * 1000},
                         }
                     });
                 end

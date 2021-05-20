@@ -65,12 +65,13 @@ MyDungeonsBook.OptionsDefaults = {
 					npcs = {
 						[162692] = {
 							id = 162692,
-							displayId = 94926
+							displayId = 94926,
+							count = 0,
 						},
-						[171805] = {
-							id = 171805,
+						[167615] = {
+							id = 167615,
+							displayId = 93074,
 							count = 4,
-							displayId = 97622
 						},
 						[168393] = {
 							id = 168393,
@@ -81,6 +82,17 @@ MyDungeonsBook.OptionsDefaults = {
 							id = 168396,
 							count = 12,
 							displayId = 96244
+						},
+						[171805] = {
+							id = 171805,
+							count = 4,
+							displayId = 97622
+						},
+						[174175] = {
+							id = 174175,
+							count = 4,
+							displayId = 95706,
+							mustDieToCount = true
 						}
 					},
 				}
