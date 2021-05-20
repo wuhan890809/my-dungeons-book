@@ -63,6 +63,8 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_FilterBySpellId_Create(parent
     resetFilters:SetText(L["Reset"]);
     resetFilters:SetWidth(90);
     resetFilters:SetCallback("OnClick", function()
+        parentFrame:GetUserData("summaryTable"):ClearSelection();
+        parentFrame:GetUserData("table"):ClearSelection();
         self:OwnCastsByPartyMemberFrame_FilterBySpellId_Update("ALL");
         filterBySpellId:SetValue("ALL");
     end);
@@ -88,9 +90,10 @@ end
 function MyDungeonsBook:OwnCastsByPartyMemberFrame_Table_Create(parentFrame, challengeId, key, unitId)
     local data = self:OwnCastsByPartyMemberFrame_GetDataForTable(challengeId, key, unitId);
     local columns = self:OwnCastsByPartyMemberFrame_GetHeadersForTable(challengeId, unitId);
-    local table = self:TableWidget_Create(columns, 10, 40, {r = 1.0, g = 0.9, b = 0.0, a = 0.5}, parentFrame, "own-casts-by-" .. unitId);
+    local table = self:TableWidget_Create(columns, 17, 25, {r = 1.0, g = 0.9, b = 0.0, a = 0.5}, parentFrame, "own-casts-by-" .. unitId);
+    table:EnableSelection(true);
     table:SetData(data);
-    table.frame:SetPoint("TOPLEFT", 260, -80);
+    table.frame:SetPoint("TOPLEFT", 260, -60);
     table:RegisterEvents({
         OnClick = function(_, _, data, _, _, realrow, _, _, button)
             if (button == "RightButton" and realrow) then
@@ -134,9 +137,10 @@ end
 function MyDungeonsBook:OwnCastsByPartyMemberFrame_SummaryTable_Create(parentFrame, challengeId, key, unitId)
     local summaryData = self:OwnCastsByPartyMemberFrame_GetAllDataForSummaryTable(challengeId, key, unitId);
     local summaryColumns = self:OwnCastsByPartyMemberFrame_GetHeadersForSummaryTable();
-    local summaryTable = self:TableWidget_Create(summaryColumns, 10, 40, nil, parentFrame, "own-casts-by-" .. unitId .. "-summary");
+    local summaryTable = self:TableWidget_Create(summaryColumns, 17, 25, {r = 1.0, g = 0.9, b = 0.0, a = 0.5}, parentFrame, "own-casts-by-" .. unitId .. "-summary");
+    summaryTable:EnableSelection(true);
     summaryTable:SetData(summaryData);
-    summaryTable.frame:SetPoint("TOPLEFT", 0, -80);
+    summaryTable.frame:SetPoint("TOPLEFT", 0, -60);
     summaryTable:RegisterEvents({
         OnEnter = function (_, cellFrame, data, _, _, realrow, column)
             if (realrow) then
@@ -163,13 +167,14 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_SummaryTable_Create(parentFra
             end
         end
     });
+    parentFrame:SetUserData("summaryTable", summaryTable);
     return summaryTable;
 end
 
 --[[--
 @return[type=table]
 ]]
-function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetHeadersForTable()
+function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetHeadersForTable(challengeId)
     return {
         {
             name = " ",
@@ -178,10 +183,10 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetHeadersForTable()
         },
         {
             name = "",
-            width = 40,
+            width = 30,
             align = "LEFT",
             DoCellUpdate = function(...)
-                self:Table_Cell_FormatAsSpellIcon(...);
+                self:Table_Cell_FormatAsSmallSpellIcon(...);
             end
         },
         {
@@ -209,8 +214,11 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetHeadersForTable()
         },
         {
             name = L["Target?"],
-            width = 110,
-            align = "LEFT"
+            width = 150,
+            align = "LEFT",
+            DoCellUpdate = function(...)
+                self:Table_Cell_FormatCellAsCastTarget(challengeId, ...);
+            end
         }
     };
 end
@@ -227,10 +235,10 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetHeadersForSummaryTable()
         },
         {
             name = "",
-            width = 40,
+            width = 30,
             align = "LEFT",
             DoCellUpdate = function(...)
-                self:Table_Cell_FormatAsSpellIcon(...);
+                self:Table_Cell_FormatAsSmallSpellIcon(...);
             end
         },
         {
@@ -367,4 +375,18 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetAllDataForSummaryTable(cha
         });
     end
     return tableData;
+end
+
+--[[--
+@local
+]]
+function MyDungeonsBook:Table_Cell_FormatCellAsCastTarget(challengeId, _, cellFrame, data, _, _, realrow, column)
+    local challenge = self:Challenge_GetById(challengeId);
+    if (not challenge) then
+        return;
+    end
+    local unitName = data[realrow].cols[column].value or "";
+    local unitId = self:GetPartyUnitByName(challengeId, unitName);
+    local val = unitId and self:GetUnitNameRealmRoleStr(challenge.players[unitId]) or unitName;
+    cellFrame.text:SetText(val);
 end

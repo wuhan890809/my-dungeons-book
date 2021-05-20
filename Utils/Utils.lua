@@ -199,7 +199,7 @@ function MyDungeonsBook:LogPrint(...)
 end
 
 --[[--
-Return string color with class-color of provided unit
+Return string colored with class-color of provided unit
 If unit is not "classable", text is returned "as is"
 
 @param[type=unitId] unit unitId to get its class color
