@@ -158,6 +158,14 @@ L["HP"] = "Здоровье";
 L["Enemy Forces"] = "Войска противника";
 L["This week"] = "Эта неделя";
 L["Progress"] = "Прогресс";
+L["Target"] = "Цель";
+L["Broken Auras"] = "Сбитые эффекты";
+L["Broken By"] = "Сбито";
+L["%s broke %s on %s using %s"] = "%s сбил %s с %s используя %s";
+L["Not tanking anything"] = "Никого не танкует";
+L["Not tanking anything, but have higher threat than tank on at least one unit"] = "Никого не танкует, но уровень угрозы выше чем у танка как минимум на одной вражеской единице";
+L["Insecurely tanking at least one unit, but not securely tanking anything"] = "Небезопасно танкует как минимум одну вражескую единице, но уверенно не танкует никого";
+L["Securely tanking at least one unit"] = "Уверенно танкует как минимум одну вражескую единицу";
 -- UI end
 
 -- Help start

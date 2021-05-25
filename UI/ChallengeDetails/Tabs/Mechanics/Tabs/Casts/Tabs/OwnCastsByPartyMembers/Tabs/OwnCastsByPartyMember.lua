@@ -217,7 +217,7 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetHeadersForTable(challengeI
             width = 150,
             align = "LEFT",
             DoCellUpdate = function(...)
-                self:Table_Cell_FormatCellAsCastTarget(challengeId, ...);
+                self:Table_Cell_FormatAsPartyMember(challengeId, ...);
             end
         }
     };
@@ -375,18 +375,4 @@ function MyDungeonsBook:OwnCastsByPartyMemberFrame_GetAllDataForSummaryTable(cha
         });
     end
     return tableData;
-end
-
---[[--
-@local
-]]
-function MyDungeonsBook:Table_Cell_FormatCellAsCastTarget(challengeId, _, cellFrame, data, _, _, realrow, column)
-    local challenge = self:Challenge_GetById(challengeId);
-    if (not challenge) then
-        return;
-    end
-    local unitName = data[realrow].cols[column].value or "";
-    local unitId = self:GetPartyUnitByName(challengeId, unitName);
-    local val = unitId and self:GetUnitNameRealmRoleStr(challenge.players[unitId]) or unitName;
-    cellFrame.text:SetText(val);
 end

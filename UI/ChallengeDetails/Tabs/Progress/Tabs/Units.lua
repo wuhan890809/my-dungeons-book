@@ -102,7 +102,7 @@ function MyDungeonsBook:UnitsFrame_Filters_Create(parentFrame, challengeId)
 
     -- NPC filter
     local npcFilter = AceGUI:Create("Dropdown");
-    npcFilter:SetWidth(200);
+    npcFilter:SetWidth(400);
     npcFilter:SetLabel(L["NPC"]);
     npcFilter:SetList(npcFilterOptions);
     npcFilter:SetCallback("OnValueChanged", function (_, _, filterValue)
@@ -218,8 +218,7 @@ function MyDungeonsBook:UnitsFrame_GetDataForTable(challengeId)
     local challengeStartTime = challenge.challengeInfo.startTime;
     local mdtEnemiesDb =  IsAddOnLoaded("MythicDungeonTools") and self:Mdt_GetInstanceEnemiesRemapped(challenge.challengeInfo.currentZoneId) or {};
     local mdtEnemiesNeededCount = IsAddOnLoaded("MythicDungeonTools") and self:Mdt_GetInstanceNeededEnemiesTotalCount(challenge.challengeInfo.currentZoneId) or "";
-    local neededEnemiesCountFromDb = challenge.challengeInfo.neededEnemyForces;
-    local neededEnemiesCount = neededEnemiesCountFromDb or mdtEnemiesNeededCount;
+    local neededEnemiesCount = challenge.challengeInfo.neededEnemyForces or mdtEnemiesNeededCount;
     local mdtOverrides = self.db.global.meta.addons.mythicDungeonTools;
     local tableData = {};
     for npcGUID, npcData in pairs(mechanic) do
@@ -227,8 +226,12 @@ function MyDungeonsBook:UnitsFrame_GetDataForTable(challengeId)
         if (npcId) then
             local npcName = (self.db.global.meta.npcs[npcId] and self.db.global.meta.npcs[npcId].name) or npcId;
             local combatStart = npcData.firstHit;
-            local combatEnd = npcData.died; -- or npcData.lastCast;
-            if (combatStart and combatEnd) then
+            local combatEnd = npcData.died;
+            if (mdtOverrides.npcs[npcId] and (mdtOverrides.npcs[npcId].mustDieToCount == false)) then
+                combatEnd = combatEnd or npcData.lastCast;
+            end
+            local ignoreNpc = (mdtOverrides.npcs[npcId] and mdtOverrides.npcs[npcId].ignored) or false;
+            if (combatStart and combatEnd and not ignoreNpc) then
                 local enemyInfo = mdtOverrides.npcs[npcId] or mdtEnemiesDb[npcId] or {};
                 local enemyPortraitDisplayId = enemyInfo.displayId or -1;
                 local enemyPower = enemyInfo.count or "";

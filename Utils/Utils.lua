@@ -56,6 +56,12 @@ local targetIconsMap = {
 	[8] = "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_8.blp:0|t",
 };
 
+local argoStatusesMap = {
+    L["Not tanking anything, but have higher threat than tank on at least one unit"],
+    L["Insecurely tanking at least one unit, but not securely tanking anything"],
+    L["Securely tanking at least one unit"]
+};
+
 --[[--
 Get texture for affix's icon (question mark is returned if no affix icon found).
 
@@ -68,6 +74,24 @@ function MyDungeonsBook:GetAffixTextureById(affixId)
 	return affixesMap[affixId] or 134400;
 end
 
+--[[--
+@param[type=number] dec
+@return[type=string]
+]]
+function MyDungeonsBook:DecToHex(dec)
+	if (dec == 0) then
+		return "00";
+	end
+	return string.format("%x", dec * 255);
+end
+
+--[[--
+@param[type=number]
+@return[type=string]
+]]
+function MyDungeonsBook:GetArgoStatus(argoLevel)
+    return argoStatusesMap[argoLevel] or L["Not tanking anything"];
+end
 
 --[[--
 Convert number to K/M format.
@@ -783,4 +807,16 @@ end
 function MyDungeonsBook:GetCurrentAffixesKey()
     local affixes = C_MythicPlus.GetCurrentAffixes();
     return string.format("%s-%s-%s-%s", affixes[1].id, affixes[2].id, affixes[3].id, affixes[4].id);
+end
+
+function MyDungeonsBook:NotifyUpdateGroupInfo()
+	NotifyInspect("player");
+	for i = 1, 4 do
+		self:ScheduleTimer(function()
+			local unitId = "party" .. i;
+			if (UnitExists(unitId)) then
+				NotifyInspect(unitId);
+			end
+		end, i * 2);
+	end
 end

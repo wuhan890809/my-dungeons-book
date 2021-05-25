@@ -320,6 +320,7 @@ local SLAuras = {
     [324859] = true, -- Bramblethorn Entanglement
     -- Halls of Atonement
     [319703] = true, -- Blood Torrent (Echelon)
+    [339237] = true, -- Sinlight Visions (Echelon)
     -- De Other Side
     [331379] = true, -- Lubricate (Lubricator)
     [323118] = true, -- Blood Barrage (Hakkar the Soulflayer)
@@ -376,6 +377,7 @@ local SLSpellsToInterrupt = {
     [320170] = true, -- Necrotic Bolt
     [327130] = true, -- Repair Flesh (Flesh Crafter)
     [335143] = true, -- Bonemend (Zolramus Bonemender)
+    [328667] = true, -- Frostbolt Volley
     -- Sanguine Depths
     [319654] = true, -- Hungering Drain (Kryxis the Voracious)
     [322433] = true, -- Stoneskin (Chamber Sentinel)
@@ -741,10 +743,6 @@ end
 
 function MyDungeonsBook:TrackSLAvoidableSpells(damagedUnit, spellId, amount)
 	self:TrackAvoidableSpells("SL-AVOIDABLE-SPELLS", SLSpells, SLSpellsNoTank, damagedUnit, spellId, amount);
-end
-
-function MyDungeonsBook:TrackSLAvoidableAuras(damagedUnit, spellId)
-	self:TrackAvoidableAuras("SL-AVOIDABLE-AURAS", SLAuras, SLAurasNoTank, damagedUnit, spellId);
 end
 
 function MyDungeonsBook:TrackSLPassedCasts(caster, spellId, raidFlags)

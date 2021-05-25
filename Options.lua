@@ -25,6 +25,10 @@ MyDungeonsBook.OptionsDefaults = {
 				aura = "ALL",
 				guid = "ALL"
 			},
+			brokenAuras = {
+				npc = "ALL",
+				aura = "ALL"
+			},
 			ownCasts = {
 				spellId = "ALL"
 			}
@@ -63,15 +67,58 @@ MyDungeonsBook.OptionsDefaults = {
 			addons = {
 				mythicDungeonTools = {
 					npcs = {
+						[162099] = {
+							id = 162099,
+							mustDieToCount = false,
+							displayId = 95721,
+							isBoss = true,
+							count = 0,
+						},
+						[162133] = {
+							id = 162133,
+							mustDieToCount = false,
+							count = 0
+						},
 						[162692] = {
 							id = 162692,
 							displayId = 94926,
+							isBoss = true,
 							count = 0,
+						},
+						[164555] = {
+							id = 164555,
+							displayId = 67422,
+							isBoss = true,
+							count = 0,
+							mustDieToCount = false
+						},
+						[164556] = {
+							id = 164556,
+							displayId = 68818,
+							isBoss = true,
+							count = 0,
+							mustDieToCount = false
+						},
+						[164561] = {
+							ignored = true,
+						},
+						[164568] = {
+							ignored = true,
+						},
+						[166608] = {
+							id = 166608,
+							displayId = 96358,
+							isBoss = true,
+							count = 0,
+							mustDieToCount = false
 						},
 						[167615] = {
 							id = 167615,
 							displayId = 93074,
 							count = 4,
+						},
+						[167966] = {
+							ignored = true,
 						},
 						[168393] = {
 							id = 168393,
@@ -82,6 +129,11 @@ MyDungeonsBook.OptionsDefaults = {
 							id = 168396,
 							count = 12,
 							displayId = 96244
+						},
+						[170486] = {
+							id = 170486,
+							count = 2,
+							displayId = 97298
 						},
 						[171805] = {
 							id = 171805,
@@ -153,10 +205,6 @@ MyDungeonsBook.OptionsDefaults = {
 					id = "BFA-AVOIDABLE-SPELLS",
 					verbose = true
 				},
-				["BFA-AVOIDABLE-AURAS"] = {
-					id = "BFA-AVOIDABLE-AURAS",
-					verbose = true
-				},
 				["BFA-SPELLS-TO-INTERRUPT"] = {
 					id = "BFA-SPELLS-TO-INTERRUPT",
 					verbose = true
@@ -184,10 +232,6 @@ MyDungeonsBook.OptionsDefaults = {
 				},
 				["SL-AVOIDABLE-SPELLS"] = {
 					id = "SL-AVOIDABLE-SPELLS",
-					verbose = true
-				},
-				["SL-AVOIDABLE-AURAS"] = {
-					id = "SL-AVOIDABLE-AURAS",
 					verbose = true
 				},
 				["SL-SPELLS-TO-INTERRUPT"] = {
@@ -380,21 +424,6 @@ MyDungeonsBook.Options = {
 							end,
 							set = function(_, v)
 								for _, key in pairs({"BFA-AVOIDABLE-SPELLS", "SL-AVOIDABLE-SPELLS"}) do
-									MyDungeonsBook.db.global.meta.mechanics[key].verbose = v;
-								end
-							end
-						},
-						avoidableAuras = {
-							order = 2,
-							name = L["Show LOG messages about avoidable DEBUFFS"],
-							type = "toggle",
-							width = "full",
-							get = function()
-								-- Doesn't metter which one to use. Both BFA and SL have the same value
-								return MyDungeonsBook.db.global.meta.mechanics["BFA-AVOIDABLE-AURAS"].verbose;
-							end,
-							set = function(_, v)
-								for _, key in pairs({"BFA-AVOIDABLE-AURAS", "SL-AVOIDABLE-AURAS"}) do
 									MyDungeonsBook.db.global.meta.mechanics[key].verbose = v;
 								end
 							end

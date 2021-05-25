@@ -103,6 +103,9 @@
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Deaths.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\BrokenAuras.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Progress.lua">
       <SubType>Code</SubType>
     </Content>
@@ -203,9 +206,6 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\AvoidableDebuffs.lua">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\BuffsOrDebuffsOnPartyMembers.lua">
       <SubType>Code</SubType>
     </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\EffectsAndAuras\Tabs\BuffsOrDebuffsOnUnits.lua">

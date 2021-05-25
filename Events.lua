@@ -107,7 +107,6 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 	if (subEventName == "SPELL_AURA_APPLIED" or
 		subEventName == "SPELL_AURA_APPLIED_DOSE") then
 		local spellId, _, _, auraType, amount = select(12, CombatLogGetCurrentEventInfo());
-		self:TrackSLAvoidableAuras(dstName, spellId);
 		self:TrackSLSpecificBuffOrDebuffOnPartyMembers(dstName, spellId);
 		self:TrackSLSpecificBuffOrDebuffOnUnit(dstName, dstGUID, dstFlags, spellId, auraType, amount or 1);
 		self:TrackAllBuffOrDebuffOnUnit(dstName, dstGUID, dstFlags, spellId, auraType, amount or 1);
@@ -124,6 +123,14 @@ function MyDungeonsBook:COMBAT_LOG_EVENT_UNFILTERED()
 		self:TrackAuraRemovedFromEnemyUnit(dstName, dstGUID, spellId, auraType, amount or 0);
 		self:TrackSLSpecificBuffOrDebuffRemovedFromUnit(dstName, dstGUID, dstFlags, spellId, auraType, amount or 0);
 		self:TrackCombatEventWithPartyMember(timestamp, dstName, dstGUID);
+	end
+	if (subEventName == "SPELL_AURA_BROKEN" or
+		subEventName == "SPELL_AURA_BROKEN_SPELL") then
+		local brokenSpellId, _, _, spellId = select(12, CombatLogGetCurrentEventInfo());
+		if (type(spellId) ~= "number") then
+			spellId = -2; -- Swing Damage
+		end
+		self:TrackEnemyAuraBrokenByDamage(timestamp, srcName, srcGUID, srcFlags, dstName, dstGUID, dstFlags, brokenSpellId, spellId);
 	end
 end
 
@@ -195,12 +202,7 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 			self:TrackSummonnedByPartyMembersUnit(nameToUse, UnitGUID(unitId), UnitName(petUnitId), UnitGUID(petUnitId));
         end
 	end
-	NotifyInspect("player");
-	for i = 1, 4 do
-		self:ScheduleTimer(function()
-			NotifyInspect("party" .. i);
-		end, i * 2);
-	end
+	self:NotifyUpdateGroupInfo();
 	local version, build, date, tocversion = GetBuildInfo();
 	self:DebugPrint(string.format("version - %s, build - %s, date - %s, tocversion - %s", version, build, date, tocversion));
 	self.db.char.challenges[id].gameInfo = {
@@ -373,6 +375,7 @@ function MyDungeonsBook:ENCOUNTER_START(_, encounterId, encounterName, ...)
 		deathCountOnStart = C_ChallengeMode.GetDeathCount(),
 		enemyForcesOnStart = enemyForcesOnStart
 	};
+	self:NotifyUpdateGroupInfo();
 	self:DebugPrint("ENCOUNTER_START", encounterId, encounterName);
 end
 

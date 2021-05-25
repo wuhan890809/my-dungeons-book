@@ -123,7 +123,7 @@ end
 function MyDungeonsBook:Table_Cell_FormatAsSizedSpellIcon(size, rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local spellId = data[realrow].cols[column].value;
 	local suffix = self:GetIconTextureSuffix(size);
-	if (spellId) then
+	if (spellId and type(spellId) == "number") then
 		if (spellId < -3) then
 			local npcId = math.abs(spellId);
 			local icon = (self.db.global.meta.npcToTrackSwingDamage[npcId] and self.db.global.meta.npcToTrackSwingDamage[npcId].icon) or "999951";
@@ -173,7 +173,7 @@ Params are similar to [ScrollingTableMdb:DoCellUpdate](https://www.wowace.com/pr
 ]]
 function MyDungeonsBook:Table_Cell_FormatAsSpellLink(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
 	local spellId = data[realrow].cols[column].value;
-	if (spellId) then
+	if (spellId and type(spellId) == "number") then
 		if (spellId < -3) then
 			local npcId = math.abs(spellId);
 			local cellText = L["Swing Damage"];
@@ -274,6 +274,41 @@ function MyDungeonsBook:Table_Cell_FormatAsItemLink(rowFrame, cellFrame, data, c
 end
 
 --[[--
+Wrapper for cells with party member name
+
+Original value (party member name) is left "as is" for sorting purposes.
+
+Params are similar to [ScrollingTableMdb:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
+]]
+function MyDungeonsBook:Table_Cell_FormatAsPartyMember(challengeId, rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
+	local challenge = self:Challenge_GetById(challengeId);
+	if (not challenge) then
+		return;
+	end
+	local unitName = data[realrow].cols[column].value or "";
+	local unitId = self:GetPartyUnitByName(challengeId, unitName);
+	local val = unitId and self:GetUnitNameRealmRoleStr(challenge.players[unitId]) or unitName;
+	cellFrame.text:SetText(val);
+end
+
+--[[--
+Wrapper for cells with party member overall agro level
+
+Original value (party member overall agro level) is left "as is" for sorting purposes.
+
+Params are similar to [ScrollingTableMdb:DoCellUpdate](https://www.wowace.com/projects/lib-st/pages/docell-update)
+]]
+function MyDungeonsBook:Table_Cell_FormatCellAsArgo(rowFrame, cellFrame, data, cols, row, realrow, column, fShow, table)
+	local threat = data[realrow].cols[column].value or -1;
+	local val = "";
+	if (threat >= 0) then
+		local r, g, b = GetThreatStatusColor(threat);
+		val = string.format("|cff%s%s%s%s|r", self:DecToHex(r), self:DecToHex(g), self:DecToHex(b), threat);
+	end
+	cellFrame.text:SetText(val);
+end
+
+--[[--
 Default handler for mouse out event for table cells.
 
 Just hide tooltip.
@@ -293,7 +328,7 @@ Show "default" tooltip for spell with ID `spellId`. Tooltip is placed on the rig
 @param[type=number] spellId
 ]]
 function MyDungeonsBook:Table_Cell_SpellMouseHover(cellFrame, spellId)
-	if (spellId and spellId > 0) then
+	if (spellId and type(spellId) == "number" and spellId > 0) then
 		GameTooltip:SetOwner(cellFrame, "ANCHOR_NONE");
 		GameTooltip:SetPoint("BOTTOMLEFT", cellFrame, "BOTTOMRIGHT");
 		GameTooltip:SetSpellByID(spellId);

@@ -29,7 +29,7 @@ Mouse hover/out handler are included.
 ]]
 function MyDungeonsBook:AvoidableDebuffsFrame_Create(parentFrame, challengeId)
 	local avoidableDebuffsFrame = self:TabContentWrapperWidget_Create(parentFrame);
-	local data = self:AvoidableDebuffsFrame_GetDataForTable(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-AVOIDABLE-AURAS");
+	local data = self:AvoidableDebuffsFrame_GetDataForTable(challengeId, "PARTY-MEMBERS-AURAS");
 	local columns = self:Table_Headers_GetForSpellsSummary(challengeId);
 	local table = self:TableWidget_Create(columns, 12, 40, nil, avoidableDebuffsFrame, "avoidable-debuffs");
 	table:SetData(data);
@@ -67,35 +67,34 @@ Map data about Avoidable Debuffs for challenge with id `challengeId`.
 function MyDungeonsBook:AvoidableDebuffsFrame_GetDataForTable(challengeId, key)
 	local tableData = {};
 	if (not challengeId) then
-		return nil;
+		return tableData;
 	end
 	local mechanics = self:Challenge_Mechanic_GetById(challengeId, key);
 	if (not mechanics) then
 		self:DebugPrint(string.format("No Avoidable Debuffs data for challenge #%s", challengeId));
-		return {};
+		return tableData;
 	end
-	for name, damageBySpells in pairs(mechanics) do
-		if (damageBySpells) then
-			for spellId, hits in pairs(damageBySpells) do
-				if (not tableData[spellId]) then
-					tableData[spellId] = {
-						spellId = spellId,
-						player = 0,
-						party1 = 0,
-						party2 = 0,
-						party3 = 0,
-						party4 = 0
-					};
-				end
-				local partyUnitId = self:GetPartyUnitByName(challengeId, name);
-				if (partyUnitId) then
-					tableData[spellId][partyUnitId] = hits;
-				else
-					self:DebugPrint(string.format("%s not found in the challenge party roster", name));
+	for unitName, auras in pairs(mechanics) do
+		for spellId, spellInfo in pairs(auras) do
+			if (not tableData[spellId]) then
+				tableData[spellId] = {
+					spellId = spellId,
+					player = 0,
+					party1 = 0,
+					party2 = 0,
+					party3 = 0,
+					party4 = 0,
+					isAvoidable = false
+				};
+			end
+			local unitId = self:GetPartyUnitByName(challengeId, unitName);
+			if (unitId) then
+				tableData[spellId][unitId] = spellInfo.meta.hits;
+				local isAvoidable = self:IsSpellAvoidableForPartyMember(challengeId, unitId, spellId);
+				if (isAvoidable) then
+					tableData[spellId].isAvoidable = true;
 				end
 			end
-		else
-			self:DebugPrint(string.format("%s not found", name));
 		end
 	end
 	local remappedTableData = {};
@@ -103,18 +102,20 @@ function MyDungeonsBook:AvoidableDebuffsFrame_GetDataForTable(challengeId, key)
 		local r = {
 			cols = {}
 		};
-		tinsert(r.cols, {value = row.spellId});
-		tinsert(r.cols, {value = row.spellId});
-		tinsert(r.cols, {value = row.spellId});
-		local sum = 0;
-		for _, unitId in pairs(self:GetPartyRoster()) do
-			tinsert(r.cols, {value = row[unitId]});
-			if (row[unitId]) then
-				sum = sum + row[unitId];
+		if (row.isAvoidable) then
+			tinsert(r.cols, {value = row.spellId});
+			tinsert(r.cols, {value = row.spellId});
+			tinsert(r.cols, {value = row.spellId});
+			local sum = 0;
+			for _, unitId in pairs(self:GetPartyRoster()) do
+				tinsert(r.cols, {value = row[unitId]});
+				if (row[unitId]) then
+					sum = sum + row[unitId];
+				end
 			end
+			tinsert(r.cols, {value = sum});
+			tinsert(remappedTableData, r);
 		end
-		tinsert(r.cols, {value = sum});
-		tinsert(remappedTableData, r);
 	end
 	return remappedTableData;
 end

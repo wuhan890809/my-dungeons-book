@@ -553,10 +553,6 @@ function MyDungeonsBook:TrackBfAAvoidableSpells(damagedUnit, spellId, amount)
 	self:TrackAvoidableSpells("BFA-AVOIDABLE-SPELLS", BfASpells, BfASpellsNoTank, damagedUnit, spellId, amount);
 end
 
-function MyDungeonsBook:TrackBfAAvoidableAuras(damagedUnit, spellId)
-	self:TrackAvoidableAuras("BFA-AVOIDABLE-AURAS", BfAAuras, BfAAurasNoTank, damagedUnit, spellId);
-end
-
 function MyDungeonsBook:TrackBfAPassedCasts(caster, spellId)
 	self:TrackPassedCasts("BFA-SPELLS-TO-INTERRUPT", BfASpellsToInterrupt, caster, spellId);
 end

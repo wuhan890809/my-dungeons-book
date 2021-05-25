@@ -21,8 +21,8 @@ function MyDungeonsBook:EffectsAndAurasFrame_CreateTabButtonsFrame(parentFrame)
 		{value = "dispels", text = L["Dispels"]},
 		{value = "avoidableDebuffs", text = L["Avoidable Debuffs"]},
 		{value = "allBuffsAndDebuffsOnPartyMembers", text = L["All Buffs & Debuffs"]},
-		{value = "buffsOrDebuffsOnPartyMembers", text = L["Special Buffs Or Debuffs"]},
-		{value = "buffsOrDebuffsOnUnits", text = L["Buffs Or Debuffs On Units"]}
+		{value = "buffsOrDebuffsOnUnits", text = L["Buffs Or Debuffs On Units"]},
+		{value = "brokenAuras", text = L["Broken Auras"]},
 	});
 	tabs:SetCallback("OnGroupSelected", function (container, _, tabId)
 		container:ReleaseChildren();
@@ -35,11 +35,11 @@ function MyDungeonsBook:EffectsAndAurasFrame_CreateTabButtonsFrame(parentFrame)
         if (tabId == "allBuffsAndDebuffsOnPartyMembers") then
             self.allBuffsAndDebuffsOnPartyMembersFrame = self:AllBuffsAndDebuffsOnPartyMembersFrame_Create(container, self.activeChallengeId);
         end
-		if (tabId == "buffsOrDebuffsOnPartyMembers") then
-			self.buffsOrDebuffsOnPartyMembersFrame = self:BuffsOrDebuffsOnPartyMembersFrame_Create(container, self.activeChallengeId);
-		end
 		if (tabId == "buffsOrDebuffsOnUnits") then
 			self.buffsOrDebuffsOnUnitsFrame = self:BuffsOrDebuffsOnUnitsFrame_Create(container, self.activeChallengeId);
+		end
+		if (tabId == "brokenAuras") then
+			self.brokenAurasFrame = self:BrokenAurasFrame_Create(container, self.activeChallengeId);
 		end
 	end);
 	tabs:SetHeight(586);

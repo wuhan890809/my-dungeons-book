@@ -44,8 +44,8 @@ UI/ChallengeDetails/Tabs/Mechanics/Tabs/Deaths.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs/AvoidableDebuffs.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs/BrokenAuras.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs/BuffsOrDebuffsOnUnits.lua
-UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs/BuffsOrDebuffsOnPartyMembers.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs/AllBuffsAndDebuffsOnPartyMembers.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs/AllBuffsAndDebuffsOnPartyMembers/Tabs.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs/AllBuffsAndDebuffsOnPartyMembers/Tabs/AllBuffsAndDebuffsOnPartyMember.lua

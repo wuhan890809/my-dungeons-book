@@ -6,6 +6,9 @@
 * Fix overall enemy progress calculation
 * Highlight players in the OwnCasts-tab
 * Highlight amount columns for damage and heal tabs by spell
+* Track `SPELL_AURA_BROKEN*` separately
+* Don't track avoidable debuffs separately (log-messages for them are removed)
+* Track agro for death logs
 
 ### v2.10.0
 

@@ -582,28 +582,6 @@ function MyDungeonsBook:SaveTrackedFriendlyFireByPartyMembers(key, sourceUnit, t
 end
 
 --[[--
-Track gotten by players debuffs that could be avoided.
-
-Check events `SPELL_AURA_APPLIED` and `SPELL_AURA_APPLIED_DOSE`.
-
-@param[type=string] key db key to save debuffs done by `spells` or `spellsNoTank`
-@param[type=table] auras table with keys equal to tracked spell ids
-@param[type=table] aurasNoTank table with keys equal to tracked spell ids allowed to hit tanks
-@param[type=unitId] unit unit name that got damage (usualy it's a destUnit from `CombatLogGetCurrentEventInfo`)
-@param[type=number] spellId spell that apply debuff to `damagedUnit`
-]]
-function MyDungeonsBook:TrackAvoidableAuras(key, auras, aurasNoTank, unit, spellId)
-	if ((auras[spellId] or (aurasNoTank[spellId] and UnitGroupRolesAssigned(unit) ~= "TANK")) and UnitIsPlayer(unit)) then
-		local id = self.db.char.activeChallengeId;
-		self:InitMechanics3Lvl(key, unit, spellId, true);
-		self.db.char.challenges[id].mechanics[key][unit][spellId] = self.db.char.challenges[id].mechanics[key][unit][spellId] + 1;
-		if (self.db.global.meta.mechanics[key].verbose) then
-			self:LogPrint(string.format(L["%s got debuff by %s"], unit, GetSpellLink(spellId)));
-		end
-	end
-end
-
---[[--
 Track all casts done by party members and their pets
 
 @param[type=string] unitName caster name
@@ -1365,6 +1343,9 @@ function MyDungeonsBook:TrackCombatEventWithPartyMember(timestamp, unitName, uni
 		hp = {
 			max = UnitHealthMax(unitId),
 			current = UnitHealth(unitId)
+		},
+		agro = {
+			status = UnitThreatSituation(unitId)
 		}
 	};
 	local log = {CombatLogGetCurrentEventInfo()};
@@ -1404,4 +1385,47 @@ function MyDungeonsBook:SaveDeathLogsForPartyMember(timestamp, unitName)
 		end
 	end
 	wipe(self.allPartyMemberLogs[unitName]);
+end
+
+--[[--
+@param[type=number] timestamp
+@param[type=string] sourceUnitName
+@param[type=string] sourceUnitGUID
+@param[type=number] sourceUnitFlags
+@param[type=string] targetUnitName
+@param[type=string] targetUnitGIUD
+@param[type=number] targetUnitFlags
+@param[type=number] brokenSpellId
+@param[type=number] spellId
+]]
+function MyDungeonsBook:TrackEnemyAuraBrokenByDamage(timestamp, sourceUnitName, sourceUnitGUID, sourceUnitFlags, targetUnitName, targetUnitGUID, targetUnitFlags, brokenSpellId, spellId)
+	local targetIsNotFriendly = bit.band(targetUnitFlags, COMBATLOG_OBJECT_REACTION_FRIENDLY) == 0;
+	if (not targetIsNotFriendly) then
+		return;
+	end
+	local sourceOwnerName = self:GetSummonedUnitOwner(sourceUnitName, sourceUnitGUID);
+	local nameToUse;
+	if (UnitIsPlayer(sourceUnitName)) then
+		nameToUse = sourceUnitName;
+	end
+	if (sourceOwnerName) then
+		nameToUse = sourceOwnerName;
+	end
+	if (not nameToUse) then
+		return;
+	end
+	local id = self.db.char.activeChallengeId;
+	if (not id) then
+		return;
+	end
+	local KEY = "AURAS_BROKEN";
+	self:InitMechanics3Lvl(KEY, nameToUse, "breaks");
+	tinsert(self.db.char.challenges[id].mechanics[KEY][nameToUse].breaks, {
+		timestamp = timestamp,
+		targetUnitName = targetUnitName,
+		targetUnitGUID = targetUnitGUID,
+		targetUnitFlags = targetUnitFlags,
+		brokenSpellId = brokenSpellId,
+		spellId = spellId
+	});
 end

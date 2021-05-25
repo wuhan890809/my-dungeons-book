@@ -159,7 +159,7 @@ function MyDungeonsBook:BuffsOrDebuffsOnUnitsFrame_Filters_Create(parentFrame, c
 	local npcFilterOptions = {["ALL"] = L["All"]};
 	local auraFilterOptions = {["ALL"] = L["All"]};
 	local guidFilterOptions = {["ALL"] = L["All"]};
-	local mechanics = self:Challenge_Mechanic_GetById(challengeId, key);
+	local mechanics = self:Challenge_Mechanic_GetById(challengeId, key) or {};
 	for unitGUID, unitInfo in pairs(mechanics) do
 		local npcId = self:GetNpcIdFromGuid(unitGUID);
 		if (npcId) then

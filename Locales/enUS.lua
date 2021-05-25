@@ -157,6 +157,14 @@ L["HP"] = "HP";
 L["Enemy Forces"] = "Enemy Forces";
 L["This week"] = "This week";
 L["Progress"] = "Progress";
+L["Target"] = "Target";
+L["Broken Auras"] = "Broken Auras";
+L["Broken By"] = "Broken By";
+L["%s broke %s on %s using %s"] = "%s broke %s on %s using %s";
+L["Not tanking anything"] = "Not tanking anything";
+L["Not tanking anything, but have higher threat than tank on at least one unit"] = "Not tanking anything, but have higher threat than tank on at least one unit";
+L["Insecurely tanking at least one unit, but not securely tanking anything"] = "Insecurely tanking at least one unit, but not securely tanking anything";
+L["Securely tanking at least one unit"] = "Securely tanking at least one unit";
 -- UI end
 
 -- Help start
