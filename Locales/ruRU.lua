@@ -166,6 +166,8 @@ L["Not tanking anything"] = "Никого не танкует";
 L["Not tanking anything, but have higher threat than tank on at least one unit"] = "Никого не танкует, но уровень угрозы выше чем у танка как минимум на одной вражеской единице";
 L["Insecurely tanking at least one unit, but not securely tanking anything"] = "Небезопасно танкует как минимум одну вражескую единицу, но уверенно не танкует никого";
 L["Securely tanking at least one unit"] = "Уверенно танкует как минимум одну вражескую единицу";
+L["Enemies Friendly Fire"] = "Урон врагов по своим";
+L["%s got %s damage from %s with %s"] = "%s получил %s урона от %s из-за %s";
 -- UI end
 
 -- Help start

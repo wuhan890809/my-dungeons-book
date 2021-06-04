@@ -71,7 +71,7 @@ function MyDungeonsBook:CovenantFrame_PartyMember_Create(parentFrame, unitId, ch
     covenantIconFrame:SetWidth(35);
     local soulbindFrame = AceGUI:Create("Label");
     soulbindFrame:SetText(unitCovenantInfo.soulbind.name);
-    soulbindFrame:SetWidth(60);
+    soulbindFrame:SetWidth(260);
     parentFrame:AddChild(soulbindFrame);
     table.sort(unitCovenantInfo.soulbind.conduits, function (c1, c2)
         return c1.row < c2.row;

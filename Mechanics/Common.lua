@@ -1429,3 +1429,30 @@ function MyDungeonsBook:TrackEnemyAuraBrokenByDamage(timestamp, sourceUnitName, 
 		spellId = spellId
 	});
 end
+
+--[[--
+@param[type=string] sourceUnitName
+@param[type=string] sourceUnitGUID
+@param[type=number] sourceUnitFlags
+@param[type=string] targetUnitName
+@param[type=string] targetUnitGIUD
+@param[type=number] targetUnitFlags
+]]
+function MyDungeonsBook:TrackAllEnemiesFriendlyFire(sourceUnitName, sourceUnitGUID, sourceUnitFlags, targetUnitName, targetUnitGUID, targetUnitFlags)
+	local targetIsNotFriendly = bit.band(targetUnitFlags, COMBATLOG_OBJECT_REACTION_FRIENDLY) == 0;
+	local sourceIsNotFriendly = bit.band(sourceUnitFlags, COMBATLOG_OBJECT_REACTION_FRIENDLY) == 0;
+	if (not targetIsNotFriendly or not sourceIsNotFriendly) then
+		return;
+	end
+	local log = {CombatLogGetCurrentEventInfo()};
+	if (log[2] ~= "SPELL_DAMAGE") then
+		return;
+	end
+	local KEY = "ENEMIES-FRIENDLY-FIRE";
+	local id = self.db.char.activeChallengeId;
+	if (not id) then
+		return;
+	end
+	self:InitMechanics2Lvl(KEY, "logs");
+	tinsert(self.db.char.challenges[id].mechanics[KEY].logs, log);
+end

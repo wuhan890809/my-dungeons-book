@@ -91,6 +91,9 @@
     <Content Include="UI\ChallengeDetails\Tabs.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\EnemiesFriendlyFire.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Mechanics\Tabs\Damage\Tabs\FriendlyFire.lua">
       <SubType>Code</SubType>
     </Content>

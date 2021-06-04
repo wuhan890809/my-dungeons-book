@@ -155,6 +155,9 @@ function MyDungeonsBook:EquipmentFrame_TableItemHover(itemFrame, unitId, itemInd
     if (itemIndex > 3) then
         realItemIndex = realItemIndex + 1;
     end
+    if (not self.activeChallengeId) then
+        return;
+    end
     local player = self.db.char.challenges[self.activeChallengeId].players[unitId];
     local itemString = player.items and self.db.char.challenges[self.activeChallengeId].players[unitId].items[realItemIndex] or nil;
     if (itemString) then

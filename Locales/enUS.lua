@@ -165,6 +165,8 @@ L["Not tanking anything"] = "Not tanking anything";
 L["Not tanking anything, but have higher threat than tank on at least one unit"] = "Not tanking anything, but have higher threat than tank on at least one unit";
 L["Insecurely tanking at least one unit, but not securely tanking anything"] = "Insecurely tanking at least one unit, but not securely tanking anything";
 L["Securely tanking at least one unit"] = "Securely tanking at least one unit";
+L["Enemies Friendly Fire"] = "Enemies Friendly Fire";
+L["%s got %s damage from %s with %s"] = "%s got %s damage from %s with %s";
 -- UI end
 
 -- Help start

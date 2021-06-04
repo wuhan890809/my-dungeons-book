@@ -9,6 +9,7 @@
 * Track `SPELL_AURA_BROKEN*` separately
 * Don't track avoidable debuffs separately (log-messages for them are removed)
 * Track agro for death logs
+* Track enemies friendly fire done by spells (but not DoTs)
 
 ### v2.10.0
 

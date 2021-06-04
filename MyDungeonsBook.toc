@@ -40,6 +40,7 @@ UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/DamageDoneToUnits.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/FriendlyFire.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/FriendlyFire/Tabs.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/FriendlyFire/Tabs/FriendlyFireByPartyMember.lua
+UI/ChallengeDetails/Tabs/Mechanics/Tabs/Damage/Tabs/EnemiesFriendlyFire.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/Deaths.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras.lua
 UI/ChallengeDetails/Tabs/Mechanics/Tabs/EffectsAndAuras/Tabs.lua
