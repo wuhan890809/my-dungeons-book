@@ -59,6 +59,7 @@ local SLSpells = {
     [320365] = true, -- Embalming Ichor (Surgeon Stitchflesh)
     [320366] = true, -- Embalming Ichor (Surgeon Stitchflesh)
     [338353] = true, -- Goresplatter (Corpse Collector)
+    [319902] = true, -- Land of the Dead
     -- Spires of Ascension
     [327413] = true, -- Rebellious Fist (Forsworn Goliath)
     [336444] = true, -- Crescendo

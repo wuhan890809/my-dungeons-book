@@ -1,4 +1,8 @@
-﻿### v2.11.0
+﻿### v2.12.0
+
+* Bump WoW-version to 9.1
+
+### v2.11.0
 
 * Track all own casts with timestamp and targets
 * Add top-level tab "Progress" contains Units, Encounters and Combat Time

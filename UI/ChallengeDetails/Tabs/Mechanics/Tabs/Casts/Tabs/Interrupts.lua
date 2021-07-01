@@ -296,13 +296,13 @@ If some important spells (are in the `BFA|SL-SPELLS-TO-INTERRUPT`) were not inte
 function MyDungeonsBook:InterruptsFrame_GetDataForTable(challengeId)
 	local tableData = {};
 	if (not challengeId) then
-		return nil;
+		return tableData;
 	end
 	local spellsToInterrupt = self:GetSLSpellsToInterrupt();
 	local interruptsMechanics = self:Challenge_Mechanic_GetById(challengeId, "COMMON-INTERRUPTS");
 	if (not interruptsMechanics) then
 		self:DebugPrint(string.format("No Interrupts data for challenge #%s", challengeId));
-		return nil;
+		return tableData;
 	end
 	local passedSpellsToInterrupt = self:Challenge_Mechanic_GetById(challengeId, self:GetMechanicsPrefixForChallenge(challengeId) .. "-SPELLS-TO-INTERRUPT") or {};
 	local passedSpellsToInterruptNotInterrupted = {};

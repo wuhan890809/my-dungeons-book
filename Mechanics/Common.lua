@@ -338,7 +338,7 @@ end
 --[[--
 Track all damage done to party members
 
-@param[type=string] unit unit name that got damage (usualy it's a destUnit from `CombatLogGetCurrentEventInfo`)
+@param[type=string] unit unit name that got damage (usually it's a destUnit from `CombatLogGetCurrentEventInfo`)
 @param[type=number] spellId spell that did damage to `unit`
 @param[type=number] amount amount of damage done to `unit` by `spellId`
 ]]
@@ -359,7 +359,7 @@ function MyDungeonsBook:TrackAllDamageDoneToPartyMembers(sourceUnit, targetUnit,
 end
 
 --[[--
-Track all damage done by party members (including pets and other summonned units)
+Track all damage done by party members (including pets and other summoned units)
 
 @param[type=string] sourceUnitName
 @param[type=GUID] sourceUnitGUID
