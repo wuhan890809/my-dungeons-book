@@ -1248,21 +1248,21 @@ Track when enemy unit appears in combat with party members (players or pets)
 @param[type=number] targetUnitFlags
 ]]
 function MyDungeonsBook:TrackEnemyUnitAppearsInCombat(sourceUnitName, sourceUnitGUID, sourceUnitFlags, targetUnitName, targetUnitGIUD, targetUnitFlags)
-	local sourceIsEnemy = bit.band(sourceUnitFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0;
-	local targetIsEnemy = bit.band(targetUnitFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0;
+	local sourceIsNotFriendly = bit.band(sourceUnitFlags, COMBATLOG_OBJECT_REACTION_FRIENDLY) == 0;
+	local targetIsNotFriendly = bit.band(targetUnitFlags, COMBATLOG_OBJECT_REACTION_FRIENDLY) == 0;
 	local sourceType = strsplit("-", sourceUnitGUID);
 	local sourceIsPlayerOrPet = (sourceType == "Pet") or (sourceType == "Player");
 	local targetType = strsplit("-", targetUnitGIUD);
 	local targetIsPlayerOrPet = (targetType == "Pet") or (targetType == "Player");
-	if (not (sourceIsEnemy or targetIsEnemy)) then
+	if (not (sourceIsNotFriendly or targetIsNotFriendly)) then
 		return;
 	end
-	if (not ((sourceIsEnemy and targetIsPlayerOrPet) or (targetIsEnemy and sourceIsPlayerOrPet))) then
+	if (not ((sourceIsNotFriendly and targetIsPlayerOrPet) or (targetIsNotFriendly and sourceIsPlayerOrPet))) then
 		return;
 	end
 	local id = self.db.char.activeChallengeId;
 	local KEY = "UNIT-APPEARS-IN-COMBAT";
-	local unitGUID = (sourceIsEnemy and sourceUnitGUID) or targetUnitGIUD;
+	local unitGUID = (sourceIsNotFriendly and sourceUnitGUID) or targetUnitGIUD;
 	if (self:SafeNestedGet(self.db.char.challenges[id].mechanics, KEY, unitGUID)) then
 		self.db.char.challenges[id].mechanics[KEY][unitGUID].lastCast = time();
 	else

@@ -151,6 +151,7 @@ function MyDungeonsBook:CHALLENGE_MODE_START()
 	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 	self:RegisterEvent("PLAYER_REGEN_DISABLED");
 	self:RegisterEvent("PLAYER_REGEN_ENABLED");
+	self:RegisterEvent("CHAT_MSG_LOOT");
     self:DebugPrint("CHALLENGE_MODE_START");
 	wipe(self.allPartyMemberLogs or {});
 	if (self.partyAliveStatusCheckTimer) then
@@ -243,6 +244,7 @@ function MyDungeonsBook:CHALLENGE_MODE_RESET()
 	self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 	self:UnregisterEvent("PLAYER_REGEN_DISABLED");
 	self:UnregisterEvent("PLAYER_REGEN_ENABLED");
+	self:UnregisterEvent("CHAT_MSG_LOOT");
 	if (self.partyAliveStatusCheckTimer) then
 		self:CancelTimer(self.partyAliveStatusCheckTimer);
 	end
@@ -310,6 +312,7 @@ function MyDungeonsBook:CHALLENGE_MODE_COMPLETED()
 	end
 	self:UnregisterEvent("PLAYER_REGEN_DISABLED");
 	self:UnregisterEvent("PLAYER_REGEN_ENABLED");
+	self:UnregisterEvent("CHAT_MSG_LOOT");
 	wipe(self.allPartyMemberLogs or {});
 end
 
@@ -486,4 +489,21 @@ function MyDungeonsBook:SCENARIO_CRITERIA_UPDATE()
 			end
 		end
 	end
+end
+
+--[[--
+Used to track anima-powers for SL season 2 (for now)
+]]
+function MyDungeonsBook:CHAT_MSG_LOOT(_, text, partyMemberName)
+    if (not self.db.char.activeChallengeId) then
+        return;
+    end
+    if (not string.find(text, "mawpower")) then
+        return;
+    end
+    local partyUnitId = self:GetPartyUnitByName(self.db.char.activeChallengeId, partyMemberName);
+    if (not partyUnitId) then
+        return;
+    end
+    self:UpdatePartyMemberAnimaPowers(self.db.char.activeChallengeId, text, partyUnitId);
 end

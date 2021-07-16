@@ -168,6 +168,8 @@ L["Insecurely tanking at least one unit, but not securely tanking anything"] = "
 L["Securely tanking at least one unit"] = "Уверенно танкует как минимум одну вражескую единицу";
 L["Enemies Friendly Fire"] = "Урон врагов по своим";
 L["%s got %s damage from %s with %s"] = "%s получил %s урона от %s из-за %s";
+L["Misc"] = "Разное";
+L["Anima Powers"] = "Способности анимы";
 -- UI end
 
 -- Help start

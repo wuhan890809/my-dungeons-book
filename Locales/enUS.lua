@@ -167,6 +167,8 @@ L["Insecurely tanking at least one unit, but not securely tanking anything"] = "
 L["Securely tanking at least one unit"] = "Securely tanking at least one unit";
 L["Enemies Friendly Fire"] = "Enemies Friendly Fire";
 L["%s got %s damage from %s with %s"] = "%s got %s damage from %s with %s";
+L["Misc"] = "Misc";
+L["Anima Powers"] = "Anima Powers";
 -- UI end
 
 -- Help start

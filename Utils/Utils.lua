@@ -42,7 +42,8 @@ local affixesMap = {
 	[122] = 135946, -- Inspiring
 	[123] = 135945, -- Spiteful
 	[124] = 136018, -- Storming
-	[121] = 3528307, -- Prideful
+	[121] = 3528307, -- Prideful,
+	[128] = 3528304, -- Tormented
 };
 
 local targetIconsMap = {
@@ -415,6 +416,21 @@ function MyDungeonsBook:GetUnitNameRealmRoleStr(unitInfo)
 end
 
 --[[--
+Get a string with unit role and name colored with it's class.
+
+`nil` is returned  if `unitInfo` is empty.
+
+@param[type=table] unitInfo
+@return[type=?string]
+]]
+function MyDungeonsBook:GetUnitNameRoleStr(unitInfo)
+	if (unitInfo.name) then
+		return self:ClassColorTextByClassIndex(unitInfo.class, string.format("%s %s", self:GetSmallRoleIcon(unitInfo.role or ""), unitInfo.name or ""));
+	end
+	return nil;
+end
+
+--[[--
 Get an icon id for class with index `classIndex`.
 
 @param[type=string] classIndex
@@ -477,7 +493,7 @@ Get count down time delay on challenge start.
 
 Challenge's `startTime` is stored right after challenge start. However there is a countdown before "real" challenge timer starts.
 Typically it's 9 seconds. It's possible to calculate it using `startTime`, `endTime` and `duration` (for already passed challenges).
-If challenge is in progress or was abandonned, 9 seconds value is returned.
+If challenge is in progress or was abandoned, 9 seconds value is returned.
 
 @param[type=number] challengeId
 @return[type=number]

@@ -181,3 +181,41 @@ function MyDungeonsBook:Challenge_Mechanic_GetById(challengeId, mechanicKey)
 	end
 	return mechanics[mechanicKey];
 end
+
+--[[--
+@param[type=number] challengeId
+@param[type=string] msg
+@param[type=unitId] unitId
+]]
+function MyDungeonsBook:UpdatePartyMemberAnimaPowers(challengeId, msg, unitId)
+    if (not self.db.char.challenges[challengeId].players[unitId]) then
+	    return;
+	end
+	self.db.char.challenges[challengeId].players[unitId].misc.animaPowers = self.db.char.challenges[challengeId].players[unitId].misc.animaPowers or {
+	    ids = {},
+	    powers = {}
+	};
+	for i = 1, 5 do
+        local _, icon, count, _, _, _, _, _, _, spellId = UnitAura(unitId, i, "MAW");
+        if (icon) then
+            local powerInfo = {icon = icon, count = count, slot = i, spellId = spellId};
+            if (self.db.char.challenges[challengeId].players[unitId].misc.animaPowers.ids[spellId]) then
+                local inserted = false;
+                for _, power in pairs(self.db.char.challenges[challengeId].players[unitId].misc.animaPowers.powers) do
+                    if (power.spellId == spellId) then
+                        if (power.count ~= count) then
+                            power.count = count;
+                            if (not inserted) then
+                                tinsert(self.db.char.challenges[challengeId].players[unitId].misc.animaPowers.powers, powerInfo);
+                                inserted = true;
+                            end
+                        end
+                    end
+                end
+            else
+                self.db.char.challenges[challengeId].players[unitId].misc.animaPowers.ids[spellId] = true;
+                tinsert(self.db.char.challenges[challengeId].players[unitId].misc.animaPowers.powers, powerInfo);
+            end
+        end
+    end
+end

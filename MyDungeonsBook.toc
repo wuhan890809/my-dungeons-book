@@ -69,6 +69,7 @@ UI/ChallengeDetails/Tabs/Roster.lua
 UI/ChallengeDetails/Tabs/Roster/Tabs.lua
 UI/ChallengeDetails/Tabs/Roster/Tabs/Covenant.lua
 UI/ChallengeDetails/Tabs/Roster/Tabs/Equipment.lua
+UI/ChallengeDetails/Tabs/Roster/Tabs/Misc.lua
 UI/ChallengeDetails/Tabs/Roster/Tabs/Info.lua
 UI/ChallengeDetails/Tabs/Roster/Tabs/Talents.lua
 

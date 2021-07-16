@@ -160,7 +160,7 @@ function MyDungeonsBook:AllBuffsAndDebuffsOnPartyMemberFrame_GetDataForTable(cha
     for spellId, spellInfo in pairs(mechanicsData) do
         if (self.db.global.meta.spells[spellId] and self.db.global.meta.spells[spellId].auraType == auraType) then
             local durationCellValue = (spellInfo.meta.duration and spellInfo.meta.duration * 1000) or "-";
-            local uptimeCellValue = (challengeDurationCalc and spellInfo.meta.duration and spellInfo.meta.duration / challengeDurationCalc * 100) or "-";
+            local uptimeCellValue = (challengeDurationCalc and spellInfo.meta.duration and spellInfo.meta.duration / challengeDurationCalc) or "-";
             tinsert(tableData, {
                 cols = {
                     {value = spellId},

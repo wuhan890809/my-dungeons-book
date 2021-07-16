@@ -231,6 +231,9 @@ function MyDungeonsBook:UnitsFrame_GetDataForTable(challengeId)
                 combatEnd = combatEnd or npcData.lastCast;
             end
             local ignoreNpc = (mdtOverrides.npcs[npcId] and mdtOverrides.npcs[npcId].ignored) or false;
+            if (npcId == 162041) then
+                print(npcData.firstHit, npcData.died, npcData.lastCast);
+            end
             if (combatStart and combatEnd and not ignoreNpc) then
                 local enemyInfo = mdtOverrides.npcs[npcId] or mdtEnemiesDb[npcId] or {};
                 local enemyPortraitDisplayId = enemyInfo.displayId or -1;

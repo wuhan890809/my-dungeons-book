@@ -367,11 +367,11 @@ function MyDungeonsBook:Table_Headers_GetForSpellsSummary(challengeId)
     local party4 = "Party4";
     if (challenge) then
         local players = challenge.players;
-        player = (players.player.name and self:ClassColorTextByClassIndex(players.player.class, players.player.name)) or L["Not Found"];
-        party1 = (players.party1.name and self:ClassColorTextByClassIndex(players.party1.class, players.party1.name)) or L["Not Found"];
-        party2 = (players.party2.name and self:ClassColorTextByClassIndex(players.party2.class, players.party2.name)) or L["Not Found"];
-        party3 = (players.party3.name and self:ClassColorTextByClassIndex(players.party3.class, players.party3.name)) or L["Not Found"];
-        party4 = (players.party4.name and self:ClassColorTextByClassIndex(players.party4.class, players.party4.name)) or L["Not Found"];
+        player = (players.player.name and self:GetUnitNameRoleStr(players.player)) or L["Not Found"];
+        party1 = (players.party1.name and self:GetUnitNameRoleStr(players.party1)) or L["Not Found"];
+        party2 = (players.party2.name and self:GetUnitNameRoleStr(players.party2)) or L["Not Found"];
+        party3 = (players.party3.name and self:GetUnitNameRoleStr(players.party3)) or L["Not Found"];
+        party4 = (players.party4.name and self:GetUnitNameRoleStr(players.party4)) or L["Not Found"];
     end
     return {
         {
@@ -397,27 +397,27 @@ function MyDungeonsBook:Table_Headers_GetForSpellsSummary(challengeId)
         },
         {
             name = player,
-            width = 70,
+            width = 85,
             align = "RIGHT"
         },
         {
             name = party1,
-            width = 70,
+            width = 85,
             align = "RIGHT"
         },
         {
             name = party2,
-            width = 70,
+            width = 85,
             align = "RIGHT"
         },
         {
             name = party3,
-            width = 70,
+            width = 85,
             align = "RIGHT"
         },
         {
             name = party4,
-            width = 70,
+            width = 85,
             align = "RIGHT"
         },
         {
@@ -450,11 +450,11 @@ function MyDungeonsBook:Table_Columns_GetForDamageOrHealToPartyMembers(challenge
 	local party4 = "Party4";
 	if (challenge) then
 		local players = challenge.players;
-		player = (players.player.name and self:ClassColorTextByClassIndex(players.player.class, players.player.name)) or L["Not Found"];
-		party1 = (players.party1.name and self:ClassColorTextByClassIndex(players.party1.class, players.party1.name)) or L["Not Found"];
-		party2 = (players.party2.name and self:ClassColorTextByClassIndex(players.party2.class, players.party2.name)) or L["Not Found"];
-		party3 = (players.party3.name and self:ClassColorTextByClassIndex(players.party3.class, players.party3.name)) or L["Not Found"];
-		party4 = (players.party4.name and self:ClassColorTextByClassIndex(players.party4.class, players.party4.name)) or L["Not Found"];
+		player = (players.player.name and self:GetUnitNameRoleStr(players.player)) or L["Not Found"];
+		party1 = (players.party1.name and self:GetUnitNameRoleStr(players.party1)) or L["Not Found"];
+		party2 = (players.party2.name and self:GetUnitNameRoleStr(players.party2)) or L["Not Found"];
+		party3 = (players.party3.name and self:GetUnitNameRoleStr(players.party3)) or L["Not Found"];
+		party4 = (players.party4.name and self:GetUnitNameRoleStr(players.party4)) or L["Not Found"];
 	end
 	return {
 		{
@@ -480,7 +480,7 @@ function MyDungeonsBook:Table_Columns_GetForDamageOrHealToPartyMembers(challenge
 		},
 		{
 			name = player,
-			width = 75,
+			width = 85,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsNumber(...);
@@ -493,7 +493,7 @@ function MyDungeonsBook:Table_Columns_GetForDamageOrHealToPartyMembers(challenge
 		},
 		{
 			name = party1,
-			width = 75,
+			width = 85,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsNumber(...);
@@ -506,7 +506,7 @@ function MyDungeonsBook:Table_Columns_GetForDamageOrHealToPartyMembers(challenge
 		},
 		{
 			name = party2,
-			width = 75,
+			width = 85,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsNumber(...);
@@ -519,7 +519,7 @@ function MyDungeonsBook:Table_Columns_GetForDamageOrHealToPartyMembers(challenge
 		},
 		{
 			name = party3,
-			width = 75,
+			width = 85,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsNumber(...);
@@ -532,7 +532,7 @@ function MyDungeonsBook:Table_Columns_GetForDamageOrHealToPartyMembers(challenge
 		},
 		{
 			name = party4,
-			width = 75,
+			width = 85,
 			align = "RIGHT",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsNumber(...);

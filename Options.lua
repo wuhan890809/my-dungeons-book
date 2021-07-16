@@ -105,6 +105,18 @@ MyDungeonsBook.OptionsDefaults = {
 						[164568] = {
 							ignored = true,
 						},
+						[165108] = {
+                            ignored = true
+                        },
+						[164929] = {
+                            id = 164929,
+                            mustDieToCount = false,
+                            count = 7,
+                            displayId = 95618
+                        },
+                        [165251] = {
+                            ignored = true
+                        },
 						[166608] = {
 							id = 166608,
 							displayId = 96358,
@@ -130,10 +142,20 @@ MyDungeonsBook.OptionsDefaults = {
 							count = 12,
 							displayId = 96244
 						},
+						[169753] = {
+						    id = 169753,
+						    count = 1,
+						    displayId = 94227
+						},
 						[170486] = {
 							id = 170486,
 							count = 2,
 							displayId = 97298
+						},
+						[171772] = {
+						    id = 171772,
+						    count = 4,
+						    displayId = 95256
 						},
 						[171805] = {
 							id = 171805,
@@ -145,6 +167,9 @@ MyDungeonsBook.OptionsDefaults = {
 							count = 4,
 							displayId = 95706,
 							mustDieToCount = true
+						},
+						[180786] = {
+						    ignored = true
 						}
 					},
 				}

@@ -306,8 +306,8 @@ function MyDungeonsBook:SummaryFrame_GetDataForTable(challengeId)
 		});
 	end
 	for _, row in pairs(tableData) do
-		row.cols[4].value = row.cols[3].value / damageSum * 100;
-		row.cols[7].value = row.cols[6].value / healSum * 100;
+		row.cols[4].value = row.cols[3].value / damageSum;
+		row.cols[7].value = row.cols[6].value / healSum;
 	end
 	return tableData;
 end

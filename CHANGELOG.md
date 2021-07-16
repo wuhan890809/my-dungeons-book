@@ -1,4 +1,13 @@
-﻿### v2.12.0
+﻿### v2.13.0
+
+* Add icon for SL season 2 affix
+* Add missing data about npc for myth+ progress
+* Fix percents column-modifier. Now percents less than 1% are shown correctly
+* Track anima powers collected by party members
+* Add role icons and class colors for tab-headers
+* Add avoidable spells damage for Season 2 affix
+
+### v2.12.0
 
 * Bump WoW-version to 9.1
 

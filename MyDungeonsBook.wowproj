@@ -136,6 +136,9 @@
     <Content Include="UI\ChallengeDetails\Tabs\Roster\Tabs\Info.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="UI\ChallengeDetails\Tabs\Roster\Tabs\Misc.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="UI\ChallengeDetails\Tabs\Roster\Tabs\Talents.lua">
       <SubType>Code</SubType>
     </Content>

@@ -8,7 +8,7 @@ UI
 ]]
 local L = LibStub("AceLocale-3.0"):GetLocale("MyDungeonsBook");
 
-local function getIterruptedSpellMenu(rows, index, cols)
+local function getInterruptedSpellMenu(rows, index, cols)
 	local spellId = rows[index].cols[1].value;
 	local report = MyDungeonsBook:InterruptsFrame_SpellInterruptedReport_Create(rows[index], cols);
 	return {
@@ -17,14 +17,14 @@ local function getIterruptedSpellMenu(rows, index, cols)
 	};
 end
 
-local function getIterruptsSummaryMenu(rows, index)
+local function getInterruptsSummaryMenu(rows, index)
 	local spellId = rows[index].cols[1].value;
 	return {
 		MyDungeonsBook:WowHead_Menu_Spell(spellId)
 	};
 end
 
-local function getIterruptsQuakingMenu(rows, index)
+local function getInterruptsQuakingMenu(rows, index)
 	local spellId = rows[index].cols[2].value;
 	return {
 		MyDungeonsBook:WowHead_Menu_Spell(spellId)
@@ -47,7 +47,7 @@ function MyDungeonsBook:InterruptsFrame_Create(parentFrame, challengeId)
 	table:RegisterEvents({
 		OnClick = function(_, _, data, _, _, realrow, _, _, button)
 			if (button == "RightButton" and realrow) then
-				EasyMenu(getIterruptedSpellMenu(data, realrow, table.cols), self.menuFrame, "cursor", 0 , 0, "MENU");
+				EasyMenu(getInterruptedSpellMenu(data, realrow, table.cols), self.menuFrame, "cursor", 0 , 0, "MENU");
 			end
 		end,
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
@@ -73,7 +73,7 @@ function MyDungeonsBook:InterruptsFrame_Create(parentFrame, challengeId)
 	summaryTable:RegisterEvents({
 		OnClick = function(_, _, data, _, _, realrow, _, _, button)
 			if (button == "RightButton" and realrow) then
-				EasyMenu(getIterruptsSummaryMenu(data, realrow, summaryTable.cols), self.menuFrame, "cursor", 0 , 0, "MENU");
+				EasyMenu(getInterruptsSummaryMenu(data, realrow, summaryTable.cols), self.menuFrame, "cursor", 0 , 0, "MENU");
 			end
 		end,
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
@@ -99,7 +99,7 @@ function MyDungeonsBook:InterruptsFrame_Create(parentFrame, challengeId)
 	quakingTable:RegisterEvents({
 		OnClick = function(_, _, data, _, _, realrow, _, _, button)
 			if (button == "RightButton" and realrow) then
-				EasyMenu(getIterruptsQuakingMenu(data, realrow, quakingTable.cols), self.menuFrame, "cursor", 0 , 0, "MENU");
+				EasyMenu(getInterruptsQuakingMenu(data, realrow, quakingTable.cols), self.menuFrame, "cursor", 0 , 0, "MENU");
 			end
 		end,
 		OnEnter = function (_, cellFrame, data, _, _, realrow, column)
@@ -146,7 +146,7 @@ function MyDungeonsBook:InterruptsFrame_GetDataForQuakingTable(challengeId)
 				for spellId, interruptsCount in pairs(interrupts) do
 					tinsert(tableData, {
 						cols = {
-							{value = self:ClassColorTextByClassIndex(challenge.players[partyUnitId].class, challenge.players[partyUnitId].name)},
+							{value = self:GetUnitNameRoleStr(challenge.players[partyUnitId])},
 							{value = spellId},
 							{value = spellId},
 							{value = interruptsCount},
@@ -211,11 +211,11 @@ function MyDungeonsBook:InterruptsFrame_GetHeadersForTable(challengeId)
 	local party4 = "Party4";
 	if (challenge) then
 		local players = challenge.players;
-		player = (players.player.name and self:ClassColorTextByClassIndex(players.player.class, players.player.name)) or L["Not Found"];
-		party1 = (players.party1.name and self:ClassColorTextByClassIndex(players.party1.class, players.party1.name)) or L["Not Found"];
-		party2 = (players.party2.name and self:ClassColorTextByClassIndex(players.party2.class, players.party2.name)) or L["Not Found"];
-		party3 = (players.party3.name and self:ClassColorTextByClassIndex(players.party3.class, players.party3.name)) or L["Not Found"];
-		party4 = (players.party4.name and self:ClassColorTextByClassIndex(players.party4.class, players.party4.name)) or L["Not Found"];
+		player = (players.player.name and self:GetUnitNameRoleStr(players.player)) or L["Not Found"];
+		party1 = (players.party1.name and self:GetUnitNameRoleStr(players.party1)) or L["Not Found"];
+		party2 = (players.party2.name and self:GetUnitNameRoleStr(players.party2)) or L["Not Found"];
+		party3 = (players.party3.name and self:GetUnitNameRoleStr(players.party3)) or L["Not Found"];
+		party4 = (players.party4.name and self:GetUnitNameRoleStr(players.party4)) or L["Not Found"];
 	end
 	return {
 		{
@@ -233,7 +233,7 @@ function MyDungeonsBook:InterruptsFrame_GetHeadersForTable(challengeId)
 		},
 		{
 			name = L["Spell"],
-			width = 105,
+			width = 100,
 			align = "LEFT",
 			DoCellUpdate = function(...)
 				self:Table_Cell_FormatAsSpellLink(...);
@@ -241,33 +241,33 @@ function MyDungeonsBook:InterruptsFrame_GetHeadersForTable(challengeId)
 		},
 		{
 			name = player,
-			width = 65,
-			align = "CENTER"
+			width = 85,
+			align = "RIGHT"
 		},
 		{
 			name = party1,
-			width = 65,
-			align = "CENTER"
+			width = 85,
+			align = "RIGHT"
 		},
 		{
 			name = party2,
-			width = 65,
-			align = "CENTER"
+			width = 85,
+			align = "RIGHT"
 		},
 		{
 			name = party3,
-			width = 65,
-			align = "CENTER"
+			width = 85,
+			align = "RIGHT"
 		},
 		{
 			name = party4,
-			width = 65,
-			align = "CENTER"
+			width = 85,
+			align = "RIGHT"
 		},
 		{
 			name = L["Kicked"],
-			width = 45,
-			align = "CENTER",
+			width = 42,
+			align = "RIGHT",
 			bgcolor = {
 				r = 0,
 				g = 0,
@@ -277,8 +277,8 @@ function MyDungeonsBook:InterruptsFrame_GetHeadersForTable(challengeId)
 		},
 		{
 			name = L["Passed"],
-			width = 45,
-			align = "CENTER"
+			width = 42,
+			align = "RIGHT"
 		}
 	};
 end

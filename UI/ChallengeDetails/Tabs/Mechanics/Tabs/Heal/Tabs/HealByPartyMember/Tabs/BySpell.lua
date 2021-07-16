@@ -207,7 +207,7 @@ local function proceedSpellStats(spellId, spellStats, summaryRow, unitName)
             {value = spellStats.amount},
             {value = 0},
             {value = spellStats.overheal},
-            {value = (spellStats.hitsCrit or 0) / spellStats.hits * 100},
+            {value = (spellStats.hitsCrit or 0) / spellStats.hits},
             {value = spellStats.hitsCrit or 0},
             {value = (spellStats.maxCrit == 0 and "-") or spellStats.maxCrit},
             {value = (spellStats.minCrit == math.huge and "-") or spellStats.minCrit},
@@ -291,9 +291,9 @@ function MyDungeonsBook:HealByPartyMemberBySpellFrame_GetDataForTable(challengeI
             end
         end
     end
-    summaryRow.cols[8].value = summaryRow.cols[9].value / summaryRow.cols[4].value * 100;
+    summaryRow.cols[8].value = summaryRow.cols[9].value / summaryRow.cols[4].value;
     for _, tableRow in pairs(tableData) do
-        tableRow.cols[6].value = tableRow.cols[5].value / summaryRow.cols[5].value * 100;
+        tableRow.cols[6].value = tableRow.cols[5].value / summaryRow.cols[5].value;
     end
     tinsert(tableData, summaryRow);
     return tableData, summaryRow;
